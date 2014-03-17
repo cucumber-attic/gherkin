@@ -58,7 +58,7 @@ class @Model.ParserClassName
             end
 
 			if (state != @Model.EndState.Id)
-			
+
 				raise ParseError.new("parsing error: end of file expected")
 			end
 
@@ -67,12 +67,12 @@ class @Model.ParserClassName
 	end
 
 	def readToken(context)
-		
+
 		return context.tokenQueue.count > 0 ? context.tokenQueue.shift : context.tokenScanner.read()
 	end
 
 	def matchToken(state, token, context)
-		
+
 		case state
 		@foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
 		{
@@ -82,7 +82,7 @@ class @Model.ParserClassName
 		else
 			raise ParserError.new("unknown state")
 		end
-			
+
 		return newState;
 	end
 
@@ -120,7 +120,7 @@ class @Model.ParserClassName
 	{
 		<text>
 		def lookAhead_@(lookAheadHint.Id)(context, currentToken)
-		
+
 			currentToken.detach()
 			queue = []
 			match = false;
