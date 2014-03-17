@@ -3,23 +3,24 @@ require 'gherkin/ast_builder'
 
 module Gherkin
   class ParserContext
-    attr_accessor :token_scanner
-    attr_accessor :ast_builder
-    attr_accessor :token_queue
-    attr_accessor :token_matcher
+    attr_reader :token_scanner
+    attr_reader :ast_builder
+    attr_reader :token_matcher
+    attr_reader :token_queue
 
-    def initialize(token_scanner, ast_builder, token_queue, token_matcher)
+    def initialize(token_scanner, ast_builder, token_matcher)
       @token_scanner = token_scanner
       @ast_builder = ast_builder
-      @token_queue = token_queue
       @token_matcher = token_matcher
+
+      @token_queue = []
     end
   end
 
   class Parser
 
     def parse(token_scanner)
-      context = ParserContext.new(token_scanner, ASTBuilder.new, [], TokenMatcher.new)
+      context = ParserContext.new(token_scanner, ASTBuilder.new, TokenMatcher.new)
 
       context.ast_builder.push(:rule_Feature_File)
       state = 0
