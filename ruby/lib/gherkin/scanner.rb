@@ -30,7 +30,7 @@ module Gherkin
       @trimmed_line = line == nil ? nil : line.strip
     end
 
-    def isEOF()
+    def eof?
       @line == nil
     end
 
@@ -99,7 +99,7 @@ module Gherkin
     end
 
     def match_EOF(token)
-      token.isEOF
+      token.eof?
     end
 
     def match_Step(token)

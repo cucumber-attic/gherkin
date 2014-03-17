@@ -87,7 +87,7 @@ module Gherkin
           #puts token.line #TODO
           state = matchToken(state, token, context)
 
-          break if token.isEOF
+          break if token.eof?
               end
 
         if (state != 32)
