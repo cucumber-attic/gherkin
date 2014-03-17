@@ -1,156 +1,156 @@
 ﻿@using Berp;
 @helper CallProduction(ProductionRule production)
 {
-	switch(production.Type)
-	{
-		case ProductionRuleType.Start:
-				@:context.astBuilder.push(:rule_@production.RuleName);
-			break;
-		case ProductionRuleType.End:
-				@:context.astBuilder.pop(:rule_@production.RuleName);
-			break;
-		case ProductionRuleType.Process:
-				@:context.astBuilder.build(token);
-			break;
-	}
+  switch(production.Type)
+  {
+    case ProductionRuleType.Start:
+        @:context.astBuilder.push(:rule_@production.RuleName);
+      break;
+    case ProductionRuleType.End:
+        @:context.astBuilder.pop(:rule_@production.RuleName);
+      break;
+    case ProductionRuleType.Process:
+        @:context.astBuilder.build(token);
+      break;
+  }
 }
 
 :token_None
 @foreach(var rule in Model.RuleSet.TokenRules)
 {
-	@(":token_")@rule.Name.Replace("#", "")@:
+  @(":token_")@rule.Name.Replace("#", "")@:
 }
 
 :rule_None
 @foreach(var rule in Model.RuleSet)
 {
-	@(":rule_")@rule.Name.Replace("#", "_")@:  # @rule
+  @(":rule_")@rule.Name.Replace("#", "_")@:  # @rule
 }
 
 class ParserContext
-	attr_accessor :tokenScanner
-	attr_accessor :astBuilder
-	attr_accessor :tokenQueue
-	attr_accessor :tokenMatcher
+  attr_accessor :tokenScanner
+  attr_accessor :astBuilder
+  attr_accessor :tokenQueue
+  attr_accessor :tokenMatcher
 
-	def initialize(tokenScanner, astBuilder, tokenQueue, tokenMatcher)
-		@@tokenScanner = tokenScanner
-		@@astBuilder = astBuilder
-		@@tokenQueue = tokenQueue
-		@@tokenMatcher = tokenMatcher
-	end
+  def initialize(tokenScanner, astBuilder, tokenQueue, tokenMatcher)
+    @@tokenScanner = tokenScanner
+    @@astBuilder = astBuilder
+    @@tokenQueue = tokenQueue
+    @@tokenMatcher = tokenMatcher
+  end
 end
 
 class @Model.ParserClassName
 
-	def parse(tokenScanner)
+  def parse(tokenScanner)
 
-			context = ParserContext.new(tokenScanner, ASTBuilder.new(), [], TokenMatcher.new)
+      context = ParserContext.new(tokenScanner, ASTBuilder.new(), [], TokenMatcher.new)
 
-			context.astBuilder.push(:rule_@Model.RuleSet.StartRule.Name);
+      context.astBuilder.push(:rule_@Model.RuleSet.StartRule.Name);
             state = 0
             loop do
-				token = readToken(context)
-				#puts token.line #TODO
-				state = matchToken(state, token, context)
+        token = readToken(context)
+        #puts token.line #TODO
+        state = matchToken(state, token, context)
 
-				break if token.isEOF
+        break if token.isEOF
             end
 
-			if (state != @Model.EndState.Id)
+      if (state != @Model.EndState.Id)
 
-				raise ParseError.new("parsing error: end of file expected")
-			end
+        raise ParseError.new("parsing error: end of file expected")
+      end
 
-			context.astBuilder.pop(:rule_@Model.RuleSet.StartRule.Name)
-			return context.astBuilder.rootNode?;
-	end
+      context.astBuilder.pop(:rule_@Model.RuleSet.StartRule.Name)
+      return context.astBuilder.rootNode?;
+  end
 
-	def readToken(context)
+  def readToken(context)
 
-		return context.tokenQueue.count > 0 ? context.tokenQueue.shift : context.tokenScanner.read()
-	end
+    return context.tokenQueue.count > 0 ? context.tokenQueue.shift : context.tokenScanner.read()
+  end
 
-	def matchToken(state, token, context)
+  def matchToken(state, token, context)
 
-		case state
-		@foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
-		{
-		@:when @state.Id
-			@:newState = matchTokenAt_@(state.Id)(token, context)
-		}
-		else
-			raise ParserError.new("unknown state")
-		end
+    case state
+    @foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
+    {
+    @:when @state.Id
+      @:newState = matchTokenAt_@(state.Id)(token, context)
+    }
+    else
+      raise ParserError.new("unknown state")
+    end
 
-		return newState;
-	end
+    return newState;
+  end
 
-	@foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
-	{
-		<text>
-		# @Raw(state.Comment)
-		def matchTokenAt_@(state.Id)(token, context)
+  @foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
+  {
+    <text>
+    # @Raw(state.Comment)
+    def matchTokenAt_@(state.Id)(token, context)
 
-			@foreach (var transition in state.Transitions)
-			{
-			@:if (context.tokenMatcher.match_@(transition.TokenType)(token))
-				if (transition.LookAheadHint != null)
-				{
-				@:if (lookAhead_@(transition.LookAheadHint.Id)(context, token))
-				}
-				@:#puts '@(transition.TokenType)' #TODO
-				foreach(var production in transition.Productions)
-				{
-					@CallProduction(production)
-				}
-				@:return @transition.TargetState;
-				if (transition.LookAheadHint != null)
-				{
-				@:end
-				}
-			@:end
-			}
-			raise ParseError.new()
-		end
-		</text>
-	}
+      @foreach (var transition in state.Transitions)
+      {
+      @:if (context.tokenMatcher.match_@(transition.TokenType)(token))
+        if (transition.LookAheadHint != null)
+        {
+        @:if (lookAhead_@(transition.LookAheadHint.Id)(context, token))
+        }
+        @:#puts '@(transition.TokenType)' #TODO
+        foreach(var production in transition.Productions)
+        {
+          @CallProduction(production)
+        }
+        @:return @transition.TargetState;
+        if (transition.LookAheadHint != null)
+        {
+        @:end
+        }
+      @:end
+      }
+      raise ParseError.new()
+    end
+    </text>
+  }
 
-	@foreach(var lookAheadHint in Model.RuleSet.LookAheadHints)
-	{
-		<text>
-		def lookAhead_@(lookAheadHint.Id)(context, currentToken)
+  @foreach(var lookAheadHint in Model.RuleSet.LookAheadHints)
+  {
+    <text>
+    def lookAhead_@(lookAheadHint.Id)(context, currentToken)
 
-			currentToken.detach()
-			queue = []
-			match = false;
-		    loop do
-		        token = readToken(context);
-				token.detach();
-		        queue.push(token)
+      currentToken.detach()
+      queue = []
+      match = false;
+        loop do
+            token = readToken(context);
+        token.detach();
+            queue.push(token)
 
-		        if (false \
-				@foreach(var tokenType in lookAheadHint.ExpectedTokens)
-				{
-					@:or context.tokenMatcher.match_@(tokenType)(token) \
-				}
-				)
-					match = true
-					break
-		        end
+            if (false \
+        @foreach(var tokenType in lookAheadHint.ExpectedTokens)
+        {
+          @:or context.tokenMatcher.match_@(tokenType)(token) \
+        }
+        )
+          match = true
+          break
+            end
 
-				break if not(false \
-					@foreach(var tokenType in lookAheadHint.Skip)
-					{
-						@:or context.tokenMatcher.match_@(tokenType)(token) \
-					}
-				)
-			end
-			queue.each do |t|
-				context.tokenQueue.push(t)
-			end
-			return match
-		end
-		</text>
-	}
+        break if not(false \
+          @foreach(var tokenType in lookAheadHint.Skip)
+          {
+            @:or context.tokenMatcher.match_@(tokenType)(token) \
+          }
+        )
+      end
+      queue.each do |t|
+        context.tokenQueue.push(t)
+      end
+      return match
+    end
+    </text>
+  }
 end
