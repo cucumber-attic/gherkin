@@ -1,4 +1,5 @@
-﻿module Gherkin
+﻿# This file is generated. Do not edit! Edit gherkin-ruby.razor instead.
+module Gherkin
   class ParserContext
     attr_accessor :token_scanner
     attr_accessor :ast_builder
