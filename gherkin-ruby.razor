@@ -45,30 +45,27 @@ module Gherkin
   class @Model.ParserClassName
 
     def parse(token_scanner)
+      context = ParserContext.new(token_scanner, ASTBuilder.new(), [], TokenMatcher.new)
 
-        context = ParserContext.new(token_scanner, ASTBuilder.new(), [], TokenMatcher.new)
+      context.ast_builder.push(:rule_@Model.RuleSet.StartRule.Name)
+      state = 0
+      loop do
+        token = read_token(context)
+        #puts token.line #TODO
+        state = matchToken(state, token, context)
 
-        context.ast_builder.push(:rule_@Model.RuleSet.StartRule.Name);
-              state = 0
-              loop do
-          token = readToken(context)
-          #puts token.line #TODO
-          state = matchToken(state, token, context)
+        break if token.eof?
+      end
 
-          break if token.eof?
-              end
+      if (state != @Model.EndState.Id)
+        raise ParseError.new("parsing error: end of file expected")
+      end
 
-        if (state != @Model.EndState.Id)
-
-          raise ParseError.new("parsing error: end of file expected")
-        end
-
-        context.ast_builder.pop(:rule_@Model.RuleSet.StartRule.Name)
-        return context.ast_builder.rootNode?;
+      context.ast_builder.pop(:rule_@Model.RuleSet.StartRule.Name)
+      return context.ast_builder.rootNode?;
     end
 
-    def readToken(context)
-
+    def read_token(context)
       return context.token_queue.count > 0 ? context.token_queue.shift : context.token_scanner.read()
     end
 
@@ -120,13 +117,12 @@ module Gherkin
     @foreach(var lookAheadHint in Model.RuleSet.LookAheadHints)
     {
       <text>
-      def lookAhead_@(lookAheadHint.Id)(context, currentToken)
-
-        currentToken.detach()
+      def lookAhead_@(lookAheadHint.Id)(context, current_token)
+        current_token.detach()
         queue = []
         match = false;
           loop do
-              token = readToken(context);
+              token = read_token(context);
           token.detach();
               queue.push(token)
 
