@@ -19,8 +19,8 @@ module Gherkin
       @stack.last.push(node)
     end
 
-    def root_node?
-      @stack.first[0]
+    def root_node
+      @stack.first.first
     end
   end
 end

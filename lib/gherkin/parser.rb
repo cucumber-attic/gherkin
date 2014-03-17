@@ -36,7 +36,7 @@ module Gherkin
       end
 
       context.ast_builder.pop(:rule_Feature_File)
-      context.ast_builder.root_node?
+      context.ast_builder.root_node
     end
 
     def read_token(context)
