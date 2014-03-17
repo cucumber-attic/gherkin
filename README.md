@@ -10,7 +10,7 @@ based on the Gherkin grammar defined in `gherkin.berp`.
 
 You need .Net or Mono installed to generate the grammar.
 
-### C#
+### C# ###
 
 TODO
 
@@ -26,6 +26,6 @@ TODO
 
 TODO
 
-### Make a release
+## Make a release
 
 TODO
