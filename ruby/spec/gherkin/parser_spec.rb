@@ -6,6 +6,7 @@ module Gherkin
     it "parses a simple feature file" do
       parser = Parser.new
       ast = parser.parse(TokenScanner.new("../testdata/minimal.feature"))
+      p ast
     end
   end
 end
