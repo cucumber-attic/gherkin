@@ -14,19 +14,6 @@
       break;
   }
 }
-
-:token_None
-@foreach(var rule in Model.RuleSet.TokenRules)
-{
-  @(":token_")@rule.Name.Replace("#", "")@:
-}
-
-:rule_None
-@foreach(var rule in Model.RuleSet)
-{
-  @(":rule_")@rule.Name.Replace("#", "_")@:  # @rule
-}
-
 module Gherkin
   class ParserContext
     attr_accessor :token_scanner
@@ -51,8 +38,7 @@ module Gherkin
       state = 0
       loop do
         token = read_token(context)
-        #puts token.line #TODO
-        state = matchToken(state, token, context)
+        state = match_token(state, token, context)
 
         break if token.eof?
       end
@@ -69,13 +55,12 @@ module Gherkin
       return context.token_queue.count > 0 ? context.token_queue.shift : context.token_scanner.read()
     end
 
-    def matchToken(state, token, context)
-
+    def match_token(state, token, context)
       case state
       @foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
       {
       @:when @state.Id
-        @:newState = matchTokenAt_@(state.Id)(token, context)
+        @:newState = match_token_at_@(state.Id)(token, context)
       }
       else
         raise ParserError.new("unknown state")
@@ -88,7 +73,7 @@ module Gherkin
     {
       <text>
       # @Raw(state.Comment)
-      def matchTokenAt_@(state.Id)(token, context)
+      def match_token_at_@(state.Id)(token, context)
         @foreach (var transition in state.Transitions)
         {
         @:if (context.token_matcher.match_@(transition.TokenType)(token))
@@ -96,7 +81,6 @@ module Gherkin
           {
           @:if (lookAhead_@(transition.LookAheadHint.Id)(context, token))
           }
-          @:#puts '@(transition.TokenType)' #TODO
           foreach(var production in transition.Productions)
           {
             @CallProduction(production)
