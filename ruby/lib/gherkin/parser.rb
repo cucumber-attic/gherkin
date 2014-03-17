@@ -90,7 +90,7 @@ class Parser
             end
 
 			if (state != 32)
-			
+
 				raise ParseError.new("parsing error: end of file expected")
 			end
 
@@ -99,12 +99,12 @@ class Parser
 	end
 
 	def readToken(context)
-		
+
 		return context.tokenQueue.count > 0 ? context.tokenQueue.shift : context.tokenScanner.read()
 	end
 
 	def matchToken(state, token, context)
-		
+
 		case state
 		when 0
 			newState = matchTokenAt_0(token, context)
@@ -191,7 +191,7 @@ class Parser
 		else
 			raise ParserError.new("unknown state")
 		end
-			
+
 		return newState;
 	end
 
@@ -2209,7 +2209,7 @@ class Parser
 
 		
 		def lookAhead_0(context, currentToken)
-		
+
 			currentToken.detach()
 			queue = []
 			match = false;
