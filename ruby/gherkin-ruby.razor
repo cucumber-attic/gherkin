@@ -4,13 +4,13 @@
   switch(production.Type)
   {
     case ProductionRuleType.Start:
-        @:context.astBuilder.push(:rule_@production.RuleName);
+        @:context.ast_builder.push(:rule_@production.RuleName);
       break;
     case ProductionRuleType.End:
-        @:context.astBuilder.pop(:rule_@production.RuleName);
+        @:context.ast_builder.pop(:rule_@production.RuleName);
       break;
     case ProductionRuleType.Process:
-        @:context.astBuilder.build(token);
+        @:context.ast_builder.build(token);
       break;
   }
 }
@@ -29,26 +29,26 @@
 
 module Gherkin
   class ParserContext
-    attr_accessor :tokenScanner
-    attr_accessor :astBuilder
-    attr_accessor :tokenQueue
-    attr_accessor :tokenMatcher
+    attr_accessor :token_scanner
+    attr_accessor :ast_builder
+    attr_accessor :token_queue
+    attr_accessor :token_matcher
 
-    def initialize(tokenScanner, astBuilder, tokenQueue, tokenMatcher)
-      @@tokenScanner = tokenScanner
-      @@astBuilder = astBuilder
-      @@tokenQueue = tokenQueue
-      @@tokenMatcher = tokenMatcher
+    def initialize(token_scanner, ast_builder, token_queue, token_matcher)
+      @@token_scanner = token_scanner
+      @@ast_builder = ast_builder
+      @@token_queue = token_queue
+      @@token_matcher = token_matcher
     end
   end
 
   class @Model.ParserClassName
 
-    def parse(tokenScanner)
+    def parse(token_scanner)
 
-        context = ParserContext.new(tokenScanner, ASTBuilder.new(), [], TokenMatcher.new)
+        context = ParserContext.new(token_scanner, ASTBuilder.new(), [], TokenMatcher.new)
 
-        context.astBuilder.push(:rule_@Model.RuleSet.StartRule.Name);
+        context.ast_builder.push(:rule_@Model.RuleSet.StartRule.Name);
               state = 0
               loop do
           token = readToken(context)
@@ -63,13 +63,13 @@ module Gherkin
           raise ParseError.new("parsing error: end of file expected")
         end
 
-        context.astBuilder.pop(:rule_@Model.RuleSet.StartRule.Name)
-        return context.astBuilder.rootNode?;
+        context.ast_builder.pop(:rule_@Model.RuleSet.StartRule.Name)
+        return context.ast_builder.rootNode?;
     end
 
     def readToken(context)
 
-      return context.tokenQueue.count > 0 ? context.tokenQueue.shift : context.tokenScanner.read()
+      return context.token_queue.count > 0 ? context.token_queue.shift : context.token_scanner.read()
     end
 
     def matchToken(state, token, context)
@@ -95,7 +95,7 @@ module Gherkin
 
         @foreach (var transition in state.Transitions)
         {
-        @:if (context.tokenMatcher.match_@(transition.TokenType)(token))
+        @:if (context.token_matcher.match_@(transition.TokenType)(token))
           if (transition.LookAheadHint != null)
           {
           @:if (lookAhead_@(transition.LookAheadHint.Id)(context, token))
@@ -133,7 +133,7 @@ module Gherkin
               if (false \
           @foreach(var tokenType in lookAheadHint.ExpectedTokens)
           {
-            @:or context.tokenMatcher.match_@(tokenType)(token) \
+            @:or context.token_matcher.match_@(tokenType)(token) \
           }
           )
             match = true
@@ -143,12 +143,12 @@ module Gherkin
           break if not(false \
             @foreach(var tokenType in lookAheadHint.Skip)
             {
-              @:or context.tokenMatcher.match_@(tokenType)(token) \
+              @:or context.token_matcher.match_@(tokenType)(token) \
             }
           )
         end
         queue.each do |t|
-          context.tokenQueue.push(t)
+          context.token_queue.push(t)
         end
         return match
       end
