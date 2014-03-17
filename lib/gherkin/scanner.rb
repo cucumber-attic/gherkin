@@ -11,7 +11,7 @@ module Gherkin
     attr_accessor :examples_keywords
     attr_accessor :step_keywords
 
-    def initialize()
+    def initialize
       @feature_keywords = ['Feature:'];
       @background_keywords = ['Background:'];
       @scenario_keywords = ['Scenario:'];
@@ -22,7 +22,6 @@ module Gherkin
   end
 
   class Token
-    attr_accessor :line
     attr_accessor :trimmed_line
 
     def initialize(line)
@@ -50,15 +49,6 @@ module Gherkin
 
     def match_TagLine(token)
       token.trimmed_line.start_with?('@')
-    end
-
-    def start_with_any?(text, alternatives)
-      alternatives.each do |alt|
-        if text.start_with?(alt)
-          return true
-        end
-      end
-      return false
     end
 
     def match_Feature(token)
@@ -109,6 +99,14 @@ module Gherkin
     def match_Other(token)
       true
     end
+
+  private
+
+    def start_with_any?(text, alternatives)
+      alternatives.detect do |alt|
+        text.start_with?(alt)
+      end
+    end
   end
 
   class TokenScanner
@@ -130,9 +128,9 @@ module Gherkin
 
   class ASTBuilder
 
-    def initialize()
+    def initialize
       @stack = []
-      push :root
+      push(:root)
     end
 
     def push(rule)
@@ -148,7 +146,7 @@ module Gherkin
       @stack.last.push(node)
     end
 
-    def rootNode?
+    def root_node?
       @stack.first[0]
     end
   end

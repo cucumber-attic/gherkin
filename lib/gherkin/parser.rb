@@ -32,11 +32,11 @@
       end
 
       context.ast_builder.pop(:rule_Feature_File)
-      return context.ast_builder.rootNode?;
+      context.ast_builder.root_node?
     end
 
     def read_token(context)
-      return context.token_queue.count > 0 ? context.token_queue.shift : context.token_scanner.read()
+      context.token_queue.count > 0 ? context.token_queue.shift : context.token_scanner.read
     end
 
     def match_token(state, token, context)
@@ -127,7 +127,7 @@
         raise ParserError.new("unknown state")
       end
 
-      return newState;
+      newState;
     end
 
       
