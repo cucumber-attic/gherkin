@@ -4,13 +4,13 @@
   switch(production.Type)
   {
     case ProductionRuleType.Start:
-        @:context.ast_builder.push(:rule_@production.RuleName);
+          @:context.ast_builder.push(:rule_@production.RuleName);
       break;
     case ProductionRuleType.End:
-        @:context.ast_builder.pop(:rule_@production.RuleName);
+          @:context.ast_builder.pop(:rule_@production.RuleName);
       break;
     case ProductionRuleType.Process:
-        @:context.ast_builder.build(token);
+          @:context.ast_builder.build(token);
       break;
   }
 }
@@ -89,7 +89,6 @@ module Gherkin
       <text>
       # @Raw(state.Comment)
       def matchTokenAt_@(state.Id)(token, context)
-
         @foreach (var transition in state.Transitions)
         {
         @:if (context.token_matcher.match_@(transition.TokenType)(token))
@@ -109,7 +108,7 @@ module Gherkin
           }
         @:end
         }
-        raise ParseError.new()
+        raise ParseError.new
       end
       </text>
     }
@@ -121,32 +120,34 @@ module Gherkin
         current_token.detach()
         queue = []
         match = false;
-          loop do
-              token = read_token(context);
+        loop do
+          token = read_token(context);
           token.detach();
-              queue.push(token)
+          queue.push(token)
 
-              if (false \
+          if (false \
           @foreach(var tokenType in lookAheadHint.ExpectedTokens)
-          {
-            @:or context.token_matcher.match_@(tokenType)(token) \
-          }
+            {
+            @:|| context.token_matcher.match_@(tokenType)(token) \
+            }
           )
             match = true
             break
-              end
+          end
 
-          break if not(false \
-            @foreach(var tokenType in lookAheadHint.Skip)
+          if not(false \
+          @foreach(var tokenType in lookAheadHint.Skip)
             {
-              @:or context.token_matcher.match_@(tokenType)(token) \
+            @:|| context.token_matcher.match_@(tokenType)(token) \
             }
           )
+            break
+          end
         end
         queue.each do |t|
           context.token_queue.push(t)
         end
-        return match
+        match
       end
       </text>
     }
