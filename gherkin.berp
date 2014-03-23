@@ -2,7 +2,7 @@
 	Tokens -> #Empty,#Comment,#TagLine,#Feature,#Background,#Scenario,#ScenarioOutline,#Examples,#Step,#MultiLineArgument,#TableRow
 	IgnoredTokens -> #Comment,#Empty
 	ClassName -> Parser
-	Namespace -> BerpGherkinParser
+	Namespace -> Gherkin
 ]
 
 
