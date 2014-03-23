@@ -8,25 +8,33 @@ namespace Gherkin
 {
     public class AstBuilder
     {
+        private readonly Stack<AstNode> stack = new Stack<AstNode>();
+        private AstNode CurrentNode { get { return stack.Peek(); } }
+
+        public AstBuilder()
+        {
+            stack.Push(new AstNode(RuleType.None));
+        }
+
         public void Build(Token token)
         {
-            throw new NotImplementedException();
+            CurrentNode.Add(token);
         }
 
         public void StartRule(RuleType ruleType)
         {
-            throw new NotImplementedException();
+            stack.Push(new AstNode(ruleType));
         }
 
         public void EndRule(RuleType ruleType)
         {
-            throw new NotImplementedException();
+            var node = stack.Pop();
+            CurrentNode.Add(node);
         }
 
         public object GetResult()
         {
-            throw new NotImplementedException();
+            return CurrentNode.First();
         }
-
     }
 }

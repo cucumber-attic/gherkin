@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AstBuilder.cs" />
+    <Compile Include="AstNode.cs" />
     <Compile Include="GherkinDialect.cs" />
     <Compile Include="GherkinDialectProvider.cs" />
     <Compile Include="GherkinLine.cs" />
