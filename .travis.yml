@@ -10,8 +10,8 @@ env:
   global:
     - EnableNuGetPackageRestore=true
   matrix:
+    - MONO_VERSION="3.2.7" DMG=0
     - MONO_VERSION="3.0.12" DMG=1
-    - MONO_VERSION="2.10.11" DMG=1
 
 before_install:
   - "if [ \"$DMG\" = \"0\" ]; then wget \"http://download.xamarin.com/MonoFrameworkMDK/Macx86/MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.pkg\"; fi"
