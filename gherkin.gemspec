@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# encoding: utf-8
 Gem::Specification.new do |s|
   s.name        = 'cucumber-core'
   s.version     = '3.0.0.alpha.1'
@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
   s.required_ruby_version = ">= 1.9.3"
 
-  s.add_development_dependency 'bundler',   '>= 1.5.3'
+  s.add_development_dependency 'bundler',   '>= 1.3.5'
   s.add_development_dependency 'rake',      '>= 0.10.1'
   s.add_development_dependency 'rspec',     '>= 2.14.1'
 
