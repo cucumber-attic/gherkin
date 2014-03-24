@@ -10,7 +10,6 @@ env:
   global:
     - EnableNuGetPackageRestore=true
   matrix:
-    - MONO_VERSION="3.2.7" DMG=0
     - MONO_VERSION="3.0.12" DMG=1
     - MONO_VERSION="2.10.11" DMG=1
 

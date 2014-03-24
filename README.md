@@ -1,5 +1,7 @@
 # Gherkin 3
 
+[![Build Status](https://travis-ci.org/cucumber/gherkin3.png)](https://travis-ci.org/cucumber/gherkin3)
+
 Gherkin 3 is a cross-platform parser for the Gherkin language,
 used by Cucumber to parse `.feature` files.
 
