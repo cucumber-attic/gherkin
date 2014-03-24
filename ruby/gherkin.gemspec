@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name        = 'cucumber-core'
   s.version     = '3.0.0.alpha.1'
