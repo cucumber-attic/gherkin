@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{03DF2D
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.Specs", "Gherkin.Specs\Gherkin.Specs.csproj", "{214A8851-F162-460A-8CF4-9E1B3FC2BFC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{370982B4-9938-4533-8EA1-6F9044B84130}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{370982B4-9938-4533-8EA1-6F9044B84130}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{370982B4-9938-4533-8EA1-6F9044B84130}.Release|Any CPU.Build.0 = Release|Any CPU
+		{214A8851-F162-460A-8CF4-9E1B3FC2BFC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{214A8851-F162-460A-8CF4-9E1B3FC2BFC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{214A8851-F162-460A-8CF4-9E1B3FC2BFC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{214A8851-F162-460A-8CF4-9E1B3FC2BFC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
