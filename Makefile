@@ -14,6 +14,7 @@ Gherkin/bin/Release/Gherkin.dll: Gherkin/Parser.cs
 	xbuild /p:Configuration=Release
 
 clean:
-	rm -rf bin
+	rm -rf */bin
+	rm -rf */obj
 	rm -f Gherkin/Parser.cs
 .PHONY: clean
