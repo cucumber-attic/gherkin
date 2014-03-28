@@ -97,7 +97,7 @@ Description_Line, // Description_Line := (#Empty | #Other)
         }
     }
 
-    public class Parser
+    public partial class Parser
     {
 		public bool StopAtFirstError { get; set;}
 		public ParserMessageProvider ParserMessageProvider { get; private set; }
