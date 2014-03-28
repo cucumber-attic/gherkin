@@ -2,7 +2,7 @@ all: csharp ruby
 .PHONY: all
 
 csharp:
-	cd csharp && make
+	cd csharp && make && nunit.sh
 .PHONY: csharp
 
 ruby:
