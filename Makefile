@@ -13,6 +13,10 @@ Gherkin/bin/Debug/Gherkin.dll: Gherkin/Parser.cs
 Gherkin/bin/Release/Gherkin.dll: Gherkin/Parser.cs
 	xbuild /p:Configuration=Release
 
+test: all
+	./nunit.sh Gherkin.Specs/bin/Debug/Gherkin.Specs.dll
+.PHONY: test
+
 clean:
 	rm -rf */bin
 	rm -rf */obj
