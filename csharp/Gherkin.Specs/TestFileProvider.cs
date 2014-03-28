@@ -11,7 +11,7 @@ namespace Gherkin.Specs
     {
         public IEnumerable<string> GetValidTestFiles()
         {
-            string testFileFolder = Path.GetFullPath(Path.Combine(TestFolders.InputFolder, @"..\..\..\..\testdata"));
+            string testFileFolder = Path.GetFullPath(Path.Combine(TestFolders.InputFolder, "..", "..", "..", "..", @"testdata"));
 
             return Directory.GetFiles(testFileFolder, "*.feature");
         }
