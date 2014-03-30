@@ -14,7 +14,13 @@ You need .Net or Mono installed to generate the grammar.
 
 ### C# ###
 
+#### Windows
+
 TODO
+
+#### OS X/Linux
+
+Run `make` from the `csharp` directory.
 
 ### Ruby
 
