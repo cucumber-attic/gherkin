@@ -47,9 +47,9 @@ namespace Gherkin
             return false;
         }
 
-        public bool Match_Background(Token token)
+        public bool Match_BackgroundLine(Token token)
         {
-            return MatchTitleLine(token, TokenType.Background);
+            return MatchTitleLine(token, TokenType.BackgroundLine);
         }
 
         private bool MatchTitleLine(Token token, TokenType tokenType)
@@ -85,14 +85,14 @@ namespace Gherkin
             return false;
         }
 
-        public bool Match_Scenario(Token token)
+        public bool Match_ScenarioLine(Token token)
         {
-            return MatchTitleLine(token, TokenType.Scenario);
+            return MatchTitleLine(token, TokenType.ScenarioLine);
         }
 
-        public bool Match_ScenarioOutline(Token token)
+        public bool Match_ScenarioOutlineLine(Token token)
         {
-            return MatchTitleLine(token, TokenType.ScenarioOutline);
+            return MatchTitleLine(token, TokenType.ScenarioOutlineLine);
         }
 
         public bool Match_EOF(Token token)
@@ -112,35 +112,35 @@ namespace Gherkin
             return true;
         }
 
-        public bool Match_Examples(Token token)
+        public bool Match_ExamplesLine(Token token)
         {
-            return MatchTitleLine(token, TokenType.Examples);
+            return MatchTitleLine(token, TokenType.ExamplesLine);
         }
 
-        public bool Match_Feature(Token token)
+        public bool Match_FeatureLine(Token token)
         {
-            return MatchTitleLine(token, TokenType.Feature);
+            return MatchTitleLine(token, TokenType.FeatureLine);
         }
 
-        public bool Match_MultiLineArgument(Token token)
+        public bool Match_DocStringSeparator(Token token)
         {
             if (token.Line.StartsWith("\"\"\"")) //TODO: equals
             {
-                token.MatchedType = TokenType.MultiLineArgument;
+                token.MatchedType = TokenType.DocStringSeparator;
                 token.Indent = token.Line.Indent;
                 return true;
             }
             return false;
         }
 
-        public bool Match_Step(Token token)
+        public bool Match_StepLine(Token token)
         {
             var keywords = currentDialect.StepKeywords;
             foreach (var keyword in keywords)
             {
                 if (token.Line.StartsWith(keyword))
                 {
-                    token.MatchedType = TokenType.Step;
+                    token.MatchedType = TokenType.StepLine;
                     token.MatchedKeyword = keyword;
                     token.Text = token.Line.GetRestTrimmed(keyword.Length);
                     return true;

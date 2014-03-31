@@ -1,36 +1,40 @@
 ﻿[
-	Tokens -> #Empty,#Comment,#TagLine,#Feature,#Background,#Scenario,#ScenarioOutline,#Examples,#Step,#MultiLineArgument,#TableRow
+	Tokens -> #Empty,#Comment,#TagLine,#FeatureLine,#BackgroundLine,#ScenarioLine,#ScenarioOutlineLine,#ExamplesLine,#StepLine,#DocStringSeparator,#TableRow
 	IgnoredTokens -> #Comment,#Empty
 	ClassName -> Parser
 	Namespace -> Gherkin
 ]
 
 
-Feature_File! := Feature_Def Background? Scenario_Base*
-Feature_Def! := #TagLine* #Feature Feature_Description
+Feature_File! := Feature_Header Background? Scenario_Base*
+Feature_Header! := Tags #FeatureLine Feature_Description
 
-Background! := #Background Background_Description Scenario_Step*
+Background! := #BackgroundLine Background_Description Scenario_Step*
 
-Scenario_Base! := #TagLine* Scenario_Base_Body
-Scenario_Base_Body := (Scenario | ScenarioOutline)
-Scenario! := #Scenario Scenario_Description Scenario_Step*
+// we could avoid defining Scenario_Base, but that would require regular look-aheads, so worse performance
+Scenario_Base! := Tags (Scenario | ScenarioOutline)
 
-ScenarioOutline! := #ScenarioOutline ScenarioOutline_Description ScenarioOutline_Step* Examples+
+Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
+
+ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples+
 // after the first "Examples" block, interpreting a tag line is ambiguous (tagline of next examples or of next scenario)
 // because of this, we need a lookahead hint, that connects the tag line to the next examples, if there is an examples block ahead
-Examples! := #TagLine[#Empty|#Comment|#TagLine->#Examples]* #Examples Examples_Description Examples_Table
+Examples! := #TagLine[#Empty|#Comment|#TagLine->#ExamplesLine]* #ExamplesLine Examples_Description Examples_Table
 Examples_Table! := #TableRow+
 
 Scenario_Step := Step
 ScenarioOutline_Step := Step
 
-Step! := #Step Step_Arg?
-Step_Arg := (Table_And_Multiline_Arg | Multiline_And_Table_Arg)
-Table_And_Multiline_Arg := Table_Arg Multiline_Arg?
-Multiline_And_Table_Arg := Multiline_Arg Table_Arg?
-Table_Arg! := #TableRow+
-Multiline_Arg! := #MultiLineArgument Multiline_Arg_Line* #MultiLineArgument
-Multiline_Arg_Line := (#Empty | #Other)
+Step! := #StepLine Step_Arg?
+// with this construct of Step_Arg we support both order of defining DataTable and DocString, but maximum one of each
+Step_Arg := (DataTable_And_DocString | DocString_And_DataTable)
+DataTable_And_DocString := DataTable DocString?
+DocString_And_DataTable := DocString DataTable?
+
+DataTable! := #TableRow+
+DocString! := #DocStringSeparator (#Empty | #Other)* #DocStringSeparator
+
+Tags! := #TagLine*
 
 Feature_Description := Description_Helper
 Background_Description := Description_Helper
@@ -40,5 +44,5 @@ Examples_Description := Description_Helper
 
 // we need to explicitly mention comment, to avoid merging it into the description line's #Other token
 Description_Helper := Description? #Comment*
-Description! := Description_Line+
-Description_Line := (#Empty | #Other)
+Description! := (#Empty | #Other)+
+

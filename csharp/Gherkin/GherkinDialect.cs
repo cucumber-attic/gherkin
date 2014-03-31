@@ -108,15 +108,15 @@ namespace Gherkin
         {
             switch (tokenType)
             {
-                case TokenType.Feature:
+                case TokenType.FeatureLine:
                     return FeatureKeywords;
-                case TokenType.Background:
+                case TokenType.BackgroundLine:
                     return BackgroundKeywords;
-                case TokenType.Scenario:
+                case TokenType.ScenarioLine:
                     return ScenarioKeywords;
-                case TokenType.ScenarioOutline:
+                case TokenType.ScenarioOutlineLine:
                     return ScenarioOutlineKeywords;
-                case TokenType.Examples:
+                case TokenType.ExamplesLine:
                     return ExamplesKeywords;
             }
             throw new NotSupportedException();

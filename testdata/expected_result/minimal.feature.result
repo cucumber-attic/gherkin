@@ -1,5 +1,5 @@
 [Feature_File
-	[Feature_Def
+	[Feature_Header
 		Gherkin.Token
 		[Description
 			Gherkin.Token
