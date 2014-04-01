@@ -51,23 +51,23 @@ module Gherkin
       token.trimmed_line.start_with?('@')
     end
 
-    def match_Feature(token)
+    def match_FeatureLine(token)
       start_with_any?(token.trimmed_line, @dialect.feature_keywords)
     end
 
-    def match_Scenario(token)
+    def match_ScenarioLine(token)
       start_with_any?(token.trimmed_line, @dialect.scenario_keywords)
     end
 
-    def match_ScenarioOutline(token)
+    def match_ScenarioOutlineLine(token)
       start_with_any?(token.trimmed_line, @dialect.scenario_outline_keywords)
     end
 
-    def match_Background(token)
+    def match_BackgroundLine(token)
       start_with_any?(token.trimmed_line, @dialect.background_keywords)
     end
 
-    def match_Examples(token)
+    def match_ExamplesLine(token)
       start_with_any?(token.trimmed_line, @dialect.examples_keywords)
     end
 
@@ -84,7 +84,7 @@ module Gherkin
       token.trimmed_line.start_with?('#')
     end
 
-    def match_MultiLineArgument(token)
+    def match_DocStringSeparator(token)
       token.trimmed_line == '"""'
     end
 
@@ -92,7 +92,7 @@ module Gherkin
       token.eof?
     end
 
-    def match_Step(token)
+    def match_StepLine(token)
       start_with_any?(token.trimmed_line, @dialect.step_keywords)
     end
 
