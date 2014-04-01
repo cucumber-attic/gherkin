@@ -42,7 +42,7 @@ Background, // Background! := #BackgroundLine Background_Description Scenario_St
 Scenario_Base, // Scenario_Base! := Tags (Scenario | ScenarioOutline)
 Scenario, // Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
 ScenarioOutline, // ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples+
-Examples, // Examples! := #TagLine[#Empty|#Comment|#TagLine-&gt;#ExamplesLine]* #ExamplesLine Examples_Description Examples_Table
+Examples, // Examples! [#Empty|#Comment|#TagLine-&gt;#ExamplesLine] := Tags #ExamplesLine Examples_Description Examples_Table
 Examples_Table, // Examples_Table! := #TableRow+
 Scenario_Step, // Scenario_Step := Step
 ScenarioOutline_Step, // ScenarioOutline_Step := Step
@@ -1435,6 +1435,7 @@ Description, // Description! := (#Empty | #Other)+
 )
 			{
 				StartRule(context, RuleType.Examples);
+				StartRule(context, RuleType.Tags);
 				Build(context, token);
 				return 21;
 			}
@@ -1490,6 +1491,7 @@ Description, // Description! := (#Empty | #Other)+
 			{
 				EndRule(context, RuleType.Description);
 				StartRule(context, RuleType.Examples);
+				StartRule(context, RuleType.Tags);
 				Build(context, token);
 				return 21;
 			}
@@ -1536,6 +1538,7 @@ Description, // Description! := (#Empty | #Other)+
 )
 			{
 				StartRule(context, RuleType.Examples);
+				StartRule(context, RuleType.Tags);
 				Build(context, token);
 				return 21;
 			}
@@ -1591,6 +1594,7 @@ Description, // Description! := (#Empty | #Other)+
 			{
 				EndRule(context, RuleType.Step);
 				StartRule(context, RuleType.Examples);
+				StartRule(context, RuleType.Tags);
 				Build(context, token);
 				return 21;
 			}
@@ -1647,6 +1651,7 @@ Description, // Description! := (#Empty | #Other)+
 				EndRule(context, RuleType.DataTable);
 				EndRule(context, RuleType.Step);
 				StartRule(context, RuleType.Examples);
+				StartRule(context, RuleType.Tags);
 				Build(context, token);
 				return 21;
 			}
@@ -1680,7 +1685,7 @@ Description, // Description! := (#Empty | #Other)+
 		}
 		
 		
-		// Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:3>Examples:0>#TagLine:0
+		// Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
 		int MatchTokenAt_21(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_TagLine(token)
@@ -1692,6 +1697,7 @@ Description, // Description! := (#Empty | #Other)+
 			if (	context.TokenMatcher.Match_ExamplesLine(token)
 )
 			{
+				EndRule(context, RuleType.Tags);
 				Build(context, token);
 				return 22;
 			}
@@ -1707,7 +1713,7 @@ Description, // Description! := (#Empty | #Other)+
 				Build(context, token);
 				return 21;
 			}
-				var error = new ParserError(token, new string[] {"#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 21 - Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:3>Examples:0>#TagLine:0");
+				var error = new ParserError(token, new string[] {"#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 21 - Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1852,6 +1858,7 @@ Description, // Description! := (#Empty | #Other)+
 				EndRule(context, RuleType.Examples_Table);
 				EndRule(context, RuleType.Examples);
 				StartRule(context, RuleType.Examples);
+				StartRule(context, RuleType.Tags);
 				Build(context, token);
 				return 21;
 				}
@@ -1970,6 +1977,7 @@ Description, // Description! := (#Empty | #Other)+
 				EndRule(context, RuleType.DocString);
 				EndRule(context, RuleType.Step);
 				StartRule(context, RuleType.Examples);
+				StartRule(context, RuleType.Tags);
 				Build(context, token);
 				return 21;
 			}

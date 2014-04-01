@@ -19,7 +19,7 @@ Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
 ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples+
 // after the first "Examples" block, interpreting a tag line is ambiguous (tagline of next examples or of next scenario)
 // because of this, we need a lookahead hint, that connects the tag line to the next examples, if there is an examples block ahead
-Examples! := #TagLine[#Empty|#Comment|#TagLine->#ExamplesLine]* #ExamplesLine Examples_Description Examples_Table
+Examples! [#Empty|#Comment|#TagLine->#ExamplesLine]:= Tags #ExamplesLine Examples_Description Examples_Table
 Examples_Table! := #TableRow+
 
 Scenario_Step := Step
