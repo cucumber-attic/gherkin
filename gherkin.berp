@@ -7,19 +7,19 @@
 
 
 Feature_File! := Feature_Header Background? Scenario_Base*
-Feature_Header! := Tags #FeatureLine Feature_Description
+Feature_Header! := Tags? #FeatureLine Feature_Description
 
 Background! := #BackgroundLine Background_Description Scenario_Step*
 
 // we could avoid defining Scenario_Base, but that would require regular look-aheads, so worse performance
-Scenario_Base! := Tags (Scenario | ScenarioOutline)
+Scenario_Base! := Tags? (Scenario | ScenarioOutline)
 
 Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
 
 ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples+
 // after the first "Examples" block, interpreting a tag line is ambiguous (tagline of next examples or of next scenario)
 // because of this, we need a lookahead hint, that connects the tag line to the next examples, if there is an examples block ahead
-Examples! [#Empty|#Comment|#TagLine->#ExamplesLine]:= Tags #ExamplesLine Examples_Description Examples_Table
+Examples! [#Empty|#Comment|#TagLine->#ExamplesLine]:= Tags? #ExamplesLine Examples_Description Examples_Table
 Examples_Table! := #TableRow+
 
 Scenario_Step := Step
@@ -31,7 +31,7 @@ Step_Arg := (DataTable | DocString)
 DataTable! := #TableRow+
 DocString! := #DocStringSeparator (#Empty | #Other)* #DocStringSeparator
 
-Tags! := #TagLine*
+Tags! := #TagLine+
 
 Feature_Description := Description_Helper
 Background_Description := Description_Helper
