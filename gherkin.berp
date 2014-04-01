@@ -26,10 +26,7 @@ Scenario_Step := Step
 ScenarioOutline_Step := Step
 
 Step! := #StepLine Step_Arg?
-// with this construct of Step_Arg we support both order of defining DataTable and DocString, but maximum one of each
-Step_Arg := (DataTable_And_DocString | DocString_And_DataTable)
-DataTable_And_DocString := DataTable DocString?
-DocString_And_DataTable := DocString DataTable?
+Step_Arg := (DataTable | DocString)
 
 DataTable! := #TableRow+
 DocString! := #DocStringSeparator (#Empty | #Other)* #DocStringSeparator
