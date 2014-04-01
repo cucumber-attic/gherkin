@@ -31,7 +31,7 @@ module Gherkin
         break if token.eof?
       end
 
-      if (state != 32)
+      if (state != 26)
         raise ParseError.new("parsing error: end of file expected")
       end
 
@@ -97,8 +97,6 @@ module Gherkin
         new_state = match_token_at_24(token, context)
       when 25
         new_state = match_token_at_25(token, context)
-      when 26
-        new_state = match_token_at_26(token, context)
       when 27
         new_state = match_token_at_27(token, context)
       when 28
@@ -109,24 +107,8 @@ module Gherkin
         new_state = match_token_at_30(token, context)
       when 31
         new_state = match_token_at_31(token, context)
-      when 33
-        new_state = match_token_at_33(token, context)
-      when 34
-        new_state = match_token_at_34(token, context)
-      when 35
-        new_state = match_token_at_35(token, context)
-      when 36
-        new_state = match_token_at_36(token, context)
-      when 37
-        new_state = match_token_at_37(token, context)
-      when 38
-        new_state = match_token_at_38(token, context)
-      when 39
-        new_state = match_token_at_39(token, context)
-      when 40
-        new_state = match_token_at_40(token, context)
-      when 41
-        new_state = match_token_at_41(token, context)
+      when 32
+        new_state = match_token_at_32(token, context)
       else
         raise ParserError.new("unknown state")
       end
@@ -138,12 +120,13 @@ module Gherkin
     # Start
     def match_token_at_0(token, context)
       if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.push(:rule_Feature_Def)
+        context.ast_builder.push(:rule_Feature_Header)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
         return 1
       end
-      if (context.token_matcher.match_Feature(token))
-        context.ast_builder.push(:rule_Feature_Def)
+      if (context.token_matcher.match_FeatureLine(token))
+        context.ast_builder.push(:rule_Feature_Header)
         context.ast_builder.build(token)
         return 2
       end
@@ -159,13 +142,14 @@ module Gherkin
     end
     
     
-    # Feature_File:0>Feature_Def:0>#TagLine:0
+    # Feature_File:0>Feature_Header:0>Tags:0>#TagLine:0
     def match_token_at_1(token, context)
       if (context.token_matcher.match_TagLine(token))
         context.ast_builder.build(token)
         return 1
       end
-      if (context.token_matcher.match_Feature(token))
+      if (context.token_matcher.match_FeatureLine(token))
+        context.ast_builder.pop(:rule_Tags)
         context.ast_builder.build(token)
         return 2
       end
@@ -181,12 +165,12 @@ module Gherkin
     end
     
     
-    # Feature_File:0>Feature_Def:1>#Feature:0
+    # Feature_File:0>Feature_Header:1>#FeatureLine:0
     def match_token_at_2(token, context)
       if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Feature_Def)
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.build(token)
-        return 32
+        return 26
       end
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.push(:rule_Description)
@@ -197,31 +181,32 @@ module Gherkin
         context.ast_builder.build(token)
         return 4
       end
-      if (context.token_matcher.match_Background(token))
-        context.ast_builder.pop(:rule_Feature_Def)
+      if (context.token_matcher.match_BackgroundLine(token))
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.push(:rule_Background)
         context.ast_builder.build(token)
         return 5
       end
       if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Feature_Def)
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 12
+        return 10
       end
-      if (context.token_matcher.match_Scenario(token))
-        context.ast_builder.pop(:rule_Feature_Def)
+      if (context.token_matcher.match_ScenarioLine(token))
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario)
         context.ast_builder.build(token)
-        return 13
+        return 11
       end
-      if (context.token_matcher.match_ScenarioOutline(token))
-        context.ast_builder.pop(:rule_Feature_Def)
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_ScenarioOutline)
         context.ast_builder.build(token)
-        return 20
+        return 16
       end
       if (context.token_matcher.match_Other(token))
         context.ast_builder.push(:rule_Description)
@@ -232,13 +217,13 @@ module Gherkin
     end
     
     
-    # Feature_File:0>Feature_Def:2>Feature_Description:0>Description_Helper:0>Description:0>Description_Line:0>__alt3:0>#Empty:0
+    # Feature_File:0>Feature_Header:2>Feature_Description:0>Description_Helper:0>Description:0>__alt3:0>#Empty:0
     def match_token_at_3(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Feature_Def)
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.build(token)
-        return 32
+        return 26
       end
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
@@ -249,35 +234,36 @@ module Gherkin
         context.ast_builder.build(token)
         return 4
       end
-      if (context.token_matcher.match_Background(token))
+      if (context.token_matcher.match_BackgroundLine(token))
         context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Feature_Def)
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.push(:rule_Background)
         context.ast_builder.build(token)
         return 5
       end
       if (context.token_matcher.match_TagLine(token))
         context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Feature_Def)
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 12
+        return 10
       end
-      if (context.token_matcher.match_Scenario(token))
+      if (context.token_matcher.match_ScenarioLine(token))
         context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Feature_Def)
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario)
         context.ast_builder.build(token)
-        return 13
+        return 11
       end
-      if (context.token_matcher.match_ScenarioOutline(token))
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
         context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Feature_Def)
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_ScenarioOutline)
         context.ast_builder.build(token)
-        return 20
+        return 16
       end
       if (context.token_matcher.match_Other(token))
         context.ast_builder.build(token)
@@ -287,42 +273,43 @@ module Gherkin
     end
     
     
-    # Feature_File:0>Feature_Def:2>Feature_Description:0>Description_Helper:1>#Comment:0
+    # Feature_File:0>Feature_Header:2>Feature_Description:0>Description_Helper:1>#Comment:0
     def match_token_at_4(token, context)
       if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Feature_Def)
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.build(token)
-        return 32
+        return 26
       end
       if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
         return 4
       end
-      if (context.token_matcher.match_Background(token))
-        context.ast_builder.pop(:rule_Feature_Def)
+      if (context.token_matcher.match_BackgroundLine(token))
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.push(:rule_Background)
         context.ast_builder.build(token)
         return 5
       end
       if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Feature_Def)
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 12
+        return 10
       end
-      if (context.token_matcher.match_Scenario(token))
-        context.ast_builder.pop(:rule_Feature_Def)
+      if (context.token_matcher.match_ScenarioLine(token))
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario)
         context.ast_builder.build(token)
-        return 13
+        return 11
       end
-      if (context.token_matcher.match_ScenarioOutline(token))
-        context.ast_builder.pop(:rule_Feature_Def)
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
+        context.ast_builder.pop(:rule_Feature_Header)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_ScenarioOutline)
         context.ast_builder.build(token)
-        return 20
+        return 16
       end
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
@@ -332,12 +319,12 @@ module Gherkin
     end
     
     
-    # Feature_File:1>Background:0>#Background:0
+    # Feature_File:1>Background:0>#BackgroundLine:0
     def match_token_at_5(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.build(token)
-        return 32
+        return 26
       end
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.push(:rule_Description)
@@ -348,7 +335,7 @@ module Gherkin
         context.ast_builder.build(token)
         return 7
       end
-      if (context.token_matcher.match_Step(token))
+      if (context.token_matcher.match_StepLine(token))
         context.ast_builder.push(:rule_Step)
         context.ast_builder.build(token)
         return 8
@@ -356,22 +343,23 @@ module Gherkin
       if (context.token_matcher.match_TagLine(token))
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 12
+        return 10
       end
-      if (context.token_matcher.match_Scenario(token))
+      if (context.token_matcher.match_ScenarioLine(token))
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario)
         context.ast_builder.build(token)
-        return 13
+        return 11
       end
-      if (context.token_matcher.match_ScenarioOutline(token))
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_ScenarioOutline)
         context.ast_builder.build(token)
-        return 20
+        return 16
       end
       if (context.token_matcher.match_Other(token))
         context.ast_builder.push(:rule_Description)
@@ -382,13 +370,13 @@ module Gherkin
     end
     
     
-    # Feature_File:1>Background:1>Background_Description:0>Description_Helper:0>Description:0>Description_Line:0>__alt3:0>#Empty:0
+    # Feature_File:1>Background:1>Background_Description:0>Description_Helper:0>Description:0>__alt3:0>#Empty:0
     def match_token_at_6(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Description)
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.build(token)
-        return 32
+        return 26
       end
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
@@ -399,7 +387,7 @@ module Gherkin
         context.ast_builder.build(token)
         return 7
       end
-      if (context.token_matcher.match_Step(token))
+      if (context.token_matcher.match_StepLine(token))
         context.ast_builder.pop(:rule_Description)
         context.ast_builder.push(:rule_Step)
         context.ast_builder.build(token)
@@ -409,24 +397,25 @@ module Gherkin
         context.ast_builder.pop(:rule_Description)
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 12
+        return 10
       end
-      if (context.token_matcher.match_Scenario(token))
+      if (context.token_matcher.match_ScenarioLine(token))
         context.ast_builder.pop(:rule_Description)
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario)
         context.ast_builder.build(token)
-        return 13
+        return 11
       end
-      if (context.token_matcher.match_ScenarioOutline(token))
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
         context.ast_builder.pop(:rule_Description)
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_ScenarioOutline)
         context.ast_builder.build(token)
-        return 20
+        return 16
       end
       if (context.token_matcher.match_Other(token))
         context.ast_builder.build(token)
@@ -441,13 +430,13 @@ module Gherkin
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.build(token)
-        return 32
+        return 26
       end
       if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
         return 7
       end
-      if (context.token_matcher.match_Step(token))
+      if (context.token_matcher.match_StepLine(token))
         context.ast_builder.push(:rule_Step)
         context.ast_builder.build(token)
         return 8
@@ -455,22 +444,23 @@ module Gherkin
       if (context.token_matcher.match_TagLine(token))
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 12
+        return 10
       end
-      if (context.token_matcher.match_Scenario(token))
+      if (context.token_matcher.match_ScenarioLine(token))
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario)
         context.ast_builder.build(token)
-        return 13
+        return 11
       end
-      if (context.token_matcher.match_ScenarioOutline(token))
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_ScenarioOutline)
         context.ast_builder.build(token)
-        return 20
+        return 16
       end
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
@@ -480,25 +470,25 @@ module Gherkin
     end
     
     
-    # Feature_File:1>Background:2>Scenario_Step:0>Step:0>#Step:0
+    # Feature_File:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
     def match_token_at_8(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.build(token)
-        return 32
+        return 26
       end
       if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.push(:rule_Table_Arg)
+        context.ast_builder.push(:rule_DataTable)
         context.ast_builder.build(token)
         return 9
       end
-      if (context.token_matcher.match_MultiLineArgument(token))
-        context.ast_builder.push(:rule_Multiline_Arg)
+      if (context.token_matcher.match_DocStringSeparator(token))
+        context.ast_builder.push(:rule_DocString)
         context.ast_builder.build(token)
-        return 39
+        return 31
       end
-      if (context.token_matcher.match_Step(token))
+      if (context.token_matcher.match_StepLine(token))
         context.ast_builder.pop(:rule_Step)
         context.ast_builder.push(:rule_Step)
         context.ast_builder.build(token)
@@ -508,306 +498,347 @@ module Gherkin
         context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 12
+        return 10
       end
-      if (context.token_matcher.match_Scenario(token))
+      if (context.token_matcher.match_ScenarioLine(token))
         context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
-        return 13
-      end
-      if (context.token_matcher.match_ScenarioOutline(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
-        return 20
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 8
-      end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 8
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>Table_And_Multiline_Arg:0>Table_Arg:0>#TableRow:0
-    def match_token_at_9(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.build(token)
-        return 32
-      end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.build(token)
-        return 9
-      end
-      if (context.token_matcher.match_MultiLineArgument(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.push(:rule_Multiline_Arg)
-        context.ast_builder.build(token)
-        return 10
-      end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
-        return 8
-      end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.build(token)
-        return 12
-      end
-      if (context.token_matcher.match_Scenario(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
-        return 13
-      end
-      if (context.token_matcher.match_ScenarioOutline(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
-        return 20
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 9
-      end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 9
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>Table_And_Multiline_Arg:1>Multiline_Arg:0>#MultiLineArgument:0
-    def match_token_at_10(token, context)
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 10
-      end
-      if (context.token_matcher.match_MultiLineArgument(token))
         context.ast_builder.build(token)
         return 11
+      end
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.pop(:rule_Background)
+        context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_ScenarioOutline)
+        context.ast_builder.build(token)
+        return 16
+      end
+      if (context.token_matcher.match_Comment(token))
+        context.ast_builder.build(token)
+        return 8
+      end
+      if (context.token_matcher.match_Empty(token))
+        context.ast_builder.build(token)
+        return 8
+      end
+      raise ParseError.new
+    end
+    
+    
+    # Feature_File:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
+    def match_token_at_9(token, context)
+      if (context.token_matcher.match_EOF(token))
+        context.ast_builder.pop(:rule_DataTable)
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.pop(:rule_Background)
+        context.ast_builder.build(token)
+        return 26
+      end
+      if (context.token_matcher.match_TableRow(token))
+        context.ast_builder.build(token)
+        return 9
+      end
+      if (context.token_matcher.match_StepLine(token))
+        context.ast_builder.pop(:rule_DataTable)
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.push(:rule_Step)
+        context.ast_builder.build(token)
+        return 8
+      end
+      if (context.token_matcher.match_TagLine(token))
+        context.ast_builder.pop(:rule_DataTable)
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.pop(:rule_Background)
+        context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
+        context.ast_builder.build(token)
+        return 10
+      end
+      if (context.token_matcher.match_ScenarioLine(token))
+        context.ast_builder.pop(:rule_DataTable)
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.pop(:rule_Background)
+        context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Scenario)
+        context.ast_builder.build(token)
+        return 11
+      end
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
+        context.ast_builder.pop(:rule_DataTable)
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.pop(:rule_Background)
+        context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_ScenarioOutline)
+        context.ast_builder.build(token)
+        return 16
+      end
+      if (context.token_matcher.match_Comment(token))
+        context.ast_builder.build(token)
+        return 9
+      end
+      if (context.token_matcher.match_Empty(token))
+        context.ast_builder.build(token)
+        return 9
+      end
+      raise ParseError.new
+    end
+    
+    
+    # Feature_File:2>Scenario_Base:0>Tags:0>#TagLine:0
+    def match_token_at_10(token, context)
+      if (context.token_matcher.match_TagLine(token))
+        context.ast_builder.build(token)
+        return 10
+      end
+      if (context.token_matcher.match_ScenarioLine(token))
+        context.ast_builder.pop(:rule_Tags)
+        context.ast_builder.push(:rule_Scenario)
+        context.ast_builder.build(token)
+        return 11
+      end
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
+        context.ast_builder.pop(:rule_Tags)
+        context.ast_builder.push(:rule_ScenarioOutline)
+        context.ast_builder.build(token)
+        return 16
+      end
+      if (context.token_matcher.match_Comment(token))
+        context.ast_builder.build(token)
+        return 10
+      end
+      if (context.token_matcher.match_Empty(token))
+        context.ast_builder.build(token)
+        return 10
+      end
+      raise ParseError.new
+    end
+    
+    
+    # Feature_File:2>Scenario_Base:1>__alt0:0>Scenario:0>#ScenarioLine:0
+    def match_token_at_11(token, context)
+      if (context.token_matcher.match_EOF(token))
+        context.ast_builder.pop(:rule_Scenario)
+        context.ast_builder.pop(:rule_Scenario_Base)
+        context.ast_builder.build(token)
+        return 26
+      end
+      if (context.token_matcher.match_Empty(token))
+        context.ast_builder.push(:rule_Description)
+        context.ast_builder.build(token)
+        return 12
+      end
+      if (context.token_matcher.match_Comment(token))
+        context.ast_builder.build(token)
+        return 13
+      end
+      if (context.token_matcher.match_StepLine(token))
+        context.ast_builder.push(:rule_Step)
+        context.ast_builder.build(token)
+        return 14
+      end
+      if (context.token_matcher.match_TagLine(token))
+        context.ast_builder.pop(:rule_Scenario)
+        context.ast_builder.pop(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
+        context.ast_builder.build(token)
+        return 10
+      end
+      if (context.token_matcher.match_ScenarioLine(token))
+        context.ast_builder.pop(:rule_Scenario)
+        context.ast_builder.pop(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Scenario)
+        context.ast_builder.build(token)
+        return 11
+      end
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
+        context.ast_builder.pop(:rule_Scenario)
+        context.ast_builder.pop(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_ScenarioOutline)
+        context.ast_builder.build(token)
+        return 16
+      end
+      if (context.token_matcher.match_Other(token))
+        context.ast_builder.push(:rule_Description)
+        context.ast_builder.build(token)
+        return 12
+      end
+      raise ParseError.new
+    end
+    
+    
+    # Feature_File:2>Scenario_Base:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:0>Description:0>__alt3:0>#Empty:0
+    def match_token_at_12(token, context)
+      if (context.token_matcher.match_EOF(token))
+        context.ast_builder.pop(:rule_Description)
+        context.ast_builder.pop(:rule_Scenario)
+        context.ast_builder.pop(:rule_Scenario_Base)
+        context.ast_builder.build(token)
+        return 26
+      end
+      if (context.token_matcher.match_Empty(token))
+        context.ast_builder.build(token)
+        return 12
+      end
+      if (context.token_matcher.match_Comment(token))
+        context.ast_builder.pop(:rule_Description)
+        context.ast_builder.build(token)
+        return 13
+      end
+      if (context.token_matcher.match_StepLine(token))
+        context.ast_builder.pop(:rule_Description)
+        context.ast_builder.push(:rule_Step)
+        context.ast_builder.build(token)
+        return 14
+      end
+      if (context.token_matcher.match_TagLine(token))
+        context.ast_builder.pop(:rule_Description)
+        context.ast_builder.pop(:rule_Scenario)
+        context.ast_builder.pop(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
+        context.ast_builder.build(token)
+        return 10
+      end
+      if (context.token_matcher.match_ScenarioLine(token))
+        context.ast_builder.pop(:rule_Description)
+        context.ast_builder.pop(:rule_Scenario)
+        context.ast_builder.pop(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Scenario)
+        context.ast_builder.build(token)
+        return 11
+      end
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
+        context.ast_builder.pop(:rule_Description)
+        context.ast_builder.pop(:rule_Scenario)
+        context.ast_builder.pop(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_ScenarioOutline)
+        context.ast_builder.build(token)
+        return 16
       end
       if (context.token_matcher.match_Other(token))
         context.ast_builder.build(token)
-        return 10
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>Table_And_Multiline_Arg:1>Multiline_Arg:2>#MultiLineArgument:0
-    def match_token_at_11(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.build(token)
-        return 32
-      end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
-        return 8
-      end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.build(token)
-        return 12
-      end
-      if (context.token_matcher.match_Scenario(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
-        return 13
-      end
-      if (context.token_matcher.match_ScenarioOutline(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
-        return 20
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 11
-      end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 11
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:2>Scenario_Base:0>#TagLine:0
-    def match_token_at_12(token, context)
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.build(token)
-        return 12
-      end
-      if (context.token_matcher.match_Scenario(token))
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
-        return 13
-      end
-      if (context.token_matcher.match_ScenarioOutline(token))
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
-        return 20
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 12
-      end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
         return 12
       end
       raise ParseError.new
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:0>Scenario:0>#Scenario:0
+    # Feature_File:2>Scenario_Base:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>#Comment:0
     def match_token_at_13(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.build(token)
-        return 32
-      end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.push(:rule_Description)
-        context.ast_builder.build(token)
-        return 14
+        return 26
       end
       if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
-        return 15
+        return 13
       end
-      if (context.token_matcher.match_Step(token))
+      if (context.token_matcher.match_StepLine(token))
         context.ast_builder.push(:rule_Step)
         context.ast_builder.build(token)
-        return 16
+        return 14
       end
       if (context.token_matcher.match_TagLine(token))
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 12
+        return 10
       end
-      if (context.token_matcher.match_Scenario(token))
+      if (context.token_matcher.match_ScenarioLine(token))
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario)
         context.ast_builder.build(token)
-        return 13
+        return 11
       end
-      if (context.token_matcher.match_ScenarioOutline(token))
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_ScenarioOutline)
         context.ast_builder.build(token)
-        return 20
+        return 16
       end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.push(:rule_Description)
+      if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
-        return 14
+        return 13
       end
       raise ParseError.new
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:0>Description:0>Description_Line:0>__alt3:0>#Empty:0
+    # Feature_File:2>Scenario_Base:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
     def match_token_at_14(token, context)
       if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Description)
+        context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.build(token)
-        return 32
+        return 26
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 14
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.pop(:rule_Description)
+      if (context.token_matcher.match_TableRow(token))
+        context.ast_builder.push(:rule_DataTable)
         context.ast_builder.build(token)
         return 15
       end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Description)
+      if (context.token_matcher.match_DocStringSeparator(token))
+        context.ast_builder.push(:rule_DocString)
+        context.ast_builder.build(token)
+        return 29
+      end
+      if (context.token_matcher.match_StepLine(token))
+        context.ast_builder.pop(:rule_Step)
         context.ast_builder.push(:rule_Step)
         context.ast_builder.build(token)
-        return 16
+        return 14
       end
       if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Description)
+        context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 12
+        return 10
       end
-      if (context.token_matcher.match_Scenario(token))
-        context.ast_builder.pop(:rule_Description)
+      if (context.token_matcher.match_ScenarioLine(token))
+        context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario)
         context.ast_builder.build(token)
-        return 13
+        return 11
       end
-      if (context.token_matcher.match_ScenarioOutline(token))
-        context.ast_builder.pop(:rule_Description)
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
+        context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_ScenarioOutline)
         context.ast_builder.build(token)
-        return 20
+        return 16
       end
-      if (context.token_matcher.match_Other(token))
+      if (context.token_matcher.match_Comment(token))
+        context.ast_builder.build(token)
+        return 14
+      end
+      if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
         return 14
       end
@@ -815,45 +846,60 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>#Comment:0
+    # Feature_File:2>Scenario_Base:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     def match_token_at_15(token, context)
       if (context.token_matcher.match_EOF(token))
+        context.ast_builder.pop(:rule_DataTable)
+        context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.build(token)
-        return 32
+        return 26
       end
-      if (context.token_matcher.match_Comment(token))
+      if (context.token_matcher.match_TableRow(token))
         context.ast_builder.build(token)
         return 15
       end
-      if (context.token_matcher.match_Step(token))
+      if (context.token_matcher.match_StepLine(token))
+        context.ast_builder.pop(:rule_DataTable)
+        context.ast_builder.pop(:rule_Step)
         context.ast_builder.push(:rule_Step)
         context.ast_builder.build(token)
-        return 16
+        return 14
       end
       if (context.token_matcher.match_TagLine(token))
+        context.ast_builder.pop(:rule_DataTable)
+        context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 12
+        return 10
       end
-      if (context.token_matcher.match_Scenario(token))
+      if (context.token_matcher.match_ScenarioLine(token))
+        context.ast_builder.pop(:rule_DataTable)
+        context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario)
         context.ast_builder.build(token)
-        return 13
+        return 11
       end
-      if (context.token_matcher.match_ScenarioOutline(token))
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
+        context.ast_builder.pop(:rule_DataTable)
+        context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_ScenarioOutline)
         context.ast_builder.build(token)
-        return 20
+        return 16
+      end
+      if (context.token_matcher.match_Comment(token))
+        context.ast_builder.build(token)
+        return 15
       end
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
@@ -863,130 +909,73 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#Step:0
+    # Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
     def match_token_at_16(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.build(token)
-        return 32
-      end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.push(:rule_Table_Arg)
+      if (context.token_matcher.match_Empty(token))
+        context.ast_builder.push(:rule_Description)
         context.ast_builder.build(token)
         return 17
       end
-      if (context.token_matcher.match_MultiLineArgument(token))
-        context.ast_builder.push(:rule_Multiline_Arg)
-        context.ast_builder.build(token)
-        return 36
-      end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
-        return 16
-      end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.build(token)
-        return 12
-      end
-      if (context.token_matcher.match_Scenario(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
-        return 13
-      end
-      if (context.token_matcher.match_ScenarioOutline(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
-        return 20
-      end
       if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
-        return 16
+        return 18
       end
-      if (context.token_matcher.match_Empty(token))
+      if (context.token_matcher.match_StepLine(token))
+        context.ast_builder.push(:rule_Step)
         context.ast_builder.build(token)
-        return 16
+        return 19
+      end
+      if (context.token_matcher.match_TagLine(token))
+        context.ast_builder.push(:rule_Examples)
+        context.ast_builder.push(:rule_Tags)
+        context.ast_builder.build(token)
+        return 21
+      end
+      if (context.token_matcher.match_ExamplesLine(token))
+        context.ast_builder.push(:rule_Examples)
+        context.ast_builder.build(token)
+        return 22
+      end
+      if (context.token_matcher.match_Other(token))
+        context.ast_builder.push(:rule_Description)
+        context.ast_builder.build(token)
+        return 17
       end
       raise ParseError.new
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>Table_And_Multiline_Arg:0>Table_Arg:0>#TableRow:0
+    # Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:0>Description:0>__alt3:0>#Empty:0
     def match_token_at_17(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.build(token)
-        return 32
-      end
-      if (context.token_matcher.match_TableRow(token))
+      if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
         return 17
       end
-      if (context.token_matcher.match_MultiLineArgument(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.push(:rule_Multiline_Arg)
+      if (context.token_matcher.match_Comment(token))
+        context.ast_builder.pop(:rule_Description)
         context.ast_builder.build(token)
         return 18
       end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
+      if (context.token_matcher.match_StepLine(token))
+        context.ast_builder.pop(:rule_Description)
         context.ast_builder.push(:rule_Step)
         context.ast_builder.build(token)
-        return 16
+        return 19
       end
       if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.pop(:rule_Description)
+        context.ast_builder.push(:rule_Examples)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 12
+        return 21
       end
-      if (context.token_matcher.match_Scenario(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario)
+      if (context.token_matcher.match_ExamplesLine(token))
+        context.ast_builder.pop(:rule_Description)
+        context.ast_builder.push(:rule_Examples)
         context.ast_builder.build(token)
-        return 13
+        return 22
       end
-      if (context.token_matcher.match_ScenarioOutline(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
-        return 20
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 17
-      end
-      if (context.token_matcher.match_Empty(token))
+      if (context.token_matcher.match_Other(token))
         context.ast_builder.build(token)
         return 17
       end
@@ -994,17 +983,29 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>Table_And_Multiline_Arg:1>Multiline_Arg:0>#MultiLineArgument:0
+    # Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>#Comment:0
     def match_token_at_18(token, context)
-      if (context.token_matcher.match_Empty(token))
+      if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
         return 18
       end
-      if (context.token_matcher.match_MultiLineArgument(token))
+      if (context.token_matcher.match_StepLine(token))
+        context.ast_builder.push(:rule_Step)
         context.ast_builder.build(token)
         return 19
       end
-      if (context.token_matcher.match_Other(token))
+      if (context.token_matcher.match_TagLine(token))
+        context.ast_builder.push(:rule_Examples)
+        context.ast_builder.push(:rule_Tags)
+        context.ast_builder.build(token)
+        return 21
+      end
+      if (context.token_matcher.match_ExamplesLine(token))
+        context.ast_builder.push(:rule_Examples)
+        context.ast_builder.build(token)
+        return 22
+      end
+      if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
         return 18
       end
@@ -1012,52 +1013,37 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>Table_And_Multiline_Arg:1>Multiline_Arg:2>#MultiLineArgument:0
+    # Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
     def match_token_at_19(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.build(token)
-        return 32
-      end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
-        return 16
-      end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.build(token)
-        return 12
-      end
-      if (context.token_matcher.match_Scenario(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
-        return 13
-      end
-      if (context.token_matcher.match_ScenarioOutline(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_ScenarioOutline)
+      if (context.token_matcher.match_TableRow(token))
+        context.ast_builder.push(:rule_DataTable)
         context.ast_builder.build(token)
         return 20
       end
+      if (context.token_matcher.match_DocStringSeparator(token))
+        context.ast_builder.push(:rule_DocString)
+        context.ast_builder.build(token)
+        return 27
+      end
+      if (context.token_matcher.match_StepLine(token))
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.push(:rule_Step)
+        context.ast_builder.build(token)
+        return 19
+      end
+      if (context.token_matcher.match_TagLine(token))
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.push(:rule_Examples)
+        context.ast_builder.push(:rule_Tags)
+        context.ast_builder.build(token)
+        return 21
+      end
+      if (context.token_matcher.match_ExamplesLine(token))
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.push(:rule_Examples)
+        context.ast_builder.build(token)
+        return 22
+      end
       if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
         return 19
@@ -1070,71 +1056,62 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:0>#ScenarioOutline:0
+    # Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     def match_token_at_20(token, context)
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.push(:rule_Description)
+      if (context.token_matcher.match_TableRow(token))
+        context.ast_builder.build(token)
+        return 20
+      end
+      if (context.token_matcher.match_StepLine(token))
+        context.ast_builder.pop(:rule_DataTable)
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.push(:rule_Step)
+        context.ast_builder.build(token)
+        return 19
+      end
+      if (context.token_matcher.match_TagLine(token))
+        context.ast_builder.pop(:rule_DataTable)
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.push(:rule_Examples)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
         return 21
       end
-      if (context.token_matcher.match_Comment(token))
+      if (context.token_matcher.match_ExamplesLine(token))
+        context.ast_builder.pop(:rule_DataTable)
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.push(:rule_Examples)
         context.ast_builder.build(token)
         return 22
       end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.push(:rule_Step)
+      if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
-        return 23
+        return 20
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.push(:rule_Examples)
+      if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
-        return 27
-      end
-      if (context.token_matcher.match_Examples(token))
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
-        return 28
-      end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.push(:rule_Description)
-        context.ast_builder.build(token)
-        return 21
+        return 20
       end
       raise ParseError.new
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:0>Description:0>Description_Line:0>__alt3:0>#Empty:0
+    # Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
     def match_token_at_21(token, context)
-      if (context.token_matcher.match_Empty(token))
+      if (context.token_matcher.match_TagLine(token))
         context.ast_builder.build(token)
         return 21
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.pop(:rule_Description)
+      if (context.token_matcher.match_ExamplesLine(token))
+        context.ast_builder.pop(:rule_Tags)
         context.ast_builder.build(token)
         return 22
       end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.push(:rule_Step)
+      if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
-        return 23
+        return 21
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
-        return 27
-      end
-      if (context.token_matcher.match_Examples(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
-        return 28
-      end
-      if (context.token_matcher.match_Other(token))
+      if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
         return 21
       end
@@ -1142,70 +1119,49 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>#Comment:0
+    # Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0
     def match_token_at_22(token, context)
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 22
-      end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.push(:rule_Step)
+      if (context.token_matcher.match_Empty(token))
+        context.ast_builder.push(:rule_Description)
         context.ast_builder.build(token)
         return 23
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.push(:rule_Examples)
+      if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
-        return 27
+        return 24
       end
-      if (context.token_matcher.match_Examples(token))
-        context.ast_builder.push(:rule_Examples)
+      if (context.token_matcher.match_TableRow(token))
+        context.ast_builder.push(:rule_Examples_Table)
         context.ast_builder.build(token)
-        return 28
+        return 25
       end
-      if (context.token_matcher.match_Empty(token))
+      if (context.token_matcher.match_Other(token))
+        context.ast_builder.push(:rule_Description)
         context.ast_builder.build(token)
-        return 22
+        return 23
       end
       raise ParseError.new
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#Step:0
+    # Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:0>Description:0>__alt3:0>#Empty:0
     def match_token_at_23(token, context)
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.push(:rule_Table_Arg)
+      if (context.token_matcher.match_Empty(token))
+        context.ast_builder.build(token)
+        return 23
+      end
+      if (context.token_matcher.match_Comment(token))
+        context.ast_builder.pop(:rule_Description)
         context.ast_builder.build(token)
         return 24
       end
-      if (context.token_matcher.match_MultiLineArgument(token))
-        context.ast_builder.push(:rule_Multiline_Arg)
+      if (context.token_matcher.match_TableRow(token))
+        context.ast_builder.pop(:rule_Description)
+        context.ast_builder.push(:rule_Examples_Table)
         context.ast_builder.build(token)
-        return 33
+        return 25
       end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
-        return 23
-      end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
-        return 27
-      end
-      if (context.token_matcher.match_Examples(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
-        return 28
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 23
-      end
-      if (context.token_matcher.match_Empty(token))
+      if (context.token_matcher.match_Other(token))
         context.ast_builder.build(token)
         return 23
       end
@@ -1213,42 +1169,16 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>Table_And_Multiline_Arg:0>Table_Arg:0>#TableRow:0
+    # Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>#Comment:0
     def match_token_at_24(token, context)
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.build(token)
-        return 24
-      end
-      if (context.token_matcher.match_MultiLineArgument(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.push(:rule_Multiline_Arg)
-        context.ast_builder.build(token)
-        return 25
-      end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
-        return 23
-      end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
-        return 27
-      end
-      if (context.token_matcher.match_Examples(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
-        return 28
-      end
       if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
         return 24
+      end
+      if (context.token_matcher.match_TableRow(token))
+        context.ast_builder.push(:rule_Examples_Table)
+        context.ast_builder.build(token)
+        return 25
       end
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
@@ -1258,171 +1188,28 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>Table_And_Multiline_Arg:1>Multiline_Arg:0>#MultiLineArgument:0
+    # Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0
     def match_token_at_25(token, context)
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 25
-      end
-      if (context.token_matcher.match_MultiLineArgument(token))
-        context.ast_builder.build(token)
-        return 26
-      end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.build(token)
-        return 25
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>Table_And_Multiline_Arg:1>Multiline_Arg:2>#MultiLineArgument:0
-    def match_token_at_26(token, context)
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
-        return 23
-      end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
-        return 27
-      end
-      if (context.token_matcher.match_Examples(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
-        return 28
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 26
-      end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 26
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:3>Examples:0>#TagLine:0
-    def match_token_at_27(token, context)
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.build(token)
-        return 27
-      end
-      if (context.token_matcher.match_Examples(token))
-        context.ast_builder.build(token)
-        return 28
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 27
-      end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 27
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:3>Examples:1>#Examples:0
-    def match_token_at_28(token, context)
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.push(:rule_Description)
-        context.ast_builder.build(token)
-        return 29
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 30
-      end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.push(:rule_Examples_Table)
-        context.ast_builder.build(token)
-        return 31
-      end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.push(:rule_Description)
-        context.ast_builder.build(token)
-        return 29
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:0>Description:0>Description_Line:0>__alt3:0>#Empty:0
-    def match_token_at_29(token, context)
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 29
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.build(token)
-        return 30
-      end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.push(:rule_Examples_Table)
-        context.ast_builder.build(token)
-        return 31
-      end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.build(token)
-        return 29
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>#Comment:0
-    def match_token_at_30(token, context)
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 30
-      end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.push(:rule_Examples_Table)
-        context.ast_builder.build(token)
-        return 31
-      end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 30
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0
-    def match_token_at_31(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Examples_Table)
         context.ast_builder.pop(:rule_Examples)
         context.ast_builder.pop(:rule_ScenarioOutline)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.build(token)
-        return 32
+        return 26
       end
       if (context.token_matcher.match_TableRow(token))
         context.ast_builder.build(token)
-        return 31
+        return 25
       end
       if (context.token_matcher.match_TagLine(token))
         if (lookahead_0(context, token))
         context.ast_builder.pop(:rule_Examples_Table)
         context.ast_builder.pop(:rule_Examples)
         context.ast_builder.push(:rule_Examples)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 27
+        return 21
         end
       end
       if (context.token_matcher.match_TagLine(token))
@@ -1431,421 +1218,248 @@ module Gherkin
         context.ast_builder.pop(:rule_ScenarioOutline)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 12
+        return 10
       end
-      if (context.token_matcher.match_Examples(token))
+      if (context.token_matcher.match_ExamplesLine(token))
         context.ast_builder.pop(:rule_Examples_Table)
         context.ast_builder.pop(:rule_Examples)
         context.ast_builder.push(:rule_Examples)
         context.ast_builder.build(token)
-        return 28
+        return 22
       end
-      if (context.token_matcher.match_Scenario(token))
-        context.ast_builder.pop(:rule_Examples_Table)
-        context.ast_builder.pop(:rule_Examples)
-        context.ast_builder.pop(:rule_ScenarioOutline)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
-        return 13
-      end
-      if (context.token_matcher.match_ScenarioOutline(token))
+      if (context.token_matcher.match_ScenarioLine(token))
         context.ast_builder.pop(:rule_Examples_Table)
         context.ast_builder.pop(:rule_Examples)
         context.ast_builder.pop(:rule_ScenarioOutline)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Scenario)
+        context.ast_builder.build(token)
+        return 11
+      end
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
+        context.ast_builder.pop(:rule_Examples_Table)
+        context.ast_builder.pop(:rule_Examples)
+        context.ast_builder.pop(:rule_ScenarioOutline)
+        context.ast_builder.pop(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_ScenarioOutline)
         context.ast_builder.build(token)
-        return 20
+        return 16
       end
       if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
-        return 31
+        return 25
       end
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
-        return 31
+        return 25
       end
       raise ParseError.new
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>Multiline_And_Table_Arg:0>Multiline_Arg:0>#MultiLineArgument:0
-    def match_token_at_33(token, context)
+    # Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
+    def match_token_at_27(token, context)
       if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 33
-      end
-      if (context.token_matcher.match_MultiLineArgument(token))
-        context.ast_builder.build(token)
-        return 34
-      end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.build(token)
-        return 33
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>Multiline_And_Table_Arg:0>Multiline_Arg:2>#MultiLineArgument:0
-    def match_token_at_34(token, context)
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.push(:rule_Table_Arg)
-        context.ast_builder.build(token)
-        return 35
-      end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
-        return 23
-      end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
         context.ast_builder.build(token)
         return 27
       end
-      if (context.token_matcher.match_Examples(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
+      if (context.token_matcher.match_DocStringSeparator(token))
         context.ast_builder.build(token)
         return 28
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 34
-      end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 34
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>Multiline_And_Table_Arg:1>Table_Arg:0>#TableRow:0
-    def match_token_at_35(token, context)
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.build(token)
-        return 35
-      end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
-        return 23
-      end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
-        return 27
-      end
-      if (context.token_matcher.match_Examples(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
-        return 28
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 35
-      end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 35
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>Multiline_And_Table_Arg:0>Multiline_Arg:0>#MultiLineArgument:0
-    def match_token_at_36(token, context)
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 36
-      end
-      if (context.token_matcher.match_MultiLineArgument(token))
-        context.ast_builder.build(token)
-        return 37
       end
       if (context.token_matcher.match_Other(token))
         context.ast_builder.build(token)
-        return 36
+        return 27
       end
       raise ParseError.new
     end
     
     
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>Multiline_And_Table_Arg:0>Multiline_Arg:2>#MultiLineArgument:0
-    def match_token_at_37(token, context)
+    # Feature_File:2>Scenario_Base:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
+    def match_token_at_28(token, context)
+      if (context.token_matcher.match_StepLine(token))
+        context.ast_builder.pop(:rule_DocString)
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.push(:rule_Step)
+        context.ast_builder.build(token)
+        return 19
+      end
+      if (context.token_matcher.match_TagLine(token))
+        context.ast_builder.pop(:rule_DocString)
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.push(:rule_Examples)
+        context.ast_builder.push(:rule_Tags)
+        context.ast_builder.build(token)
+        return 21
+      end
+      if (context.token_matcher.match_ExamplesLine(token))
+        context.ast_builder.pop(:rule_DocString)
+        context.ast_builder.pop(:rule_Step)
+        context.ast_builder.push(:rule_Examples)
+        context.ast_builder.build(token)
+        return 22
+      end
+      if (context.token_matcher.match_Comment(token))
+        context.ast_builder.build(token)
+        return 28
+      end
+      if (context.token_matcher.match_Empty(token))
+        context.ast_builder.build(token)
+        return 28
+      end
+      raise ParseError.new
+    end
+    
+    
+    # Feature_File:2>Scenario_Base:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
+    def match_token_at_29(token, context)
+      if (context.token_matcher.match_Empty(token))
+        context.ast_builder.build(token)
+        return 29
+      end
+      if (context.token_matcher.match_DocStringSeparator(token))
+        context.ast_builder.build(token)
+        return 30
+      end
+      if (context.token_matcher.match_Other(token))
+        context.ast_builder.build(token)
+        return 29
+      end
+      raise ParseError.new
+    end
+    
+    
+    # Feature_File:2>Scenario_Base:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
+    def match_token_at_30(token, context)
       if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
+        context.ast_builder.pop(:rule_DocString)
         context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.build(token)
-        return 32
+        return 26
       end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.push(:rule_Table_Arg)
-        context.ast_builder.build(token)
-        return 38
-      end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
+      if (context.token_matcher.match_StepLine(token))
+        context.ast_builder.pop(:rule_DocString)
         context.ast_builder.pop(:rule_Step)
         context.ast_builder.push(:rule_Step)
         context.ast_builder.build(token)
-        return 16
+        return 14
       end
       if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
+        context.ast_builder.pop(:rule_DocString)
         context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 12
+        return 10
       end
-      if (context.token_matcher.match_Scenario(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
+      if (context.token_matcher.match_ScenarioLine(token))
+        context.ast_builder.pop(:rule_DocString)
         context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario)
         context.ast_builder.build(token)
-        return 13
+        return 11
       end
-      if (context.token_matcher.match_ScenarioOutline(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
+        context.ast_builder.pop(:rule_DocString)
         context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Scenario)
         context.ast_builder.pop(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
-        return 20
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 37
-      end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 37
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:2>Scenario_Base:1>Scenario_Base_Body:0>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>Multiline_And_Table_Arg:1>Table_Arg:0>#TableRow:0
-    def match_token_at_38(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.build(token)
-        return 32
-      end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.build(token)
-        return 38
-      end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
         context.ast_builder.build(token)
         return 16
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.build(token)
-        return 12
-      end
-      if (context.token_matcher.match_Scenario(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
-        return 13
-      end
-      if (context.token_matcher.match_ScenarioOutline(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
-        return 20
-      end
       if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
-        return 38
+        return 30
       end
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
-        return 38
+        return 30
       end
       raise ParseError.new
     end
     
     
-    # Feature_File:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>Multiline_And_Table_Arg:0>Multiline_Arg:0>#MultiLineArgument:0
-    def match_token_at_39(token, context)
+    # Feature_File:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
+    def match_token_at_31(token, context)
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
-        return 39
+        return 31
       end
-      if (context.token_matcher.match_MultiLineArgument(token))
+      if (context.token_matcher.match_DocStringSeparator(token))
         context.ast_builder.build(token)
-        return 40
+        return 32
       end
       if (context.token_matcher.match_Other(token))
         context.ast_builder.build(token)
-        return 39
+        return 31
       end
       raise ParseError.new
     end
     
     
-    # Feature_File:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>Multiline_And_Table_Arg:0>Multiline_Arg:2>#MultiLineArgument:0
-    def match_token_at_40(token, context)
+    # Feature_File:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
+    def match_token_at_32(token, context)
       if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
+        context.ast_builder.pop(:rule_DocString)
         context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.build(token)
-        return 32
+        return 26
       end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
-        context.ast_builder.push(:rule_Table_Arg)
-        context.ast_builder.build(token)
-        return 41
-      end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
+      if (context.token_matcher.match_StepLine(token))
+        context.ast_builder.pop(:rule_DocString)
         context.ast_builder.pop(:rule_Step)
         context.ast_builder.push(:rule_Step)
         context.ast_builder.build(token)
         return 8
       end
       if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
+        context.ast_builder.pop(:rule_DocString)
         context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.push(:rule_Scenario_Base)
+        context.ast_builder.push(:rule_Tags)
         context.ast_builder.build(token)
-        return 12
+        return 10
       end
-      if (context.token_matcher.match_Scenario(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
+      if (context.token_matcher.match_ScenarioLine(token))
+        context.ast_builder.pop(:rule_DocString)
         context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_Scenario)
         context.ast_builder.build(token)
-        return 13
+        return 11
       end
-      if (context.token_matcher.match_ScenarioOutline(token))
-        context.ast_builder.pop(:rule_Multiline_Arg)
+      if (context.token_matcher.match_ScenarioOutlineLine(token))
+        context.ast_builder.pop(:rule_DocString)
         context.ast_builder.pop(:rule_Step)
         context.ast_builder.pop(:rule_Background)
         context.ast_builder.push(:rule_Scenario_Base)
         context.ast_builder.push(:rule_ScenarioOutline)
         context.ast_builder.build(token)
-        return 20
+        return 16
       end
       if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 40
-      end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 40
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature_File:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>Multiline_And_Table_Arg:1>Table_Arg:0>#TableRow:0
-    def match_token_at_41(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
         context.ast_builder.build(token)
         return 32
       end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.build(token)
-        return 41
-      end
-      if (context.token_matcher.match_Step(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
-        return 8
-      end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.build(token)
-        return 12
-      end
-      if (context.token_matcher.match_Scenario(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
-        return 13
-      end
-      if (context.token_matcher.match_ScenarioOutline(token))
-        context.ast_builder.pop(:rule_Table_Arg)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Base)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
-        return 20
-      end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
-        return 41
-      end
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
-        return 41
+        return 32
       end
       raise ParseError.new
     end
@@ -1862,7 +1476,7 @@ module Gherkin
         queue.push(token)
 
         if (false \
-          || context.token_matcher.match_Examples(token) \
+          || context.token_matcher.match_ExamplesLine(token) \
         )
           match = true
           break
