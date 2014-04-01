@@ -37,12 +37,12 @@ _DocStringSeparator, // #DocStringSeparator
 _TableRow, // #TableRow
 _Other, // #Other
 Feature_File, // Feature_File! := Feature_Header Background? Scenario_Base*
-Feature_Header, // Feature_Header! := Tags #FeatureLine Feature_Description
+Feature_Header, // Feature_Header! := Tags? #FeatureLine Feature_Description
 Background, // Background! := #BackgroundLine Background_Description Scenario_Step*
-Scenario_Base, // Scenario_Base! := Tags (Scenario | ScenarioOutline)
+Scenario_Base, // Scenario_Base! := Tags? (Scenario | ScenarioOutline)
 Scenario, // Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
 ScenarioOutline, // ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples+
-Examples, // Examples! [#Empty|#Comment|#TagLine-&gt;#ExamplesLine] := Tags #ExamplesLine Examples_Description Examples_Table
+Examples, // Examples! [#Empty|#Comment|#TagLine-&gt;#ExamplesLine] := Tags? #ExamplesLine Examples_Description Examples_Table
 Examples_Table, // Examples_Table! := #TableRow+
 Scenario_Step, // Scenario_Step := Step
 ScenarioOutline_Step, // ScenarioOutline_Step := Step
@@ -50,7 +50,7 @@ Step, // Step! := #StepLine Step_Arg?
 Step_Arg, // Step_Arg := (DataTable | DocString)
 DataTable, // DataTable! := #TableRow+
 DocString, // DocString! := #DocStringSeparator (#Empty | #Other)* #DocStringSeparator
-Tags, // Tags! := #TagLine*
+Tags, // Tags! := #TagLine+
 Feature_Description, // Feature_Description := Description_Helper
 Background_Description, // Background_Description := Description_Helper
 Scenario_Description, // Scenario_Description := Description_Helper
