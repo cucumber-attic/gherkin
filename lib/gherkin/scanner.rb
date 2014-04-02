@@ -85,7 +85,11 @@ module Gherkin
     end
 
     def match_DocStringSeparator(token)
-      token.trimmed_line == '"""'
+      token.trimmed_line.start_with?('"""')
+    end
+
+    def match_DocStringAlternativeSeparator(token)
+      token.trimmed_line.start_with?('```')
     end
 
     def match_EOF(token)
