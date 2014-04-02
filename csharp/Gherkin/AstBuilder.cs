@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Gherkin.Ast;
 
 namespace Gherkin
 {
@@ -18,7 +19,23 @@ namespace Gherkin
 
         public void Build(Token token)
         {
-            CurrentNode.Add(token);
+            switch (token.MatchedType)
+            {
+                case TokenType.TagLine:
+                    CurrentNode.AddRange(RuleType._TagLine, token.Items.Select(tv => new Tag(tv, GetLocation(token, 1 /* TODO: get item location */))));
+                    break;
+
+
+                default:
+                    CurrentNode.Add((RuleType)token.MatchedType, token);
+                    //CurrentNode.Add(token);
+                    break;
+            }
+        }
+
+        private Location GetLocation(Token token, int column = 0)
+        {
+            return new Location();
         }
 
         public void StartRule(RuleType ruleType)
@@ -29,7 +46,22 @@ namespace Gherkin
         public void EndRule(RuleType ruleType)
         {
             var node = stack.Pop();
-            CurrentNode.Add(node);
+            object transformedNode = GetTransformedNode(node);
+            CurrentNode.Add(node.RuleType, transformedNode);
+        }
+
+        private object GetTransformedNode(AstNode node)
+        {
+            switch (node.RuleType)
+            {
+                case RuleType.Step:
+                {
+                    var stepLine = node.GetSingle<Token>(RuleType._StepLine);
+                    return new Step(stepLine.MatchedKeyword, stepLine.Text, new EmptyStepArgument(), GetLocation(stepLine));
+                }
+            }
+
+            return node;
         }
 
         public object GetResult()
