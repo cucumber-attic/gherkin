@@ -124,10 +124,21 @@ namespace Gherkin
 
         public bool Match_DocStringSeparator(Token token)
         {
-            if (token.Line.StartsWith("\"\"\"")) //TODO: equals
+            return Match_DocStringSeparatorInternal(token, "\"\"\"", TokenType.DocStringSeparator);
+        }
+
+        public bool Match_DocStringAlternativeSeparator(Token token)
+        {
+            return Match_DocStringSeparatorInternal(token, "```", TokenType.DocStringAlternativeSeparator);
+        }
+
+        private bool Match_DocStringSeparatorInternal(Token token, string separator, TokenType tokenType)
+        {
+            if (token.Line.StartsWith(separator))
             {
-                token.MatchedType = TokenType.DocStringSeparator;
+                token.MatchedType = tokenType;
                 token.Indent = token.Line.Indent;
+                token.Text = token.Line.GetRestTrimmed(separator.Length); // content type
                 return true;
             }
             return false;
