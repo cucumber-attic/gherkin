@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Gherkin.Ast;
 using Gherkin.Specs;
 
 namespace Gherkin.AstTester
@@ -34,7 +35,7 @@ namespace Gherkin.AstTester
         private static int TestParserInternal(string featureFilePath)
         {
             var parser = new Parser();
-            var parsingResult = parser.Parse(featureFilePath);
+            var parsingResult = (Feature)parser.Parse(featureFilePath);
 
             if (parsingResult == null)
                 throw new InvalidOperationException("parser returned null");

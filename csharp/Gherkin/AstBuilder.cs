@@ -19,11 +19,9 @@ namespace Gherkin
         {
             switch (token.MatchedType)
             {
-                case TokenType.EOF:
-                    break;
-
                 case TokenType.Empty:
                 {
+					// we register the empty tokens as "Other" - this should have been done by the parser...
                     CurrentNode.Add(RuleType._Other, token);
                     break;
                 }
@@ -34,25 +32,24 @@ namespace Gherkin
             }
         }
 
-        private Location GetLocation(Token token, int column = 0)
-        {
-            column = column == 0 ? token.Indent : column;
-            return new Location("TODO", token.Line.LineNumber, column);
-        }
+	    public void StartRule(RuleType ruleType)
+	    {
+		    stack.Push(new AstNode(ruleType));
+	    }
 
-        public void StartRule(RuleType ruleType)
-        {
-            stack.Push(new AstNode(ruleType));
-        }
+	    public void EndRule(RuleType ruleType)
+	    {
+		    var node = stack.Pop();
+		    object transformedNode = GetTransformedNode(node);
+		    CurrentNode.Add(node.RuleType, transformedNode);
+	    }
 
-        public void EndRule(RuleType ruleType)
-        {
-            var node = stack.Pop();
-            object transformedNode = GetTransformedNode(node);
-            CurrentNode.Add(node.RuleType, transformedNode);
-        }
-
-        private object GetTransformedNode(AstNode node)
+		public Feature GetResult()
+		{
+			return CurrentNode.GetSingle<Feature>(RuleType.Feature_File);
+		}
+		
+		private object GetTransformedNode(AstNode node)
         {
             switch (node.RuleType)
             {
@@ -125,6 +122,12 @@ namespace Gherkin
             return node;
         }
 
+	    private Location GetLocation(Token token, int column = 0)
+	    {
+		    column = column == 0 ? token.Indent : column;
+		    return new Location("TODO", token.Line.LineNumber, column);
+	    }
+
 	    private Tag[] GetTags(AstNode node)
 	    {
 		    var tagsNode = node.GetSingle<AstNode>(RuleType.Tags);
@@ -158,10 +161,5 @@ namespace Gherkin
 	    {
 		    return scenarioDefinitionNode.GetSingle<string>(RuleType.Description);
 	    }
-
-	    public object GetResult()
-        {
-            return CurrentNode.First();
-        }
     }
 }
