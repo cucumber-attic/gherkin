@@ -12,11 +12,10 @@ namespace Gherkin
         private readonly Dictionary<RuleType, IList<object>> subItems = new Dictionary<RuleType, IList<object>>();
         public RuleType RuleType { get; private set; }
 
-        //public object this[RuleType ruleType]
-        //{
-        //    get { return subItems[ruleType].Single(); }
-        //    set { subItems[ruleType] = new [] { value }; }
-        //}
+        public Token GetToken(TokenType tokenType)
+        {
+            return GetSingle<Token>((RuleType)tokenType);
+        }
 
         public T GetSingle<T>(RuleType ruleType)
         {

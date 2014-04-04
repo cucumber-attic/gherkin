@@ -56,8 +56,29 @@ namespace Gherkin
             {
                 case RuleType.Step:
                 {
-                    var stepLine = node.GetSingle<Token>(RuleType._StepLine);
+                    var stepLine = node.GetToken(TokenType.StepLine);
                     return new Step(stepLine.MatchedKeyword, stepLine.Text, new EmptyStepArgument(), GetLocation(stepLine));
+                }
+                case RuleType.Scenario_Base:
+                {
+                    var tags = new Tag[0]; //TODO
+
+                    Token header;
+                    AstNode scenarioDefinition;
+
+                    var scenario = node.GetSingle<AstNode>(RuleType.Scenario);
+                    if (scenario != null)
+                    {
+                        header = scenario.GetToken(TokenType.ScenarioLine);
+                        scenarioDefinition = scenario;
+                    }
+                    else
+                        throw new NotImplementedException();
+
+                    var description = ""; //TODO
+                    var steps = scenarioDefinition.GetItems<Step>(RuleType.Step).ToArray();
+
+                    return new Scenario(tags, GetLocation(header), header.MatchedKeyword, header.Text, description, steps);
                 }
             }
 

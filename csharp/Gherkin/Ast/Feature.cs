@@ -31,16 +31,33 @@ namespace Gherkin.Ast
         public string Title { get; private set; }
         public string Description { get; private set; }
         public Step[] Steps { get; private set; }
+
+        protected ScenarioDefinition(Tag[] tags, Location location, string keyword, string title, string description, Step[] steps)
+        {
+            Tags = tags;
+            Location = location;
+            Keyword = keyword;
+            Title = title;
+            Description = description;
+            Steps = steps;
+        }
     }
 
     public class Scenario : ScenarioDefinition
     {
-        
+        public Scenario(Tag[] tags, Location location, string keyword, string title, string description, Step[] steps) : base(tags, location, keyword, title, description, steps)
+        {
+        }
     }
 
     public class ScenarioOutline : ScenarioDefinition
     {
         public Examples[] Examples { get; private set; }
+
+        public ScenarioOutline(Tag[] tags, Location location, string keyword, string title, string description, Step[] steps, Examples[] examples) : base(tags, location, keyword, title, description, steps)
+        {
+            Examples = examples;
+        }
     }
 
     public class Examples : IHasLocation, IHasDescription, IHasRows, IHasTags
