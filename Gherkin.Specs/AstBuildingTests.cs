@@ -26,17 +26,12 @@ namespace Gherkin.Specs
             Assert.IsNotNull(parsingResult);
 
             var astFormatter = new TestAstFormatter();
-            var astText = NormalizeLineEndings(astFormatter.FormatAst(parsingResult));
+            var astText = astFormatter.FormatAst(parsingResult);
             Console.WriteLine(astText);
 
-            var expectedAstText = NormalizeLineEndings(File.ReadAllText(expectedAstFile));
+            var expectedAstText = astFormatter.NormalizeLineEndings(File.ReadAllText(expectedAstFile));
 
             Assert.AreEqual(expectedAstText, astText);
-        }
-
-        public string NormalizeLineEndings(string text)
-        {
-            return text.Replace("\r\n", "\n").TrimEnd('\n');
         }
     }
 }
