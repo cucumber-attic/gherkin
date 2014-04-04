@@ -47,7 +47,26 @@
   <ItemGroup>
     <Compile Include="AstBuilder.cs" />
     <Compile Include="AstNode.cs" />
+    <Compile Include="Ast\Background.cs" />
+    <Compile Include="Ast\DataTable.cs" />
+    <Compile Include="Ast\DocString.cs" />
+    <Compile Include="Ast\EmptyStepArgument.cs" />
+    <Compile Include="Ast\Examples.cs" />
     <Compile Include="Ast\Feature.cs" />
+    <Compile Include="Ast\IHasDescription.cs" />
+    <Compile Include="Ast\IHasLocation.cs" />
+    <Compile Include="Ast\IHasRows.cs" />
+    <Compile Include="Ast\IHasSteps.cs" />
+    <Compile Include="Ast\IHasTags.cs" />
+    <Compile Include="Ast\Location.cs" />
+    <Compile Include="Ast\Scenario.cs" />
+    <Compile Include="Ast\ScenarioDefinition.cs" />
+    <Compile Include="Ast\ScenarioOutline.cs" />
+    <Compile Include="Ast\Step.cs" />
+    <Compile Include="Ast\StepArgument.cs" />
+    <Compile Include="Ast\TableCell.cs" />
+    <Compile Include="Ast\TableRow.cs" />
+    <Compile Include="Ast\Tag.cs" />
     <Compile Include="GherkinDialect.cs" />
     <Compile Include="GherkinDialectProvider.cs" />
     <Compile Include="GherkinLine.cs" />

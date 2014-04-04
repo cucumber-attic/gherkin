@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Gherkin.Ast;
 using NUnit.Framework;
 
 namespace Gherkin.Specs
@@ -22,7 +23,7 @@ namespace Gherkin.Specs
             var expectedAstFile = testFeatureFile + ".ast";
 
             var parser = new Parser();
-            var parsingResult = parser.Parse(testFeatureFile);
+            var parsingResult = (Feature)parser.Parse(testFeatureFile);
             Assert.IsNotNull(parsingResult);
 
             var astFormatter = new TestAstFormatter();
