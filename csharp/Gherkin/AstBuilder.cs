@@ -21,6 +21,9 @@ namespace Gherkin
         {
             switch (token.MatchedType)
             {
+                case TokenType.EOF:
+                    break;
+
                 case TokenType.TagLine:
                     CurrentNode.AddRange(RuleType._TagLine, token.Items.Select(tv => new Tag(tv, GetLocation(token, 1 /* TODO: get item location */))));
                     break;
