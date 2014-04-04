@@ -22,10 +22,6 @@ namespace Gherkin
                 case TokenType.EOF:
                     break;
 
-                case TokenType.TagLine:
-                    CurrentNode.AddRange(RuleType._TagLine, token.Items.Select(tv => new Tag(tv, GetLocation(token, 1 /* TODO: get item location */))));
-                    break;
-
                 case TokenType.Empty:
                 {
                     CurrentNode.Add(RuleType._Other, token);
@@ -67,7 +63,7 @@ namespace Gherkin
                 }
                 case RuleType.Scenario_Base:
                 {
-                    var tags = new Tag[0]; //TODO
+					var tags = GetTags(node);
 
                     var scenarioNode = node.GetSingle<AstNode>(RuleType.Scenario);
 	                if (scenarioNode != null)
@@ -95,7 +91,7 @@ namespace Gherkin
                 }
 				case RuleType.Examples:
 	            {
-					var tags = new Tag[0]; //TODO
+					var tags = GetTags(node);
 					var examplesLine = node.GetToken(TokenType.ExamplesLine);
 					var description = GetDescription(node);
 
@@ -113,12 +109,12 @@ namespace Gherkin
                     return string.IsNullOrWhiteSpace(description) ? null : description;
                 }
                 case RuleType.Feature_File:
-                {
-                    var tags = new Tag[0]; //TODO
+	            {
                     var language = "en"; //TODO
 
                     var header = node.GetSingle<AstNode>(RuleType.Feature_Header);
-                    var featureLine = header.GetToken(TokenType.FeatureLine);
+					var tags = GetTags(header);
+					var featureLine = header.GetToken(TokenType.FeatureLine);
                     var scenariodefinitions = node.GetItems<ScenarioDefinition>(RuleType.Scenario_Base).ToArray();
                     var description = GetDescription(header);
 
@@ -128,6 +124,18 @@ namespace Gherkin
 
             return node;
         }
+
+	    private Tag[] GetTags(AstNode node)
+	    {
+		    var tagsNode = node.GetSingle<AstNode>(RuleType.Tags);
+			if (tagsNode == null)
+				return new Tag[0];
+
+		    return tagsNode.GetTokens(TokenType.TagLine)
+				.SelectMany(t => t.Items, (t, tagName) => 
+					new Tag(tagName, GetLocation(t, 0 /* TODO */)))
+				.ToArray();
+	    }
 
 	    private TableRow[] GetTableRows(AstNode node)
 	    {

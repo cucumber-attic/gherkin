@@ -65,16 +65,8 @@ namespace Gherkin
 
         public IEnumerable<string> GetTags()
         {
-            return trimmedLineText
-                .Split(new char[0], StringSplitOptions.RemoveEmptyEntries)
-                .Select(s => AssertPrefixAndRemove(s));
-        }
-
-        private string AssertPrefixAndRemove(string tagText)
-        {
-            if (!tagText.StartsWith("@"))
-                throw new Exception("Tags must start with '@'. Got: " + tagText);
-            return tagText.Substring(1);
+	        return trimmedLineText
+		        .Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
         }
 
         public IEnumerable<string> GetTableCells()
