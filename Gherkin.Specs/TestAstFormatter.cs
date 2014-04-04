@@ -46,9 +46,11 @@ namespace Gherkin.Specs
 	    private void FormatRow(TableRow tableRow, StringBuilder result)
 	    {
 		    result.Append(INDENT);
+			FormatHasLocation(tableRow, result);
 		    foreach (var tableCell in tableRow.Cells)
 		    {
 			    result.Append("|");
+				FormatHasLocation(tableCell, result);
 			    result.Append(tableCell.Value);
 		    }
 			result.AppendLine("|");
@@ -58,7 +60,16 @@ namespace Gherkin.Specs
 	    {
 			if (!hasTags.Tags.Any())
 				return;
-		    result.AppendLine(string.Join(" ", hasTags.Tags.Select(t => t.Value)));
+		    bool first = true;
+		    foreach (var tag in hasTags.Tags)
+		    {
+			    if (!first)
+				    result.Append(" ");
+			    first = false;
+				FormatHasLocation(tag, result);
+			    result.Append(tag.Value);
+		    }
+		    result.AppendLine();
 	    }
 
 	    private const string INDENT = "  ";
@@ -66,6 +77,7 @@ namespace Gherkin.Specs
         private void FormatStep(Step step, StringBuilder result)
         {
             result.Append(INDENT);
+			FormatHasLocation(step, result);
             result.Append(step.Keyword);
             result.Append(step.Value);
             result.AppendLine();
@@ -85,11 +97,19 @@ namespace Gherkin.Specs
 
         private void FormatHasDescription(IHasDescription hasDescription, StringBuilder result)
         {
+	        FormatHasLocation(hasDescription as IHasLocation, result);
             result.AppendFormat("{0}: {1}", hasDescription.Keyword, hasDescription.Title);
             result.AppendLine();
             if (hasDescription.Description != null)
                 result.AppendLine(hasDescription.Description);
         }
 
+	    private void FormatHasLocation(IHasLocation hasLocation, StringBuilder result)
+	    {
+		    if (hasLocation == null)
+				return;
+
+		    result.AppendFormat("({0}:{1})", hasLocation.Location.Line, hasLocation.Location.Column);
+	    }
     }
 }

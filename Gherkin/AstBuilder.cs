@@ -124,7 +124,7 @@ namespace Gherkin
 
 	    private Location GetLocation(Token token, int column = 0)
 	    {
-		    column = column == 0 ? token.Indent : column;
+		    column = column == 0 ? token.Indent + 1 : column;
 		    return new Location("TODO", token.Line.LineNumber + 1, column);
 	    }
 
