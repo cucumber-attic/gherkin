@@ -8,13 +8,13 @@ using NUnit.Util;
 
 namespace Gherkin.Specs
 {
-    class TestAstFormatter
+    public class TestAstFormatter
     {
         public string FormatAst(object ast)
         {
             var sb = new StringBuilder();
             FormatAstInternal(ast, "", sb);
-            return sb.ToString();
+            return NormalizeLineEndings(sb.ToString());
         }
 
         private void FormatAstNode(AstNode astNode, string indent, StringBuilder result)
@@ -79,6 +79,11 @@ namespace Gherkin.Specs
             result.AppendLine();
             if (hasDescription.Description != null)
                 result.AppendLine(hasDescription.Description);
+        }
+
+        internal string NormalizeLineEndings(string text)
+        {
+            return text.Replace("\r\n", "\n").TrimEnd('\n');
         }
     }
 }
