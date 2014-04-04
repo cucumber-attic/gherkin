@@ -11,7 +11,7 @@ namespace Gherkin.Specs
         {
             var result = new StringBuilder();
             FormatFeature(feature, result);
-            return NormalizeLineEndings(result.ToString());
+            return LineEndingHelper.NormalizeLineEndings(result.ToString());
         }
 
         private void FormatScenarioDefinition(ScenarioDefinition scenarioDefinition, StringBuilder result)
@@ -91,9 +91,5 @@ namespace Gherkin.Specs
                 result.AppendLine(hasDescription.Description);
         }
 
-        internal string NormalizeLineEndings(string text)
-        {
-            return text.Replace("\r\n", "\n").TrimEnd('\n');
-        }
     }
 }

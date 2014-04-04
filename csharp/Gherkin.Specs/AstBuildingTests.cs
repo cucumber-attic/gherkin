@@ -30,7 +30,7 @@ namespace Gherkin.Specs
             var astText = astFormatter.FormatAst(parsingResult);
             Console.WriteLine(astText);
 
-            var expectedAstText = astFormatter.NormalizeLineEndings(File.ReadAllText(expectedAstFile));
+            var expectedAstText = LineEndingHelper.NormalizeLineEndings(File.ReadAllText(expectedAstFile));
 
             Assert.AreEqual(expectedAstText, astText);
         }
