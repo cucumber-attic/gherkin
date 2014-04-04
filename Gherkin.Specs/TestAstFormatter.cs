@@ -32,6 +32,8 @@ namespace Gherkin.Specs
                 FormatAstNode((AstNode)node, indent, result);
             else if (node is Step)
                 FormatStep((Step)node, result);
+            else if (node is ScenarioDefinition)
+                FormatScenarioDefinition((ScenarioDefinition) node, result);
             else if (node is Feature)
                 FormatFeature((Feature)node, result);
             else
@@ -39,6 +41,15 @@ namespace Gherkin.Specs
                 result.Append(indent);
                 result.AppendLine(node.ToString());
             }
+        }
+
+        private void FormatScenarioDefinition(ScenarioDefinition scenarioDefinition, StringBuilder result)
+        {
+            //TODO: tags
+            FormatHasDescription(scenarioDefinition, result);
+            foreach (var step in scenarioDefinition.Steps)
+                FormatStep(step, result);
+            //TODO: SO
         }
 
         private const string INDENT = "  ";
