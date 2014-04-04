@@ -2,7 +2,7 @@
 using System.Linq;
 using Gherkin.Specs;
 
-namespace Gherkin.ParserTester
+namespace Gherkin.AstTester
 {
     class Program
     {
@@ -10,28 +10,28 @@ namespace Gherkin.ParserTester
         {
             if (args.Length != 1)
             {
-                Console.WriteLine("Usage: Gherkin.ParserTester.exe test-feature-file.feature");
+                Console.WriteLine("Usage: Gherkin.AstTester.exe test-feature-file.feature");
                 return 100;
             }
 
             string featureFilePath = args[0];
 
-            TestParser(featureFilePath);
-            return 0;
+            return TestParser(featureFilePath);
         }
 
-        private static void TestParser(string featureFilePath)
+        private static int TestParser(string featureFilePath)
         {
             try
             {
-                TestParserInternal(featureFilePath);
+                return TestParserInternal(featureFilePath);
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex.Message);                
+                Console.Error.WriteLine(ex.Message);
+                return 1;
             }
         }
-        private static void TestParserInternal(string featureFilePath)
+        private static int TestParserInternal(string featureFilePath)
         {
             var parser = new Parser();
             var parsingResult = parser.Parse(featureFilePath);
@@ -42,6 +42,7 @@ namespace Gherkin.ParserTester
             var astFormatter = new TestAstFormatter();
             var astText = astFormatter.FormatAst(parsingResult);
             Console.WriteLine(astText);
+            return 0;
         }
     }
 }
