@@ -45,14 +45,50 @@ namespace Gherkin.Specs
 
         private void FormatScenarioDefinition(ScenarioDefinition scenarioDefinition, StringBuilder result)
         {
-            //TODO: tags
+            FormatTags(scenarioDefinition, result);
             FormatHasDescription(scenarioDefinition, result);
             foreach (var step in scenarioDefinition.Steps)
                 FormatStep(step, result);
-            //TODO: SO
+
+	        var scenarioOutline = scenarioDefinition as ScenarioOutline;
+	        if (scenarioOutline != null)
+	        {
+		        result.AppendLine();
+		        foreach (var examples in scenarioOutline.Examples)
+		        {
+			        FormatTags(examples, result);
+			        FormatHasDescription(examples, result);
+			        FormatRow(examples.Header, result);
+			        FormatHasRows(examples, result);
+		        }
+	        }
         }
 
-        private const string INDENT = "  ";
+	    private void FormatHasRows(IHasRows hasRows, StringBuilder result)
+	    {
+		    foreach (var tableRow in hasRows.Rows)
+		    {
+			    FormatRow(tableRow, result);
+		    }
+	    }
+
+	    private void FormatRow(TableRow tableRow, StringBuilder result)
+	    {
+		    result.Append(INDENT);
+		    foreach (var tableCell in tableRow.Cells)
+		    {
+			    result.Append("|");
+			    result.Append(tableCell.Value);
+		    }
+			result.AppendLine("|");
+		}
+
+	    private void FormatTags(IHasTags hasTags, StringBuilder result)
+	    {
+		    //TODO: tags
+	    }
+
+	    private const string INDENT = "  ";
 
         private void FormatStep(Step step, StringBuilder result)
         {
@@ -64,7 +100,8 @@ namespace Gherkin.Specs
 
         public void FormatFeature(Feature feature, StringBuilder result)
         {
-            FormatHasDescription(feature, result);
+			FormatTags(feature, result);
+			FormatHasDescription(feature, result);
             result.AppendLine();
             //TODO: background
             foreach (var scenarioDefinition in feature.ScenarioDefinitions)

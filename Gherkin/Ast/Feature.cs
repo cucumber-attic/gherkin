@@ -80,6 +80,17 @@ namespace Gherkin.Ast
         public string Description { get; private set; }
         public TableRow Header { get; private set; }
         public TableRow[] Rows { get; private set; }
+
+	    public Examples(Tag[] tags, Location location, string keyword, string title, string description, TableRow header, TableRow[] rows)
+	    {
+		    Tags = tags;
+		    Location = location;
+		    Keyword = keyword;
+		    Title = title;
+		    Description = description;
+		    Header = header;
+		    Rows = rows;
+	    }
     }
 
     public class Step : IHasLocation
@@ -143,12 +154,23 @@ namespace Gherkin.Ast
         public Location Location { get; private set; }
         public TableCell[] Cells { get; private set; }
 
+	    public TableRow(Location location, TableCell[] cells)
+	    {
+		    Location = location;
+		    Cells = cells;
+	    }
     }
 
     public class TableCell : IHasLocation
     {
-        public Location Location { get; private set; }
-        public string Value { get; private set; }
+	    public Location Location { get; private set; }
+		public string Value { get; private set; }
+
+	    public TableCell(string value, Location location)
+	    {
+		    Location = location;
+		    this.Value = value;
+	    }
     }
 
     public interface IHasRows

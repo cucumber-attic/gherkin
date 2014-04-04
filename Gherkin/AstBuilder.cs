@@ -69,30 +69,48 @@ namespace Gherkin
                 {
                     var tags = new Tag[0]; //TODO
 
-                    Token scenarioDefinitionLine;
-                    AstNode scenarioDefinitionNode;
-
                     var scenarioNode = node.GetSingle<AstNode>(RuleType.Scenario);
-                    if (scenarioNode != null)
-                    {
-                        scenarioDefinitionLine = scenarioNode.GetToken(TokenType.ScenarioLine);
-                        scenarioDefinitionNode = scenarioNode;
-                    }
-                    else
-                        throw new NotImplementedException();
+	                if (scenarioNode != null)
+	                {
+		                var scenarioLine = scenarioNode.GetToken(TokenType.ScenarioLine);
 
-                    var description = scenarioDefinitionNode.GetSingle<string>(RuleType.Description);
-                    var steps = scenarioDefinitionNode.GetItems<Step>(RuleType.Step).ToArray();
+						var description = GetDescription(scenarioNode);
+						var steps = GetSteps(scenarioNode);
 
-                    return new Scenario(tags, GetLocation(scenarioDefinitionLine), scenarioDefinitionLine.MatchedKeyword, scenarioDefinitionLine.Text, description, steps);
+						return new Scenario(tags, GetLocation(scenarioLine), scenarioLine.MatchedKeyword, scenarioLine.Text, description, steps);
+					}
+	                else
+	                {
+						var scenarioOutlineNode = node.GetSingle<AstNode>(RuleType.ScenarioOutline);
+						if (scenarioOutlineNode == null)
+							throw new InvalidOperationException("Internal gramar error");
+						var scenarioOutlineLine = scenarioOutlineNode.GetToken(TokenType.ScenarioOutlineLine);
+
+						var description = GetDescription(scenarioOutlineNode);
+						var steps = GetSteps(scenarioOutlineNode);
+						var examples = scenarioOutlineNode.GetItems<Examples>(RuleType.Examples).ToArray();
+
+		                return new ScenarioOutline(tags, GetLocation(scenarioOutlineLine), scenarioOutlineLine.MatchedKeyword, scenarioOutlineLine.Text, description, steps, examples);
+					}
                 }
+				case RuleType.Examples:
+	            {
+					var tags = new Tag[0]; //TODO
+					var examplesLine = node.GetToken(TokenType.ExamplesLine);
+					var description = GetDescription(node);
+
+		            var allRows = GetTableRows(node);
+		            var header = allRows.First();
+		            var rows = allRows.Skip(1).ToArray();
+		            return new Examples(tags, GetLocation(examplesLine), examplesLine.MatchedKeyword, examplesLine.Text, description, header, rows);
+	            }
                 case RuleType.Description:
                 {
                     var lineTokens = node.GetTokens(TokenType.Other);
                     string description =
                         string.Join(Environment.NewLine, lineTokens.Select(lt => lt.Text))
                             .TrimEnd();
-                    return description;
+                    return string.IsNullOrWhiteSpace(description) ? null : description;
                 }
                 case RuleType.Feature_File:
                 {
@@ -102,7 +120,7 @@ namespace Gherkin
                     var header = node.GetSingle<AstNode>(RuleType.Feature_Header);
                     var featureLine = header.GetToken(TokenType.FeatureLine);
                     var scenariodefinitions = node.GetItems<ScenarioDefinition>(RuleType.Scenario_Base).ToArray();
-                    var description = header.GetSingle<string>(RuleType.Description);
+                    var description = GetDescription(header);
 
                     return new Feature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.Text, description, scenariodefinitions);
                 }
@@ -111,7 +129,29 @@ namespace Gherkin
             return node;
         }
 
-        public object GetResult()
+	    private TableRow[] GetTableRows(AstNode node)
+	    {
+		    return node.GetTokens(TokenType.TableRow).Select(token => new TableRow(GetLocation(token), GetCells(token))).ToArray();
+	    }
+
+	    private TableCell[] GetCells(Token tableRowToken)
+	    {
+		    return tableRowToken.Items
+				.Select(i => new TableCell(i, GetLocation(tableRowToken, 0 /*TODO*/)))
+				.ToArray();
+	    }
+
+	    private static Step[] GetSteps(AstNode scenarioDefinitionNode)
+	    {
+		    return scenarioDefinitionNode.GetItems<Step>(RuleType.Step).ToArray();
+	    }
+
+	    private static string GetDescription(AstNode scenarioDefinitionNode)
+	    {
+		    return scenarioDefinitionNode.GetSingle<string>(RuleType.Description);
+	    }
+
+	    public object GetResult()
         {
             return CurrentNode.First();
         }
