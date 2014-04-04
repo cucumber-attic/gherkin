@@ -1,18 +1,5 @@
-[Feature_File
-	[Feature_Header
-		Gherkin.Token
-		[Description
-			Gherkin.Token
-			Gherkin.Token
-		]
-	]
-	[Scenario_Base
-		[Scenario
-			Gherkin.Token
-			[Step
-				Gherkin.Token
-			]
-		]
-	]
-	Gherkin.Token
-]
+Feature: Minimal
+This is a description
+
+Scenario: minimalistic
+  Given the minimalism
