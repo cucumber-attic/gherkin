@@ -49,11 +49,11 @@ namespace Gherkin.Specs
             FormatHasDescription(scenarioDefinition, result);
             foreach (var step in scenarioDefinition.Steps)
                 FormatStep(step, result);
+			result.AppendLine();
 
 	        var scenarioOutline = scenarioDefinition as ScenarioOutline;
 	        if (scenarioOutline != null)
 	        {
-		        result.AppendLine();
 		        foreach (var examples in scenarioOutline.Examples)
 		        {
 			        FormatTags(examples, result);
@@ -85,7 +85,9 @@ namespace Gherkin.Specs
 
 	    private void FormatTags(IHasTags hasTags, StringBuilder result)
 	    {
-		    //TODO: tags
+			if (!hasTags.Tags.Any())
+				return;
+		    result.AppendLine(string.Join(" ", hasTags.Tags.Select(t => t.Value)));
 	    }
 
 	    private const string INDENT = "  ";
