@@ -19,7 +19,7 @@ namespace Gherkin.Specs
 
             var featureFileFolder = Path.GetDirectoryName(testFeatureFile);
             Debug.Assert(featureFileFolder != null);
-            var expectedAstFile = Path.Combine(featureFileFolder, "expected_result", Path.GetFileName(testFeatureFile) + ".result");
+            var expectedAstFile = testFeatureFile + ".ast";
 
             var parser = new Parser();
             var parsingResult = parser.Parse(testFeatureFile);
