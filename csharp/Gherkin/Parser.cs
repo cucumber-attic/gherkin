@@ -45,7 +45,7 @@ Scenario_Base, // Scenario_Base! := Tags? (Scenario | ScenarioOutline)
 Scenario, // Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
 ScenarioOutline, // ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples+
 Examples, // Examples! [#Empty|#Comment|#TagLine-&gt;#ExamplesLine] := Tags? #ExamplesLine Examples_Description Examples_Table
-Examples_Table, // Examples_Table! := #TableRow+
+Examples_Table, // Examples_Table := #TableRow+
 Scenario_Step, // Scenario_Step := Step
 ScenarioOutline_Step, // ScenarioOutline_Step := Step
 Step, // Step! := #StepLine Step_Arg?
@@ -1775,7 +1775,6 @@ Description, // Description! := (#Empty | #Other)+
 			if (	context.TokenMatcher.Match_TableRow(token)
 )
 			{
-				StartRule(context, RuleType.Examples_Table);
 				Build(context, token);
 				return 25;
 			}
@@ -1815,7 +1814,6 @@ Description, // Description! := (#Empty | #Other)+
 )
 			{
 				EndRule(context, RuleType.Description);
-				StartRule(context, RuleType.Examples_Table);
 				Build(context, token);
 				return 25;
 			}
@@ -1846,7 +1844,6 @@ Description, // Description! := (#Empty | #Other)+
 			if (	context.TokenMatcher.Match_TableRow(token)
 )
 			{
-				StartRule(context, RuleType.Examples_Table);
 				Build(context, token);
 				return 25;
 			}
@@ -1871,7 +1868,6 @@ Description, // Description! := (#Empty | #Other)+
 			if (	context.TokenMatcher.Match_EOF(token)
 )
 			{
-				EndRule(context, RuleType.Examples_Table);
 				EndRule(context, RuleType.Examples);
 				EndRule(context, RuleType.ScenarioOutline);
 				EndRule(context, RuleType.Scenario_Base);
@@ -1889,7 +1885,6 @@ Description, // Description! := (#Empty | #Other)+
 			{
 				if (LookAhead_0(context, token))
 				{
-				EndRule(context, RuleType.Examples_Table);
 				EndRule(context, RuleType.Examples);
 				StartRule(context, RuleType.Examples);
 				StartRule(context, RuleType.Tags);
@@ -1900,7 +1895,6 @@ Description, // Description! := (#Empty | #Other)+
 			if (	context.TokenMatcher.Match_TagLine(token)
 )
 			{
-				EndRule(context, RuleType.Examples_Table);
 				EndRule(context, RuleType.Examples);
 				EndRule(context, RuleType.ScenarioOutline);
 				EndRule(context, RuleType.Scenario_Base);
@@ -1912,7 +1906,6 @@ Description, // Description! := (#Empty | #Other)+
 			if (	context.TokenMatcher.Match_ExamplesLine(token)
 )
 			{
-				EndRule(context, RuleType.Examples_Table);
 				EndRule(context, RuleType.Examples);
 				StartRule(context, RuleType.Examples);
 				Build(context, token);
@@ -1921,7 +1914,6 @@ Description, // Description! := (#Empty | #Other)+
 			if (	context.TokenMatcher.Match_ScenarioLine(token)
 )
 			{
-				EndRule(context, RuleType.Examples_Table);
 				EndRule(context, RuleType.Examples);
 				EndRule(context, RuleType.ScenarioOutline);
 				EndRule(context, RuleType.Scenario_Base);
@@ -1933,7 +1925,6 @@ Description, // Description! := (#Empty | #Other)+
 			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
 )
 			{
-				EndRule(context, RuleType.Examples_Table);
 				EndRule(context, RuleType.Examples);
 				EndRule(context, RuleType.ScenarioOutline);
 				EndRule(context, RuleType.Scenario_Base);
