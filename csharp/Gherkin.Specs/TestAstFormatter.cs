@@ -65,11 +65,18 @@ namespace Gherkin.Specs
         public void FormatFeature(Feature feature, StringBuilder result)
         {
             FormatHasDescription(feature, result);
+            result.AppendLine();
+            //TODO: background
+            foreach (var scenarioDefinition in feature.ScenarioDefinitions)
+            {
+                FormatScenarioDefinition(scenarioDefinition, result);
+            }
         }
 
         private void FormatHasDescription(IHasDescription hasDescription, StringBuilder result)
         {
             result.AppendFormat("{0}: {1}", hasDescription.Keyword, hasDescription.Title);
+            result.AppendLine();
             if (hasDescription.Description != null)
                 result.AppendLine(hasDescription.Description);
         }

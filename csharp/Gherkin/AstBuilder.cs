@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Gherkin.Ast;
 
 namespace Gherkin
@@ -28,17 +26,22 @@ namespace Gherkin
                     CurrentNode.AddRange(RuleType._TagLine, token.Items.Select(tv => new Tag(tv, GetLocation(token, 1 /* TODO: get item location */))));
                     break;
 
+                case TokenType.Empty:
+                {
+                    CurrentNode.Add(RuleType._Other, token);
+                    break;
+                }
 
                 default:
                     CurrentNode.Add((RuleType)token.MatchedType, token);
-                    //CurrentNode.Add(token);
                     break;
             }
         }
 
         private Location GetLocation(Token token, int column = 0)
         {
-            return new Location();
+            column = column == 0 ? token.Indent : column;
+            return new Location("TODO", token.Line.LineNumber, column);
         }
 
         public void StartRule(RuleType ruleType)
@@ -66,22 +69,42 @@ namespace Gherkin
                 {
                     var tags = new Tag[0]; //TODO
 
-                    Token header;
-                    AstNode scenarioDefinition;
+                    Token scenarioDefinitionLine;
+                    AstNode scenarioDefinitionNode;
 
-                    var scenario = node.GetSingle<AstNode>(RuleType.Scenario);
-                    if (scenario != null)
+                    var scenarioNode = node.GetSingle<AstNode>(RuleType.Scenario);
+                    if (scenarioNode != null)
                     {
-                        header = scenario.GetToken(TokenType.ScenarioLine);
-                        scenarioDefinition = scenario;
+                        scenarioDefinitionLine = scenarioNode.GetToken(TokenType.ScenarioLine);
+                        scenarioDefinitionNode = scenarioNode;
                     }
                     else
                         throw new NotImplementedException();
 
-                    var description = ""; //TODO
-                    var steps = scenarioDefinition.GetItems<Step>(RuleType.Step).ToArray();
+                    var description = scenarioDefinitionNode.GetSingle<string>(RuleType.Description);
+                    var steps = scenarioDefinitionNode.GetItems<Step>(RuleType.Step).ToArray();
 
-                    return new Scenario(tags, GetLocation(header), header.MatchedKeyword, header.Text, description, steps);
+                    return new Scenario(tags, GetLocation(scenarioDefinitionLine), scenarioDefinitionLine.MatchedKeyword, scenarioDefinitionLine.Text, description, steps);
+                }
+                case RuleType.Description:
+                {
+                    var lineTokens = node.GetTokens(TokenType.Other);
+                    string description =
+                        string.Join(Environment.NewLine, lineTokens.Select(lt => lt.Text))
+                            .TrimEnd();
+                    return description;
+                }
+                case RuleType.Feature_File:
+                {
+                    var tags = new Tag[0]; //TODO
+                    var language = "en"; //TODO
+
+                    var header = node.GetSingle<AstNode>(RuleType.Feature_Header);
+                    var featureLine = header.GetToken(TokenType.FeatureLine);
+                    var scenariodefinitions = node.GetItems<ScenarioDefinition>(RuleType.Scenario_Base).ToArray();
+                    var description = header.GetSingle<string>(RuleType.Description);
+
+                    return new Feature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.Text, description, scenariodefinitions);
                 }
             }
 

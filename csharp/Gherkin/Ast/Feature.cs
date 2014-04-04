@@ -12,6 +12,17 @@ namespace Gherkin.Ast
         public string Title { get; private set; }
         public string Description { get; private set; }
         public ScenarioDefinition[] ScenarioDefinitions { get; private set; }
+
+        public Feature(Tag[] tags, Location location, string language, string keyword, string title, string description, ScenarioDefinition[] scenarioDefinitions)
+        {
+            Tags = tags;
+            Location = location;
+            Language = language;
+            Keyword = keyword;
+            Title = title;
+            Description = description;
+            ScenarioDefinitions = scenarioDefinitions;
+        }
     }
 
     public class Background : IHasLocation, IHasDescription, IHasSteps
@@ -167,5 +178,12 @@ namespace Gherkin.Ast
         public string FilePath { get; private set; }
         public int Line { get; private set; }
         public int Column { get; private set; }
+
+        public Location(string filePath, int line = 0, int column = 0)
+        {
+            FilePath = filePath;
+            Line = line;
+            Column = column;
+        }
     }
 }

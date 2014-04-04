@@ -17,6 +17,11 @@ namespace Gherkin
             return GetSingle<Token>((RuleType)tokenType);
         }
 
+        public IEnumerable<Token> GetTokens(TokenType tokenType)
+        {
+            return GetItems<Token>((RuleType)tokenType);
+        }
+
         public T GetSingle<T>(RuleType ruleType)
         {
             return GetItems<T>(ruleType).SingleOrDefault();
