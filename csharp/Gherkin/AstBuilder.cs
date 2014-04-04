@@ -5,7 +5,7 @@ using Gherkin.Ast;
 
 namespace Gherkin
 {
-    public class AstBuilder
+    public class AstBuilder : IAstBuilder
     {
         private readonly Stack<AstNode> stack = new Stack<AstNode>();
         private AstNode CurrentNode { get { return stack.Peek(); } }
@@ -44,7 +44,7 @@ namespace Gherkin
 		    CurrentNode.Add(node.RuleType, transformedNode);
 	    }
 
-		public Feature GetResult()
+		public object GetResult()
 		{
 			return CurrentNode.GetSingle<Feature>(RuleType.Feature_File);
 		}
@@ -125,7 +125,7 @@ namespace Gherkin
 	    private Location GetLocation(Token token, int column = 0)
 	    {
 		    column = column == 0 ? token.Indent : column;
-		    return new Location("TODO", token.Line.LineNumber, column);
+		    return new Location("TODO", token.Line.LineNumber + 1, column);
 	    }
 
 	    private Tag[] GetTags(AstNode node)

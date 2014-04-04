@@ -106,7 +106,7 @@ Description, // Description! := (#Empty | #Other)+
 		{
 			public TokenScanner TokenScanner { get; set; }
 			public TokenMatcher TokenMatcher { get; set; }
-			public AstBuilder Builder { get; set; }
+			public IAstBuilder Builder { get; set; }
 			public Queue<Token> TokenQueue { get; set; }
 			public List<ParserError> Errors { get; set; }
 		}
@@ -125,7 +125,7 @@ Description, // Description! := (#Empty | #Other)+
 			this.ParserMessageProvider = parserMessageProvider;
 		}
 
-        public object Parse(TokenScanner tokenScanner, TokenMatcher tokenMatcher, AstBuilder astBuilder)
+        public object Parse(TokenScanner tokenScanner, TokenMatcher tokenMatcher, IAstBuilder astBuilder)
 		{
 			var context = new ParserContext
 			{
@@ -2374,5 +2374,13 @@ Description, // Description! := (#Empty | #Other)+
 			return match;
 		}
 		
+	}
+
+	public partial interface IAstBuilder 
+	{
+		void Build(Token token);
+		void StartRule(RuleType ruleType);
+		void EndRule(RuleType ruleType);
+		object GetResult();
 	}
 }

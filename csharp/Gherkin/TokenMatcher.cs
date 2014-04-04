@@ -65,6 +65,7 @@ namespace Gherkin
                     token.MatchedType = tokenType;
                     token.MatchedKeyword = keyword;
                     token.Text = token.Line.GetRestTrimmed(keyword.Length + 1);
+	                token.Indent = token.Line.Indent;
                     languageChangeAllowed = false;
                     return true;
                 }
@@ -78,6 +79,7 @@ namespace Gherkin
             {
                 token.MatchedType = TokenType.TagLine;
                 token.Items = token.Line.GetTags().ToArray();
+	            token.Indent = token.Line.Indent;
                 languageChangeAllowed = false;
 
                 return true;
@@ -154,6 +156,7 @@ namespace Gherkin
                     token.MatchedType = TokenType.StepLine;
                     token.MatchedKeyword = keyword;
                     token.Text = token.Line.GetRestTrimmed(keyword.Length);
+	                token.Indent = token.Line.Indent;
                     return true;
                 }
             }
@@ -166,6 +169,7 @@ namespace Gherkin
             {
                 token.MatchedType = TokenType.TableRow;
                 token.Items = token.Line.GetTableCells().ToArray();
+				token.Indent = token.Line.Indent;
                 return true;
             }
             return false;
