@@ -13,7 +13,7 @@ namespace Gherkin.Specs
     public class AstBuildingTests
     {
         [Test, TestCaseSource(typeof(TestFileProvider), "GetValidTestFiles")]
-        public void TestSuccessfulParsing(string testFeatureFile)
+        public void TestSuccessfulAstBuilding(string testFeatureFile)
         {
             Console.WriteLine(testFeatureFile);
 
