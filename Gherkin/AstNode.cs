@@ -62,30 +62,14 @@ namespace Gherkin
             this.RuleType = ruleType;
         }
 
-        IEnumerator<object> IEnumerable<object>.GetEnumerator()
+        public IEnumerator<object> GetEnumerator()
         {
             return subItems.SelectMany(si => si.Value).GetEnumerator();
         }
 
-        public override string ToString()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return InternalToString("");
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return subItems.SelectMany(si => si.Value).GetEnumerator();
-        }
-
-        private string InternalToString(string indent)
-        {
-            var subIndent = indent + "\t";
-            var result = new StringBuilder();
-            result.AppendLine(indent + "[" + RuleType);
-            foreach (var subItem in this)
-                result.AppendLine(subItem is AstNode ? ((AstNode)subItem).InternalToString(subIndent) : (subIndent + subItem.ToString()));
-            result.Append(indent + "]");
-            return result.ToString();
+            return GetEnumerator();
         }
     }
 }
