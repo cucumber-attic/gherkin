@@ -108,7 +108,7 @@ namespace Gherkin
         public bool Match_Other(Token token)
         {
             token.MatchedType = TokenType.Other;
-            token.Text = token.Line.GetLineText();
+            token.Text = token.Line.GetLineText(0); //take the entire line
             return true;
         }
 
