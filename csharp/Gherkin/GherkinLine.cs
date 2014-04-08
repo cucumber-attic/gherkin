@@ -62,20 +62,20 @@ namespace Gherkin
             return trimmedLineText.Substring(length).Trim();
         }
 
-        public IEnumerable<KeyValuePair<int, string>> GetTags()
+		public IEnumerable<GherkinLineSpan> GetTags()
         {
 	        int position = Indent;
 	        foreach (string item in trimmedLineText.Split())
 	        {
 		        if (item.Length > 0)
 		        {
-			        yield return new KeyValuePair<int, string>(position, item);
+					yield return new GherkinLineSpan(position + 1, item);
 			        position += item.Length;
 		        }
 		        position++; // separator
 	        }
         }
-		public IEnumerable<KeyValuePair<int, string>> GetTableCells()
+		public IEnumerable<GherkinLineSpan> GetTableCells()
 		{
 			int position = Indent;
 			string[] items = trimmedLineText.Split(TABLE_CELL_SEPARATOR);
@@ -91,7 +91,7 @@ namespace Gherkin
 					if (cellText.Length == 0)
 						cellPosition = position;
 
-					yield return new KeyValuePair<int, string>(cellPosition, cellText);
+					yield return new GherkinLineSpan(cellPosition + 1, cellText);
 				}
 
 				isBeforeFirst = false;
