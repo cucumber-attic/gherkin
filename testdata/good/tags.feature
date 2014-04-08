@@ -7,7 +7,7 @@ Feature: Minimal Scenario Outline
 Scenario: minimalistic
     Given the minimalism
 
-@so_tag1 @so_tag2
+@so_tag1  @so_tag2  
   @so_tag3
 Scenario Outline: minimalistic outline
     Given the <what>
