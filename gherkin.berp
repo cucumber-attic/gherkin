@@ -6,13 +6,13 @@
 ]
 
 
-Feature_File! := Feature_Header Background? Scenario_Base*
+Feature_File! := Feature_Header Background? Scenario_Definition*
 Feature_Header! := Tags? #FeatureLine Feature_Description
 
 Background! := #BackgroundLine Background_Description Scenario_Step*
 
 // we could avoid defining Scenario_Base, but that would require regular look-aheads, so worse performance
-Scenario_Base! := Tags? (Scenario | ScenarioOutline)
+Scenario_Definition! := Tags? (Scenario | ScenarioOutline)
 
 Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
 
@@ -33,7 +33,6 @@ DataTable! := #TableRow+
 DocString! := (DocString_QuoteSepatator | DocString_AlternativeSepatator)
 DocString_QuoteSepatator := #DocStringSeparator (#Empty | #Other)* #DocStringSeparator
 DocString_AlternativeSepatator := #DocStringAlternativeSeparator (#Empty | #Other)* #DocStringAlternativeSeparator
-
 
 Tags! := #TagLine+
 
