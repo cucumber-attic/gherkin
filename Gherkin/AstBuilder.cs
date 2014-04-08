@@ -136,7 +136,7 @@ namespace Gherkin
 
 		    return tagsNode.GetTokens(TokenType.TagLine)
 				.SelectMany(t => t.Items, (t, tagItem) =>
-					new Tag(tagItem.Value, GetLocation(t, tagItem.Key + 1)))
+					new Tag(tagItem.Text, GetLocation(t, tagItem.Column)))
 				.ToArray();
 	    }
 
@@ -148,7 +148,7 @@ namespace Gherkin
 	    private TableCell[] GetCells(Token tableRowToken)
 	    {
 		    return tableRowToken.Items
-				.Select(cellItem => new TableCell(cellItem.Value, GetLocation(tableRowToken, cellItem.Key + 1)))
+				.Select(cellItem => new TableCell(cellItem.Text, GetLocation(tableRowToken, cellItem.Column)))
 				.ToArray();
 	    }
 

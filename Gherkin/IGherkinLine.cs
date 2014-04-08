@@ -65,12 +65,12 @@ namespace Gherkin
         /// Tries parsing the line as a tag list, and returns the tags wihtout the leading '@' characters.
         /// </summary>
         /// <returns>(position,text) pairs, position is 0-based index</returns>
-        IEnumerable<KeyValuePair<int, string>> GetTags();
+		IEnumerable<GherkinLineSpan> GetTags();
 
         /// <summary>
         /// Tries parsing the line as table row and returns the trimmed cell values.
         /// </summary>
 		/// <returns>(position,text) pairs, position is 0-based index</returns>
-		IEnumerable<KeyValuePair<int, string>> GetTableCells();
+		IEnumerable<GherkinLineSpan> GetTableCells();
     }
 }

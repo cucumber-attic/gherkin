@@ -11,7 +11,7 @@ namespace Gherkin
         public TokenType MatchedType { get; set; }
         public string MatchedKeyword { get; set; }
         public string Text { get; set; }
-        public KeyValuePair<int, string>[] Items { get; set; }
+        public GherkinLineSpan[] Items { get; set; }
         public int Indent { get; set; }
 
         public Token(IGherkinLine line)

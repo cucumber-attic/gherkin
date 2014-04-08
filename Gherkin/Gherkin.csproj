@@ -70,6 +70,7 @@
     <Compile Include="GherkinDialect.cs" />
     <Compile Include="GherkinDialectProvider.cs" />
     <Compile Include="GherkinLine.cs" />
+    <Compile Include="GherkinLineSpan.cs" />
     <Compile Include="IGherkinLine.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="ParserMessageProvider.cs" />
