@@ -58,7 +58,7 @@ namespace Gherkin
                     var stepLine = node.GetToken(TokenType.StepLine);
                     return new Step(stepLine.MatchedKeyword, stepLine.Text, new EmptyStepArgument(), GetLocation(stepLine));
                 }
-                case RuleType.Scenario_Base:
+                case RuleType.Scenario_Definition:
                 {
 					var tags = GetTags(node);
 
@@ -112,7 +112,7 @@ namespace Gherkin
                     var header = node.GetSingle<AstNode>(RuleType.Feature_Header);
 					var tags = GetTags(header);
 					var featureLine = header.GetToken(TokenType.FeatureLine);
-                    var scenariodefinitions = node.GetItems<ScenarioDefinition>(RuleType.Scenario_Base).ToArray();
+					var scenariodefinitions = node.GetItems<ScenarioDefinition>(RuleType.Scenario_Definition).ToArray();
                     var description = GetDescription(header);
 
                     return new Feature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.Text, description, scenariodefinitions);
