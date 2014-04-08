@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gherkin
 {
     public class GherkinLine : IGherkinLine
     {
         private const char TITLE_KEYWORD_SEPARATOR = ':';
+        private const char TABLE_CELL_SEPARATOR = '|';
 
-        private string lineText;
-        private string trimmedLineText;
+        private readonly string lineText;
+        private readonly string trimmedLineText;
         public int LineNumber { get; private set; }
 
         public GherkinLine(string line, int lineNumber)
@@ -63,16 +62,51 @@ namespace Gherkin
             return trimmedLineText.Substring(length).Trim();
         }
 
-        public IEnumerable<string> GetTags()
+        public IEnumerable<KeyValuePair<int, string>> GetTags()
         {
-	        return trimmedLineText
-		        .Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
+	        int position = Indent;
+	        foreach (string item in trimmedLineText.Split())
+	        {
+		        if (item.Length > 0)
+		        {
+			        yield return new KeyValuePair<int, string>(position, item);
+			        position += item.Length;
+		        }
+		        position++; // separator
+	        }
         }
+		public IEnumerable<KeyValuePair<int, string>> GetTableCells()
+		{
+			int position = Indent;
+			string[] items = trimmedLineText.Split(TABLE_CELL_SEPARATOR);
+			bool isBeforeFirst = true;
+			foreach (var item in items.Take(items.Length - 1)) // skipping the one after last
+			{
+				if (!isBeforeFirst)
+				{
+					int trimmedStart;
+					var cellText = Trim(item, out trimmedStart);
+					var cellPosition = position + trimmedStart;
 
-        public IEnumerable<string> GetTableCells()
-        {
-            var parts = lineText.Split('|');
-            return parts.Skip(1).Take(parts.Length - 2).Select(cv => cv.Trim());
-        }
+					if (cellText.Length == 0)
+						cellPosition = position;
+
+					yield return new KeyValuePair<int, string>(cellPosition, cellText);
+				}
+
+				isBeforeFirst = false;
+				position += item.Length;
+				position++; // separator
+			}
+		}
+
+	    private string Trim(string s, out int trimmedStart)
+	    {
+		    trimmedStart = 0;
+		    while (trimmedStart < s.Length && char.IsWhiteSpace(s[trimmedStart]))
+			    trimmedStart++;
+
+		    return s.Trim();
+	    }
     }
 }

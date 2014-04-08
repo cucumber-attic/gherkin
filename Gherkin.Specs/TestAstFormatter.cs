@@ -7,6 +7,8 @@ namespace Gherkin.Specs
 {
     public class TestAstFormatter
     {
+		public bool IncludePositions { get; set; }
+
         public string FormatAst(Feature feature)
         {
             var result = new StringBuilder();
@@ -106,10 +108,10 @@ namespace Gherkin.Specs
 
 	    private void FormatHasLocation(IHasLocation hasLocation, StringBuilder result)
 	    {
-		    if (hasLocation == null)
+		    if (hasLocation == null || !IncludePositions)
 				return;
 
-		    result.AppendFormat("({0}:{1})", hasLocation.Location.Line, hasLocation.Location.Column);
+			result.AppendFormat("({0}:{1})", hasLocation.Location.Line, hasLocation.Location.Column);
 	    }
     }
 }
