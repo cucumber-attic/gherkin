@@ -8,6 +8,7 @@ namespace Gherkin
         private readonly GherkinDialectProvider dialectProvider;
         private GherkinDialect currentDialect;
 		private string activeDocStringSeparator = null;
+		private int indentToRemove = 0;
 
         public TokenMatcher(GherkinDialectProvider dialectProvider = null)
         {
@@ -38,7 +39,7 @@ namespace Gherkin
 
 		public bool Match_Other(Token token)
 		{
-			var text = token.Line.GetLineText(0); //take the entire line
+			var text = token.Line.GetLineText(indentToRemove); //take the entire line, except removing DocString indents
 			SetTokenMatched(token, TokenType.Other, text, indent: 0);
 			return true;
 		}
@@ -148,10 +149,12 @@ namespace Gherkin
 				{
 					contentType = token.Line.GetRestTrimmed(separator.Length);
 					activeDocStringSeparator = separator;
+					indentToRemove = token.Line.Indent;
 				}
 				else
 				{
 					activeDocStringSeparator = null;
+					indentToRemove = 0;
 				}
 
 				SetTokenMatched(token, TokenType.DocStringSeparator, contentType);
