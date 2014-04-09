@@ -131,35 +131,35 @@ namespace Gherkin
 
         public bool Match_DocStringSeparator(Token token)
         {
-	        if (activeDocStringSeparator == null)
-	        {
-		        // opening
-		        if (token.Line.StartsWith(GherkinLanguageConstants.DOCSTRING_SEPARATOR))
-		        {
-			        activeDocStringSeparator = GherkinLanguageConstants.DOCSTRING_SEPARATOR;
-					var contentType = token.Line.GetRestTrimmed(activeDocStringSeparator.Length);
-					SetTokenMatched(token, TokenType.DocStringSeparator, contentType);
-					return true;
+	        return activeDocStringSeparator == null 
+				// open
+		        ? Match_DocStringSeparator(token, GherkinLanguageConstants.DOCSTRING_SEPARATOR, true) ||
+		          Match_DocStringSeparator(token, GherkinLanguageConstants.DOCSTRING_ALTERNATIVE_SEPARATOR, true)
+				// close
+		        : Match_DocStringSeparator(token, activeDocStringSeparator, false);
+        }
+
+		private bool Match_DocStringSeparator(Token token, string separator, bool isOpen)
+		{
+			if (token.Line.StartsWith(separator))
+			{
+				string contentType = null;
+				if (isOpen)
+				{
+					contentType = token.Line.GetRestTrimmed(separator.Length);
+					activeDocStringSeparator = separator;
 				}
-		        if (token.Line.StartsWith(GherkinLanguageConstants.DOCSTRING_ALTERNATIVE_SEPARATOR))
-		        {
-					activeDocStringSeparator = GherkinLanguageConstants.DOCSTRING_ALTERNATIVE_SEPARATOR;
-					var contentType = token.Line.GetRestTrimmed(activeDocStringSeparator.Length);
-					SetTokenMatched(token, TokenType.DocStringSeparator, contentType);
-					return true;
-				}
-	        }
-	        else
-	        {
-				if (token.Line.StartsWith(activeDocStringSeparator))
+				else
 				{
 					activeDocStringSeparator = null;
-					SetTokenMatched(token, TokenType.DocStringSeparator);
-					return true;
 				}
+
+				SetTokenMatched(token, TokenType.DocStringSeparator, contentType);
+				return true;
 			}
-	        return false;
-        }
+			return false;
+		}
+
 
 		public bool Match_StepLine(Token token)
         {
