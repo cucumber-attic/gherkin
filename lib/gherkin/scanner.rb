@@ -84,6 +84,10 @@ module Gherkin
       token.trimmed_line.start_with?('#')
     end
 
+    def match_Language(token)
+      token.trimmed_line.start_with?('#language:')
+    end
+
     def match_DocStringSeparator(token)
       token.trimmed_line.start_with?('"""')
     end
