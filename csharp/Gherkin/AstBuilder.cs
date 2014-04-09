@@ -58,6 +58,11 @@ namespace Gherkin
 		
 					return new DocString(GetLocation(separatorToken), contentType, content);
 	            }
+				case RuleType.DataTable:
+	            {
+					var rows = GetTableRows(node);
+		            return new DataTable(rows[0].Location, rows);
+	            }
 				case RuleType.Background:
 	            {
 		            var backgroundLine = node.GetToken(TokenType.BackgroundLine);
