@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Gherkin.Ast
@@ -9,7 +10,7 @@ namespace Gherkin.Ast
 		public string Keyword { get; private set; }
 		public string Title { get; private set; }
 		public string Description { get; private set; }
-		public Step[] Steps { get; private set; }
+		public IEnumerable<Step> Steps { get; private set; }
 
 		public Background(Location location, string keyword, string title, string description, Step[] steps)
 		{
