@@ -102,7 +102,7 @@ namespace Gherkin
                     var lineTokens = node.GetTokens(TokenType.Other);
                     string description =
                         string.Join(Environment.NewLine, lineTokens.Select(lt => lt.Text))
-                            .TrimEnd();
+                            .Trim(new [] { '\r', '\n'});
                     return string.IsNullOrWhiteSpace(description) ? null : description;
                 }
                 case RuleType.Feature_File:
