@@ -45,14 +45,14 @@ namespace Gherkin
                 {
                     var stepLine = node.GetToken(TokenType.StepLine);
 					//TODO: step arguments
-                    return new Step(stepLine.MatchedKeyword, stepLine.Text, new EmptyStepArgument(), GetLocation(stepLine));
+                    return new Step(stepLine.MatchedKeyword, stepLine.MatchedText, new EmptyStepArgument(), GetLocation(stepLine));
                 }
 				case RuleType.Background:
 	            {
 		            var backgroundLine = node.GetToken(TokenType.BackgroundLine);
 					var description = GetDescription(node);
 					var steps = GetSteps(node);
-					return new Background(GetLocation(backgroundLine), backgroundLine.MatchedKeyword, backgroundLine.Text, description, steps);
+					return new Background(GetLocation(backgroundLine), backgroundLine.MatchedKeyword, backgroundLine.MatchedText, description, steps);
 	            }
                 case RuleType.Scenario_Definition:
                 {
@@ -66,7 +66,7 @@ namespace Gherkin
 						var description = GetDescription(scenarioNode);
 						var steps = GetSteps(scenarioNode);
 
-						return new Scenario(tags, GetLocation(scenarioLine), scenarioLine.MatchedKeyword, scenarioLine.Text, description, steps);
+						return new Scenario(tags, GetLocation(scenarioLine), scenarioLine.MatchedKeyword, scenarioLine.MatchedText, description, steps);
 					}
 	                else
 	                {
@@ -79,7 +79,7 @@ namespace Gherkin
 						var steps = GetSteps(scenarioOutlineNode);
 						var examples = scenarioOutlineNode.GetItems<Examples>(RuleType.Examples).ToArray();
 
-		                return new ScenarioOutline(tags, GetLocation(scenarioOutlineLine), scenarioOutlineLine.MatchedKeyword, scenarioOutlineLine.Text, description, steps, examples);
+		                return new ScenarioOutline(tags, GetLocation(scenarioOutlineLine), scenarioOutlineLine.MatchedKeyword, scenarioOutlineLine.MatchedText, description, steps, examples);
 					}
                 }
 				case RuleType.Examples:
@@ -91,7 +91,7 @@ namespace Gherkin
 		            var allRows = GetTableRows(node);
 		            var header = allRows.First();
 		            var rows = allRows.Skip(1).ToArray();
-		            return new Examples(tags, GetLocation(examplesLine), examplesLine.MatchedKeyword, examplesLine.Text, description, header, rows);
+		            return new Examples(tags, GetLocation(examplesLine), examplesLine.MatchedKeyword, examplesLine.MatchedText, description, header, rows);
 	            }
                 case RuleType.Description:
                 {
@@ -100,7 +100,7 @@ namespace Gherkin
 					// we need to trim tailing empty lines
 	                lineTokens = lineTokens.Reverse().SkipWhile(t => t.Line.IsEmpty()).Reverse();
 
-                    return string.Join(Environment.NewLine, lineTokens.Select(lt => lt.Text));
+                    return string.Join(Environment.NewLine, lineTokens.Select(lt => lt.MatchedText));
                 }
                 case RuleType.Feature:
 	            {
@@ -113,7 +113,7 @@ namespace Gherkin
 					var scenariodefinitions = node.GetItems<ScenarioDefinition>(RuleType.Scenario_Definition).ToArray();
                     var description = GetDescription(header);
 
-                    return new Feature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.Text, description, background, scenariodefinitions);
+                    return new Feature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.MatchedText, description, background, scenariodefinitions);
                 }
             }
 
@@ -122,7 +122,7 @@ namespace Gherkin
 
 	    private Location GetLocation(Token token, int column = 0)
 	    {
-		    column = column == 0 ? token.Indent + 1 : column;
+		    column = column == 0 ? token.MatchedIndent + 1 : column;
 		    return new Location(token.Line.LineNumber, column);
 	    }
 
@@ -133,7 +133,7 @@ namespace Gherkin
 				return new Tag[0];
 
 		    return tagsNode.GetTokens(TokenType.TagLine)
-				.SelectMany(t => t.Items, (t, tagItem) =>
+				.SelectMany(t => t.MathcedItems, (t, tagItem) =>
 					new Tag(tagItem.Text, GetLocation(t, tagItem.Column)))
 				.ToArray();
 	    }
@@ -145,7 +145,7 @@ namespace Gherkin
 
 	    private TableCell[] GetCells(Token tableRowToken)
 	    {
-		    return tableRowToken.Items
+		    return tableRowToken.MathcedItems
 				.Select(cellItem => new TableCell(cellItem.Text, GetLocation(tableRowToken, cellItem.Column)))
 				.ToArray();
 	    }
