@@ -78,7 +78,7 @@ namespace Gherkin.Specs
 			result.Append(INDENT);
 			FormatHasLocation(step, result);
 			result.Append(step.Keyword);
-			result.Append(step.Value);
+			result.Append(step.Text);
 			result.AppendLine();
 
 			if (step.StepArgument is DocString)
@@ -94,7 +94,7 @@ namespace Gherkin.Specs
 				result.Append(docString.ContentType);
 			result.AppendLine();
 
-			var lines = docString.Content.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+			var lines = docString.Content.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 			foreach (var line in lines)
 			{
 				result.Append(STEPARG_INDENT);

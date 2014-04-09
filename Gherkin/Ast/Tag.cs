@@ -8,7 +8,7 @@ namespace Gherkin.Ast
 		public Location Location { get; private set; }
 		public string Value { get; private set; }
 
-		public Tag(string value, Location location)
+		public Tag(Location location, string value)
 		{
 			Value = value;
 			Location = location;

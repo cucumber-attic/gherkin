@@ -47,7 +47,7 @@ namespace Gherkin
 	                var stepArg = node.GetSingle<StepArgument>(RuleType.DataTable) ??
 	                              node.GetSingle<StepArgument>(RuleType.DocString) ??
 	                              new EmptyStepArgument();
-                    return new Step(stepLine.MatchedKeyword, stepLine.MatchedText, stepArg, GetLocation(stepLine));
+                    return new Step(GetLocation(stepLine), stepLine.MatchedKeyword, stepLine.MatchedText, stepArg);
                 }
 				case RuleType.DocString:
 	            {
@@ -149,7 +149,7 @@ namespace Gherkin
 
 		    return tagsNode.GetTokens(TokenType.TagLine)
 				.SelectMany(t => t.MathcedItems, (t, tagItem) =>
-					new Tag(tagItem.Text, GetLocation(t, tagItem.Column)))
+					new Tag(GetLocation(t, tagItem.Column), tagItem.Text))
 				.ToArray();
 	    }
 
@@ -161,7 +161,7 @@ namespace Gherkin
 	    private TableCell[] GetCells(Token tableRowToken)
 	    {
 		    return tableRowToken.MathcedItems
-				.Select(cellItem => new TableCell(cellItem.Text, GetLocation(tableRowToken, cellItem.Column)))
+				.Select(cellItem => new TableCell(GetLocation(tableRowToken, cellItem.Column), cellItem.Text))
 				.ToArray();
 	    }
 

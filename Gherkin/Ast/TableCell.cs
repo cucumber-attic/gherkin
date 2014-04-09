@@ -8,7 +8,7 @@ namespace Gherkin.Ast
 		public Location Location { get; private set; }
 		public string Value { get; private set; }
 
-		public TableCell(string value, Location location)
+		public TableCell(Location location, string value)
 		{
 			Location = location;
 			this.Value = value;
