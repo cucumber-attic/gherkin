@@ -69,6 +69,7 @@
     <Compile Include="Ast\Tag.cs" />
     <Compile Include="GherkinDialect.cs" />
     <Compile Include="GherkinDialectProvider.cs" />
+    <Compile Include="GherkinLanguageConstants.cs" />
     <Compile Include="GherkinLine.cs" />
     <Compile Include="GherkinLineSpan.cs" />
     <Compile Include="IGherkinLine.cs" />

@@ -6,10 +6,7 @@ namespace Gherkin
 {
     public class GherkinLine : IGherkinLine
     {
-        private const char TITLE_KEYWORD_SEPARATOR = ':';
-        private const char TABLE_CELL_SEPARATOR = '|';
-
-        private readonly string lineText;
+	    private readonly string lineText;
         private readonly string trimmedLineText;
         public int LineNumber { get; private set; }
 
@@ -44,10 +41,15 @@ namespace Gherkin
         public bool StartsWithTitleKeyword(string text)
         {
             int textLength = text.Length;
-            return trimmedLineText.Length > textLength && 
-                trimmedLineText.StartsWith(text) && 
-                trimmedLineText[textLength] == TITLE_KEYWORD_SEPARATOR;
+	        return trimmedLineText.Length > textLength &&
+	               trimmedLineText.StartsWith(text) &&
+				   StartsWithFrom(trimmedLineText, textLength, GherkinLanguageConstants.TITLE_KEYWORD_SEPARATOR);
         }
+
+	    private static bool StartsWithFrom(string text, int textIndex, string value)
+	    {
+			return string.CompareOrdinal(text, textIndex, value, 0, value.Length) == 0;
+	    }
 
         public string GetLineText(int indentToRemove = -1)
         {
@@ -78,7 +80,7 @@ namespace Gherkin
 		public IEnumerable<GherkinLineSpan> GetTableCells()
 		{
 			int position = Indent;
-			string[] items = trimmedLineText.Split(TABLE_CELL_SEPARATOR);
+			var items = trimmedLineText.Split(new [] { GherkinLanguageConstants.TABLE_CELL_SEPARATOR }, StringSplitOptions.None);
 			bool isBeforeFirst = true;
 			foreach (var item in items.Take(items.Length - 1)) // skipping the one after last
 			{
