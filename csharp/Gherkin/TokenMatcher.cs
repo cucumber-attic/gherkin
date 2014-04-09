@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Gherkin
 {
-    public class TokenMatcher : ITokenMatcher
+	public class TokenMatcher : ITokenMatcher
     {
         private readonly GherkinDialectProvider dialectProvider;
         private GherkinDialect currentDialect;
@@ -15,11 +15,9 @@ namespace Gherkin
             currentDialect = this.dialectProvider.DefaultDialect;
         }
 
-	    private const string LANGUAGE_PREFIX = "#language:";
-
-        public bool Match_Comment(Token token)
+	    public bool Match_Comment(Token token)
         {
-			if (!token.IsEOF && token.Line.StartsWith("#"))
+			if (!token.IsEOF && token.Line.StartsWith(GherkinLanguageConstants.COMMENT_PREFIX))
             {
                 token.MatchedType = TokenType.Comment;
                 token.Text = token.Line.GetRestTrimmed(0).Substring(1);
@@ -30,9 +28,9 @@ namespace Gherkin
 
 		public bool Match_Language(Token token)
 		{
-			if (!token.IsEOF && token.Line.StartsWith(LANGUAGE_PREFIX))
+			if (!token.IsEOF && token.Line.StartsWith(GherkinLanguageConstants.LANGUAGE_PREFIX))
 			{
-				var language = token.Line.GetRestTrimmed(LANGUAGE_PREFIX.Length);
+				var language = token.Line.GetRestTrimmed(GherkinLanguageConstants.LANGUAGE_PREFIX.Length);
 				currentDialect = dialectProvider.GetDialect(language);
 
 				token.MatchedType = TokenType.Language;
@@ -87,7 +85,7 @@ namespace Gherkin
                 {
                     token.MatchedType = tokenType;
                     token.MatchedKeyword = keyword;
-                    token.Text = token.Line.GetRestTrimmed(keyword.Length + 1);
+                    token.Text = token.Line.GetRestTrimmed(keyword.Length + GherkinLanguageConstants.TITLE_KEYWORD_SEPARATOR.Length);
 	                token.Indent = token.Line.Indent;
                     return true;
                 }
@@ -97,7 +95,7 @@ namespace Gherkin
 
         public bool Match_TagLine(Token token)
         {
-			if (!token.IsEOF && token.Line.StartsWith("@"))
+			if (!token.IsEOF && token.Line.StartsWith(GherkinLanguageConstants.TAG_PREFIX))
             {
                 token.MatchedType = TokenType.TagLine;
                 token.Items = token.Line.GetTags().ToArray();
@@ -147,12 +145,12 @@ namespace Gherkin
 
         public bool Match_DocStringSeparator(Token token)
         {
-            return Match_DocStringSeparatorInternal(token, "\"\"\"", TokenType.DocStringSeparator);
+            return Match_DocStringSeparatorInternal(token, GherkinLanguageConstants.DOCSTRING_SEPARATOR, TokenType.DocStringSeparator);
         }
 
         public bool Match_DocStringAlternativeSeparator(Token token)
         {
-            return Match_DocStringSeparatorInternal(token, "```", TokenType.DocStringAlternativeSeparator);
+			return Match_DocStringSeparatorInternal(token, GherkinLanguageConstants.DOCSTRING_ALTERNATIVE_SEPARATOR, TokenType.DocStringAlternativeSeparator);
         }
 
         private bool Match_DocStringSeparatorInternal(Token token, string separator, TokenType tokenType)
@@ -186,7 +184,7 @@ namespace Gherkin
 
         public bool Match_TableRow(Token token)
         {
-            if (token.Line.StartsWith("|"))
+            if (token.Line.StartsWith(GherkinLanguageConstants.TABLE_CELL_SEPARATOR))
             {
                 token.MatchedType = TokenType.TableRow;
                 token.Items = token.Line.GetTableCells().ToArray();
