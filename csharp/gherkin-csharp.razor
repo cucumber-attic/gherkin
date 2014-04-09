@@ -90,7 +90,7 @@ namespace @Model.Namespace
 		class ParserContext
 		{
 			public TokenScanner TokenScanner { get; set; }
-			public TokenMatcher TokenMatcher { get; set; }
+			public ITokenMatcher TokenMatcher { get; set; }
 			public IAstBuilder Builder { get; set; }
 			public Queue<Token> TokenQueue { get; set; }
 			public List<ParserError> Errors { get; set; }
@@ -110,7 +110,7 @@ namespace @Model.Namespace
 			this.ParserMessageProvider = parserMessageProvider;
 		}
 
-        public object Parse(TokenScanner tokenScanner, TokenMatcher tokenMatcher, IAstBuilder astBuilder)
+        public object Parse(TokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder astBuilder)
 		{
 			var context = new ParserContext
 			{
@@ -262,5 +262,13 @@ namespace @Model.Namespace
 		void StartRule(RuleType ruleType);
 		void EndRule(RuleType ruleType);
 		object GetResult();
+	}
+
+	public partial interface ITokenMatcher
+	{
+		@foreach(var rule in Model.RuleSet.TokenRules)
+		{
+		@:bool Match_@(rule.Name.Replace("#", ""))(Token token);
+		}
 	}
 }

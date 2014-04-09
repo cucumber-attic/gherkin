@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Gherkin
 {
-    public class TokenMatcher
+    public class TokenMatcher : ITokenMatcher
     {
         private readonly GherkinDialectProvider dialectProvider;
         private GherkinDialect currentDialect;
