@@ -11,9 +11,10 @@ namespace Gherkin.Ast
         public string Keyword { get; private set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
+		public Background Background { get; private set; }
         public ScenarioDefinition[] ScenarioDefinitions { get; private set; }
 
-        public Feature(Tag[] tags, Location location, string language, string keyword, string title, string description, ScenarioDefinition[] scenarioDefinitions)
+        public Feature(Tag[] tags, Location location, string language, string keyword, string title, string description, Background background, ScenarioDefinition[] scenarioDefinitions)
         {
             Tags = tags;
             Location = location;
@@ -21,7 +22,8 @@ namespace Gherkin.Ast
             Keyword = keyword;
             Title = title;
             Description = description;
-            ScenarioDefinitions = scenarioDefinitions;
+	        Background = background;
+	        ScenarioDefinitions = scenarioDefinitions;
         }
     }
 }

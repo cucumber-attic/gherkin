@@ -46,6 +46,13 @@ namespace Gherkin
                     var stepLine = node.GetToken(TokenType.StepLine);
                     return new Step(stepLine.MatchedKeyword, stepLine.Text, new EmptyStepArgument(), GetLocation(stepLine));
                 }
+				case RuleType.Background:
+	            {
+		            var backgroundLine = node.GetToken(TokenType.BackgroundLine);
+					var description = GetDescription(node);
+					var steps = GetSteps(node);
+					return new Background(GetLocation(backgroundLine), backgroundLine.MatchedKeyword, backgroundLine.Text, description, steps);
+	            }
                 case RuleType.Scenario_Definition:
                 {
 					var tags = GetTags(node);
@@ -101,10 +108,11 @@ namespace Gherkin
                     var header = node.GetSingle<AstNode>(RuleType.Feature_Header);
 					var tags = GetTags(header);
 					var featureLine = header.GetToken(TokenType.FeatureLine);
+		            var background = node.GetSingle<Background>(RuleType.Background);
 					var scenariodefinitions = node.GetItems<ScenarioDefinition>(RuleType.Scenario_Definition).ToArray();
                     var description = GetDescription(header);
 
-                    return new Feature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.Text, description, scenariodefinitions);
+                    return new Feature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.Text, description, background, scenariodefinitions);
                 }
             }
 
