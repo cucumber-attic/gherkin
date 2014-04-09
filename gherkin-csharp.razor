@@ -74,7 +74,7 @@ namespace @Model.Namespace
         public ParserException(string message) : base(message) { }
         public ParserException(string message, Exception inner) : base(message, inner) { }
 
-        public ParserException(ParserMessageProvider messageProvider, params ParserError[] errors) 
+        public ParserException(IParserMessageProvider messageProvider, params ParserError[] errors) 
 			: base(messageProvider.GetDefaultExceptionMessage(errors))
         {
             if (errors != null)
@@ -85,11 +85,11 @@ namespace @Model.Namespace
     public partial class @Model.ParserClassName
     {
 		public bool StopAtFirstError { get; set;}
-		public ParserMessageProvider ParserMessageProvider { get; private set; }
+		public IParserMessageProvider ParserMessageProvider { get; private set; }
 
 		class ParserContext
 		{
-			public TokenScanner TokenScanner { get; set; }
+			public ITokenScanner TokenScanner { get; set; }
 			public ITokenMatcher TokenMatcher { get; set; }
 			public IAstBuilder Builder { get; set; }
 			public Queue<Token> TokenQueue { get; set; }
@@ -100,17 +100,17 @@ namespace @Model.Namespace
 		{
 		}
 
-		public object Parse(TokenScanner tokenScanner)
+		public object Parse(ITokenScanner tokenScanner)
 		{
 			return Parse(tokenScanner, new TokenMatcher(), new AstBuilder());
 		}
 
-		public @(Model.ParserClassName)(ParserMessageProvider parserMessageProvider)
+		public @(Model.ParserClassName)(IParserMessageProvider parserMessageProvider)
 		{
 			this.ParserMessageProvider = parserMessageProvider;
 		}
 
-        public object Parse(TokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder astBuilder)
+        public object Parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder astBuilder)
 		{
 			var context = new ParserContext
 			{
@@ -262,6 +262,17 @@ namespace @Model.Namespace
 		void StartRule(RuleType ruleType);
 		void EndRule(RuleType ruleType);
 		object GetResult();
+	}
+
+	public partial interface ITokenScanner 
+	{
+		Token Read();
+	}
+
+	public partial interface IParserMessageProvider 
+	{
+		string GetDefaultExceptionMessage(ParserError[] errors);
+		string GetParserErrorMessage(ParserError error);
 	}
 
 	public partial interface ITokenMatcher

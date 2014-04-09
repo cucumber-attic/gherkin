@@ -11,7 +11,7 @@ namespace Gherkin
         public int? LineNumber { get { return ReceivedToken.Line != null ? (int?)ReceivedToken.Line.LineNumber  : null; } }
     }
 
-    public class ParserMessageProvider
+    public class ParserMessageProvider : IParserMessageProvider
     {
         public string GetDefaultExceptionMessage(ParserError[] errors)
         {

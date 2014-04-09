@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Gherkin
 {
-    public class TokenScanner
+    public class TokenScanner : ITokenScanner
     {
         protected int lineNumber = 0;
         protected readonly TextReader reader;

@@ -91,7 +91,7 @@ Description, // Description! := #Other+
         public ParserException(string message) : base(message) { }
         public ParserException(string message, Exception inner) : base(message, inner) { }
 
-        public ParserException(ParserMessageProvider messageProvider, params ParserError[] errors) 
+        public ParserException(IParserMessageProvider messageProvider, params ParserError[] errors) 
 			: base(messageProvider.GetDefaultExceptionMessage(errors))
         {
             if (errors != null)
@@ -102,7 +102,7 @@ Description, // Description! := #Other+
     public partial class Parser
     {
 		public bool StopAtFirstError { get; set;}
-		public ParserMessageProvider ParserMessageProvider { get; private set; }
+		public IParserMessageProvider ParserMessageProvider { get; private set; }
 
 		class ParserContext
 		{
@@ -122,7 +122,7 @@ Description, // Description! := #Other+
 			return Parse(tokenScanner, new TokenMatcher(), new AstBuilder());
 		}
 
-		public Parser(ParserMessageProvider parserMessageProvider)
+		public Parser(IParserMessageProvider parserMessageProvider)
 		{
 			this.ParserMessageProvider = parserMessageProvider;
 		}
@@ -2396,6 +2396,17 @@ Description, // Description! := #Other+
 		void StartRule(RuleType ruleType);
 		void EndRule(RuleType ruleType);
 		object GetResult();
+	}
+
+	public partial interface ITokenScanner 
+	{
+		Token Read();
+	}
+
+	public partial interface IParserMessageProvider 
+	{
+		string GetDefaultExceptionMessage(ParserError[] errors);
+		string GetParserErrorMessage(ParserError error);
 	}
 
 	public partial interface ITokenMatcher
