@@ -45,9 +45,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Gherkin.Specs\Gherkin.Specs.csproj">
       <Project>{214a8851-f162-460a-8cf4-9e1b3fc2bfc9}</Project>
       <Name>Gherkin.Specs</Name>
