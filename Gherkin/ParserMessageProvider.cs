@@ -8,7 +8,7 @@ namespace Gherkin
 {
     partial class ParserError
     {
-        public int? LineNumber { get { return ReceivedToken.Line != null ? (int?)ReceivedToken.Line.LineNumber + 1  : null; } }
+        public int? LineNumber { get { return ReceivedToken.Line != null ? (int?)ReceivedToken.Line.LineNumber  : null; } }
     }
 
     public class ParserMessageProvider
