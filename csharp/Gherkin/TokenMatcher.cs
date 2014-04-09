@@ -22,6 +22,7 @@ namespace Gherkin
 			token.MatchedText = text;
 			token.MathcedItems = items;
 			token.MatchedIndent = indent ?? (token.Line == null ? 0 : token.Line.Indent);
+			token.MatchedGherkinDialect = currentDialect;
 		}
 
 		public bool Match_EOF(Token token)
