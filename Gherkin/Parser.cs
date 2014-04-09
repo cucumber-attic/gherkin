@@ -105,7 +105,7 @@ Description, // Description! := #Other+
 		class ParserContext
 		{
 			public TokenScanner TokenScanner { get; set; }
-			public TokenMatcher TokenMatcher { get; set; }
+			public ITokenMatcher TokenMatcher { get; set; }
 			public IAstBuilder Builder { get; set; }
 			public Queue<Token> TokenQueue { get; set; }
 			public List<ParserError> Errors { get; set; }
@@ -125,7 +125,7 @@ Description, // Description! := #Other+
 			this.ParserMessageProvider = parserMessageProvider;
 		}
 
-        public object Parse(TokenScanner tokenScanner, TokenMatcher tokenMatcher, IAstBuilder astBuilder)
+        public object Parse(TokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder astBuilder)
 		{
 			var context = new ParserContext
 			{
@@ -2347,5 +2347,23 @@ Description, // Description! := #Other+
 		void StartRule(RuleType ruleType);
 		void EndRule(RuleType ruleType);
 		object GetResult();
+	}
+
+	public partial interface ITokenMatcher
+	{
+		bool Match_EOF(Token token);
+		bool Match_Empty(Token token);
+		bool Match_Comment(Token token);
+		bool Match_TagLine(Token token);
+		bool Match_FeatureLine(Token token);
+		bool Match_BackgroundLine(Token token);
+		bool Match_ScenarioLine(Token token);
+		bool Match_ScenarioOutlineLine(Token token);
+		bool Match_ExamplesLine(Token token);
+		bool Match_StepLine(Token token);
+		bool Match_DocStringSeparator(Token token);
+		bool Match_DocStringAlternativeSeparator(Token token);
+		bool Match_TableRow(Token token);
+		bool Match_Other(Token token);
 	}
 }
