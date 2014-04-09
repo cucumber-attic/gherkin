@@ -6,11 +6,11 @@ namespace Gherkin.Ast
 	public class Tag : IHasLocation
 	{
 		public Location Location { get; private set; }
-		public string Value { get; private set; }
+		public string Name { get; private set; }
 
-		public Tag(Location location, string value)
+		public Tag(Location location, string name)
 		{
-			Value = value;
+			Name = name;
 			Location = location;
 		}
 	}

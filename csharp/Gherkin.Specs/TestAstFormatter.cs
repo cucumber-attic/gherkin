@@ -142,7 +142,7 @@ namespace Gherkin.Specs
 				    result.Append(" ");
 			    first = false;
 				FormatHasLocation(tag, result);
-			    result.Append(tag.Value);
+			    result.Append(tag.Name);
 		    }
 		    result.AppendLine();
 	    }
