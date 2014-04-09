@@ -1,0 +1,31 @@
+Feature: DocString variations
+
+  Scenario: minimalistic
+    Given a simple DocString
+      """
+      first line (no indent)
+        second line (indented with two spaces)
+
+      third line was empty
+      """
+    And a DocString with wrong indentation
+      """
+    wrongly indented line
+      """
+    And a DocString with alternative separator
+      ```
+      first line
+      second line
+      ```
+    And a DocString with normal separator inside
+      ```
+      first line
+      """
+      third line
+      ```
+    And a DocString with alternative separator inside
+      """
+      first line
+      ```
+      third line
+      """

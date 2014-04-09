@@ -80,6 +80,7 @@ namespace Gherkin.Specs
 	    }
 
 	    private const string INDENT = "  ";
+	    private const string STEPARG_INDENT = INDENT + INDENT;
 
         private void FormatStep(Step step, StringBuilder result)
         {
@@ -88,9 +89,30 @@ namespace Gherkin.Specs
             result.Append(step.Keyword);
             result.Append(step.Value);
             result.AppendLine();
+
+	        if (step.StepArgument is DocString)
+		        FormatDocString((DocString) step.StepArgument, result);
+			//TODO: datatable arg
         }
 
-        public void FormatFeature(Feature feature, StringBuilder result)
+	    private void FormatDocString(DocString docString, StringBuilder result)
+	    {
+			result.Append(STEPARG_INDENT + GherkinLanguageConstants.DOCSTRING_SEPARATOR);
+		    if (docString.ContentType != null)
+			    result.Append(docString.ContentType);
+		    result.AppendLine();
+
+		    var lines = docString.Content.Split(new string[] {Environment.NewLine}, StringSplitOptions.None);
+		    foreach (var line in lines)
+		    {
+			    result.Append(STEPARG_INDENT);
+			    result.AppendLine(line);
+		    }
+
+			result.AppendLine(STEPARG_INDENT + GherkinLanguageConstants.DOCSTRING_SEPARATOR);
+	    }
+
+	    public void FormatFeature(Feature feature, StringBuilder result)
         {
 	        if (!feature.Language.Equals("en", StringComparison.InvariantCultureIgnoreCase))
 	        {
