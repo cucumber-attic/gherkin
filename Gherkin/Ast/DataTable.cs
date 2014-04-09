@@ -7,5 +7,11 @@ namespace Gherkin.Ast
 	{
 		public Location Location { get; private set; }
 		public TableRow[] Rows { get; private set; }
+
+		public DataTable(Location location, TableRow[] rows)
+		{
+			Location = location;
+			Rows = rows;
+		}
 	}
 }
