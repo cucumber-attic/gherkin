@@ -15,7 +15,34 @@ namespace Gherkin
             currentDialect = this.dialectProvider.DefaultDialect;
         }
 
-	    public bool Match_Comment(Token token)
+		public bool Match_EOF(Token token)
+		{
+			if (token.IsEOF)
+			{
+				token.MatchedType = TokenType.EOF;
+				return true;
+			}
+			return false;
+		}
+
+		public bool Match_Other(Token token)
+		{
+			token.MatchedType = TokenType.Other;
+			token.Text = token.Line.GetLineText(0); //take the entire line
+			return true;
+		}
+
+		public bool Match_Empty(Token token)
+		{
+			if (!token.IsEOF && token.Line.IsEmpty())
+			{
+				token.MatchedType = TokenType.Empty;
+				return true;
+			}
+			return false;
+		}
+
+		public bool Match_Comment(Token token)
         {
 			if (!token.IsEOF && token.Line.StartsWith(GherkinLanguageConstants.COMMENT_PREFIX))
             {
@@ -40,45 +67,49 @@ namespace Gherkin
 			return false;
 		}
 
-        public bool Match_Empty(Token token)
-        {
-            if (!token.IsEOF && token.Line.IsEmpty())
-            {
-                token.MatchedType = TokenType.Empty;
-                return true;
-            }
-            return false;
-        }
-
-        public bool Match_BackgroundLine(Token token)
-        {
-            return MatchTitleLine(token, TokenType.BackgroundLine);
-        }
-
-		public string[] GetTitleKeywords(GherkinDialect dialect, TokenType tokenType)
+		public bool Match_TagLine(Token token)
 		{
-			switch (tokenType)
+			if (!token.IsEOF && token.Line.StartsWith(GherkinLanguageConstants.TAG_PREFIX))
 			{
-				case TokenType.FeatureLine:
-					return dialect.FeatureKeywords;
-				case TokenType.BackgroundLine:
-					return dialect.BackgroundKeywords;
-				case TokenType.ScenarioLine:
-					return dialect.ScenarioKeywords;
-				case TokenType.ScenarioOutlineLine:
-					return dialect.ScenarioOutlineKeywords;
-				case TokenType.ExamplesLine:
-					return dialect.ExamplesKeywords;
+				token.MatchedType = TokenType.TagLine;
+				token.Items = token.Line.GetTags().ToArray();
+				token.Indent = token.Line.Indent;
+
+				return true;
 			}
-			throw new NotSupportedException();
+			return false;
 		}
 
-        private bool MatchTitleLine(Token token, TokenType tokenType)
+		public bool Match_FeatureLine(Token token)
+		{
+			return MatchTitleLine(token, TokenType.FeatureLine, currentDialect.FeatureKeywords);
+		}
+
+		public bool Match_BackgroundLine(Token token)
+        {
+			return MatchTitleLine(token, TokenType.BackgroundLine, currentDialect.BackgroundKeywords);
+        }
+
+		public bool Match_ScenarioLine(Token token)
+		{
+			return MatchTitleLine(token, TokenType.ScenarioLine, currentDialect.ScenarioKeywords);
+		}
+
+		public bool Match_ScenarioOutlineLine(Token token)
+		{
+			return MatchTitleLine(token, TokenType.ScenarioOutlineLine, currentDialect.ScenarioOutlineKeywords);
+		}
+
+		public bool Match_ExamplesLine(Token token)
+		{
+			return MatchTitleLine(token, TokenType.ExamplesLine, currentDialect.ExamplesKeywords);
+		}
+
+        private bool MatchTitleLine(Token token, TokenType tokenType, string[] keywords)
         {
             if (token.IsEOF)
                 return false;
 
-            var keywords = GetTitleKeywords(currentDialect, tokenType);
             foreach (var keyword in keywords)
             {
                 if (token.Line.StartsWithTitleKeyword(keyword))
@@ -91,56 +122,6 @@ namespace Gherkin
                 }
             }
             return false;
-        }
-
-        public bool Match_TagLine(Token token)
-        {
-			if (!token.IsEOF && token.Line.StartsWith(GherkinLanguageConstants.TAG_PREFIX))
-            {
-                token.MatchedType = TokenType.TagLine;
-                token.Items = token.Line.GetTags().ToArray();
-	            token.Indent = token.Line.Indent;
-
-                return true;
-            }
-            return false;
-        }
-
-        public bool Match_ScenarioLine(Token token)
-        {
-            return MatchTitleLine(token, TokenType.ScenarioLine);
-        }
-
-        public bool Match_ScenarioOutlineLine(Token token)
-        {
-            return MatchTitleLine(token, TokenType.ScenarioOutlineLine);
-        }
-
-        public bool Match_EOF(Token token)
-        {
-            if (token.IsEOF)
-            {
-                token.MatchedType = TokenType.EOF;
-                return true;
-            }
-            return false;
-        }
-
-	    public bool Match_Other(Token token)
-        {
-            token.MatchedType = TokenType.Other;
-            token.Text = token.Line.GetLineText(0); //take the entire line
-            return true;
-        }
-
-        public bool Match_ExamplesLine(Token token)
-        {
-            return MatchTitleLine(token, TokenType.ExamplesLine);
-        }
-
-        public bool Match_FeatureLine(Token token)
-        {
-            return MatchTitleLine(token, TokenType.FeatureLine);
         }
 
         public bool Match_DocStringSeparator(Token token)
