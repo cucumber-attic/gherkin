@@ -51,7 +51,7 @@ ScenarioOutline_Step, // ScenarioOutline_Step := Step
 Step, // Step! := #StepLine Step_Arg?
 Step_Arg, // Step_Arg := (DataTable | DocString)
 DataTable, // DataTable! := #TableRow+
-DocString, // DocString! := #DocStringSeparator (#Empty | #Other)* #DocStringSeparator
+DocString, // DocString! := #DocStringSeparator #Other* #DocStringSeparator
 Tags, // Tags! := #TagLine+
 Feature_Description, // Feature_Description := Description_Helper
 Background_Description, // Background_Description := Description_Helper
@@ -1937,12 +1937,6 @@ Description, // Description! := #Other+
 		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
 		int MatchTokenAt_28(Token token, ParserContext context)
 		{
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 28;
-			}
 			if (	context.TokenMatcher.Match_DocStringSeparator(token)
 )
 			{
@@ -1955,7 +1949,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 28;
 			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
+				var error = new ParserError(token, new string[] {"#DocStringSeparator", "#Other"}, "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -2019,12 +2013,6 @@ Description, // Description! := #Other+
 		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
 		int MatchTokenAt_30(Token token, ParserContext context)
 		{
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 30;
-			}
 			if (	context.TokenMatcher.Match_DocStringSeparator(token)
 )
 			{
@@ -2037,7 +2025,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 30;
 			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 30 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
+				var error = new ParserError(token, new string[] {"#DocStringSeparator", "#Other"}, "State: 30 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -2128,12 +2116,6 @@ Description, // Description! := #Other+
 		// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
 		int MatchTokenAt_32(Token token, ParserContext context)
 		{
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 32;
-			}
 			if (	context.TokenMatcher.Match_DocStringSeparator(token)
 )
 			{
@@ -2146,7 +2128,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 32;
 			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 32 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
+				var error = new ParserError(token, new string[] {"#DocStringSeparator", "#Other"}, "State: 32 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
