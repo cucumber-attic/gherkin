@@ -52,11 +52,9 @@ namespace Gherkin
 				case RuleType.DocString:
 	            {
 		            var separatorToken = node.GetTokens(TokenType.DocStringSeparator).First();
-		            var indent = separatorToken.MatchedIndent;
 		            var contentType = separatorToken.MatchedText;
 					var lineTokens = node.GetTokens(TokenType.Other);
-
-					var content = string.Join(Environment.NewLine, lineTokens.Select(lt => RemoveIndent(lt.MatchedText, indent)));
+					var content = string.Join(Environment.NewLine, lineTokens.Select(lt => lt.MatchedText));
 		
 					return new DocString(GetLocation(separatorToken), contentType, content);
 	            }
@@ -131,18 +129,6 @@ namespace Gherkin
 
             return node;
         }
-
-	    private string RemoveIndent(string s, int indent)
-	    {
-		    if (s == null)
-			    return string.Empty;
-		    var trimmed = s.TrimStart();
-		    if (s.Length - trimmed.Length < indent)
-			    return trimmed;
-		    if (s.Length < indent)
-			    return string.Empty;
-		    return s.Substring(indent);
-	    }
 
 	    private Location GetLocation(Token token, int column = 0)
 	    {
