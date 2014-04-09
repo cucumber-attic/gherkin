@@ -67,7 +67,7 @@
     <Compile Include="SuccessfulParsingTests.cs" />
     <Compile Include="TestFileProvider.cs" />
     <Compile Include="TestFolders.cs" />
-    <Compile Include="TokenFormatter.cs" />
+    <Compile Include="TestTokenFormatter.cs" />
     <Compile Include="TokenFormatterBuilder.cs" />
     <Compile Include="TokenizationTests.cs" />
   </ItemGroup>

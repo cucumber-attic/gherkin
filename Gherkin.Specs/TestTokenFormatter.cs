@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Gherkin.Specs
 {
-	public class TokenFormatter
+	public class TestTokenFormatter
 	{
 		public string FormatToken(Token token)
 		{

@@ -6,7 +6,7 @@ namespace Gherkin.Specs
 {
 	public class TokenFormatterBuilder : IAstBuilder
 	{
-		private readonly TokenFormatter formatter = new TokenFormatter();
+		private readonly TestTokenFormatter formatter = new TestTokenFormatter();
 		private readonly StringBuilder tokensTextBuilder = new StringBuilder();
 
 		public string GetTokensText()
