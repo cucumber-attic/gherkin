@@ -15,11 +15,20 @@ namespace Gherkin
             currentDialect = this.dialectProvider.DefaultDialect;
         }
 
+		protected virtual void SetTokenMatched(Token token, TokenType matchedType, string text = null, string keyword = null, int? indent = null, GherkinLineSpan[] items = null)
+		{
+			token.MatchedType = matchedType;
+			token.MatchedKeyword = keyword;
+			token.Text = text;
+			token.Items = items;
+			token.Indent = indent ?? (token.Line == null ? 0 : token.Line.Indent);
+		}
+
 		public bool Match_EOF(Token token)
 		{
 			if (token.IsEOF)
 			{
-				token.MatchedType = TokenType.EOF;
+				SetTokenMatched(token, TokenType.EOF);
 				return true;
 			}
 			return false;
@@ -27,8 +36,8 @@ namespace Gherkin
 
 		public bool Match_Other(Token token)
 		{
-			token.MatchedType = TokenType.Other;
-			token.Text = token.Line.GetLineText(0); //take the entire line
+			var text = token.Line.GetLineText(0); //take the entire line
+			SetTokenMatched(token, TokenType.Other, text, indent: 0);
 			return true;
 		}
 
@@ -36,7 +45,7 @@ namespace Gherkin
 		{
 			if (!token.IsEOF && token.Line.IsEmpty())
 			{
-				token.MatchedType = TokenType.Empty;
+				SetTokenMatched(token, TokenType.Empty);
 				return true;
 			}
 			return false;
@@ -46,8 +55,9 @@ namespace Gherkin
         {
 			if (!token.IsEOF && token.Line.StartsWith(GherkinLanguageConstants.COMMENT_PREFIX))
             {
-                token.MatchedType = TokenType.Comment;
-                token.Text = token.Line.GetRestTrimmed(0).Substring(1);
+				var text = token.Line.GetLineText(0); //take the entire line
+				text = token.Line.GetRestTrimmed(0).Substring(1); //TODO!!!
+                SetTokenMatched(token, TokenType.Comment, text, indent: 0);
                 return true;
             }
             return false;
@@ -60,8 +70,7 @@ namespace Gherkin
 				var language = token.Line.GetRestTrimmed(GherkinLanguageConstants.LANGUAGE_PREFIX.Length);
 				currentDialect = dialectProvider.GetDialect(language);
 
-				token.MatchedType = TokenType.Language;
-				token.Text = language;
+				SetTokenMatched(token, TokenType.Language, language);
 				return true;
 			}
 			return false;
@@ -71,10 +80,7 @@ namespace Gherkin
 		{
 			if (!token.IsEOF && token.Line.StartsWith(GherkinLanguageConstants.TAG_PREFIX))
 			{
-				token.MatchedType = TokenType.TagLine;
-				token.Items = token.Line.GetTags().ToArray();
-				token.Indent = token.Line.Indent;
-
+				SetTokenMatched(token, TokenType.TagLine, items: token.Line.GetTags().ToArray());
 				return true;
 			}
 			return false;
@@ -114,10 +120,8 @@ namespace Gherkin
             {
                 if (token.Line.StartsWithTitleKeyword(keyword))
                 {
-                    token.MatchedType = tokenType;
-                    token.MatchedKeyword = keyword;
-                    token.Text = token.Line.GetRestTrimmed(keyword.Length + GherkinLanguageConstants.TITLE_KEYWORD_SEPARATOR.Length);
-	                token.Indent = token.Line.Indent;
+	                var title = token.Line.GetRestTrimmed(keyword.Length + GherkinLanguageConstants.TITLE_KEYWORD_SEPARATOR.Length);
+                    SetTokenMatched(token, tokenType, keyword: keyword, text: title);
                     return true;
                 }
             }
@@ -138,9 +142,8 @@ namespace Gherkin
         {
             if (token.Line.StartsWith(separator))
             {
-                token.MatchedType = tokenType;
-                token.Indent = token.Line.Indent;
-                token.Text = token.Line.GetRestTrimmed(separator.Length); // content type
+	            var contentType = token.Line.GetRestTrimmed(separator.Length);
+                SetTokenMatched(token, tokenType, contentType);
                 return true;
             }
             return false;
@@ -153,10 +156,8 @@ namespace Gherkin
             {
                 if (token.Line.StartsWith(keyword))
                 {
-                    token.MatchedType = TokenType.StepLine;
-                    token.MatchedKeyword = keyword;
-                    token.Text = token.Line.GetRestTrimmed(keyword.Length);
-	                token.Indent = token.Line.Indent;
+	                var stepText = token.Line.GetRestTrimmed(keyword.Length);
+                    SetTokenMatched(token, TokenType.StepLine, keyword: keyword, text: stepText);
                     return true;
                 }
             }
@@ -167,9 +168,7 @@ namespace Gherkin
         {
             if (token.Line.StartsWith(GherkinLanguageConstants.TABLE_CELL_SEPARATOR))
             {
-                token.MatchedType = TokenType.TableRow;
-                token.Items = token.Line.GetTableCells().ToArray();
-				token.Indent = token.Line.Indent;
+                SetTokenMatched(token, TokenType.TableRow, items: token.Line.GetTableCells().ToArray());
                 return true;
             }
             return false;
