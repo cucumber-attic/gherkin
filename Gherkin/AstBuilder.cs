@@ -17,6 +17,11 @@ namespace Gherkin
 
         public void Build(Token token)
         {
+	        if (token.MatchedType == TokenType.Empty) //TODO: refactor doc string handling
+	        {
+				CurrentNode.Add(RuleType._Other, token);
+	        }
+
 			CurrentNode.Add((RuleType)token.MatchedType, token);
         }
 
@@ -44,9 +49,23 @@ namespace Gherkin
                 case RuleType.Step:
                 {
                     var stepLine = node.GetToken(TokenType.StepLine);
-					//TODO: step arguments
-                    return new Step(stepLine.MatchedKeyword, stepLine.MatchedText, new EmptyStepArgument(), GetLocation(stepLine));
+	                var stepArg = node.GetSingle<StepArgument>(RuleType.DataTable) ??
+	                              node.GetSingle<StepArgument>(RuleType.DocString) ??
+	                              new EmptyStepArgument();
+                    return new Step(stepLine.MatchedKeyword, stepLine.MatchedText, stepArg, GetLocation(stepLine));
                 }
+				case RuleType.DocString:
+	            {
+		            var separatorToken = node.GetTokens(TokenType.DocStringSeparator).FirstOrDefault() ??
+						node.GetTokens(TokenType.DocStringAlternativeSeparator).First();
+		            var indent = separatorToken.MatchedIndent;
+		            var contentType = separatorToken.MatchedText;
+					var lineTokens = node.GetTokens(TokenType.Other);
+
+					var content = string.Join(Environment.NewLine, lineTokens.Select(lt => RemoveIndent(lt.MatchedText, indent)));
+		
+					return new DocString(GetLocation(separatorToken), contentType, content);
+	            }
 				case RuleType.Background:
 	            {
 		            var backgroundLine = node.GetToken(TokenType.BackgroundLine);
@@ -118,6 +137,18 @@ namespace Gherkin
 
             return node;
         }
+
+	    private string RemoveIndent(string s, int indent)
+	    {
+		    if (s == null)
+			    return string.Empty;
+		    var trimmed = s.TrimStart();
+		    if (s.Length - trimmed.Length < indent)
+			    return trimmed;
+		    if (s.Length < indent)
+			    return string.Empty;
+		    return s.Substring(indent);
+	    }
 
 	    private Location GetLocation(Token token, int column = 0)
 	    {
