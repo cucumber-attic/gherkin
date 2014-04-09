@@ -27,13 +27,13 @@
 (27:1)Other:/  This description/
 (28:1)Other:/  has a comment after/
 (29:1)Other://
-(30:1)Comment:/ this is a comment/
+(30:1)Comment:/# this is a comment/
 (31:5)StepLine:Given /the minimalism/
 (32:1)Empty://
 (33:3)ScenarioLine:Scenario/comment right after description/
 (34:1)Other:/  This description/
 (35:1)Other:/  has a comment right after/
-(36:1)Comment:/ this is a comment/
+(36:1)Comment:/# this is a comment/
 (37:1)Empty://
 (38:5)StepLine:Given /the minimalism/
 (39:1)Empty://
