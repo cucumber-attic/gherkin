@@ -5,25 +5,26 @@ namespace Gherkin
 {
     public class GherkinDialectProvider
     {
-        private readonly GherkinDialect defaultDialect;
+        private readonly Lazy<GherkinDialect> defaultDialect;
 
         public GherkinDialect DefaultDialect
         {
-            get { return defaultDialect; }
+            get { return defaultDialect.Value; }
         }
 
         public GherkinDialectProvider(string defaultLanguage = "en")
         {
-            defaultDialect = GetDialect(defaultLanguage);
+			defaultDialect = new Lazy<GherkinDialect>(() => GetDialect(defaultLanguage));
         }
 
-        public GherkinDialect GetDialect(string language)
+        public virtual GherkinDialect GetDialect(string language)
         {
             //TODO: load from json file
             switch (language)
             {
                 case "en":
                     return new GherkinDialect(
+						language,
                         new[] {"Feature"},
                         new[] {"Background"},
                         new[] {"Scenario"},
@@ -36,6 +37,7 @@ namespace Gherkin
                         new[] {"But "});
                 case "no":
                     return new GherkinDialect(
+						language,
                         new[] {"Egenskap"},
                         new[] {"Bakgrunn"},
                         new[] {"Scenario"},

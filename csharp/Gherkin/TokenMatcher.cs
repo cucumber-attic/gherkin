@@ -57,12 +57,30 @@ namespace Gherkin
             return MatchTitleLine(token, TokenType.BackgroundLine);
         }
 
+		public string[] GetTitleKeywords(GherkinDialect dialect, TokenType tokenType)
+		{
+			switch (tokenType)
+			{
+				case TokenType.FeatureLine:
+					return dialect.FeatureKeywords;
+				case TokenType.BackgroundLine:
+					return dialect.BackgroundKeywords;
+				case TokenType.ScenarioLine:
+					return dialect.ScenarioKeywords;
+				case TokenType.ScenarioOutlineLine:
+					return dialect.ScenarioOutlineKeywords;
+				case TokenType.ExamplesLine:
+					return dialect.ExamplesKeywords;
+			}
+			throw new NotSupportedException();
+		}
+
         private bool MatchTitleLine(Token token, TokenType tokenType)
         {
             if (token.IsEOF)
                 return false;
 
-            var keywords = currentDialect.GetTitleKeywords(tokenType);
+            var keywords = GetTitleKeywords(currentDialect, tokenType);
             foreach (var keyword in keywords)
             {
                 if (token.Line.StartsWithTitleKeyword(keyword))
