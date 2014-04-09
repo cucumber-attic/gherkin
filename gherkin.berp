@@ -6,7 +6,7 @@
 ]
 
 
-Feature_File! := Feature_Header Background? Scenario_Definition*
+Feature! := Feature_Header Background? Scenario_Definition*
 Feature_Header! := Tags? #FeatureLine Feature_Description
 
 Background! := #BackgroundLine Background_Description Scenario_Step*

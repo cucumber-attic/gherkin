@@ -34,7 +34,7 @@ namespace Gherkin
 
 		public object GetResult()
 		{
-			return CurrentNode.GetSingle<Feature>(RuleType.Feature_File);
+			return CurrentNode.GetSingle<Feature>(RuleType.Feature);
 		}
 		
 		private object GetTransformedNode(AstNode node)
@@ -101,7 +101,7 @@ namespace Gherkin
 
                     return string.Join(Environment.NewLine, lineTokens.Select(lt => lt.Text));
                 }
-                case RuleType.Feature_File:
+                case RuleType.Feature:
 	            {
                     var language = "en"; //TODO
 
