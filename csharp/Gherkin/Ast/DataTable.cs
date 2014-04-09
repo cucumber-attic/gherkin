@@ -3,14 +3,12 @@ using System.Linq;
 
 namespace Gherkin.Ast
 {
-	public class DataTable : StepArgument, IHasLocation, IHasRows
+	public class DataTable : StepArgument, IHasRows
 	{
-		public Location Location { get; private set; }
 		public TableRow[] Rows { get; private set; }
 
-		public DataTable(Location location, TableRow[] rows)
+		public DataTable(TableRow[] rows)
 		{
-			Location = location;
 			Rows = rows;
 		}
 	}
