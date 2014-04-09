@@ -18,6 +18,7 @@ StepLine,
 DocStringSeparator,
 DocStringAlternativeSeparator,
 TableRow,
+Language,
 Other,
 	}
 
@@ -37,9 +38,10 @@ _StepLine, // #StepLine
 _DocStringSeparator, // #DocStringSeparator
 _DocStringAlternativeSeparator, // #DocStringAlternativeSeparator
 _TableRow, // #TableRow
+_Language, // #Language
 _Other, // #Other
 Feature, // Feature! := Feature_Header Background? Scenario_Definition*
-Feature_Header, // Feature_Header! := Tags? #FeatureLine Feature_Description
+Feature_Header, // Feature_Header! := #Language? Tags? #FeatureLine Feature_Description
 Background, // Background! := #BackgroundLine Background_Description Scenario_Step*
 Scenario_Definition, // Scenario_Definition! := Tags? (Scenario | ScenarioOutline)
 Scenario, // Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
@@ -150,7 +152,7 @@ Description, // Description! := #Other+
 				throw new ParserException(ParserMessageProvider, context.Errors.ToArray());
 			}
 
-			if (state != 26)
+			if (state != 27)
 			{
 				throw new InvalidOperationException("One of the grammar rules expected #EOF explicitly.");
 			}
@@ -267,8 +269,8 @@ Description, // Description! := #Other+
 				case 25:
 					newState = MatchTokenAt_25(token, context);
 					break;
-				case 27:
-					newState = MatchTokenAt_27(token, context);
+				case 26:
+					newState = MatchTokenAt_26(token, context);
 					break;
 				case 28:
 					newState = MatchTokenAt_28(token, context);
@@ -294,6 +296,9 @@ Description, // Description! := #Other+
 				case 35:
 					newState = MatchTokenAt_35(token, context);
 					break;
+				case 36:
+					newState = MatchTokenAt_36(token, context);
+					break;
 				default:
 					throw new InvalidOperationException("Unknown state: " + state);
 			}
@@ -304,20 +309,27 @@ Description, // Description! := #Other+
 		// Start
 		int MatchTokenAt_0(Token token, ParserContext context)
 		{
+			if (	context.TokenMatcher.Match_Language(token)
+)
+			{
+				StartRule(context, RuleType.Feature_Header);
+				Build(context, token);
+				return 1;
+			}
 			if (	context.TokenMatcher.Match_TagLine(token)
 )
 			{
 				StartRule(context, RuleType.Feature_Header);
 				StartRule(context, RuleType.Tags);
 				Build(context, token);
-				return 1;
+				return 2;
 			}
 			if (	context.TokenMatcher.Match_FeatureLine(token)
 )
 			{
 				StartRule(context, RuleType.Feature_Header);
 				Build(context, token);
-				return 2;
+				return 3;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -331,7 +343,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 0;
 			}
-				var error = new ParserError(token, new string[] {"#TagLine", "#FeatureLine", "#Comment", "#Empty"}, "State: 0 - Start");
+				var error = new ParserError(token, new string[] {"#Language", "#TagLine", "#FeatureLine", "#Comment", "#Empty"}, "State: 0 - Start");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -340,21 +352,21 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:0>Feature_Header:0>Tags:0>#TagLine:0
+		// Feature:0>Feature_Header:0>#Language:0
 		int MatchTokenAt_1(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_TagLine(token)
 )
 			{
+				StartRule(context, RuleType.Tags);
 				Build(context, token);
-				return 1;
+				return 2;
 			}
 			if (	context.TokenMatcher.Match_FeatureLine(token)
 )
 			{
-				EndRule(context, RuleType.Tags);
 				Build(context, token);
-				return 2;
+				return 3;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -368,7 +380,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 1;
 			}
-				var error = new ParserError(token, new string[] {"#TagLine", "#FeatureLine", "#Comment", "#Empty"}, "State: 1 - Feature:0>Feature_Header:0>Tags:0>#TagLine:0");
+				var error = new ParserError(token, new string[] {"#TagLine", "#FeatureLine", "#Comment", "#Empty"}, "State: 1 - Feature:0>Feature_Header:0>#Language:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -377,15 +389,27 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:0>Feature_Header:1>#FeatureLine:0
+		// Feature:0>Feature_Header:1>Tags:0>#TagLine:0
 		int MatchTokenAt_2(Token token, ParserContext context)
 		{
-			if (	context.TokenMatcher.Match_EOF(token)
+			if (	context.TokenMatcher.Match_TagLine(token)
 )
 			{
-				EndRule(context, RuleType.Feature_Header);
 				Build(context, token);
-				return 26;
+				return 2;
+			}
+			if (	context.TokenMatcher.Match_FeatureLine(token)
+)
+			{
+				EndRule(context, RuleType.Tags);
+				Build(context, token);
+				return 3;
+			}
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 2;
 			}
 			if (	context.TokenMatcher.Match_Empty(token)
 )
@@ -393,55 +417,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 2;
 			}
-			if (	context.TokenMatcher.Match_Comment(token)
-)
-			{
-				Build(context, token);
-				return 4;
-			}
-			if (	context.TokenMatcher.Match_BackgroundLine(token)
-)
-			{
-				EndRule(context, RuleType.Feature_Header);
-				StartRule(context, RuleType.Background);
-				Build(context, token);
-				return 5;
-			}
-			if (	context.TokenMatcher.Match_TagLine(token)
-)
-			{
-				EndRule(context, RuleType.Feature_Header);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Tags);
-				Build(context, token);
-				return 10;
-			}
-			if (	context.TokenMatcher.Match_ScenarioLine(token)
-)
-			{
-				EndRule(context, RuleType.Feature_Header);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario);
-				Build(context, token);
-				return 11;
-			}
-			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
-)
-			{
-				EndRule(context, RuleType.Feature_Header);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.ScenarioOutline);
-				Build(context, token);
-				return 16;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
-)
-			{
-				StartRule(context, RuleType.Description);
-				Build(context, token);
-				return 3;
-			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Empty", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 2 - Feature:0>Feature_Header:1>#FeatureLine:0");
+				var error = new ParserError(token, new string[] {"#TagLine", "#FeatureLine", "#Comment", "#Empty"}, "State: 2 - Feature:0>Feature_Header:1>Tags:0>#TagLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -450,70 +426,71 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:0>Feature_Header:2>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
+		// Feature:0>Feature_Header:2>#FeatureLine:0
 		int MatchTokenAt_3(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
 			{
-				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Feature_Header);
 				Build(context, token);
-				return 26;
+				return 27;
 			}
-			if (	context.TokenMatcher.Match_Comment(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				Build(context, token);
-				return 4;
-			}
-			if (	context.TokenMatcher.Match_BackgroundLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				EndRule(context, RuleType.Feature_Header);
-				StartRule(context, RuleType.Background);
-				Build(context, token);
-				return 5;
-			}
-			if (	context.TokenMatcher.Match_TagLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				EndRule(context, RuleType.Feature_Header);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Tags);
-				Build(context, token);
-				return 10;
-			}
-			if (	context.TokenMatcher.Match_ScenarioLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				EndRule(context, RuleType.Feature_Header);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario);
-				Build(context, token);
-				return 11;
-			}
-			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				EndRule(context, RuleType.Feature_Header);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.ScenarioOutline);
-				Build(context, token);
-				return 16;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
+			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
 				return 3;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 3 - Feature:0>Feature_Header:2>Feature_Description:0>Description_Helper:1>Description:0>#Other:0");
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 5;
+			}
+			if (	context.TokenMatcher.Match_BackgroundLine(token)
+)
+			{
+				EndRule(context, RuleType.Feature_Header);
+				StartRule(context, RuleType.Background);
+				Build(context, token);
+				return 6;
+			}
+			if (	context.TokenMatcher.Match_TagLine(token)
+)
+			{
+				EndRule(context, RuleType.Feature_Header);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Tags);
+				Build(context, token);
+				return 11;
+			}
+			if (	context.TokenMatcher.Match_ScenarioLine(token)
+)
+			{
+				EndRule(context, RuleType.Feature_Header);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario);
+				Build(context, token);
+				return 12;
+			}
+			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
+)
+			{
+				EndRule(context, RuleType.Feature_Header);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.ScenarioOutline);
+				Build(context, token);
+				return 17;
+			}
+			if (	context.TokenMatcher.Match_Other(token)
+)
+			{
+				StartRule(context, RuleType.Description);
+				Build(context, token);
+				return 4;
+			}
+				var error = new ParserError(token, new string[] {"#EOF", "#Empty", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 3 - Feature:0>Feature_Header:2>#FeatureLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -522,64 +499,70 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:0>Feature_Header:2>Feature_Description:0>Description_Helper:2>#Comment:0
+		// Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
 		int MatchTokenAt_4(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Feature_Header);
 				Build(context, token);
-				return 26;
+				return 27;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				Build(context, token);
-				return 4;
+				return 5;
 			}
 			if (	context.TokenMatcher.Match_BackgroundLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Feature_Header);
 				StartRule(context, RuleType.Background);
 				Build(context, token);
-				return 5;
+				return 6;
 			}
 			if (	context.TokenMatcher.Match_TagLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Feature_Header);
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Tags);
 				Build(context, token);
-				return 10;
+				return 11;
 			}
 			if (	context.TokenMatcher.Match_ScenarioLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Feature_Header);
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Scenario);
 				Build(context, token);
-				return 11;
+				return 12;
 			}
 			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Feature_Header);
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.ScenarioOutline);
 				Build(context, token);
-				return 16;
+				return 17;
 			}
-			if (	context.TokenMatcher.Match_Empty(token)
+			if (	context.TokenMatcher.Match_Other(token)
 )
 			{
 				Build(context, token);
 				return 4;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 4 - Feature:0>Feature_Header:2>Feature_Description:0>Description_Helper:2>#Comment:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 4 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -588,15 +571,56 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:1>Background:0>#BackgroundLine:0
+		// Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0
 		int MatchTokenAt_5(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
 			{
-				EndRule(context, RuleType.Background);
+				EndRule(context, RuleType.Feature_Header);
 				Build(context, token);
-				return 26;
+				return 27;
+			}
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 5;
+			}
+			if (	context.TokenMatcher.Match_BackgroundLine(token)
+)
+			{
+				EndRule(context, RuleType.Feature_Header);
+				StartRule(context, RuleType.Background);
+				Build(context, token);
+				return 6;
+			}
+			if (	context.TokenMatcher.Match_TagLine(token)
+)
+			{
+				EndRule(context, RuleType.Feature_Header);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Tags);
+				Build(context, token);
+				return 11;
+			}
+			if (	context.TokenMatcher.Match_ScenarioLine(token)
+)
+			{
+				EndRule(context, RuleType.Feature_Header);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario);
+				Build(context, token);
+				return 12;
+			}
+			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
+)
+			{
+				EndRule(context, RuleType.Feature_Header);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.ScenarioOutline);
+				Build(context, token);
+				return 17;
 			}
 			if (	context.TokenMatcher.Match_Empty(token)
 )
@@ -604,54 +628,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 5;
 			}
-			if (	context.TokenMatcher.Match_Comment(token)
-)
-			{
-				Build(context, token);
-				return 7;
-			}
-			if (	context.TokenMatcher.Match_StepLine(token)
-)
-			{
-				StartRule(context, RuleType.Step);
-				Build(context, token);
-				return 8;
-			}
-			if (	context.TokenMatcher.Match_TagLine(token)
-)
-			{
-				EndRule(context, RuleType.Background);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Tags);
-				Build(context, token);
-				return 10;
-			}
-			if (	context.TokenMatcher.Match_ScenarioLine(token)
-)
-			{
-				EndRule(context, RuleType.Background);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario);
-				Build(context, token);
-				return 11;
-			}
-			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
-)
-			{
-				EndRule(context, RuleType.Background);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.ScenarioOutline);
-				Build(context, token);
-				return 16;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
-)
-			{
-				StartRule(context, RuleType.Description);
-				Build(context, token);
-				return 6;
-			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 5 - Feature:1>Background:0>#BackgroundLine:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 5 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -660,69 +637,70 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
+		// Feature:1>Background:0>#BackgroundLine:0
 		int MatchTokenAt_6(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
 			{
-				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Background);
 				Build(context, token);
-				return 26;
+				return 27;
 			}
-			if (	context.TokenMatcher.Match_Comment(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				Build(context, token);
-				return 7;
-			}
-			if (	context.TokenMatcher.Match_StepLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				StartRule(context, RuleType.Step);
-				Build(context, token);
-				return 8;
-			}
-			if (	context.TokenMatcher.Match_TagLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				EndRule(context, RuleType.Background);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Tags);
-				Build(context, token);
-				return 10;
-			}
-			if (	context.TokenMatcher.Match_ScenarioLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				EndRule(context, RuleType.Background);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario);
-				Build(context, token);
-				return 11;
-			}
-			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				EndRule(context, RuleType.Background);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.ScenarioOutline);
-				Build(context, token);
-				return 16;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
+			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
 				return 6;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 6 - Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0");
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 8;
+			}
+			if (	context.TokenMatcher.Match_StepLine(token)
+)
+			{
+				StartRule(context, RuleType.Step);
+				Build(context, token);
+				return 9;
+			}
+			if (	context.TokenMatcher.Match_TagLine(token)
+)
+			{
+				EndRule(context, RuleType.Background);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Tags);
+				Build(context, token);
+				return 11;
+			}
+			if (	context.TokenMatcher.Match_ScenarioLine(token)
+)
+			{
+				EndRule(context, RuleType.Background);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario);
+				Build(context, token);
+				return 12;
+			}
+			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
+)
+			{
+				EndRule(context, RuleType.Background);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.ScenarioOutline);
+				Build(context, token);
+				return 17;
+			}
+			if (	context.TokenMatcher.Match_Other(token)
+)
+			{
+				StartRule(context, RuleType.Description);
+				Build(context, token);
+				return 7;
+			}
+				var error = new ParserError(token, new string[] {"#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 6 - Feature:1>Background:0>#BackgroundLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -731,63 +709,69 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
+		// Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
 		int MatchTokenAt_7(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Background);
 				Build(context, token);
-				return 26;
+				return 27;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				Build(context, token);
-				return 7;
+				return 8;
 			}
 			if (	context.TokenMatcher.Match_StepLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				StartRule(context, RuleType.Step);
 				Build(context, token);
-				return 8;
+				return 9;
 			}
 			if (	context.TokenMatcher.Match_TagLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Background);
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Tags);
 				Build(context, token);
-				return 10;
+				return 11;
 			}
 			if (	context.TokenMatcher.Match_ScenarioLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Background);
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Scenario);
 				Build(context, token);
-				return 11;
+				return 12;
 			}
 			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Background);
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.ScenarioOutline);
 				Build(context, token);
-				return 16;
+				return 17;
 			}
-			if (	context.TokenMatcher.Match_Empty(token)
+			if (	context.TokenMatcher.Match_Other(token)
 )
 			{
 				Build(context, token);
 				return 7;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 7 - Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 7 - Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -796,75 +780,15 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
+		// Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
 		int MatchTokenAt_8(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
 			{
-				EndRule(context, RuleType.Step);
 				EndRule(context, RuleType.Background);
 				Build(context, token);
-				return 26;
-			}
-			if (	context.TokenMatcher.Match_TableRow(token)
-)
-			{
-				StartRule(context, RuleType.DataTable);
-				Build(context, token);
-				return 9;
-			}
-			if (	context.TokenMatcher.Match_DocStringSeparator(token)
-)
-			{
-				StartRule(context, RuleType.DocString);
-				Build(context, token);
-				return 33;
-			}
-			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
-)
-			{
-				StartRule(context, RuleType.DocString);
-				Build(context, token);
-				return 35;
-			}
-			if (	context.TokenMatcher.Match_StepLine(token)
-)
-			{
-				EndRule(context, RuleType.Step);
-				StartRule(context, RuleType.Step);
-				Build(context, token);
-				return 8;
-			}
-			if (	context.TokenMatcher.Match_TagLine(token)
-)
-			{
-				EndRule(context, RuleType.Step);
-				EndRule(context, RuleType.Background);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Tags);
-				Build(context, token);
-				return 10;
-			}
-			if (	context.TokenMatcher.Match_ScenarioLine(token)
-)
-			{
-				EndRule(context, RuleType.Step);
-				EndRule(context, RuleType.Background);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario);
-				Build(context, token);
-				return 11;
-			}
-			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
-)
-			{
-				EndRule(context, RuleType.Step);
-				EndRule(context, RuleType.Background);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.ScenarioOutline);
-				Build(context, token);
-				return 16;
+				return 27;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -872,13 +796,47 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 8;
 			}
+			if (	context.TokenMatcher.Match_StepLine(token)
+)
+			{
+				StartRule(context, RuleType.Step);
+				Build(context, token);
+				return 9;
+			}
+			if (	context.TokenMatcher.Match_TagLine(token)
+)
+			{
+				EndRule(context, RuleType.Background);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Tags);
+				Build(context, token);
+				return 11;
+			}
+			if (	context.TokenMatcher.Match_ScenarioLine(token)
+)
+			{
+				EndRule(context, RuleType.Background);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario);
+				Build(context, token);
+				return 12;
+			}
+			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
+)
+			{
+				EndRule(context, RuleType.Background);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.ScenarioOutline);
+				Build(context, token);
+				return 17;
+			}
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
 				return 8;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#DocStringSeparator", "#DocStringAlternativeSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 8 - Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 8 - Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -887,65 +845,75 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
+		// Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
 		int MatchTokenAt_9(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
 			{
-				EndRule(context, RuleType.DataTable);
 				EndRule(context, RuleType.Step);
 				EndRule(context, RuleType.Background);
 				Build(context, token);
-				return 26;
+				return 27;
 			}
 			if (	context.TokenMatcher.Match_TableRow(token)
 )
 			{
+				StartRule(context, RuleType.DataTable);
 				Build(context, token);
-				return 9;
+				return 10;
+			}
+			if (	context.TokenMatcher.Match_DocStringSeparator(token)
+)
+			{
+				StartRule(context, RuleType.DocString);
+				Build(context, token);
+				return 34;
+			}
+			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
+)
+			{
+				StartRule(context, RuleType.DocString);
+				Build(context, token);
+				return 36;
 			}
 			if (	context.TokenMatcher.Match_StepLine(token)
 )
 			{
-				EndRule(context, RuleType.DataTable);
 				EndRule(context, RuleType.Step);
 				StartRule(context, RuleType.Step);
 				Build(context, token);
-				return 8;
+				return 9;
 			}
 			if (	context.TokenMatcher.Match_TagLine(token)
 )
 			{
-				EndRule(context, RuleType.DataTable);
 				EndRule(context, RuleType.Step);
 				EndRule(context, RuleType.Background);
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Tags);
 				Build(context, token);
-				return 10;
+				return 11;
 			}
 			if (	context.TokenMatcher.Match_ScenarioLine(token)
 )
 			{
-				EndRule(context, RuleType.DataTable);
 				EndRule(context, RuleType.Step);
 				EndRule(context, RuleType.Background);
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Scenario);
 				Build(context, token);
-				return 11;
+				return 12;
 			}
 			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
 )
 			{
-				EndRule(context, RuleType.DataTable);
 				EndRule(context, RuleType.Step);
 				EndRule(context, RuleType.Background);
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.ScenarioOutline);
 				Build(context, token);
-				return 16;
+				return 17;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -959,7 +927,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 9;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 9 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#DocStringSeparator", "#DocStringAlternativeSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 9 - Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -968,30 +936,65 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0
+		// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
 		int MatchTokenAt_10(Token token, ParserContext context)
 		{
-			if (	context.TokenMatcher.Match_TagLine(token)
+			if (	context.TokenMatcher.Match_EOF(token)
+)
+			{
+				EndRule(context, RuleType.DataTable);
+				EndRule(context, RuleType.Step);
+				EndRule(context, RuleType.Background);
+				Build(context, token);
+				return 27;
+			}
+			if (	context.TokenMatcher.Match_TableRow(token)
 )
 			{
 				Build(context, token);
 				return 10;
 			}
+			if (	context.TokenMatcher.Match_StepLine(token)
+)
+			{
+				EndRule(context, RuleType.DataTable);
+				EndRule(context, RuleType.Step);
+				StartRule(context, RuleType.Step);
+				Build(context, token);
+				return 9;
+			}
+			if (	context.TokenMatcher.Match_TagLine(token)
+)
+			{
+				EndRule(context, RuleType.DataTable);
+				EndRule(context, RuleType.Step);
+				EndRule(context, RuleType.Background);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Tags);
+				Build(context, token);
+				return 11;
+			}
 			if (	context.TokenMatcher.Match_ScenarioLine(token)
 )
 			{
-				EndRule(context, RuleType.Tags);
+				EndRule(context, RuleType.DataTable);
+				EndRule(context, RuleType.Step);
+				EndRule(context, RuleType.Background);
+				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Scenario);
 				Build(context, token);
-				return 11;
+				return 12;
 			}
 			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
 )
 			{
-				EndRule(context, RuleType.Tags);
+				EndRule(context, RuleType.DataTable);
+				EndRule(context, RuleType.Step);
+				EndRule(context, RuleType.Background);
+				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.ScenarioOutline);
 				Build(context, token);
-				return 16;
+				return 17;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -1005,7 +1008,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 10;
 			}
-				var error = new ParserError(token, new string[] {"#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 10 - Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 10 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1014,16 +1017,36 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0
+		// Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0
 		int MatchTokenAt_11(Token token, ParserContext context)
 		{
-			if (	context.TokenMatcher.Match_EOF(token)
+			if (	context.TokenMatcher.Match_TagLine(token)
 )
 			{
-				EndRule(context, RuleType.Scenario);
-				EndRule(context, RuleType.Scenario_Definition);
 				Build(context, token);
-				return 26;
+				return 11;
+			}
+			if (	context.TokenMatcher.Match_ScenarioLine(token)
+)
+			{
+				EndRule(context, RuleType.Tags);
+				StartRule(context, RuleType.Scenario);
+				Build(context, token);
+				return 12;
+			}
+			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
+)
+			{
+				EndRule(context, RuleType.Tags);
+				StartRule(context, RuleType.ScenarioOutline);
+				Build(context, token);
+				return 17;
+			}
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 11;
 			}
 			if (	context.TokenMatcher.Match_Empty(token)
 )
@@ -1031,57 +1054,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 11;
 			}
-			if (	context.TokenMatcher.Match_Comment(token)
-)
-			{
-				Build(context, token);
-				return 13;
-			}
-			if (	context.TokenMatcher.Match_StepLine(token)
-)
-			{
-				StartRule(context, RuleType.Step);
-				Build(context, token);
-				return 14;
-			}
-			if (	context.TokenMatcher.Match_TagLine(token)
-)
-			{
-				EndRule(context, RuleType.Scenario);
-				EndRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Tags);
-				Build(context, token);
-				return 10;
-			}
-			if (	context.TokenMatcher.Match_ScenarioLine(token)
-)
-			{
-				EndRule(context, RuleType.Scenario);
-				EndRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario);
-				Build(context, token);
-				return 11;
-			}
-			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
-)
-			{
-				EndRule(context, RuleType.Scenario);
-				EndRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.ScenarioOutline);
-				Build(context, token);
-				return 16;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
-)
-			{
-				StartRule(context, RuleType.Description);
-				Build(context, token);
-				return 12;
-			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 11 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0");
+				var error = new ParserError(token, new string[] {"#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 11 - Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1090,73 +1063,74 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
+		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0
 		int MatchTokenAt_12(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
 			{
-				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Scenario);
 				EndRule(context, RuleType.Scenario_Definition);
 				Build(context, token);
-				return 26;
+				return 27;
 			}
-			if (	context.TokenMatcher.Match_Comment(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				Build(context, token);
-				return 13;
-			}
-			if (	context.TokenMatcher.Match_StepLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				StartRule(context, RuleType.Step);
-				Build(context, token);
-				return 14;
-			}
-			if (	context.TokenMatcher.Match_TagLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				EndRule(context, RuleType.Scenario);
-				EndRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Tags);
-				Build(context, token);
-				return 10;
-			}
-			if (	context.TokenMatcher.Match_ScenarioLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				EndRule(context, RuleType.Scenario);
-				EndRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario);
-				Build(context, token);
-				return 11;
-			}
-			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				EndRule(context, RuleType.Scenario);
-				EndRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.ScenarioOutline);
-				Build(context, token);
-				return 16;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
+			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
 				return 12;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 12 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0");
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 14;
+			}
+			if (	context.TokenMatcher.Match_StepLine(token)
+)
+			{
+				StartRule(context, RuleType.Step);
+				Build(context, token);
+				return 15;
+			}
+			if (	context.TokenMatcher.Match_TagLine(token)
+)
+			{
+				EndRule(context, RuleType.Scenario);
+				EndRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Tags);
+				Build(context, token);
+				return 11;
+			}
+			if (	context.TokenMatcher.Match_ScenarioLine(token)
+)
+			{
+				EndRule(context, RuleType.Scenario);
+				EndRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario);
+				Build(context, token);
+				return 12;
+			}
+			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
+)
+			{
+				EndRule(context, RuleType.Scenario);
+				EndRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.ScenarioOutline);
+				Build(context, token);
+				return 17;
+			}
+			if (	context.TokenMatcher.Match_Other(token)
+)
+			{
+				StartRule(context, RuleType.Description);
+				Build(context, token);
+				return 13;
+			}
+				var error = new ParserError(token, new string[] {"#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 12 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1165,67 +1139,73 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
+		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
 		int MatchTokenAt_13(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Scenario);
 				EndRule(context, RuleType.Scenario_Definition);
 				Build(context, token);
-				return 26;
+				return 27;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				Build(context, token);
-				return 13;
+				return 14;
 			}
 			if (	context.TokenMatcher.Match_StepLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				StartRule(context, RuleType.Step);
 				Build(context, token);
-				return 14;
+				return 15;
 			}
 			if (	context.TokenMatcher.Match_TagLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Scenario);
 				EndRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Tags);
 				Build(context, token);
-				return 10;
+				return 11;
 			}
 			if (	context.TokenMatcher.Match_ScenarioLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Scenario);
 				EndRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Scenario);
 				Build(context, token);
-				return 11;
+				return 12;
 			}
 			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				EndRule(context, RuleType.Scenario);
 				EndRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.ScenarioOutline);
 				Build(context, token);
-				return 16;
+				return 17;
 			}
-			if (	context.TokenMatcher.Match_Empty(token)
+			if (	context.TokenMatcher.Match_Other(token)
 )
 			{
 				Build(context, token);
 				return 13;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 13 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 13 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1234,79 +1214,16 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
+		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
 		int MatchTokenAt_14(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
 			{
-				EndRule(context, RuleType.Step);
 				EndRule(context, RuleType.Scenario);
 				EndRule(context, RuleType.Scenario_Definition);
 				Build(context, token);
-				return 26;
-			}
-			if (	context.TokenMatcher.Match_TableRow(token)
-)
-			{
-				StartRule(context, RuleType.DataTable);
-				Build(context, token);
-				return 15;
-			}
-			if (	context.TokenMatcher.Match_DocStringSeparator(token)
-)
-			{
-				StartRule(context, RuleType.DocString);
-				Build(context, token);
-				return 30;
-			}
-			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
-)
-			{
-				StartRule(context, RuleType.DocString);
-				Build(context, token);
-				return 32;
-			}
-			if (	context.TokenMatcher.Match_StepLine(token)
-)
-			{
-				EndRule(context, RuleType.Step);
-				StartRule(context, RuleType.Step);
-				Build(context, token);
-				return 14;
-			}
-			if (	context.TokenMatcher.Match_TagLine(token)
-)
-			{
-				EndRule(context, RuleType.Step);
-				EndRule(context, RuleType.Scenario);
-				EndRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Tags);
-				Build(context, token);
-				return 10;
-			}
-			if (	context.TokenMatcher.Match_ScenarioLine(token)
-)
-			{
-				EndRule(context, RuleType.Step);
-				EndRule(context, RuleType.Scenario);
-				EndRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario);
-				Build(context, token);
-				return 11;
-			}
-			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
-)
-			{
-				EndRule(context, RuleType.Step);
-				EndRule(context, RuleType.Scenario);
-				EndRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.ScenarioOutline);
-				Build(context, token);
-				return 16;
+				return 27;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -1314,13 +1231,50 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 14;
 			}
+			if (	context.TokenMatcher.Match_StepLine(token)
+)
+			{
+				StartRule(context, RuleType.Step);
+				Build(context, token);
+				return 15;
+			}
+			if (	context.TokenMatcher.Match_TagLine(token)
+)
+			{
+				EndRule(context, RuleType.Scenario);
+				EndRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Tags);
+				Build(context, token);
+				return 11;
+			}
+			if (	context.TokenMatcher.Match_ScenarioLine(token)
+)
+			{
+				EndRule(context, RuleType.Scenario);
+				EndRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario);
+				Build(context, token);
+				return 12;
+			}
+			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
+)
+			{
+				EndRule(context, RuleType.Scenario);
+				EndRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.ScenarioOutline);
+				Build(context, token);
+				return 17;
+			}
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
 				return 14;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#DocStringSeparator", "#DocStringAlternativeSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 14 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 14 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1329,8 +1283,103 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
+		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
 		int MatchTokenAt_15(Token token, ParserContext context)
+		{
+			if (	context.TokenMatcher.Match_EOF(token)
+)
+			{
+				EndRule(context, RuleType.Step);
+				EndRule(context, RuleType.Scenario);
+				EndRule(context, RuleType.Scenario_Definition);
+				Build(context, token);
+				return 27;
+			}
+			if (	context.TokenMatcher.Match_TableRow(token)
+)
+			{
+				StartRule(context, RuleType.DataTable);
+				Build(context, token);
+				return 16;
+			}
+			if (	context.TokenMatcher.Match_DocStringSeparator(token)
+)
+			{
+				StartRule(context, RuleType.DocString);
+				Build(context, token);
+				return 31;
+			}
+			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
+)
+			{
+				StartRule(context, RuleType.DocString);
+				Build(context, token);
+				return 33;
+			}
+			if (	context.TokenMatcher.Match_StepLine(token)
+)
+			{
+				EndRule(context, RuleType.Step);
+				StartRule(context, RuleType.Step);
+				Build(context, token);
+				return 15;
+			}
+			if (	context.TokenMatcher.Match_TagLine(token)
+)
+			{
+				EndRule(context, RuleType.Step);
+				EndRule(context, RuleType.Scenario);
+				EndRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Tags);
+				Build(context, token);
+				return 11;
+			}
+			if (	context.TokenMatcher.Match_ScenarioLine(token)
+)
+			{
+				EndRule(context, RuleType.Step);
+				EndRule(context, RuleType.Scenario);
+				EndRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario);
+				Build(context, token);
+				return 12;
+			}
+			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
+)
+			{
+				EndRule(context, RuleType.Step);
+				EndRule(context, RuleType.Scenario);
+				EndRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.ScenarioOutline);
+				Build(context, token);
+				return 17;
+			}
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 15;
+			}
+			if (	context.TokenMatcher.Match_Empty(token)
+)
+			{
+				Build(context, token);
+				return 15;
+			}
+				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#DocStringSeparator", "#DocStringAlternativeSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 15 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0");
+	if (StopAtFirstError)
+		throw new ParserException(ParserMessageProvider, error);
+	context.Errors.Add(error);
+	return 15;
+
+		}
+		
+		
+		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
+		int MatchTokenAt_16(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
@@ -1340,13 +1389,13 @@ Description, // Description! := #Other+
 				EndRule(context, RuleType.Scenario);
 				EndRule(context, RuleType.Scenario_Definition);
 				Build(context, token);
-				return 26;
+				return 27;
 			}
 			if (	context.TokenMatcher.Match_TableRow(token)
 )
 			{
 				Build(context, token);
-				return 15;
+				return 16;
 			}
 			if (	context.TokenMatcher.Match_StepLine(token)
 )
@@ -1355,7 +1404,7 @@ Description, // Description! := #Other+
 				EndRule(context, RuleType.Step);
 				StartRule(context, RuleType.Step);
 				Build(context, token);
-				return 14;
+				return 15;
 			}
 			if (	context.TokenMatcher.Match_TagLine(token)
 )
@@ -1367,7 +1416,7 @@ Description, // Description! := #Other+
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Tags);
 				Build(context, token);
-				return 10;
+				return 11;
 			}
 			if (	context.TokenMatcher.Match_ScenarioLine(token)
 )
@@ -1379,7 +1428,7 @@ Description, // Description! := #Other+
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Scenario);
 				Build(context, token);
-				return 11;
+				return 12;
 			}
 			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
 )
@@ -1391,74 +1440,21 @@ Description, // Description! := #Other+
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.ScenarioOutline);
 				Build(context, token);
-				return 16;
-			}
-			if (	context.TokenMatcher.Match_Comment(token)
-)
-			{
-				Build(context, token);
-				return 15;
-			}
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 15;
-			}
-				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 15 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0");
-	if (StopAtFirstError)
-		throw new ParserException(ParserMessageProvider, error);
-	context.Errors.Add(error);
-	return 15;
-
-		}
-		
-		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
-		int MatchTokenAt_16(Token token, ParserContext context)
-		{
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 16;
-			}
-			if (	context.TokenMatcher.Match_Comment(token)
-)
-			{
-				Build(context, token);
-				return 18;
-			}
-			if (	context.TokenMatcher.Match_StepLine(token)
-)
-			{
-				StartRule(context, RuleType.Step);
-				Build(context, token);
-				return 19;
-			}
-			if (	context.TokenMatcher.Match_TagLine(token)
-)
-			{
-				StartRule(context, RuleType.Examples);
-				StartRule(context, RuleType.Tags);
-				Build(context, token);
-				return 21;
-			}
-			if (	context.TokenMatcher.Match_ExamplesLine(token)
-)
-			{
-				StartRule(context, RuleType.Examples);
-				Build(context, token);
-				return 22;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
-)
-			{
-				StartRule(context, RuleType.Description);
-				Build(context, token);
 				return 17;
 			}
-				var error = new ParserError(token, new string[] {"#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"}, "State: 16 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0");
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 16;
+			}
+			if (	context.TokenMatcher.Match_Empty(token)
+)
+			{
+				Build(context, token);
+				return 16;
+			}
+				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 16 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1467,48 +1463,51 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
+		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
 		int MatchTokenAt_17(Token token, ParserContext context)
 		{
-			if (	context.TokenMatcher.Match_Comment(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				Build(context, token);
-				return 18;
-			}
-			if (	context.TokenMatcher.Match_StepLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				StartRule(context, RuleType.Step);
-				Build(context, token);
-				return 19;
-			}
-			if (	context.TokenMatcher.Match_TagLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				StartRule(context, RuleType.Examples);
-				StartRule(context, RuleType.Tags);
-				Build(context, token);
-				return 21;
-			}
-			if (	context.TokenMatcher.Match_ExamplesLine(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				StartRule(context, RuleType.Examples);
-				Build(context, token);
-				return 22;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
+			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
 				return 17;
 			}
-				var error = new ParserError(token, new string[] {"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"}, "State: 17 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0");
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 19;
+			}
+			if (	context.TokenMatcher.Match_StepLine(token)
+)
+			{
+				StartRule(context, RuleType.Step);
+				Build(context, token);
+				return 20;
+			}
+			if (	context.TokenMatcher.Match_TagLine(token)
+)
+			{
+				StartRule(context, RuleType.Examples);
+				StartRule(context, RuleType.Tags);
+				Build(context, token);
+				return 22;
+			}
+			if (	context.TokenMatcher.Match_ExamplesLine(token)
+)
+			{
+				StartRule(context, RuleType.Examples);
+				Build(context, token);
+				return 23;
+			}
+			if (	context.TokenMatcher.Match_Other(token)
+)
+			{
+				StartRule(context, RuleType.Description);
+				Build(context, token);
+				return 18;
+			}
+				var error = new ParserError(token, new string[] {"#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"}, "State: 17 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1517,44 +1516,48 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
+		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
 		int MatchTokenAt_18(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_Comment(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				Build(context, token);
-				return 18;
+				return 19;
 			}
 			if (	context.TokenMatcher.Match_StepLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				StartRule(context, RuleType.Step);
 				Build(context, token);
-				return 19;
+				return 20;
 			}
 			if (	context.TokenMatcher.Match_TagLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				StartRule(context, RuleType.Examples);
 				StartRule(context, RuleType.Tags);
 				Build(context, token);
-				return 21;
+				return 22;
 			}
 			if (	context.TokenMatcher.Match_ExamplesLine(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				StartRule(context, RuleType.Examples);
 				Build(context, token);
-				return 22;
+				return 23;
 			}
-			if (	context.TokenMatcher.Match_Empty(token)
+			if (	context.TokenMatcher.Match_Other(token)
 )
 			{
 				Build(context, token);
 				return 18;
 			}
-				var error = new ParserError(token, new string[] {"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Empty"}, "State: 18 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0");
+				var error = new ParserError(token, new string[] {"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"}, "State: 18 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1563,60 +1566,36 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
+		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
 		int MatchTokenAt_19(Token token, ParserContext context)
 		{
-			if (	context.TokenMatcher.Match_TableRow(token)
-)
-			{
-				StartRule(context, RuleType.DataTable);
-				Build(context, token);
-				return 20;
-			}
-			if (	context.TokenMatcher.Match_DocStringSeparator(token)
-)
-			{
-				StartRule(context, RuleType.DocString);
-				Build(context, token);
-				return 27;
-			}
-			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
-)
-			{
-				StartRule(context, RuleType.DocString);
-				Build(context, token);
-				return 29;
-			}
-			if (	context.TokenMatcher.Match_StepLine(token)
-)
-			{
-				EndRule(context, RuleType.Step);
-				StartRule(context, RuleType.Step);
-				Build(context, token);
-				return 19;
-			}
-			if (	context.TokenMatcher.Match_TagLine(token)
-)
-			{
-				EndRule(context, RuleType.Step);
-				StartRule(context, RuleType.Examples);
-				StartRule(context, RuleType.Tags);
-				Build(context, token);
-				return 21;
-			}
-			if (	context.TokenMatcher.Match_ExamplesLine(token)
-)
-			{
-				EndRule(context, RuleType.Step);
-				StartRule(context, RuleType.Examples);
-				Build(context, token);
-				return 22;
-			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
 			{
 				Build(context, token);
 				return 19;
+			}
+			if (	context.TokenMatcher.Match_StepLine(token)
+)
+			{
+				StartRule(context, RuleType.Step);
+				Build(context, token);
+				return 20;
+			}
+			if (	context.TokenMatcher.Match_TagLine(token)
+)
+			{
+				StartRule(context, RuleType.Examples);
+				StartRule(context, RuleType.Tags);
+				Build(context, token);
+				return 22;
+			}
+			if (	context.TokenMatcher.Match_ExamplesLine(token)
+)
+			{
+				StartRule(context, RuleType.Examples);
+				Build(context, token);
+				return 23;
 			}
 			if (	context.TokenMatcher.Match_Empty(token)
 )
@@ -1624,7 +1603,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 19;
 			}
-				var error = new ParserError(token, new string[] {"#TableRow", "#DocStringSeparator", "#DocStringAlternativeSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 19 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0");
+				var error = new ParserError(token, new string[] {"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Empty"}, "State: 19 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1633,14 +1612,84 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
+		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
 		int MatchTokenAt_20(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_TableRow(token)
 )
 			{
+				StartRule(context, RuleType.DataTable);
+				Build(context, token);
+				return 21;
+			}
+			if (	context.TokenMatcher.Match_DocStringSeparator(token)
+)
+			{
+				StartRule(context, RuleType.DocString);
+				Build(context, token);
+				return 28;
+			}
+			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
+)
+			{
+				StartRule(context, RuleType.DocString);
+				Build(context, token);
+				return 30;
+			}
+			if (	context.TokenMatcher.Match_StepLine(token)
+)
+			{
+				EndRule(context, RuleType.Step);
+				StartRule(context, RuleType.Step);
 				Build(context, token);
 				return 20;
+			}
+			if (	context.TokenMatcher.Match_TagLine(token)
+)
+			{
+				EndRule(context, RuleType.Step);
+				StartRule(context, RuleType.Examples);
+				StartRule(context, RuleType.Tags);
+				Build(context, token);
+				return 22;
+			}
+			if (	context.TokenMatcher.Match_ExamplesLine(token)
+)
+			{
+				EndRule(context, RuleType.Step);
+				StartRule(context, RuleType.Examples);
+				Build(context, token);
+				return 23;
+			}
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 20;
+			}
+			if (	context.TokenMatcher.Match_Empty(token)
+)
+			{
+				Build(context, token);
+				return 20;
+			}
+				var error = new ParserError(token, new string[] {"#TableRow", "#DocStringSeparator", "#DocStringAlternativeSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0");
+	if (StopAtFirstError)
+		throw new ParserException(ParserMessageProvider, error);
+	context.Errors.Add(error);
+	return 20;
+
+		}
+		
+		
+		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
+		int MatchTokenAt_21(Token token, ParserContext context)
+		{
+			if (	context.TokenMatcher.Match_TableRow(token)
+)
+			{
+				Build(context, token);
+				return 21;
 			}
 			if (	context.TokenMatcher.Match_StepLine(token)
 )
@@ -1649,7 +1698,7 @@ Description, // Description! := #Other+
 				EndRule(context, RuleType.Step);
 				StartRule(context, RuleType.Step);
 				Build(context, token);
-				return 19;
+				return 20;
 			}
 			if (	context.TokenMatcher.Match_TagLine(token)
 )
@@ -1659,7 +1708,7 @@ Description, // Description! := #Other+
 				StartRule(context, RuleType.Examples);
 				StartRule(context, RuleType.Tags);
 				Build(context, token);
-				return 21;
+				return 22;
 			}
 			if (	context.TokenMatcher.Match_ExamplesLine(token)
 )
@@ -1668,44 +1717,7 @@ Description, // Description! := #Other+
 				EndRule(context, RuleType.Step);
 				StartRule(context, RuleType.Examples);
 				Build(context, token);
-				return 22;
-			}
-			if (	context.TokenMatcher.Match_Comment(token)
-)
-			{
-				Build(context, token);
-				return 20;
-			}
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 20;
-			}
-				var error = new ParserError(token, new string[] {"#TableRow", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0");
-	if (StopAtFirstError)
-		throw new ParserException(ParserMessageProvider, error);
-	context.Errors.Add(error);
-	return 20;
-
-		}
-		
-		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
-		int MatchTokenAt_21(Token token, ParserContext context)
-		{
-			if (	context.TokenMatcher.Match_TagLine(token)
-)
-			{
-				Build(context, token);
-				return 21;
-			}
-			if (	context.TokenMatcher.Match_ExamplesLine(token)
-)
-			{
-				EndRule(context, RuleType.Tags);
-				Build(context, token);
-				return 22;
+				return 23;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -1719,7 +1731,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 21;
 			}
-				var error = new ParserError(token, new string[] {"#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 21 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0");
+				var error = new ParserError(token, new string[] {"#TableRow", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 21 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1728,35 +1740,35 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0
+		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
 		int MatchTokenAt_22(Token token, ParserContext context)
 		{
+			if (	context.TokenMatcher.Match_TagLine(token)
+)
+			{
+				Build(context, token);
+				return 22;
+			}
+			if (	context.TokenMatcher.Match_ExamplesLine(token)
+)
+			{
+				EndRule(context, RuleType.Tags);
+				Build(context, token);
+				return 23;
+			}
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 22;
+			}
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
 				return 22;
 			}
-			if (	context.TokenMatcher.Match_Comment(token)
-)
-			{
-				Build(context, token);
-				return 24;
-			}
-			if (	context.TokenMatcher.Match_TableRow(token)
-)
-			{
-				Build(context, token);
-				return 25;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
-)
-			{
-				StartRule(context, RuleType.Description);
-				Build(context, token);
-				return 23;
-			}
-				var error = new ParserError(token, new string[] {"#Empty", "#Comment", "#TableRow", "#Other"}, "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0");
+				var error = new ParserError(token, new string[] {"#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1765,30 +1777,35 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
+		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0
 		int MatchTokenAt_23(Token token, ParserContext context)
 		{
-			if (	context.TokenMatcher.Match_Comment(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				Build(context, token);
-				return 24;
-			}
-			if (	context.TokenMatcher.Match_TableRow(token)
-)
-			{
-				EndRule(context, RuleType.Description);
-				Build(context, token);
-				return 25;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
+			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
 				return 23;
 			}
-				var error = new ParserError(token, new string[] {"#Comment", "#TableRow", "#Other"}, "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0");
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 25;
+			}
+			if (	context.TokenMatcher.Match_TableRow(token)
+)
+			{
+				Build(context, token);
+				return 26;
+			}
+			if (	context.TokenMatcher.Match_Other(token)
+)
+			{
+				StartRule(context, RuleType.Description);
+				Build(context, token);
+				return 24;
+			}
+				var error = new ParserError(token, new string[] {"#Empty", "#Comment", "#TableRow", "#Other"}, "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1797,28 +1814,30 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0
+		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
 		int MatchTokenAt_24(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_Comment(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				Build(context, token);
-				return 24;
+				return 25;
 			}
 			if (	context.TokenMatcher.Match_TableRow(token)
 )
 			{
+				EndRule(context, RuleType.Description);
 				Build(context, token);
-				return 25;
+				return 26;
 			}
-			if (	context.TokenMatcher.Match_Empty(token)
+			if (	context.TokenMatcher.Match_Other(token)
 )
 			{
 				Build(context, token);
 				return 24;
 			}
-				var error = new ParserError(token, new string[] {"#Comment", "#TableRow", "#Empty"}, "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0");
+				var error = new ParserError(token, new string[] {"#Comment", "#TableRow", "#Other"}, "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1827,8 +1846,38 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0
+		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0
 		int MatchTokenAt_25(Token token, ParserContext context)
+		{
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 25;
+			}
+			if (	context.TokenMatcher.Match_TableRow(token)
+)
+			{
+				Build(context, token);
+				return 26;
+			}
+			if (	context.TokenMatcher.Match_Empty(token)
+)
+			{
+				Build(context, token);
+				return 25;
+			}
+				var error = new ParserError(token, new string[] {"#Comment", "#TableRow", "#Empty"}, "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0");
+	if (StopAtFirstError)
+		throw new ParserException(ParserMessageProvider, error);
+	context.Errors.Add(error);
+	return 25;
+
+		}
+		
+		
+		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0
+		int MatchTokenAt_26(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
@@ -1837,13 +1886,13 @@ Description, // Description! := #Other+
 				EndRule(context, RuleType.ScenarioOutline);
 				EndRule(context, RuleType.Scenario_Definition);
 				Build(context, token);
-				return 26;
+				return 27;
 			}
 			if (	context.TokenMatcher.Match_TableRow(token)
 )
 			{
 				Build(context, token);
-				return 25;
+				return 26;
 			}
 			if (	context.TokenMatcher.Match_TagLine(token)
 )
@@ -1854,7 +1903,7 @@ Description, // Description! := #Other+
 				StartRule(context, RuleType.Examples);
 				StartRule(context, RuleType.Tags);
 				Build(context, token);
-				return 21;
+				return 22;
 				}
 			}
 			if (	context.TokenMatcher.Match_TagLine(token)
@@ -1866,7 +1915,7 @@ Description, // Description! := #Other+
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Tags);
 				Build(context, token);
-				return 10;
+				return 11;
 			}
 			if (	context.TokenMatcher.Match_ExamplesLine(token)
 )
@@ -1874,7 +1923,7 @@ Description, // Description! := #Other+
 				EndRule(context, RuleType.Examples);
 				StartRule(context, RuleType.Examples);
 				Build(context, token);
-				return 22;
+				return 23;
 			}
 			if (	context.TokenMatcher.Match_ScenarioLine(token)
 )
@@ -1885,7 +1934,7 @@ Description, // Description! := #Other+
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Scenario);
 				Build(context, token);
-				return 11;
+				return 12;
 			}
 			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
 )
@@ -1896,103 +1945,51 @@ Description, // Description! := #Other+
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.ScenarioOutline);
 				Build(context, token);
-				return 16;
+				return 17;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
 			{
 				Build(context, token);
-				return 25;
+				return 26;
 			}
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
-				return 25;
+				return 26;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
-	return 25;
+	return 26;
 
 		}
 		
 		
 		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
-		int MatchTokenAt_27(Token token, ParserContext context)
+		int MatchTokenAt_28(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
-				return 27;
+				return 28;
 			}
 			if (	context.TokenMatcher.Match_DocStringSeparator(token)
 )
 			{
 				Build(context, token);
-				return 28;
+				return 29;
 			}
 			if (	context.TokenMatcher.Match_Other(token)
 )
 			{
 				Build(context, token);
-				return 27;
-			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 27 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0");
-	if (StopAtFirstError)
-		throw new ParserException(ParserMessageProvider, error);
-	context.Errors.Add(error);
-	return 27;
-
-		}
-		
-		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
-		int MatchTokenAt_28(Token token, ParserContext context)
-		{
-			if (	context.TokenMatcher.Match_StepLine(token)
-)
-			{
-				EndRule(context, RuleType.DocString);
-				EndRule(context, RuleType.Step);
-				StartRule(context, RuleType.Step);
-				Build(context, token);
-				return 19;
-			}
-			if (	context.TokenMatcher.Match_TagLine(token)
-)
-			{
-				EndRule(context, RuleType.DocString);
-				EndRule(context, RuleType.Step);
-				StartRule(context, RuleType.Examples);
-				StartRule(context, RuleType.Tags);
-				Build(context, token);
-				return 21;
-			}
-			if (	context.TokenMatcher.Match_ExamplesLine(token)
-)
-			{
-				EndRule(context, RuleType.DocString);
-				EndRule(context, RuleType.Step);
-				StartRule(context, RuleType.Examples);
-				Build(context, token);
-				return 22;
-			}
-			if (	context.TokenMatcher.Match_Comment(token)
-)
-			{
-				Build(context, token);
 				return 28;
 			}
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 28;
-			}
-				var error = new ParserError(token, new string[] {"#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0");
+				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -2001,28 +1998,50 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
+		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
 		int MatchTokenAt_29(Token token, ParserContext context)
 		{
+			if (	context.TokenMatcher.Match_StepLine(token)
+)
+			{
+				EndRule(context, RuleType.DocString);
+				EndRule(context, RuleType.Step);
+				StartRule(context, RuleType.Step);
+				Build(context, token);
+				return 20;
+			}
+			if (	context.TokenMatcher.Match_TagLine(token)
+)
+			{
+				EndRule(context, RuleType.DocString);
+				EndRule(context, RuleType.Step);
+				StartRule(context, RuleType.Examples);
+				StartRule(context, RuleType.Tags);
+				Build(context, token);
+				return 22;
+			}
+			if (	context.TokenMatcher.Match_ExamplesLine(token)
+)
+			{
+				EndRule(context, RuleType.DocString);
+				EndRule(context, RuleType.Step);
+				StartRule(context, RuleType.Examples);
+				Build(context, token);
+				return 23;
+			}
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 29;
+			}
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
 				return 29;
 			}
-			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
-)
-			{
-				Build(context, token);
-				return 28;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
-)
-			{
-				Build(context, token);
-				return 29;
-			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringAlternativeSeparator", "#Other"}, "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0");
+				var error = new ParserError(token, new string[] {"#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -2031,7 +2050,7 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
+		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
 		int MatchTokenAt_30(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_Empty(token)
@@ -2040,11 +2059,11 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 30;
 			}
-			if (	context.TokenMatcher.Match_DocStringSeparator(token)
+			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
 )
 			{
 				Build(context, token);
-				return 31;
+				return 29;
 			}
 			if (	context.TokenMatcher.Match_Other(token)
 )
@@ -2052,7 +2071,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 30;
 			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 30 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0");
+				var error = new ParserError(token, new string[] {"#Empty", "#DocStringAlternativeSeparator", "#Other"}, "State: 30 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -2061,77 +2080,28 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
+		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
 		int MatchTokenAt_31(Token token, ParserContext context)
 		{
-			if (	context.TokenMatcher.Match_EOF(token)
-)
-			{
-				EndRule(context, RuleType.DocString);
-				EndRule(context, RuleType.Step);
-				EndRule(context, RuleType.Scenario);
-				EndRule(context, RuleType.Scenario_Definition);
-				Build(context, token);
-				return 26;
-			}
-			if (	context.TokenMatcher.Match_StepLine(token)
-)
-			{
-				EndRule(context, RuleType.DocString);
-				EndRule(context, RuleType.Step);
-				StartRule(context, RuleType.Step);
-				Build(context, token);
-				return 14;
-			}
-			if (	context.TokenMatcher.Match_TagLine(token)
-)
-			{
-				EndRule(context, RuleType.DocString);
-				EndRule(context, RuleType.Step);
-				EndRule(context, RuleType.Scenario);
-				EndRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Tags);
-				Build(context, token);
-				return 10;
-			}
-			if (	context.TokenMatcher.Match_ScenarioLine(token)
-)
-			{
-				EndRule(context, RuleType.DocString);
-				EndRule(context, RuleType.Step);
-				EndRule(context, RuleType.Scenario);
-				EndRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario);
-				Build(context, token);
-				return 11;
-			}
-			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
-)
-			{
-				EndRule(context, RuleType.DocString);
-				EndRule(context, RuleType.Step);
-				EndRule(context, RuleType.Scenario);
-				EndRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.Scenario_Definition);
-				StartRule(context, RuleType.ScenarioOutline);
-				Build(context, token);
-				return 16;
-			}
-			if (	context.TokenMatcher.Match_Comment(token)
-)
-			{
-				Build(context, token);
-				return 31;
-			}
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
 				return 31;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0");
+			if (	context.TokenMatcher.Match_DocStringSeparator(token)
+)
+			{
+				Build(context, token);
+				return 32;
+			}
+			if (	context.TokenMatcher.Match_Other(token)
+)
+			{
+				Build(context, token);
+				return 31;
+			}
+				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -2140,77 +2110,18 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
+		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
 		int MatchTokenAt_32(Token token, ParserContext context)
-		{
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 32;
-			}
-			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
-)
-			{
-				Build(context, token);
-				return 31;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
-)
-			{
-				Build(context, token);
-				return 32;
-			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringAlternativeSeparator", "#Other"}, "State: 32 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0");
-	if (StopAtFirstError)
-		throw new ParserException(ParserMessageProvider, error);
-	context.Errors.Add(error);
-	return 32;
-
-		}
-		
-		
-		// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
-		int MatchTokenAt_33(Token token, ParserContext context)
-		{
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 33;
-			}
-			if (	context.TokenMatcher.Match_DocStringSeparator(token)
-)
-			{
-				Build(context, token);
-				return 34;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
-)
-			{
-				Build(context, token);
-				return 33;
-			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0");
-	if (StopAtFirstError)
-		throw new ParserException(ParserMessageProvider, error);
-	context.Errors.Add(error);
-	return 33;
-
-		}
-		
-		
-		// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
-		int MatchTokenAt_34(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
 			{
 				EndRule(context, RuleType.DocString);
 				EndRule(context, RuleType.Step);
-				EndRule(context, RuleType.Background);
+				EndRule(context, RuleType.Scenario);
+				EndRule(context, RuleType.Scenario_Definition);
 				Build(context, token);
-				return 26;
+				return 27;
 			}
 			if (	context.TokenMatcher.Match_StepLine(token)
 )
@@ -2219,7 +2130,145 @@ Description, // Description! := #Other+
 				EndRule(context, RuleType.Step);
 				StartRule(context, RuleType.Step);
 				Build(context, token);
-				return 8;
+				return 15;
+			}
+			if (	context.TokenMatcher.Match_TagLine(token)
+)
+			{
+				EndRule(context, RuleType.DocString);
+				EndRule(context, RuleType.Step);
+				EndRule(context, RuleType.Scenario);
+				EndRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Tags);
+				Build(context, token);
+				return 11;
+			}
+			if (	context.TokenMatcher.Match_ScenarioLine(token)
+)
+			{
+				EndRule(context, RuleType.DocString);
+				EndRule(context, RuleType.Step);
+				EndRule(context, RuleType.Scenario);
+				EndRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario);
+				Build(context, token);
+				return 12;
+			}
+			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
+)
+			{
+				EndRule(context, RuleType.DocString);
+				EndRule(context, RuleType.Step);
+				EndRule(context, RuleType.Scenario);
+				EndRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.Scenario_Definition);
+				StartRule(context, RuleType.ScenarioOutline);
+				Build(context, token);
+				return 17;
+			}
+			if (	context.TokenMatcher.Match_Comment(token)
+)
+			{
+				Build(context, token);
+				return 32;
+			}
+			if (	context.TokenMatcher.Match_Empty(token)
+)
+			{
+				Build(context, token);
+				return 32;
+			}
+				var error = new ParserError(token, new string[] {"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 32 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0");
+	if (StopAtFirstError)
+		throw new ParserException(ParserMessageProvider, error);
+	context.Errors.Add(error);
+	return 32;
+
+		}
+		
+		
+		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
+		int MatchTokenAt_33(Token token, ParserContext context)
+		{
+			if (	context.TokenMatcher.Match_Empty(token)
+)
+			{
+				Build(context, token);
+				return 33;
+			}
+			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
+)
+			{
+				Build(context, token);
+				return 32;
+			}
+			if (	context.TokenMatcher.Match_Other(token)
+)
+			{
+				Build(context, token);
+				return 33;
+			}
+				var error = new ParserError(token, new string[] {"#Empty", "#DocStringAlternativeSeparator", "#Other"}, "State: 33 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0");
+	if (StopAtFirstError)
+		throw new ParserException(ParserMessageProvider, error);
+	context.Errors.Add(error);
+	return 33;
+
+		}
+		
+		
+		// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
+		int MatchTokenAt_34(Token token, ParserContext context)
+		{
+			if (	context.TokenMatcher.Match_Empty(token)
+)
+			{
+				Build(context, token);
+				return 34;
+			}
+			if (	context.TokenMatcher.Match_DocStringSeparator(token)
+)
+			{
+				Build(context, token);
+				return 35;
+			}
+			if (	context.TokenMatcher.Match_Other(token)
+)
+			{
+				Build(context, token);
+				return 34;
+			}
+				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 34 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0");
+	if (StopAtFirstError)
+		throw new ParserException(ParserMessageProvider, error);
+	context.Errors.Add(error);
+	return 34;
+
+		}
+		
+		
+		// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
+		int MatchTokenAt_35(Token token, ParserContext context)
+		{
+			if (	context.TokenMatcher.Match_EOF(token)
+)
+			{
+				EndRule(context, RuleType.DocString);
+				EndRule(context, RuleType.Step);
+				EndRule(context, RuleType.Background);
+				Build(context, token);
+				return 27;
+			}
+			if (	context.TokenMatcher.Match_StepLine(token)
+)
+			{
+				EndRule(context, RuleType.DocString);
+				EndRule(context, RuleType.Step);
+				StartRule(context, RuleType.Step);
+				Build(context, token);
+				return 9;
 			}
 			if (	context.TokenMatcher.Match_TagLine(token)
 )
@@ -2230,7 +2279,7 @@ Description, // Description! := #Other+
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Tags);
 				Build(context, token);
-				return 10;
+				return 11;
 			}
 			if (	context.TokenMatcher.Match_ScenarioLine(token)
 )
@@ -2241,7 +2290,7 @@ Description, // Description! := #Other+
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.Scenario);
 				Build(context, token);
-				return 11;
+				return 12;
 			}
 			if (	context.TokenMatcher.Match_ScenarioOutlineLine(token)
 )
@@ -2252,55 +2301,55 @@ Description, // Description! := #Other+
 				StartRule(context, RuleType.Scenario_Definition);
 				StartRule(context, RuleType.ScenarioOutline);
 				Build(context, token);
-				return 16;
+				return 17;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
 			{
 				Build(context, token);
-				return 34;
+				return 35;
 			}
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
-				return 34;
+				return 35;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 34 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 35 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
-	return 34;
+	return 35;
 
 		}
 		
 		
 		// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
-		int MatchTokenAt_35(Token token, ParserContext context)
+		int MatchTokenAt_36(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
-				return 35;
+				return 36;
 			}
 			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
 )
 			{
 				Build(context, token);
-				return 34;
+				return 35;
 			}
 			if (	context.TokenMatcher.Match_Other(token)
 )
 			{
 				Build(context, token);
-				return 35;
+				return 36;
 			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringAlternativeSeparator", "#Other"}, "State: 35 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0");
+				var error = new ParserError(token, new string[] {"#Empty", "#DocStringAlternativeSeparator", "#Other"}, "State: 36 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
-	return 35;
+	return 36;
 
 		}
 		
@@ -2364,6 +2413,7 @@ Description, // Description! := #Other+
 		bool Match_DocStringSeparator(Token token);
 		bool Match_DocStringAlternativeSeparator(Token token);
 		bool Match_TableRow(Token token);
+		bool Match_Language(Token token);
 		bool Match_Other(Token token);
 	}
 }

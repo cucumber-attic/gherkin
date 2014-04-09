@@ -7,7 +7,6 @@ namespace Gherkin
     {
         private readonly GherkinDialectProvider dialectProvider;
         private GherkinDialect currentDialect;
-        private bool languageChangeAllowed = true;
 
         public TokenMatcher(GherkinDialectProvider dialectProvider = null)
         {
@@ -16,26 +15,32 @@ namespace Gherkin
             currentDialect = this.dialectProvider.DefaultDialect;
         }
 
-        private const string LANGUAGE_PREFIX = "language:";
+	    private const string LANGUAGE_PREFIX = "#language:";
 
         public bool Match_Comment(Token token)
         {
-            if (!token.IsEOF && token.Line.StartsWith("#"))
+			if (!token.IsEOF && token.Line.StartsWith("#"))
             {
                 token.MatchedType = TokenType.Comment;
                 token.Text = token.Line.GetRestTrimmed(0).Substring(1);
-
-                if (languageChangeAllowed && token.Text.StartsWith(LANGUAGE_PREFIX, StringComparison.OrdinalIgnoreCase))
-                {
-                    var language = token.Text.Substring(LANGUAGE_PREFIX.Length).Trim();
-                    currentDialect = dialectProvider.GetDialect(language);
-                }
-                languageChangeAllowed = false;
-
                 return true;
             }
             return false;
         }
+
+		public bool Match_Language(Token token)
+		{
+			if (!token.IsEOF && token.Line.StartsWith(LANGUAGE_PREFIX))
+			{
+				var language = token.Line.GetRestTrimmed(LANGUAGE_PREFIX.Length);
+				currentDialect = dialectProvider.GetDialect(language);
+
+				token.MatchedType = TokenType.Language;
+				token.Text = language;
+				return true;
+			}
+			return false;
+		}
 
         public bool Match_Empty(Token token)
         {
@@ -66,7 +71,6 @@ namespace Gherkin
                     token.MatchedKeyword = keyword;
                     token.Text = token.Line.GetRestTrimmed(keyword.Length + 1);
 	                token.Indent = token.Line.Indent;
-                    languageChangeAllowed = false;
                     return true;
                 }
             }
@@ -75,12 +79,11 @@ namespace Gherkin
 
         public bool Match_TagLine(Token token)
         {
-            if (!token.IsEOF && token.Line.StartsWith("@"))
+			if (!token.IsEOF && token.Line.StartsWith("@"))
             {
                 token.MatchedType = TokenType.TagLine;
                 token.Items = token.Line.GetTags().ToArray();
 	            token.Indent = token.Line.Indent;
-                languageChangeAllowed = false;
 
                 return true;
             }
@@ -107,7 +110,7 @@ namespace Gherkin
             return false;
         }
 
-        public bool Match_Other(Token token)
+	    public bool Match_Other(Token token)
         {
             token.MatchedType = TokenType.Other;
             token.Text = token.Line.GetLineText(0); //take the entire line
