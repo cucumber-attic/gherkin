@@ -16,7 +16,6 @@ ScenarioOutlineLine,
 ExamplesLine,
 StepLine,
 DocStringSeparator,
-DocStringAlternativeSeparator,
 TableRow,
 Language,
 Other,
@@ -36,7 +35,6 @@ _ScenarioOutlineLine, // #ScenarioOutlineLine
 _ExamplesLine, // #ExamplesLine
 _StepLine, // #StepLine
 _DocStringSeparator, // #DocStringSeparator
-_DocStringAlternativeSeparator, // #DocStringAlternativeSeparator
 _TableRow, // #TableRow
 _Language, // #Language
 _Other, // #Other
@@ -53,9 +51,7 @@ ScenarioOutline_Step, // ScenarioOutline_Step := Step
 Step, // Step! := #StepLine Step_Arg?
 Step_Arg, // Step_Arg := (DataTable | DocString)
 DataTable, // DataTable! := #TableRow+
-DocString, // DocString! := (DocString_QuoteSepatator | DocString_AlternativeSepatator)
-DocString_QuoteSepatator, // DocString_QuoteSepatator := #DocStringSeparator (#Empty | #Other)* #DocStringSeparator
-DocString_AlternativeSepatator, // DocString_AlternativeSepatator := #DocStringAlternativeSeparator (#Empty | #Other)* #DocStringAlternativeSeparator
+DocString, // DocString! := #DocStringSeparator (#Empty | #Other)* #DocStringSeparator
 Tags, // Tags! := #TagLine+
 Feature_Description, // Feature_Description := Description_Helper
 Background_Description, // Background_Description := Description_Helper
@@ -106,7 +102,7 @@ Description, // Description! := #Other+
 
 		class ParserContext
 		{
-			public TokenScanner TokenScanner { get; set; }
+			public ITokenScanner TokenScanner { get; set; }
 			public ITokenMatcher TokenMatcher { get; set; }
 			public IAstBuilder Builder { get; set; }
 			public Queue<Token> TokenQueue { get; set; }
@@ -117,7 +113,7 @@ Description, // Description! := #Other+
 		{
 		}
 
-		public object Parse(TokenScanner tokenScanner)
+		public object Parse(ITokenScanner tokenScanner)
 		{
 			return Parse(tokenScanner, new TokenMatcher(), new AstBuilder());
 		}
@@ -127,7 +123,7 @@ Description, // Description! := #Other+
 			this.ParserMessageProvider = parserMessageProvider;
 		}
 
-        public object Parse(TokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder astBuilder)
+        public object Parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder astBuilder)
 		{
 			var context = new ParserContext
 			{
@@ -289,15 +285,6 @@ Description, // Description! := #Other+
 					break;
 				case 33:
 					newState = MatchTokenAt_33(token, context);
-					break;
-				case 34:
-					newState = MatchTokenAt_34(token, context);
-					break;
-				case 35:
-					newState = MatchTokenAt_35(token, context);
-					break;
-				case 36:
-					newState = MatchTokenAt_36(token, context);
 					break;
 				default:
 					throw new InvalidOperationException("Unknown state: " + state);
@@ -868,14 +855,7 @@ Description, // Description! := #Other+
 			{
 				StartRule(context, RuleType.DocString);
 				Build(context, token);
-				return 34;
-			}
-			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
-)
-			{
-				StartRule(context, RuleType.DocString);
-				Build(context, token);
-				return 36;
+				return 32;
 			}
 			if (	context.TokenMatcher.Match_StepLine(token)
 )
@@ -927,7 +907,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 9;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#DocStringSeparator", "#DocStringAlternativeSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 9 - Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 9 - Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1307,14 +1287,7 @@ Description, // Description! := #Other+
 			{
 				StartRule(context, RuleType.DocString);
 				Build(context, token);
-				return 31;
-			}
-			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
-)
-			{
-				StartRule(context, RuleType.DocString);
-				Build(context, token);
-				return 33;
+				return 30;
 			}
 			if (	context.TokenMatcher.Match_StepLine(token)
 )
@@ -1369,7 +1342,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 15;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#DocStringSeparator", "#DocStringAlternativeSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 15 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 15 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1629,13 +1602,6 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 28;
 			}
-			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
-)
-			{
-				StartRule(context, RuleType.DocString);
-				Build(context, token);
-				return 30;
-			}
 			if (	context.TokenMatcher.Match_StepLine(token)
 )
 			{
@@ -1673,7 +1639,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 20;
 			}
-				var error = new ParserError(token, new string[] {"#TableRow", "#DocStringSeparator", "#DocStringAlternativeSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0");
+				var error = new ParserError(token, new string[] {"#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1968,7 +1934,7 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
+		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
 		int MatchTokenAt_28(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_Empty(token)
@@ -1989,7 +1955,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 28;
 			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0");
+				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1998,7 +1964,7 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
+		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
 		int MatchTokenAt_29(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_StepLine(token)
@@ -2041,7 +2007,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 29;
 			}
-				var error = new ParserError(token, new string[] {"#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0");
+				var error = new ParserError(token, new string[] {"#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -2050,7 +2016,7 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
+		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
 		int MatchTokenAt_30(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_Empty(token)
@@ -2059,11 +2025,11 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 30;
 			}
-			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
+			if (	context.TokenMatcher.Match_DocStringSeparator(token)
 )
 			{
 				Build(context, token);
-				return 29;
+				return 31;
 			}
 			if (	context.TokenMatcher.Match_Other(token)
 )
@@ -2071,7 +2037,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 30;
 			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringAlternativeSeparator", "#Other"}, "State: 30 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0");
+				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 30 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -2080,38 +2046,8 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
+		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
 		int MatchTokenAt_31(Token token, ParserContext context)
-		{
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 31;
-			}
-			if (	context.TokenMatcher.Match_DocStringSeparator(token)
-)
-			{
-				Build(context, token);
-				return 32;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
-)
-			{
-				Build(context, token);
-				return 31;
-			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0");
-	if (StopAtFirstError)
-		throw new ParserException(ParserMessageProvider, error);
-	context.Errors.Add(error);
-	return 31;
-
-		}
-		
-		
-		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
-		int MatchTokenAt_32(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
@@ -2172,15 +2108,45 @@ Description, // Description! := #Other+
 )
 			{
 				Build(context, token);
-				return 32;
+				return 31;
 			}
+			if (	context.TokenMatcher.Match_Empty(token)
+)
+			{
+				Build(context, token);
+				return 31;
+			}
+				var error = new ParserError(token, new string[] {"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0");
+	if (StopAtFirstError)
+		throw new ParserException(ParserMessageProvider, error);
+	context.Errors.Add(error);
+	return 31;
+
+		}
+		
+		
+		// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
+		int MatchTokenAt_32(Token token, ParserContext context)
+		{
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
 				return 32;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 32 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0");
+			if (	context.TokenMatcher.Match_DocStringSeparator(token)
+)
+			{
+				Build(context, token);
+				return 33;
+			}
+			if (	context.TokenMatcher.Match_Other(token)
+)
+			{
+				Build(context, token);
+				return 32;
+			}
+				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 32 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -2189,68 +2155,8 @@ Description, // Description! := #Other+
 		}
 		
 		
-		// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
+		// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
 		int MatchTokenAt_33(Token token, ParserContext context)
-		{
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 33;
-			}
-			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
-)
-			{
-				Build(context, token);
-				return 32;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
-)
-			{
-				Build(context, token);
-				return 33;
-			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringAlternativeSeparator", "#Other"}, "State: 33 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0");
-	if (StopAtFirstError)
-		throw new ParserException(ParserMessageProvider, error);
-	context.Errors.Add(error);
-	return 33;
-
-		}
-		
-		
-		// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
-		int MatchTokenAt_34(Token token, ParserContext context)
-		{
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 34;
-			}
-			if (	context.TokenMatcher.Match_DocStringSeparator(token)
-)
-			{
-				Build(context, token);
-				return 35;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
-)
-			{
-				Build(context, token);
-				return 34;
-			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringSeparator", "#Other"}, "State: 34 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0");
-	if (StopAtFirstError)
-		throw new ParserException(ParserMessageProvider, error);
-	context.Errors.Add(error);
-	return 34;
-
-		}
-		
-		
-		// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
-		int MatchTokenAt_35(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
 )
@@ -2307,49 +2213,19 @@ Description, // Description! := #Other+
 )
 			{
 				Build(context, token);
-				return 35;
+				return 33;
 			}
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
 				Build(context, token);
-				return 35;
+				return 33;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 35 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
-	return 35;
-
-		}
-		
-		
-		// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
-		int MatchTokenAt_36(Token token, ParserContext context)
-		{
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 36;
-			}
-			if (	context.TokenMatcher.Match_DocStringAlternativeSeparator(token)
-)
-			{
-				Build(context, token);
-				return 35;
-			}
-			if (	context.TokenMatcher.Match_Other(token)
-)
-			{
-				Build(context, token);
-				return 36;
-			}
-				var error = new ParserError(token, new string[] {"#Empty", "#DocStringAlternativeSeparator", "#Other"}, "State: 36 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0");
-	if (StopAtFirstError)
-		throw new ParserException(ParserMessageProvider, error);
-	context.Errors.Add(error);
-	return 36;
+	return 33;
 
 		}
 		
@@ -2422,7 +2298,6 @@ Description, // Description! := #Other+
 		bool Match_ExamplesLine(Token token);
 		bool Match_StepLine(Token token);
 		bool Match_DocStringSeparator(Token token);
-		bool Match_DocStringAlternativeSeparator(Token token);
 		bool Match_TableRow(Token token);
 		bool Match_Language(Token token);
 		bool Match_Other(Token token);

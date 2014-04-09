@@ -13,16 +13,16 @@
 (13:1)Other:/    wrongly indented line/
 (14:7)DocStringSeparator://
 (15:5)StepLine:And /a DocString with alternative separator/
-(16:7)DocStringAlternativeSeparator://
+(16:7)DocStringSeparator://
 (17:1)Other:/      first line/
 (18:1)Other:/      second line/
-(19:7)DocStringAlternativeSeparator://
+(19:7)DocStringSeparator://
 (20:5)StepLine:And /a DocString with normal separator inside/
-(21:7)DocStringAlternativeSeparator://
+(21:7)DocStringSeparator://
 (22:1)Other:/      first line/
 (23:1)Other:/      """/
 (24:1)Other:/      third line/
-(25:7)DocStringAlternativeSeparator://
+(25:7)DocStringSeparator://
 (26:5)StepLine:And /a DocString with alternative separator inside/
 (27:7)DocStringSeparator://
 (28:1)Other:/      first line/

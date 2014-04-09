@@ -1,5 +1,5 @@
 ﻿[
-	Tokens -> #Empty,#Comment,#TagLine,#FeatureLine,#BackgroundLine,#ScenarioLine,#ScenarioOutlineLine,#ExamplesLine,#StepLine,#DocStringSeparator,#DocStringAlternativeSeparator,#TableRow,#Language
+	Tokens -> #Empty,#Comment,#TagLine,#FeatureLine,#BackgroundLine,#ScenarioLine,#ScenarioOutlineLine,#ExamplesLine,#StepLine,#DocStringSeparator,#TableRow,#Language
 	IgnoredTokens -> #Comment,#Empty
 	ClassName -> Parser
 	Namespace -> Gherkin
@@ -29,10 +29,7 @@ Step! := #StepLine Step_Arg?
 Step_Arg := (DataTable | DocString)
 
 DataTable! := #TableRow+
-// supporting the two separators could be handled in lexer too, but this way it is easier
-DocString! := (DocString_QuoteSepatator | DocString_AlternativeSepatator)
-DocString_QuoteSepatator := #DocStringSeparator (#Empty | #Other)* #DocStringSeparator
-DocString_AlternativeSepatator := #DocStringAlternativeSeparator (#Empty | #Other)* #DocStringAlternativeSeparator
+DocString! := #DocStringSeparator (#Empty | #Other)* #DocStringSeparator
 
 Tags! := #TagLine+
 

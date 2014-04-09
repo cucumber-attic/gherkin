@@ -7,6 +7,7 @@ namespace Gherkin
     {
         private readonly GherkinDialectProvider dialectProvider;
         private GherkinDialect currentDialect;
+		private string activeDocStringSeparator = null;
 
         public TokenMatcher(GherkinDialectProvider dialectProvider = null)
         {
@@ -130,26 +131,37 @@ namespace Gherkin
 
         public bool Match_DocStringSeparator(Token token)
         {
-            return Match_DocStringSeparatorInternal(token, GherkinLanguageConstants.DOCSTRING_SEPARATOR, TokenType.DocStringSeparator);
+	        if (activeDocStringSeparator == null)
+	        {
+		        // opening
+		        if (token.Line.StartsWith(GherkinLanguageConstants.DOCSTRING_SEPARATOR))
+		        {
+			        activeDocStringSeparator = GherkinLanguageConstants.DOCSTRING_SEPARATOR;
+					var contentType = token.Line.GetRestTrimmed(activeDocStringSeparator.Length);
+					SetTokenMatched(token, TokenType.DocStringSeparator, contentType);
+					return true;
+				}
+		        if (token.Line.StartsWith(GherkinLanguageConstants.DOCSTRING_ALTERNATIVE_SEPARATOR))
+		        {
+					activeDocStringSeparator = GherkinLanguageConstants.DOCSTRING_ALTERNATIVE_SEPARATOR;
+					var contentType = token.Line.GetRestTrimmed(activeDocStringSeparator.Length);
+					SetTokenMatched(token, TokenType.DocStringSeparator, contentType);
+					return true;
+				}
+	        }
+	        else
+	        {
+				if (token.Line.StartsWith(activeDocStringSeparator))
+				{
+					activeDocStringSeparator = null;
+					SetTokenMatched(token, TokenType.DocStringSeparator);
+					return true;
+				}
+			}
+	        return false;
         }
 
-        public bool Match_DocStringAlternativeSeparator(Token token)
-        {
-			return Match_DocStringSeparatorInternal(token, GherkinLanguageConstants.DOCSTRING_ALTERNATIVE_SEPARATOR, TokenType.DocStringAlternativeSeparator);
-        }
-
-        private bool Match_DocStringSeparatorInternal(Token token, string separator, TokenType tokenType)
-        {
-            if (token.Line.StartsWith(separator))
-            {
-	            var contentType = token.Line.GetRestTrimmed(separator.Length);
-                SetTokenMatched(token, tokenType, contentType);
-                return true;
-            }
-            return false;
-        }
-
-        public bool Match_StepLine(Token token)
+		public bool Match_StepLine(Token token)
         {
             var keywords = currentDialect.StepKeywords;
             foreach (var keyword in keywords)
