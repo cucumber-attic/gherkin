@@ -8,6 +8,12 @@ Feature: DocString variations
 
       third line was empty
       """
+    Given a DocString with content type
+      """xml
+      <foo>
+        <bar />
+      </foo>
+      """
     And a DocString with wrong indentation
       """
     wrongly indented line
