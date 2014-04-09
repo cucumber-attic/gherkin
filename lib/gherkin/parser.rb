@@ -111,12 +111,6 @@ module Gherkin
         new_state = match_token_at_32(token, context)
       when 33
         new_state = match_token_at_33(token, context)
-      when 34
-        new_state = match_token_at_34(token, context)
-      when 35
-        new_state = match_token_at_35(token, context)
-      when 36
-        new_state = match_token_at_36(token, context)
       else
         raise ParserError.new("unknown state")
       end
@@ -512,12 +506,7 @@ module Gherkin
       if (context.token_matcher.match_DocStringSeparator(token))
         context.ast_builder.push(:rule_DocString)
         context.ast_builder.build(token)
-        return 34
-      end
-      if (context.token_matcher.match_DocStringAlternativeSeparator(token))
-        context.ast_builder.push(:rule_DocString)
-        context.ast_builder.build(token)
-        return 36
+        return 32
       end
       if (context.token_matcher.match_StepLine(token))
         context.ast_builder.pop(:rule_Step)
@@ -825,12 +814,7 @@ module Gherkin
       if (context.token_matcher.match_DocStringSeparator(token))
         context.ast_builder.push(:rule_DocString)
         context.ast_builder.build(token)
-        return 31
-      end
-      if (context.token_matcher.match_DocStringAlternativeSeparator(token))
-        context.ast_builder.push(:rule_DocString)
-        context.ast_builder.build(token)
-        return 33
+        return 30
       end
       if (context.token_matcher.match_StepLine(token))
         context.ast_builder.pop(:rule_Step)
@@ -1050,11 +1034,6 @@ module Gherkin
         context.ast_builder.push(:rule_DocString)
         context.ast_builder.build(token)
         return 28
-      end
-      if (context.token_matcher.match_DocStringAlternativeSeparator(token))
-        context.ast_builder.push(:rule_DocString)
-        context.ast_builder.build(token)
-        return 30
       end
       if (context.token_matcher.match_StepLine(token))
         context.ast_builder.pop(:rule_Step)
@@ -1278,7 +1257,7 @@ module Gherkin
     end
     
     
-    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
     def match_token_at_28(token, context)
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
@@ -1296,7 +1275,7 @@ module Gherkin
     end
     
     
-    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
     def match_token_at_29(token, context)
       if (context.token_matcher.match_StepLine(token))
         context.ast_builder.pop(:rule_DocString)
@@ -1332,15 +1311,15 @@ module Gherkin
     end
     
     
-    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
+    # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
     def match_token_at_30(token, context)
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
         return 30
       end
-      if (context.token_matcher.match_DocStringAlternativeSeparator(token))
+      if (context.token_matcher.match_DocStringSeparator(token))
         context.ast_builder.build(token)
-        return 29
+        return 31
       end
       if (context.token_matcher.match_Other(token))
         context.ast_builder.build(token)
@@ -1350,26 +1329,8 @@ module Gherkin
     end
     
     
-    # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
+    # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
     def match_token_at_31(token, context)
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 31
-      end
-      if (context.token_matcher.match_DocStringSeparator(token))
-        context.ast_builder.build(token)
-        return 32
-      end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.build(token)
-        return 31
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
-    def match_token_at_32(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_DocString)
         context.ast_builder.pop(:rule_Step)
@@ -1417,54 +1378,36 @@ module Gherkin
       end
       if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
-        return 32
+        return 31
       end
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
-        return 32
+        return 31
       end
       raise ParseError.new
     end
     
     
-    # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
-    def match_token_at_33(token, context)
+    # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
+    def match_token_at_32(token, context)
       if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 33
-      end
-      if (context.token_matcher.match_DocStringAlternativeSeparator(token))
         context.ast_builder.build(token)
         return 32
-      end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.build(token)
-        return 33
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
-    def match_token_at_34(token, context)
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 34
       end
       if (context.token_matcher.match_DocStringSeparator(token))
         context.ast_builder.build(token)
-        return 35
+        return 33
       end
       if (context.token_matcher.match_Other(token))
         context.ast_builder.build(token)
-        return 34
+        return 32
       end
       raise ParseError.new
     end
     
     
-    # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
-    def match_token_at_35(token, context)
+    # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
+    def match_token_at_33(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_DocString)
         context.ast_builder.pop(:rule_Step)
@@ -1508,29 +1451,11 @@ module Gherkin
       end
       if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
-        return 35
+        return 33
       end
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
-        return 35
-      end
-      raise ParseError.new
-    end
-    
-    
-    # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
-    def match_token_at_36(token, context)
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 36
-      end
-      if (context.token_matcher.match_DocStringAlternativeSeparator(token))
-        context.ast_builder.build(token)
-        return 35
-      end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.build(token)
-        return 36
+        return 33
       end
       raise ParseError.new
     end
