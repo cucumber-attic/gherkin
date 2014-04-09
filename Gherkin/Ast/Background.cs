@@ -10,5 +10,14 @@ namespace Gherkin.Ast
 		public string Title { get; private set; }
 		public string Description { get; private set; }
 		public Step[] Steps { get; private set; }
+
+		public Background(Location location, string keyword, string title, string description, Step[] steps)
+		{
+			Location = location;
+			Keyword = keyword;
+			Title = title;
+			Description = description;
+			Steps = steps;
+		}
 	}
 }

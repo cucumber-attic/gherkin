@@ -20,8 +20,7 @@ namespace Gherkin.Specs
         {
             FormatTags(scenarioDefinition, result);
             FormatHasDescription(scenarioDefinition, result);
-            foreach (var step in scenarioDefinition.Steps)
-                FormatStep(step, result);
+            FormatHasSteps(scenarioDefinition, result);
 			result.AppendLine();
 
 	        var scenarioOutline = scenarioDefinition as ScenarioOutline;
@@ -36,6 +35,12 @@ namespace Gherkin.Specs
 		        }
 	        }
         }
+
+	    private void FormatHasSteps(IHasSteps hasSteps, StringBuilder result)
+	    {
+		    foreach (var step in hasSteps.Steps)
+			    FormatStep(step, result);
+	    }
 
 	    private void FormatHasRows(IHasRows hasRows, StringBuilder result)
 	    {
@@ -90,14 +95,24 @@ namespace Gherkin.Specs
 			FormatTags(feature, result);
 			FormatHasDescription(feature, result);
             result.AppendLine();
-            //TODO: background
-            foreach (var scenarioDefinition in feature.ScenarioDefinitions)
+
+	        if (feature.Background != null)
+		        FormatBackground(feature.Background, result);
+
+			foreach (var scenarioDefinition in feature.ScenarioDefinitions)
             {
                 FormatScenarioDefinition(scenarioDefinition, result);
             }
         }
 
-        private void FormatHasDescription(IHasDescription hasDescription, StringBuilder result)
+	    private void FormatBackground(Background background, StringBuilder result)
+	    {
+		    FormatHasDescription(background, result);
+			FormatHasSteps(background, result);
+			result.AppendLine();
+	    }
+
+	    private void FormatHasDescription(IHasDescription hasDescription, StringBuilder result)
         {
 	        FormatHasLocation(hasDescription as IHasLocation, result);
             result.AppendFormat("{0}: {1}", hasDescription.Keyword, hasDescription.Title);
