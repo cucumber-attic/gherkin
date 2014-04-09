@@ -19,9 +19,9 @@ namespace Gherkin
 		{
 			token.MatchedType = matchedType;
 			token.MatchedKeyword = keyword;
-			token.Text = text;
-			token.Items = items;
-			token.Indent = indent ?? (token.Line == null ? 0 : token.Line.Indent);
+			token.MatchedText = text;
+			token.MathcedItems = items;
+			token.MatchedIndent = indent ?? (token.Line == null ? 0 : token.Line.Indent);
 		}
 
 		public bool Match_EOF(Token token)

@@ -12,11 +12,11 @@ namespace Gherkin.Specs
 
 			return string.Format("({0}:{1}){2}:{3}/{4}/{5}", 
 				token.Line.LineNumber,
-				token.Indent + 1,
+				token.MatchedIndent + 1,
 				token.MatchedType,
 				token.MatchedKeyword,
-				token.Text,
-				token.Items == null ? "" : string.Join(",", token.Items.Select(i => i.Column + ":" + i.Text))
+				token.MatchedText,
+				token.MathcedItems == null ? "" : string.Join(",", token.MathcedItems.Select(i => i.Column + ":" + i.Text))
 				);
 		}
 	}

@@ -10,9 +10,9 @@ namespace Gherkin
         public IGherkinLine Line { get; set; }
         public TokenType MatchedType { get; set; }
         public string MatchedKeyword { get; set; }
-        public string Text { get; set; }
-        public GherkinLineSpan[] Items { get; set; }
-        public int Indent { get; set; }
+        public string MatchedText { get; set; }
+        public GherkinLineSpan[] MathcedItems { get; set; }
+        public int MatchedIndent { get; set; }
 
         public Token(IGherkinLine line)
         {
@@ -26,7 +26,7 @@ namespace Gherkin
 
         public override string ToString()
         {
-            return string.Format("{0}: {1}/{2}", MatchedType, MatchedKeyword, Text);
+            return string.Format("{0}: {1}/{2}", MatchedType, MatchedKeyword, MatchedText);
         }
     }
 }
