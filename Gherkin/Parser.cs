@@ -62,14 +62,18 @@ Description_Helper, // Description_Helper := #Empty* Description? #Comment*
 Description, // Description! := #Other+
 	}
 
-    public partial class ParserError
+    public abstract partial class ParserError
+    {
+    }
+
+    public partial class UnexpectedTokenError : ParserError
     {
         public string StateComment { get; private set; }
 
         public Token ReceivedToken { get; private set; }
         public string[] ExpectedTokenTypes { get; private set; }
 
-        public ParserError(Token receivedToken, string[] expectedTokenTypes, string stateComment)
+        public UnexpectedTokenError(Token receivedToken, string[] expectedTokenTypes, string stateComment)
         {
             this.ReceivedToken = receivedToken;
             this.ExpectedTokenTypes = expectedTokenTypes;
@@ -330,7 +334,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 0;
 			}
-				var error = new ParserError(token, new string[] {"#Language", "#TagLine", "#FeatureLine", "#Comment", "#Empty"}, "State: 0 - Start");
+				var error = new UnexpectedTokenError(token, new string[] {"#Language", "#TagLine", "#FeatureLine", "#Comment", "#Empty"}, "State: 0 - Start");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -367,7 +371,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 1;
 			}
-				var error = new ParserError(token, new string[] {"#TagLine", "#FeatureLine", "#Comment", "#Empty"}, "State: 1 - Feature:0>Feature_Header:0>#Language:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#TagLine", "#FeatureLine", "#Comment", "#Empty"}, "State: 1 - Feature:0>Feature_Header:0>#Language:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -404,7 +408,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 2;
 			}
-				var error = new ParserError(token, new string[] {"#TagLine", "#FeatureLine", "#Comment", "#Empty"}, "State: 2 - Feature:0>Feature_Header:1>Tags:0>#TagLine:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#TagLine", "#FeatureLine", "#Comment", "#Empty"}, "State: 2 - Feature:0>Feature_Header:1>Tags:0>#TagLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -477,7 +481,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 4;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Empty", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 3 - Feature:0>Feature_Header:2>#FeatureLine:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#Empty", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 3 - Feature:0>Feature_Header:2>#FeatureLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -549,7 +553,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 4;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 4 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 4 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -615,7 +619,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 5;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 5 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 5 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -687,7 +691,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 7;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 6 - Feature:1>Background:0>#BackgroundLine:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 6 - Feature:1>Background:0>#BackgroundLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -758,7 +762,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 7;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 7 - Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 7 - Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -823,7 +827,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 8;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 8 - Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 8 - Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -907,7 +911,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 9;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 9 - Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 9 - Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -988,7 +992,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 10;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 10 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 10 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1034,7 +1038,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 11;
 			}
-				var error = new ParserError(token, new string[] {"#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 11 - Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 11 - Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1110,7 +1114,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 13;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 12 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 12 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1185,7 +1189,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 13;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 13 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 13 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1254,7 +1258,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 14;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 14 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 14 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1342,7 +1346,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 15;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 15 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 15 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1427,7 +1431,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 16;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 16 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 16 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1480,7 +1484,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 18;
 			}
-				var error = new ParserError(token, new string[] {"#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"}, "State: 17 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"}, "State: 17 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1530,7 +1534,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 18;
 			}
-				var error = new ParserError(token, new string[] {"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"}, "State: 18 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"}, "State: 18 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1576,7 +1580,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 19;
 			}
-				var error = new ParserError(token, new string[] {"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Empty"}, "State: 19 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Empty"}, "State: 19 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1639,7 +1643,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 20;
 			}
-				var error = new ParserError(token, new string[] {"#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1697,7 +1701,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 21;
 			}
-				var error = new ParserError(token, new string[] {"#TableRow", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 21 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#TableRow", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 21 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1734,7 +1738,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 22;
 			}
-				var error = new ParserError(token, new string[] {"#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1771,7 +1775,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 24;
 			}
-				var error = new ParserError(token, new string[] {"#Empty", "#Comment", "#TableRow", "#Other"}, "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#Empty", "#Comment", "#TableRow", "#Other"}, "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1803,7 +1807,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 24;
 			}
-				var error = new ParserError(token, new string[] {"#Comment", "#TableRow", "#Other"}, "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#Comment", "#TableRow", "#Other"}, "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1833,7 +1837,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 25;
 			}
-				var error = new ParserError(token, new string[] {"#Comment", "#TableRow", "#Empty"}, "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#Comment", "#TableRow", "#Empty"}, "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1925,7 +1929,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 26;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1949,7 +1953,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 28;
 			}
-				var error = new ParserError(token, new string[] {"#DocStringSeparator", "#Other"}, "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#DocStringSeparator", "#Other"}, "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -2001,7 +2005,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 29;
 			}
-				var error = new ParserError(token, new string[] {"#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}, "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -2025,7 +2029,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 30;
 			}
-				var error = new ParserError(token, new string[] {"#DocStringSeparator", "#Other"}, "State: 30 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#DocStringSeparator", "#Other"}, "State: 30 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -2104,7 +2108,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 31;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -2128,7 +2132,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 32;
 			}
-				var error = new ParserError(token, new string[] {"#DocStringSeparator", "#Other"}, "State: 32 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#DocStringSeparator", "#Other"}, "State: 32 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -2203,7 +2207,7 @@ Description, // Description! := #Other+
 				Build(context, token);
 				return 33;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0");
+				var error = new UnexpectedTokenError(token, new string[] {"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}, "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
