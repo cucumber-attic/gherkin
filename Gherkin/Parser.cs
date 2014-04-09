@@ -60,8 +60,8 @@ Background_Description, // Background_Description := Description_Helper
 Scenario_Description, // Scenario_Description := Description_Helper
 ScenarioOutline_Description, // ScenarioOutline_Description := Description_Helper
 Examples_Description, // Examples_Description := Description_Helper
-Description_Helper, // Description_Helper := Description? #Comment*
-Description, // Description! := (#Empty | #Other)+
+Description_Helper, // Description_Helper := #Empty* Description? #Comment*
+Description, // Description! := #Other+
 	}
 
     public partial class ParserError
@@ -390,9 +390,8 @@ Description, // Description! := (#Empty | #Other)+
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
-				StartRule(context, RuleType.Description);
 				Build(context, token);
-				return 3;
+				return 2;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -451,7 +450,7 @@ Description, // Description! := (#Empty | #Other)+
 		}
 		
 		
-		// Feature_File:0>Feature_Header:2>Feature_Description:0>Description_Helper:0>Description:0>__alt5:0>#Empty:0
+		// Feature_File:0>Feature_Header:2>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
 		int MatchTokenAt_3(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
@@ -461,12 +460,6 @@ Description, // Description! := (#Empty | #Other)+
 				EndRule(context, RuleType.Feature_Header);
 				Build(context, token);
 				return 26;
-			}
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 3;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -520,7 +513,7 @@ Description, // Description! := (#Empty | #Other)+
 				Build(context, token);
 				return 3;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Empty", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 3 - Feature_File:0>Feature_Header:2>Feature_Description:0>Description_Helper:0>Description:0>__alt5:0>#Empty:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 3 - Feature_File:0>Feature_Header:2>Feature_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -529,7 +522,7 @@ Description, // Description! := (#Empty | #Other)+
 		}
 		
 		
-		// Feature_File:0>Feature_Header:2>Feature_Description:0>Description_Helper:1>#Comment:0
+		// Feature_File:0>Feature_Header:2>Feature_Description:0>Description_Helper:2>#Comment:0
 		int MatchTokenAt_4(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
@@ -586,7 +579,7 @@ Description, // Description! := (#Empty | #Other)+
 				Build(context, token);
 				return 4;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 4 - Feature_File:0>Feature_Header:2>Feature_Description:0>Description_Helper:1>#Comment:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 4 - Feature_File:0>Feature_Header:2>Feature_Description:0>Description_Helper:2>#Comment:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -608,9 +601,8 @@ Description, // Description! := (#Empty | #Other)+
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
-				StartRule(context, RuleType.Description);
 				Build(context, token);
-				return 6;
+				return 5;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -668,7 +660,7 @@ Description, // Description! := (#Empty | #Other)+
 		}
 		
 		
-		// Feature_File:1>Background:1>Background_Description:0>Description_Helper:0>Description:0>__alt5:0>#Empty:0
+		// Feature_File:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
 		int MatchTokenAt_6(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
@@ -678,12 +670,6 @@ Description, // Description! := (#Empty | #Other)+
 				EndRule(context, RuleType.Background);
 				Build(context, token);
 				return 26;
-			}
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 6;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -736,7 +722,7 @@ Description, // Description! := (#Empty | #Other)+
 				Build(context, token);
 				return 6;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 6 - Feature_File:1>Background:1>Background_Description:0>Description_Helper:0>Description:0>__alt5:0>#Empty:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 6 - Feature_File:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -745,7 +731,7 @@ Description, // Description! := (#Empty | #Other)+
 		}
 		
 		
-		// Feature_File:1>Background:1>Background_Description:0>Description_Helper:1>#Comment:0
+		// Feature_File:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
 		int MatchTokenAt_7(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
@@ -801,7 +787,7 @@ Description, // Description! := (#Empty | #Other)+
 				Build(context, token);
 				return 7;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 7 - Feature_File:1>Background:1>Background_Description:0>Description_Helper:1>#Comment:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 7 - Feature_File:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1042,9 +1028,8 @@ Description, // Description! := (#Empty | #Other)+
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
-				StartRule(context, RuleType.Description);
 				Build(context, token);
-				return 12;
+				return 11;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -1105,7 +1090,7 @@ Description, // Description! := (#Empty | #Other)+
 		}
 		
 		
-		// Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:0>Description:0>__alt5:0>#Empty:0
+		// Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
 		int MatchTokenAt_12(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
@@ -1116,12 +1101,6 @@ Description, // Description! := (#Empty | #Other)+
 				EndRule(context, RuleType.Scenario_Definition);
 				Build(context, token);
 				return 26;
-			}
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 12;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -1177,7 +1156,7 @@ Description, // Description! := (#Empty | #Other)+
 				Build(context, token);
 				return 12;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 12 - Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:0>Description:0>__alt5:0>#Empty:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}, "State: 12 - Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1186,7 +1165,7 @@ Description, // Description! := (#Empty | #Other)+
 		}
 		
 		
-		// Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>#Comment:0
+		// Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
 		int MatchTokenAt_13(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_EOF(token)
@@ -1246,7 +1225,7 @@ Description, // Description! := (#Empty | #Other)+
 				Build(context, token);
 				return 13;
 			}
-				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 13 - Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>#Comment:0");
+				var error = new ParserError(token, new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}, "State: 13 - Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1441,9 +1420,8 @@ Description, // Description! := (#Empty | #Other)+
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
-				StartRule(context, RuleType.Description);
 				Build(context, token);
-				return 17;
+				return 16;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -1489,15 +1467,9 @@ Description, // Description! := (#Empty | #Other)+
 		}
 		
 		
-		// Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:0>Description:0>__alt5:0>#Empty:0
+		// Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
 		int MatchTokenAt_17(Token token, ParserContext context)
 		{
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 17;
-			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
 			{
@@ -1536,7 +1508,7 @@ Description, // Description! := (#Empty | #Other)+
 				Build(context, token);
 				return 17;
 			}
-				var error = new ParserError(token, new string[] {"#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"}, "State: 17 - Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:0>Description:0>__alt5:0>#Empty:0");
+				var error = new ParserError(token, new string[] {"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"}, "State: 17 - Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1545,7 +1517,7 @@ Description, // Description! := (#Empty | #Other)+
 		}
 		
 		
-		// Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>#Comment:0
+		// Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
 		int MatchTokenAt_18(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_Comment(token)
@@ -1582,7 +1554,7 @@ Description, // Description! := (#Empty | #Other)+
 				Build(context, token);
 				return 18;
 			}
-				var error = new ParserError(token, new string[] {"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Empty"}, "State: 18 - Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>#Comment:0");
+				var error = new ParserError(token, new string[] {"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Empty"}, "State: 18 - Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1762,9 +1734,8 @@ Description, // Description! := (#Empty | #Other)+
 			if (	context.TokenMatcher.Match_Empty(token)
 )
 			{
-				StartRule(context, RuleType.Description);
 				Build(context, token);
-				return 23;
+				return 22;
 			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
@@ -1794,15 +1765,9 @@ Description, // Description! := (#Empty | #Other)+
 		}
 		
 		
-		// Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:0>Description:0>__alt5:0>#Empty:0
+		// Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
 		int MatchTokenAt_23(Token token, ParserContext context)
 		{
-			if (	context.TokenMatcher.Match_Empty(token)
-)
-			{
-				Build(context, token);
-				return 23;
-			}
 			if (	context.TokenMatcher.Match_Comment(token)
 )
 			{
@@ -1823,7 +1788,7 @@ Description, // Description! := (#Empty | #Other)+
 				Build(context, token);
 				return 23;
 			}
-				var error = new ParserError(token, new string[] {"#Empty", "#Comment", "#TableRow", "#Other"}, "State: 23 - Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:0>Description:0>__alt5:0>#Empty:0");
+				var error = new ParserError(token, new string[] {"#Comment", "#TableRow", "#Other"}, "State: 23 - Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
@@ -1832,7 +1797,7 @@ Description, // Description! := (#Empty | #Other)+
 		}
 		
 		
-		// Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>#Comment:0
+		// Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0
 		int MatchTokenAt_24(Token token, ParserContext context)
 		{
 			if (	context.TokenMatcher.Match_Comment(token)
@@ -1853,7 +1818,7 @@ Description, // Description! := (#Empty | #Other)+
 				Build(context, token);
 				return 24;
 			}
-				var error = new ParserError(token, new string[] {"#Comment", "#TableRow", "#Empty"}, "State: 24 - Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>#Comment:0");
+				var error = new ParserError(token, new string[] {"#Comment", "#TableRow", "#Empty"}, "State: 24 - Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0");
 	if (StopAtFirstError)
 		throw new ParserException(ParserMessageProvider, error);
 	context.Errors.Add(error);
