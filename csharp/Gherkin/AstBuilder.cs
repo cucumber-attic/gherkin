@@ -44,6 +44,7 @@ namespace Gherkin
                 case RuleType.Step:
                 {
                     var stepLine = node.GetToken(TokenType.StepLine);
+					//TODO: step arguments
                     return new Step(stepLine.MatchedKeyword, stepLine.Text, new EmptyStepArgument(), GetLocation(stepLine));
                 }
 				case RuleType.Background:
@@ -103,7 +104,7 @@ namespace Gherkin
                 }
                 case RuleType.Feature:
 	            {
-                    var language = "en"; //TODO
+                    var language = "en"; //TODO: language handling
 
                     var header = node.GetSingle<AstNode>(RuleType.Feature_Header);
 					var tags = GetTags(header);
@@ -122,7 +123,7 @@ namespace Gherkin
 	    private Location GetLocation(Token token, int column = 0)
 	    {
 		    column = column == 0 ? token.Indent + 1 : column;
-		    return new Location("TODO", token.Line.LineNumber + 1, column);
+		    return new Location(token.Line.LineNumber, column);
 	    }
 
 	    private Tag[] GetTags(AstNode node)

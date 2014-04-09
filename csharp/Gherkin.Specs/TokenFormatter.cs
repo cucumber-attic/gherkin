@@ -11,7 +11,7 @@ namespace Gherkin.Specs
 				return "EOF";
 
 			return string.Format("({0}:{1}){2}:{3}/{4}/{5}", 
-				token.Line.LineNumber + 1,
+				token.Line.LineNumber,
 				token.Indent + 1,
 				token.MatchedType,
 				token.MatchedKeyword,

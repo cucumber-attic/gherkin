@@ -17,7 +17,7 @@ namespace Gherkin
         public virtual Token Read()
         {
             var line = reader.ReadLine();
-            return line == null ? new Token(null) : new Token(new GherkinLine(line, lineNumber++));
+            return line == null ? new Token(null) : new Token(new GherkinLine(line, ++lineNumber));
         }
     }
 }
