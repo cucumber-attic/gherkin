@@ -56,8 +56,7 @@ namespace Gherkin
                 }
 				case RuleType.DocString:
 	            {
-		            var separatorToken = node.GetTokens(TokenType.DocStringSeparator).FirstOrDefault() ??
-						node.GetTokens(TokenType.DocStringAlternativeSeparator).First();
+		            var separatorToken = node.GetTokens(TokenType.DocStringSeparator).First();
 		            var indent = separatorToken.MatchedIndent;
 		            var contentType = separatorToken.MatchedText;
 					var lineTokens = node.GetTokens(TokenType.Other);
