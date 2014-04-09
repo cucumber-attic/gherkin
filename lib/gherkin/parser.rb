@@ -22,7 +22,7 @@ module Gherkin
     def parse(token_scanner)
       context = ParserContext.new(token_scanner, ASTBuilder.new, TokenMatcher.new)
 
-      context.ast_builder.push(:rule_Feature_File)
+      context.ast_builder.push(:rule_Feature)
       state = 0
       loop do
         token = read_token(context)
@@ -35,7 +35,7 @@ module Gherkin
         raise ParseError.new("parsing error: end of file expected")
       end
 
-      context.ast_builder.pop(:rule_Feature_File)
+      context.ast_builder.pop(:rule_Feature)
       context.ast_builder.root_node
     end
 
@@ -148,7 +148,7 @@ module Gherkin
     end
     
     
-    # Feature_File:0>Feature_Header:0>Tags:0>#TagLine:0
+    # Feature:0>Feature_Header:0>Tags:0>#TagLine:0
     def match_token_at_1(token, context)
       if (context.token_matcher.match_TagLine(token))
         context.ast_builder.build(token)
@@ -171,7 +171,7 @@ module Gherkin
     end
     
     
-    # Feature_File:0>Feature_Header:1>#FeatureLine:0
+    # Feature:0>Feature_Header:1>#FeatureLine:0
     def match_token_at_2(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Feature_Header)
@@ -222,7 +222,7 @@ module Gherkin
     end
     
     
-    # Feature_File:0>Feature_Header:2>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
+    # Feature:0>Feature_Header:2>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_3(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Description)
@@ -274,7 +274,7 @@ module Gherkin
     end
     
     
-    # Feature_File:0>Feature_Header:2>Feature_Description:0>Description_Helper:2>#Comment:0
+    # Feature:0>Feature_Header:2>Feature_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_4(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Feature_Header)
@@ -320,7 +320,7 @@ module Gherkin
     end
     
     
-    # Feature_File:1>Background:0>#BackgroundLine:0
+    # Feature:1>Background:0>#BackgroundLine:0
     def match_token_at_5(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Background)
@@ -370,7 +370,7 @@ module Gherkin
     end
     
     
-    # Feature_File:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
+    # Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_6(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Description)
@@ -421,7 +421,7 @@ module Gherkin
     end
     
     
-    # Feature_File:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
+    # Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_7(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Background)
@@ -466,7 +466,7 @@ module Gherkin
     end
     
     
-    # Feature_File:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
+    # Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
     def match_token_at_8(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Step)
@@ -531,7 +531,7 @@ module Gherkin
     end
     
     
-    # Feature_File:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
+    # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     def match_token_at_9(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_DataTable)
@@ -590,7 +590,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:0>Tags:0>#TagLine:0
+    # Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0
     def match_token_at_10(token, context)
       if (context.token_matcher.match_TagLine(token))
         context.ast_builder.build(token)
@@ -620,7 +620,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0
+    # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0
     def match_token_at_11(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Scenario)
@@ -674,7 +674,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
+    # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_12(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Description)
@@ -729,7 +729,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
+    # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_13(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Scenario)
@@ -778,7 +778,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
+    # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
     def match_token_at_14(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Step)
@@ -847,7 +847,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
+    # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     def match_token_at_15(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_DataTable)
@@ -910,7 +910,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
     def match_token_at_16(token, context)
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
@@ -945,7 +945,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_17(token, context)
       if (context.token_matcher.match_Comment(token))
         context.ast_builder.pop(:rule_Description)
@@ -979,7 +979,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_18(token, context)
       if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
@@ -1009,7 +1009,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
     def match_token_at_19(token, context)
       if (context.token_matcher.match_TableRow(token))
         context.ast_builder.push(:rule_DataTable)
@@ -1057,7 +1057,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     def match_token_at_20(token, context)
       if (context.token_matcher.match_TableRow(token))
         context.ast_builder.build(token)
@@ -1097,7 +1097,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
     def match_token_at_21(token, context)
       if (context.token_matcher.match_TagLine(token))
         context.ast_builder.build(token)
@@ -1120,7 +1120,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0
     def match_token_at_22(token, context)
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
@@ -1143,7 +1143,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_23(token, context)
       if (context.token_matcher.match_Comment(token))
         context.ast_builder.pop(:rule_Description)
@@ -1163,7 +1163,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_24(token, context)
       if (context.token_matcher.match_Comment(token))
         context.ast_builder.build(token)
@@ -1181,7 +1181,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0
     def match_token_at_25(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_Examples)
@@ -1248,7 +1248,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
     def match_token_at_27(token, context)
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
@@ -1266,7 +1266,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
     def match_token_at_28(token, context)
       if (context.token_matcher.match_StepLine(token))
         context.ast_builder.pop(:rule_DocString)
@@ -1302,7 +1302,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
     def match_token_at_29(token, context)
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
@@ -1320,7 +1320,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
+    # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
     def match_token_at_30(token, context)
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
@@ -1338,7 +1338,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
+    # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
     def match_token_at_31(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_DocString)
@@ -1397,7 +1397,7 @@ module Gherkin
     end
     
     
-    # Feature_File:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
+    # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
     def match_token_at_32(token, context)
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
@@ -1415,7 +1415,7 @@ module Gherkin
     end
     
     
-    # Feature_File:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
+    # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:0>#DocStringSeparator:0
     def match_token_at_33(token, context)
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
@@ -1433,7 +1433,7 @@ module Gherkin
     end
     
     
-    # Feature_File:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
+    # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:0>DocString_QuoteSepatator:2>#DocStringSeparator:0
     def match_token_at_34(token, context)
       if (context.token_matcher.match_EOF(token))
         context.ast_builder.pop(:rule_DocString)
@@ -1488,7 +1488,7 @@ module Gherkin
     end
     
     
-    # Feature_File:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
+    # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>__alt2:1>DocString_AlternativeSepatator:0>#DocStringAlternativeSeparator:0
     def match_token_at_35(token, context)
       if (context.token_matcher.match_Empty(token))
         context.ast_builder.build(token)
