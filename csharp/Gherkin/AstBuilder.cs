@@ -17,11 +17,6 @@ namespace Gherkin
 
         public void Build(Token token)
         {
-	        if (token.MatchedType == TokenType.Empty) //TODO: refactor doc string handling
-	        {
-				CurrentNode.Add(RuleType._Other, token);
-	        }
-
 			CurrentNode.Add((RuleType)token.MatchedType, token);
         }
 

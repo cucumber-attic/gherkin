@@ -1259,10 +1259,6 @@ module Gherkin
     
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
     def match_token_at_28(token, context)
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 28
-      end
       if (context.token_matcher.match_DocStringSeparator(token))
         context.ast_builder.build(token)
         return 29
@@ -1313,10 +1309,6 @@ module Gherkin
     
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
     def match_token_at_30(token, context)
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 30
-      end
       if (context.token_matcher.match_DocStringSeparator(token))
         context.ast_builder.build(token)
         return 31
@@ -1390,10 +1382,6 @@ module Gherkin
     
     # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
     def match_token_at_32(token, context)
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
-        return 32
-      end
       if (context.token_matcher.match_DocStringSeparator(token))
         context.ast_builder.build(token)
         return 33

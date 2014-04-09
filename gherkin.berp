@@ -29,7 +29,7 @@ Step! := #StepLine Step_Arg?
 Step_Arg := (DataTable | DocString)
 
 DataTable! := #TableRow+
-DocString! := #DocStringSeparator (#Empty | #Other)* #DocStringSeparator
+DocString! := #DocStringSeparator #Other* #DocStringSeparator
 
 Tags! := #TagLine+
 
