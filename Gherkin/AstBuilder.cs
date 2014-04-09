@@ -61,7 +61,7 @@ namespace Gherkin
 				case RuleType.DataTable:
 	            {
 					var rows = GetTableRows(node);
-		            return new DataTable(rows[0].Location, rows);
+		            return new DataTable(rows);
 	            }
 				case RuleType.Background:
 	            {
