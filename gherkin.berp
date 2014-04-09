@@ -43,6 +43,7 @@ ScenarioOutline_Description := Description_Helper
 Examples_Description := Description_Helper
 
 // we need to explicitly mention comment, to avoid merging it into the description line's #Other token
-Description_Helper := Description? #Comment*
-Description! := (#Empty | #Other)+
+// we also eat the leading empty lines, the tailing lines are not removed by the parser to avoid lookahead, this has to be done by the AST builder
+Description_Helper := #Empty* Description? #Comment*
+Description! := #Other+
 

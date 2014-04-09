@@ -17,19 +17,7 @@ namespace Gherkin
 
         public void Build(Token token)
         {
-            switch (token.MatchedType)
-            {
-                case TokenType.Empty:
-                {
-					// we register the empty tokens as "Other" - this should have been done by the parser...
-                    CurrentNode.Add(RuleType._Other, token);
-                    break;
-                }
-
-                default:
-                    CurrentNode.Add((RuleType)token.MatchedType, token);
-                    break;
-            }
+			CurrentNode.Add((RuleType)token.MatchedType, token);
         }
 
 	    public void StartRule(RuleType ruleType)
@@ -100,10 +88,11 @@ namespace Gherkin
                 case RuleType.Description:
                 {
                     var lineTokens = node.GetTokens(TokenType.Other);
-                    string description =
-                        string.Join(Environment.NewLine, lineTokens.Select(lt => lt.Text))
-                            .Trim(new [] { '\r', '\n'});
-                    return string.IsNullOrWhiteSpace(description) ? null : description;
+
+					// we need to trim tailing empty lines
+	                lineTokens = lineTokens.Reverse().SkipWhile(t => t.Line.IsEmpty()).Reverse();
+
+                    return string.Join(Environment.NewLine, lineTokens.Select(lt => lt.Text));
                 }
                 case RuleType.Feature_File:
 	            {
