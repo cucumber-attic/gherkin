@@ -13,6 +13,7 @@ namespace Gherkin
         public string MatchedText { get; set; }
         public GherkinLineSpan[] MathcedItems { get; set; }
         public int MatchedIndent { get; set; }
+		public GherkinDialect MatchedGherkinDialect { get; set; }
 
         public Token(IGherkinLine line)
         {

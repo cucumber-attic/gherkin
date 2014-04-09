@@ -104,14 +104,13 @@ namespace Gherkin
                 }
                 case RuleType.Feature:
 	            {
-                    var language = "en"; //TODO: language handling
-
                     var header = node.GetSingle<AstNode>(RuleType.Feature_Header);
 					var tags = GetTags(header);
 					var featureLine = header.GetToken(TokenType.FeatureLine);
 		            var background = node.GetSingle<Background>(RuleType.Background);
 					var scenariodefinitions = node.GetItems<ScenarioDefinition>(RuleType.Scenario_Definition).ToArray();
                     var description = GetDescription(header);
+		            var language = featureLine.MatchedGherkinDialect.Language;
 
                     return new Feature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.MatchedText, description, background, scenariodefinitions);
                 }

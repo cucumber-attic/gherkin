@@ -92,6 +92,12 @@ namespace Gherkin.Specs
 
         public void FormatFeature(Feature feature, StringBuilder result)
         {
+	        if (!feature.Language.Equals("en", StringComparison.InvariantCultureIgnoreCase))
+	        {
+		        result.AppendFormat("#language:{0}", feature.Language);
+		        result.AppendLine();
+	        }
+
 			FormatTags(feature, result);
 			FormatHasDescription(feature, result);
             result.AppendLine();
