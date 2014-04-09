@@ -1,5 +1,5 @@
 ﻿[
-	Tokens -> #Empty,#Comment,#TagLine,#FeatureLine,#BackgroundLine,#ScenarioLine,#ScenarioOutlineLine,#ExamplesLine,#StepLine,#DocStringSeparator,#DocStringAlternativeSeparator,#TableRow
+	Tokens -> #Empty,#Comment,#TagLine,#FeatureLine,#BackgroundLine,#ScenarioLine,#ScenarioOutlineLine,#ExamplesLine,#StepLine,#DocStringSeparator,#DocStringAlternativeSeparator,#TableRow,#Language
 	IgnoredTokens -> #Comment,#Empty
 	ClassName -> Parser
 	Namespace -> Gherkin
@@ -7,7 +7,7 @@
 
 
 Feature! := Feature_Header Background? Scenario_Definition*
-Feature_Header! := Tags? #FeatureLine Feature_Description
+Feature_Header! := #Language? Tags? #FeatureLine Feature_Description
 
 Background! := #BackgroundLine Background_Description Scenario_Step*
 
