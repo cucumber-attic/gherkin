@@ -17,14 +17,14 @@ namespace Gherkin.AstTester
 
             string featureFilePath = args[0];
 
-            return TestParser(featureFilePath);
+            return TestAst(featureFilePath);
         }
 
-        private static int TestParser(string featureFilePath)
+        private static int TestAst(string featureFilePath)
         {
             try
             {
-                return TestParserInternal(featureFilePath);
+                return TestAstInternal(featureFilePath);
             }
             catch (Exception ex)
             {
@@ -32,7 +32,7 @@ namespace Gherkin.AstTester
                 return 1;
             }
         }
-        private static int TestParserInternal(string featureFilePath)
+        private static int TestAstInternal(string featureFilePath)
         {
             var parser = new Parser();
             var parsingResult = (Feature)parser.Parse(featureFilePath);
