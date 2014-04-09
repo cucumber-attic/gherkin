@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gherkin
 {
-    partial class ParserError
+	partial class UnexpectedTokenError
     {
         public int? LineNumber { get { return ReceivedToken.Line != null ? (int?)ReceivedToken.Line.LineNumber  : null; } }
     }
@@ -23,10 +23,19 @@ namespace Gherkin
 
         public string GetParserErrorMessage(ParserError error)
         {
-            if (error.ReceivedToken.IsEOF)
-                return string.Format("Error: unexpected end of file, expected: {0}", string.Join(", ", error.ExpectedTokenTypes));
+	        var unexpectedTokenError = error as UnexpectedTokenError;
+			if (unexpectedTokenError != null)
+			{
+				if (unexpectedTokenError.ReceivedToken.IsEOF)
+					return string.Format("Error: unexpected end of file, expected: {0}", string.Join(", ", unexpectedTokenError.ExpectedTokenTypes));
 
-            return string.Format("Error at line {2}: expected: {0}, got '{1}'", string.Join(", ", error.ExpectedTokenTypes), error.ReceivedToken.Line.GetLineText().Trim(), error.LineNumber);
+				return string.Format("Error at line {2}: expected: {0}, got '{1}'", 
+					string.Join(", ", unexpectedTokenError.ExpectedTokenTypes), 
+					unexpectedTokenError.ReceivedToken.Line.GetLineText().Trim(), 
+					unexpectedTokenError.LineNumber);
+			}
+
+	        return error.ToString();
         }
     }
 }
