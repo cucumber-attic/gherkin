@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Gherkin.Ast
 {
 	public interface IHasSteps
 	{
-		Step[] Steps { get; }
+		IEnumerable<Step> Steps { get; }
 	}
 }

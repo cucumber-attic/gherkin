@@ -11,7 +11,7 @@ namespace Gherkin.Ast
 		public TableCell(Location location, string value)
 		{
 			Location = location;
-			this.Value = value;
+			Value = value;
 		}
 	}
 }

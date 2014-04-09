@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Gherkin.Ast
 {
 	public interface IHasRows
 	{
-		TableRow[] Rows { get; }
+		IEnumerable<TableRow> Rows { get; }
 	}
 }
