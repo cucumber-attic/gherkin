@@ -14,7 +14,7 @@ namespace Gherkin
 
         public GherkinDialectProvider(string defaultLanguage = "en")
         {
-			defaultDialect = new Lazy<GherkinDialect>(() => GetDialect(defaultLanguage));
+            defaultDialect = new Lazy<GherkinDialect>(() => GetDialect(defaultLanguage));
         }
 
         public virtual GherkinDialect GetDialect(string language)
@@ -24,7 +24,7 @@ namespace Gherkin
             {
                 case "en":
                     return new GherkinDialect(
-						language,
+                        language,
                         new[] {"Feature"},
                         new[] {"Background"},
                         new[] {"Scenario"},
@@ -37,7 +37,7 @@ namespace Gherkin
                         new[] {"But "});
                 case "no":
                     return new GherkinDialect(
-						language,
+                        language,
                         new[] {"Egenskap"},
                         new[] {"Bakgrunn"},
                         new[] {"Scenario"},

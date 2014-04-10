@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace Gherkin.Ast
 {
-	public interface IHasSteps
-	{
-		IEnumerable<Step> Steps { get; }
-	}
+    public interface IHasSteps
+    {
+        IEnumerable<Step> Steps { get; }
+    }
 }

@@ -3,8 +3,8 @@ using System.Linq;
 
 namespace Gherkin.Ast
 {
-	public interface IHasLocation
-	{
-		Location Location { get; }
-	}
+    public interface IHasLocation
+    {
+        Location Location { get; }
+    }
 }
