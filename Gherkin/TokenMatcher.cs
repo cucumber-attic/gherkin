@@ -6,16 +6,24 @@ namespace Gherkin
 {
     public class TokenMatcher : ITokenMatcher
     {
-        private readonly GherkinDialectProvider dialectProvider;
+        private readonly IGherkinDialectProvider dialectProvider;
         private GherkinDialect currentDialect;
         private string activeDocStringSeparator = null;
         private int indentToRemove = 0;
 
-        public TokenMatcher(GherkinDialectProvider dialectProvider = null)
+        public GherkinDialect CurrentDialect
+        {
+            get
+            {
+                if (currentDialect == null)
+                    currentDialect = dialectProvider.DefaultDialect;
+                return currentDialect;
+            }
+        }
+
+        public TokenMatcher(IGherkinDialectProvider dialectProvider = null)
         {
             this.dialectProvider = dialectProvider ?? new GherkinDialectProvider();
-
-            currentDialect = this.dialectProvider.DefaultDialect;
         }
 
         protected virtual void SetTokenMatched(Token token, TokenType matchedType, string text = null, string keyword = null, int? indent = null, GherkinLineSpan[] items = null)
@@ -24,7 +32,7 @@ namespace Gherkin
             token.MatchedKeyword = keyword;
             token.MatchedText = text;
             token.MathcedItems = items;
-            token.MatchedGherkinDialect = currentDialect;
+            token.MatchedGherkinDialect = CurrentDialect;
             token.MatchedIndent = indent ?? (token.Line == null ? 0 : token.Line.Indent);
             token.Location = new Location(token.Location.Line, token.MatchedIndent + 1);
         }
@@ -105,27 +113,27 @@ namespace Gherkin
 
         public bool Match_FeatureLine(Token token)
         {
-            return MatchTitleLine(token, TokenType.FeatureLine, currentDialect.FeatureKeywords);
+            return MatchTitleLine(token, TokenType.FeatureLine, CurrentDialect.FeatureKeywords);
         }
 
         public bool Match_BackgroundLine(Token token)
         {
-            return MatchTitleLine(token, TokenType.BackgroundLine, currentDialect.BackgroundKeywords);
+            return MatchTitleLine(token, TokenType.BackgroundLine, CurrentDialect.BackgroundKeywords);
         }
 
         public bool Match_ScenarioLine(Token token)
         {
-            return MatchTitleLine(token, TokenType.ScenarioLine, currentDialect.ScenarioKeywords);
+            return MatchTitleLine(token, TokenType.ScenarioLine, CurrentDialect.ScenarioKeywords);
         }
 
         public bool Match_ScenarioOutlineLine(Token token)
         {
-            return MatchTitleLine(token, TokenType.ScenarioOutlineLine, currentDialect.ScenarioOutlineKeywords);
+            return MatchTitleLine(token, TokenType.ScenarioOutlineLine, CurrentDialect.ScenarioOutlineKeywords);
         }
 
         public bool Match_ExamplesLine(Token token)
         {
-            return MatchTitleLine(token, TokenType.ExamplesLine, currentDialect.ExamplesKeywords);
+            return MatchTitleLine(token, TokenType.ExamplesLine, CurrentDialect.ExamplesKeywords);
         }
 
         private bool MatchTitleLine(Token token, TokenType tokenType, string[] keywords)
@@ -178,7 +186,7 @@ namespace Gherkin
 
         public bool Match_StepLine(Token token)
         {
-            var keywords = currentDialect.StepKeywords;
+            var keywords = CurrentDialect.StepKeywords;
             foreach (var keyword in keywords)
             {
                 if (token.Line.StartsWith(keyword))

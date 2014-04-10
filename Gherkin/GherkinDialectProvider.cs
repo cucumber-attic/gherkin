@@ -1,10 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Web.Script.Serialization;
 
 namespace Gherkin
 {
-    public class GherkinDialectProvider
+    public interface IGherkinDialectProvider
     {
+        GherkinDialect DefaultDialect { get; }
+        GherkinDialect GetDialect(string language);
+    }
+
+    public class GherkinDialectProvider : IGherkinDialectProvider
+    {
+        protected class GherkinLanguageSetting
+        {
+            public string name;
+            public string native;
+            public string feature;
+            public string background;
+            public string scenario;
+            public string scenario_outline;
+            public string examples;
+            public string given;
+            public string when;
+            public string then;
+            public string and;
+            public string but;
+        }
+
         private readonly Lazy<GherkinDialect> defaultDialect;
 
         public GherkinDialect DefaultDialect
@@ -19,38 +44,78 @@ namespace Gherkin
 
         public virtual GherkinDialect GetDialect(string language)
         {
-            //TODO: load from json file
-            switch (language)
-            {
-                case "en":
-                    return new GherkinDialect(
-                        language,
-                        new[] {"Feature"},
-                        new[] {"Background"},
-                        new[] {"Scenario"},
-                        new[] {"Scenario Outline", "Scenario Template"},
-                        new[] {"Examples", "Scenarios"},
-                        new[] {"Given "},
-                        new[] {"When "},
-                        new[] {"Then "},
-                        new[] {"And ", "* "},
-                        new[] {"But "});
-                case "no":
-                    return new GherkinDialect(
-                        language,
-                        new[] {"Egenskap"},
-                        new[] {"Bakgrunn"},
-                        new[] {"Scenario"},
-                        new[] {"Scenariomal", "Abstrakt Scenario"},
-                        new[] {"Eksempler"},
-                        new[] {"Gitt "},
-                        new[] {"Når "},
-                        new[] {"Så "},
-                        new[] {"Og ", "* "},
-                        new[] {"Men "});
-            }
+            var gherkinLanguageSettings = LoadLanguageSettings();
+            return GetDialect(language, gherkinLanguageSettings);
+        }
 
-            throw new NotSupportedException("Language not supported: " + language);
+        protected virtual Dictionary<string, GherkinLanguageSetting> LoadLanguageSettings()
+        {
+            string languagesFile = Path.GetFullPath("i18n.json");
+            if (!File.Exists(languagesFile))
+            {
+                throw new InvalidOperationException("Gherkin language settings file not found: " + languagesFile);
+            }
+            var languagesFileContent = File.ReadAllText(languagesFile);
+
+            return ParseJsonContent(languagesFileContent);
+        }
+
+        protected Dictionary<string, GherkinLanguageSetting> ParseJsonContent(string languagesFileContent)
+        {
+            var jsonSerializer = new JavaScriptSerializer();
+            return jsonSerializer.Deserialize<Dictionary<string, GherkinLanguageSetting>>(languagesFileContent);
+        }
+
+        protected virtual GherkinDialect GetDialect(string language, Dictionary<string, GherkinLanguageSetting> gherkinLanguageSettings)
+        {
+            GherkinLanguageSetting languageSettings;
+            if (!gherkinLanguageSettings.TryGetValue(language, out languageSettings))
+                throw new NotSupportedException("Language not supported: " + language);
+
+            return CreateGherkinDialect(language, languageSettings);
+        }
+
+        protected GherkinDialect CreateGherkinDialect(string language, GherkinLanguageSetting languageSettings)
+        {
+            return new GherkinDialect(
+                language,
+                ParseTitleKeywords(languageSettings.feature),
+                ParseTitleKeywords(languageSettings.background),
+                ParseTitleKeywords(languageSettings.scenario),
+                ParseTitleKeywords(languageSettings.scenario_outline),
+                ParseTitleKeywords(languageSettings.examples),
+                ParseStepKeywords(languageSettings.given),
+                ParseStepKeywords(languageSettings.when),
+                ParseStepKeywords(languageSettings.then),
+                ParseStepKeywords(languageSettings.and),
+                ParseStepKeywords(languageSettings.but)
+            );
+        }
+
+        private string[] ParseStepKeywords(string stepKeywords)
+        {
+            return stepKeywords.Split('|').Select(k => k.EndsWith("<") ? k.Substring(0, k.Length - 1) : k + " ").ToArray();
+        }
+
+        private string[] ParseTitleKeywords(string keywords)
+        {
+            return keywords.Split('|');
+        }
+
+        protected static GherkinDialect GetFactoryDefault()
+        {
+            return new GherkinDialect(
+                "en",
+                new[] {"Feature"},
+                new[] {"Background"},
+                new[] {"Scenario"},
+                new[] {"Scenario Outline", "Scenario Template"},
+                new[] {"Examples", "Scenarios"},
+                new[] {"* ", "Given "},
+                new[] {"* ", "When " },
+                new[] {"* ", "Then " },
+                new[] {"* ", "And " },
+                new[] {"* ", "But " });
         }
     }
 }
