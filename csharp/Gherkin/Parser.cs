@@ -62,55 +62,9 @@ namespace Gherkin
         Description, // Description! := #Other+
     }
 
-    public abstract partial class ParserError
-    {
-    }
-
-    public partial class UnexpectedTokenError : ParserError
-    {
-        public string StateComment { get; private set; }
-
-        public Token ReceivedToken { get; private set; }
-        public string[] ExpectedTokenTypes { get; private set; }
-
-        public UnexpectedTokenError(Token receivedToken, string[] expectedTokenTypes, string stateComment)
-        {
-            this.ReceivedToken = receivedToken;
-            this.ExpectedTokenTypes = expectedTokenTypes;
-            this.StateComment = stateComment;
-        }
-    }
-
-    public partial class UnexpectedEOFError : UnexpectedTokenError
-    {
-        public UnexpectedEOFError(Token receivedToken, string[] expectedTokenTypes, string stateComment)
-            :base(receivedToken, expectedTokenTypes, stateComment)
-        {
-        }
-    }
-
-    public partial class ParserException : Exception
-    {
-        private ParserError[] errors = new ParserError[0];
-
-        public ParserError[] Errors { get { return errors; } }
-
-        public ParserException() { }
-        public ParserException(string message) : base(message) { }
-        public ParserException(string message, Exception inner) : base(message, inner) { }
-
-        public ParserException(IParserMessageProvider messageProvider, params ParserError[] errors) 
-            : base(messageProvider.GetDefaultExceptionMessage(errors))
-        {
-            if (errors != null)
-                this.errors = errors;
-        }
-    }
-
     public partial class Parser
     {
         public bool StopAtFirstError { get; set;}
-        public IParserMessageProvider ParserMessageProvider { get; private set; }
 
         class ParserContext
         {
@@ -118,21 +72,16 @@ namespace Gherkin
             public ITokenMatcher TokenMatcher { get; set; }
             public IAstBuilder Builder { get; set; }
             public Queue<Token> TokenQueue { get; set; }
-            public List<ParserError> Errors { get; set; }
+            public List<ParserException> Errors { get; set; }
         }
 
-        public Parser() : this(new ParserMessageProvider())
+        public Parser()
         {
         }
 
         public object Parse(ITokenScanner tokenScanner)
         {
             return Parse(tokenScanner, new TokenMatcher(), new AstBuilder());
-        }
-
-        public Parser(IParserMessageProvider parserMessageProvider)
-        {
-            this.ParserMessageProvider = parserMessageProvider;
         }
 
         public object Parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder astBuilder)
@@ -143,7 +92,7 @@ namespace Gherkin
                 TokenMatcher = tokenMatcher,
                 Builder = astBuilder,
                 TokenQueue = new Queue<Token>(),
-                Errors = new List<ParserError>()
+                Errors = new List<ParserException>()
             };
 
             StartRule(context, RuleType.Feature);
@@ -155,33 +104,64 @@ namespace Gherkin
                 state = MatchToken(state, token, context);
             } while(!token.IsEOF);
 
-            if (context.Errors.Count > 0)
-            {
-                throw new ParserException(ParserMessageProvider, context.Errors.ToArray());
-            }
-
             if (state != 27)
             {
                 throw new InvalidOperationException("One of the grammar rules expected #EOF explicitly.");
             }
 
             EndRule(context, RuleType.Feature);
+
+            if (context.Errors.Count > 0)
+            {
+                throw new CompositeParserException(context.Errors.ToArray());
+            }
+
             return GetResult(context);
+        }
+
+        private void AddError(ParserContext context, ParserException error)
+        {
+            context.Errors.Add(error);
+            if (context.Errors.Count > 10)
+                throw new CompositeParserException(context.Errors.ToArray());
+        }
+
+        private void HandleAstError(ParserContext context, Action action)
+        {
+            if (StopAtFirstError)
+            {
+                action();
+                return;
+            }
+
+            try
+            {
+                action();
+            }
+            catch (CompositeParserException compositeParserException)
+            {
+                foreach (var error in compositeParserException.Errors)
+                    AddError(context, error);
+            }
+            catch (ParserException error)
+            {
+                AddError(context, error);
+            }
         }
 
         void Build(ParserContext context, Token token)
         {
-            context.Builder.Build(token);
+            HandleAstError(context, () => context.Builder.Build(token));
         }
 
         void StartRule(ParserContext context, RuleType ruleType)
         {
-            context.Builder.StartRule(ruleType);
+            HandleAstError(context, () => context.Builder.StartRule(ruleType));
         }
 
         void EndRule(ParserContext context, RuleType ruleType)
         {
-            context.Builder.EndRule(ruleType);
+            HandleAstError(context, () => context.Builder.EndRule(ruleType));
         }
 
         object GetResult(ParserContext context)
@@ -339,13 +319,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 0 - Start";
+            token.Detach();
             var expectedTokens = new string[] {"#Language", "#TagLine", "#FeatureLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 0;
 
         }
@@ -377,13 +358,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 1 - Feature:0>Feature_Header:0>#Language:0";
+            token.Detach();
             var expectedTokens = new string[] {"#TagLine", "#FeatureLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 1;
 
         }
@@ -415,13 +397,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 2 - Feature:0>Feature_Header:1>Tags:0>#TagLine:0";
+            token.Detach();
             var expectedTokens = new string[] {"#TagLine", "#FeatureLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 2;
 
         }
@@ -485,13 +468,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 3 - Feature:0>Feature_Header:2>#FeatureLine:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#Empty", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 3;
 
         }
@@ -555,13 +539,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 4 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 4;
 
         }
@@ -619,13 +604,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 5 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 5;
 
         }
@@ -688,13 +674,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 6 - Feature:1>Background:0>#BackgroundLine:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 6;
 
         }
@@ -757,13 +744,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 7 - Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 7;
 
         }
@@ -820,13 +808,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 8 - Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 8;
 
         }
@@ -900,13 +889,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 9 - Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 9;
 
         }
@@ -978,13 +968,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 10 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 10;
 
         }
@@ -1024,13 +1015,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 11 - Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0";
+            token.Detach();
             var expectedTokens = new string[] {"#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 11;
 
         }
@@ -1097,13 +1089,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 12 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 12;
 
         }
@@ -1170,13 +1163,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 13 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 13;
 
         }
@@ -1237,13 +1231,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 14 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 14;
 
         }
@@ -1321,13 +1316,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 15 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 15;
 
         }
@@ -1403,13 +1399,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 16 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 16;
 
         }
@@ -1455,13 +1452,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 17 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0";
+            token.Detach();
             var expectedTokens = new string[] {"#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 17;
 
         }
@@ -1505,13 +1503,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 18 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0";
+            token.Detach();
             var expectedTokens = new string[] {"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 18;
 
         }
@@ -1551,13 +1550,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 19 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0";
+            token.Detach();
             var expectedTokens = new string[] {"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 19;
 
         }
@@ -1612,13 +1612,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0";
+            token.Detach();
             var expectedTokens = new string[] {"#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 20;
 
         }
@@ -1669,13 +1670,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 21 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
+            token.Detach();
             var expectedTokens = new string[] {"#TableRow", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 21;
 
         }
@@ -1707,13 +1709,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0";
+            token.Detach();
             var expectedTokens = new string[] {"#TagLine", "#ExamplesLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 22;
 
         }
@@ -1745,13 +1748,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0";
+            token.Detach();
             var expectedTokens = new string[] {"#Empty", "#Comment", "#TableRow", "#Other"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 23;
 
         }
@@ -1779,13 +1783,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0";
+            token.Detach();
             var expectedTokens = new string[] {"#Comment", "#TableRow", "#Other"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 24;
 
         }
@@ -1811,13 +1816,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0";
+            token.Detach();
             var expectedTokens = new string[] {"#Comment", "#TableRow", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 25;
 
         }
@@ -1899,13 +1905,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 26;
 
         }
@@ -1926,13 +1933,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
+            token.Detach();
             var expectedTokens = new string[] {"#DocStringSeparator", "#Other"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 28;
 
         }
@@ -1978,13 +1986,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
+            token.Detach();
             var expectedTokens = new string[] {"#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 29;
 
         }
@@ -2005,13 +2014,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 30 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
+            token.Detach();
             var expectedTokens = new string[] {"#DocStringSeparator", "#Other"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 30;
 
         }
@@ -2082,13 +2092,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 31;
 
         }
@@ -2109,13 +2120,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 32 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
+            token.Detach();
             var expectedTokens = new string[] {"#DocStringSeparator", "#Other"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 32;
 
         }
@@ -2182,13 +2194,14 @@ namespace Gherkin
             }
             
             const string stateComment = "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
+            token.Detach();
             var expectedTokens = new string[] {"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return 33;
 
         }
@@ -2237,12 +2250,6 @@ namespace Gherkin
     public partial interface ITokenScanner 
     {
         Token Read();
-    }
-
-    public partial interface IParserMessageProvider 
-    {
-        string GetDefaultExceptionMessage(ParserError[] errors);
-        string GetParserErrorMessage(ParserError error);
     }
 
     public partial interface ITokenMatcher

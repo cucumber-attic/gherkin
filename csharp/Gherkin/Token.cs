@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gherkin.Ast;
 
 namespace Gherkin
 {
@@ -14,6 +15,7 @@ namespace Gherkin
         public GherkinLineSpan[] MathcedItems { get; set; }
         public int MatchedIndent { get; set; }
         public GherkinDialect MatchedGherkinDialect { get; set; }
+        public Location Location { get; set; }
 
         public Token(IGherkinLine line)
         {

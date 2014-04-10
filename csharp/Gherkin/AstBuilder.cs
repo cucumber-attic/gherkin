@@ -155,7 +155,24 @@ namespace Gherkin
 
         private TableRow[] GetTableRows(AstNode node)
         {
-            return node.GetTokens(TokenType.TableRow).Select(token => new TableRow(GetLocation(token), GetCells(token))).ToArray();
+            var rows = node.GetTokens(TokenType.TableRow).Select(token => new TableRow(GetLocation(token), GetCells(token))).ToArray();
+            EnsureCellCount(rows);
+            return rows;
+        }
+
+        private void EnsureCellCount(TableRow[] rows)
+        {
+            if (rows.Length == 0)
+                return;
+
+            int cellCount = rows[0].Cells.Count();
+            foreach (var row in rows)
+            {
+                if (row.Cells.Count() != cellCount)
+                {
+                    throw new AstBuilderException("inconsistent cell count within the table", row.Location);
+                }
+            }
         }
 
         private TableCell[] GetCells(Token tableRowToken)

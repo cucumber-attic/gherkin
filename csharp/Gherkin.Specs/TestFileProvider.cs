@@ -11,10 +11,20 @@ namespace Gherkin.Specs
     {
         public IEnumerable<string> GetValidTestFiles()
         {
-            string testFileFolder = Path.GetFullPath(Path.Combine(TestFolders.InputFolder, "..", "..", "..", "..", @"testdata", "good"));
+            return GetTestFiles("good");
+        }
+
+        public IEnumerable<string> GetInvalidTestFiles()
+        {
+            return GetTestFiles("bad");
+        }
+
+        private static IEnumerable<string> GetTestFiles(string category)
+        {
+            string testFileFolder =
+                Path.GetFullPath(Path.Combine(TestFolders.InputFolder, "..", "..", "..", "..", @"testdata", category));
 
             return Directory.GetFiles(testFileFolder, "*.feature");
         }
-
     }
 }
