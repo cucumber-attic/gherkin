@@ -1,0 +1,4 @@
+Parser errors: 
+(2:0): expected: #Language, #TagLine, #FeatureLine, #Comment, #Empty, got 'invalid line here'
+(9:0): expected: #EOF, #TableRow, #DocStringSeparator, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Comment, #Empty, got 'another invalid line here'
+
