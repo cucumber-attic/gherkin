@@ -41,18 +41,14 @@ namespace Gherkin
 
         public bool Match_Other(Token token)
         {
-            if (!token.IsEOF)
-            { 
-                var text = token.Line.GetLineText(indentToRemove); //take the entire line, except removing DocString indents
-                SetTokenMatched(token, TokenType.Other, text, indent: 0);
-                return true;
-            }
-            return false;
+            var text = token.Line.GetLineText(indentToRemove); //take the entire line, except removing DocString indents
+            SetTokenMatched(token, TokenType.Other, text, indent: 0);
+            return true;
         }
 
         public bool Match_Empty(Token token)
         {
-            if (!token.IsEOF && token.Line.IsEmpty())
+            if (token.Line.IsEmpty())
             {
                 SetTokenMatched(token, TokenType.Empty);
                 return true;
@@ -62,7 +58,7 @@ namespace Gherkin
 
         public bool Match_Comment(Token token)
         {
-            if (!token.IsEOF && token.Line.StartsWith(GherkinLanguageConstants.COMMENT_PREFIX))
+            if (token.Line.StartsWith(GherkinLanguageConstants.COMMENT_PREFIX))
             {
                 var text = token.Line.GetLineText(0); //take the entire line
                 SetTokenMatched(token, TokenType.Comment, text, indent: 0);
@@ -73,7 +69,7 @@ namespace Gherkin
 
         public bool Match_Language(Token token)
         {
-            if (!token.IsEOF && token.Line.StartsWith(GherkinLanguageConstants.LANGUAGE_PREFIX))
+            if (token.Line.StartsWith(GherkinLanguageConstants.LANGUAGE_PREFIX))
             {
                 var language = token.Line.GetRestTrimmed(GherkinLanguageConstants.LANGUAGE_PREFIX.Length);
                 currentDialect = dialectProvider.GetDialect(language);
@@ -86,7 +82,7 @@ namespace Gherkin
 
         public bool Match_TagLine(Token token)
         {
-            if (!token.IsEOF && token.Line.StartsWith(GherkinLanguageConstants.TAG_PREFIX))
+            if (token.Line.StartsWith(GherkinLanguageConstants.TAG_PREFIX))
             {
                 SetTokenMatched(token, TokenType.TagLine, items: token.Line.GetTags().ToArray());
                 return true;
@@ -121,9 +117,6 @@ namespace Gherkin
 
         private bool MatchTitleLine(Token token, TokenType tokenType, string[] keywords)
         {
-            if (token.IsEOF)
-                return false;
-
             foreach (var keyword in keywords)
             {
                 if (token.Line.StartsWithTitleKeyword(keyword))

@@ -28,7 +28,11 @@
             return @state.Id;
 </text>}
 @helper MatchToken(TokenType tokenType)
-{<text>context.TokenMatcher.Match_@(tokenType)(token)</text>}
+{
+	if (!tokenType.Equals(TokenType.EOF))
+	{
+<text>!token.IsEOF && </text>}
+<text>context.TokenMatcher.Match_@(tokenType)(token)</text>}
 using System;
 using System.Collections.Generic;
 namespace @Model.Namespace
