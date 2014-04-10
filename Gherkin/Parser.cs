@@ -75,10 +75,6 @@ namespace Gherkin
             public List<ParserException> Errors { get; set; }
         }
 
-        public Parser()
-        {
-        }
-
         public object Parse(ITokenScanner tokenScanner)
         {
             return Parse(tokenScanner, new TokenMatcher(), new AstBuilder());
@@ -123,15 +119,19 @@ namespace Gherkin
 
         private void HandleAstError(ParserContext context, Action action)
         {
+            HandleExternalError(context, () => { action(); return true; });
+        }
+
+        private T HandleExternalError<T>(ParserContext context, Func<T> action, T defaultValue = default(T))
+        {
             if (StopAtFirstError)
             {
-                action();
-                return;
+                return action();
             }
 
             try
             {
-                action();
+                return action();
             }
             catch (CompositeParserException compositeParserException)
             {
@@ -142,6 +142,7 @@ namespace Gherkin
             {
                 AddError(context, error);
             }
+            return defaultValue;
         }
 
         void Build(ParserContext context, Token token)
@@ -167,6 +168,90 @@ namespace Gherkin
         Token ReadToken(ParserContext context)
         {
             return context.TokenQueue.Count > 0 ? context.TokenQueue.Dequeue() : context.TokenScanner.Read();
+        }
+
+
+        bool Match_EOF(ParserContext context, Token token)
+        {
+            return HandleExternalError(context, () => context.TokenMatcher.Match_EOF(token), false); 
+        }
+
+        bool Match_Empty(ParserContext context, Token token)
+        {
+            if (token.IsEOF) return false;
+            return HandleExternalError(context, () => context.TokenMatcher.Match_Empty(token), false); 
+        }
+
+        bool Match_Comment(ParserContext context, Token token)
+        {
+            if (token.IsEOF) return false;
+            return HandleExternalError(context, () => context.TokenMatcher.Match_Comment(token), false); 
+        }
+
+        bool Match_TagLine(ParserContext context, Token token)
+        {
+            if (token.IsEOF) return false;
+            return HandleExternalError(context, () => context.TokenMatcher.Match_TagLine(token), false); 
+        }
+
+        bool Match_FeatureLine(ParserContext context, Token token)
+        {
+            if (token.IsEOF) return false;
+            return HandleExternalError(context, () => context.TokenMatcher.Match_FeatureLine(token), false); 
+        }
+
+        bool Match_BackgroundLine(ParserContext context, Token token)
+        {
+            if (token.IsEOF) return false;
+            return HandleExternalError(context, () => context.TokenMatcher.Match_BackgroundLine(token), false); 
+        }
+
+        bool Match_ScenarioLine(ParserContext context, Token token)
+        {
+            if (token.IsEOF) return false;
+            return HandleExternalError(context, () => context.TokenMatcher.Match_ScenarioLine(token), false); 
+        }
+
+        bool Match_ScenarioOutlineLine(ParserContext context, Token token)
+        {
+            if (token.IsEOF) return false;
+            return HandleExternalError(context, () => context.TokenMatcher.Match_ScenarioOutlineLine(token), false); 
+        }
+
+        bool Match_ExamplesLine(ParserContext context, Token token)
+        {
+            if (token.IsEOF) return false;
+            return HandleExternalError(context, () => context.TokenMatcher.Match_ExamplesLine(token), false); 
+        }
+
+        bool Match_StepLine(ParserContext context, Token token)
+        {
+            if (token.IsEOF) return false;
+            return HandleExternalError(context, () => context.TokenMatcher.Match_StepLine(token), false); 
+        }
+
+        bool Match_DocStringSeparator(ParserContext context, Token token)
+        {
+            if (token.IsEOF) return false;
+            return HandleExternalError(context, () => context.TokenMatcher.Match_DocStringSeparator(token), false); 
+        }
+
+        bool Match_TableRow(ParserContext context, Token token)
+        {
+            if (token.IsEOF) return false;
+            return HandleExternalError(context, () => context.TokenMatcher.Match_TableRow(token), false); 
+        }
+
+        bool Match_Language(ParserContext context, Token token)
+        {
+            if (token.IsEOF) return false;
+            return HandleExternalError(context, () => context.TokenMatcher.Match_Language(token), false); 
+        }
+
+        bool Match_Other(ParserContext context, Token token)
+        {
+            if (token.IsEOF) return false;
+            return HandleExternalError(context, () => context.TokenMatcher.Match_Other(token), false); 
         }
 
         int MatchToken(int state, Token token, ParserContext context)
@@ -283,31 +368,31 @@ namespace Gherkin
         // Start
         int MatchTokenAt_0(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_Language(token))
+            if (Match_Language(context, token))
             {
                 StartRule(context, RuleType.Feature_Header);
                 Build(context, token);
                 return 1;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 StartRule(context, RuleType.Feature_Header);
                 StartRule(context, RuleType.Tags);
                 Build(context, token);
                 return 2;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_FeatureLine(token))
+            if (Match_FeatureLine(context, token))
             {
                 StartRule(context, RuleType.Feature_Header);
                 Build(context, token);
                 return 3;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 0;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 0;
@@ -330,23 +415,23 @@ namespace Gherkin
         // Feature:0>Feature_Header:0>#Language:0
         int MatchTokenAt_1(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 StartRule(context, RuleType.Tags);
                 Build(context, token);
                 return 2;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_FeatureLine(token))
+            if (Match_FeatureLine(context, token))
             {
                 Build(context, token);
                 return 3;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 1;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 1;
@@ -369,23 +454,23 @@ namespace Gherkin
         // Feature:0>Feature_Header:1>Tags:0>#TagLine:0
         int MatchTokenAt_2(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 Build(context, token);
                 return 2;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_FeatureLine(token))
+            if (Match_FeatureLine(context, token))
             {
                 EndRule(context, RuleType.Tags);
                 Build(context, token);
                 return 3;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 2;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 2;
@@ -408,30 +493,30 @@ namespace Gherkin
         // Feature:0>Feature_Header:2>#FeatureLine:0
         int MatchTokenAt_3(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.Feature_Header);
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 3;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 5;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_BackgroundLine(token))
+            if (Match_BackgroundLine(context, token))
             {
                 EndRule(context, RuleType.Feature_Header);
                 StartRule(context, RuleType.Background);
                 Build(context, token);
                 return 6;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.Feature_Header);
                 StartRule(context, RuleType.Scenario_Definition);
@@ -439,7 +524,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.Feature_Header);
                 StartRule(context, RuleType.Scenario_Definition);
@@ -447,7 +532,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.Feature_Header);
                 StartRule(context, RuleType.Scenario_Definition);
@@ -455,7 +540,7 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Other(token))
+            if (Match_Other(context, token))
             {
                 StartRule(context, RuleType.Description);
                 Build(context, token);
@@ -479,20 +564,20 @@ namespace Gherkin
         // Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
         int MatchTokenAt_4(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.Description);
                 EndRule(context, RuleType.Feature_Header);
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 EndRule(context, RuleType.Description);
                 Build(context, token);
                 return 5;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_BackgroundLine(token))
+            if (Match_BackgroundLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 EndRule(context, RuleType.Feature_Header);
@@ -500,7 +585,7 @@ namespace Gherkin
                 Build(context, token);
                 return 6;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 EndRule(context, RuleType.Feature_Header);
@@ -509,7 +594,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 EndRule(context, RuleType.Feature_Header);
@@ -518,7 +603,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 EndRule(context, RuleType.Feature_Header);
@@ -527,7 +612,7 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Other(token))
+            if (Match_Other(context, token))
             {
                 Build(context, token);
                 return 4;
@@ -550,25 +635,25 @@ namespace Gherkin
         // Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0
         int MatchTokenAt_5(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.Feature_Header);
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 5;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_BackgroundLine(token))
+            if (Match_BackgroundLine(context, token))
             {
                 EndRule(context, RuleType.Feature_Header);
                 StartRule(context, RuleType.Background);
                 Build(context, token);
                 return 6;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.Feature_Header);
                 StartRule(context, RuleType.Scenario_Definition);
@@ -576,7 +661,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.Feature_Header);
                 StartRule(context, RuleType.Scenario_Definition);
@@ -584,7 +669,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.Feature_Header);
                 StartRule(context, RuleType.Scenario_Definition);
@@ -592,7 +677,7 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 5;
@@ -615,29 +700,29 @@ namespace Gherkin
         // Feature:1>Background:0>#BackgroundLine:0
         int MatchTokenAt_6(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.Background);
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 6;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 8;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 StartRule(context, RuleType.Step);
                 Build(context, token);
                 return 9;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.Background);
                 StartRule(context, RuleType.Scenario_Definition);
@@ -645,7 +730,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.Background);
                 StartRule(context, RuleType.Scenario_Definition);
@@ -653,7 +738,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.Background);
                 StartRule(context, RuleType.Scenario_Definition);
@@ -661,7 +746,7 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Other(token))
+            if (Match_Other(context, token))
             {
                 StartRule(context, RuleType.Description);
                 Build(context, token);
@@ -685,27 +770,27 @@ namespace Gherkin
         // Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
         int MatchTokenAt_7(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.Description);
                 EndRule(context, RuleType.Background);
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 EndRule(context, RuleType.Description);
                 Build(context, token);
                 return 8;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 StartRule(context, RuleType.Step);
                 Build(context, token);
                 return 9;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 EndRule(context, RuleType.Background);
@@ -714,7 +799,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 EndRule(context, RuleType.Background);
@@ -723,7 +808,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 EndRule(context, RuleType.Background);
@@ -732,7 +817,7 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Other(token))
+            if (Match_Other(context, token))
             {
                 Build(context, token);
                 return 7;
@@ -755,24 +840,24 @@ namespace Gherkin
         // Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
         int MatchTokenAt_8(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.Background);
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 8;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 StartRule(context, RuleType.Step);
                 Build(context, token);
                 return 9;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.Background);
                 StartRule(context, RuleType.Scenario_Definition);
@@ -780,7 +865,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.Background);
                 StartRule(context, RuleType.Scenario_Definition);
@@ -788,7 +873,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.Background);
                 StartRule(context, RuleType.Scenario_Definition);
@@ -796,7 +881,7 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 8;
@@ -819,33 +904,33 @@ namespace Gherkin
         // Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
         int MatchTokenAt_9(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.Step);
                 EndRule(context, RuleType.Background);
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TableRow(token))
+            if (Match_TableRow(context, token))
             {
                 StartRule(context, RuleType.DataTable);
                 Build(context, token);
                 return 10;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_DocStringSeparator(token))
+            if (Match_DocStringSeparator(context, token))
             {
                 StartRule(context, RuleType.DocString);
                 Build(context, token);
                 return 32;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 EndRule(context, RuleType.Step);
                 StartRule(context, RuleType.Step);
                 Build(context, token);
                 return 9;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.Step);
                 EndRule(context, RuleType.Background);
@@ -854,7 +939,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.Step);
                 EndRule(context, RuleType.Background);
@@ -863,7 +948,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.Step);
                 EndRule(context, RuleType.Background);
@@ -872,12 +957,12 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 9;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 9;
@@ -900,7 +985,7 @@ namespace Gherkin
         // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
         int MatchTokenAt_10(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.DataTable);
                 EndRule(context, RuleType.Step);
@@ -908,12 +993,12 @@ namespace Gherkin
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TableRow(token))
+            if (Match_TableRow(context, token))
             {
                 Build(context, token);
                 return 10;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 EndRule(context, RuleType.DataTable);
                 EndRule(context, RuleType.Step);
@@ -921,7 +1006,7 @@ namespace Gherkin
                 Build(context, token);
                 return 9;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.DataTable);
                 EndRule(context, RuleType.Step);
@@ -931,7 +1016,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.DataTable);
                 EndRule(context, RuleType.Step);
@@ -941,7 +1026,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.DataTable);
                 EndRule(context, RuleType.Step);
@@ -951,12 +1036,12 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 10;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 10;
@@ -979,31 +1064,31 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0
         int MatchTokenAt_11(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.Tags);
                 StartRule(context, RuleType.Scenario);
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.Tags);
                 StartRule(context, RuleType.ScenarioOutline);
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 11;
@@ -1026,30 +1111,30 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0
         int MatchTokenAt_12(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.Scenario);
                 EndRule(context, RuleType.Scenario_Definition);
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 14;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 StartRule(context, RuleType.Step);
                 Build(context, token);
                 return 15;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.Scenario);
                 EndRule(context, RuleType.Scenario_Definition);
@@ -1058,7 +1143,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.Scenario);
                 EndRule(context, RuleType.Scenario_Definition);
@@ -1067,7 +1152,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.Scenario);
                 EndRule(context, RuleType.Scenario_Definition);
@@ -1076,7 +1161,7 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Other(token))
+            if (Match_Other(context, token))
             {
                 StartRule(context, RuleType.Description);
                 Build(context, token);
@@ -1100,7 +1185,7 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
         int MatchTokenAt_13(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.Description);
                 EndRule(context, RuleType.Scenario);
@@ -1108,20 +1193,20 @@ namespace Gherkin
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 EndRule(context, RuleType.Description);
                 Build(context, token);
                 return 14;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 StartRule(context, RuleType.Step);
                 Build(context, token);
                 return 15;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 EndRule(context, RuleType.Scenario);
@@ -1131,7 +1216,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 EndRule(context, RuleType.Scenario);
@@ -1141,7 +1226,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 EndRule(context, RuleType.Scenario);
@@ -1151,7 +1236,7 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Other(token))
+            if (Match_Other(context, token))
             {
                 Build(context, token);
                 return 13;
@@ -1174,25 +1259,25 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
         int MatchTokenAt_14(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.Scenario);
                 EndRule(context, RuleType.Scenario_Definition);
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 14;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 StartRule(context, RuleType.Step);
                 Build(context, token);
                 return 15;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.Scenario);
                 EndRule(context, RuleType.Scenario_Definition);
@@ -1201,7 +1286,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.Scenario);
                 EndRule(context, RuleType.Scenario_Definition);
@@ -1210,7 +1295,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.Scenario);
                 EndRule(context, RuleType.Scenario_Definition);
@@ -1219,7 +1304,7 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 14;
@@ -1242,7 +1327,7 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
         int MatchTokenAt_15(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.Step);
                 EndRule(context, RuleType.Scenario);
@@ -1250,26 +1335,26 @@ namespace Gherkin
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TableRow(token))
+            if (Match_TableRow(context, token))
             {
                 StartRule(context, RuleType.DataTable);
                 Build(context, token);
                 return 16;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_DocStringSeparator(token))
+            if (Match_DocStringSeparator(context, token))
             {
                 StartRule(context, RuleType.DocString);
                 Build(context, token);
                 return 30;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 EndRule(context, RuleType.Step);
                 StartRule(context, RuleType.Step);
                 Build(context, token);
                 return 15;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.Step);
                 EndRule(context, RuleType.Scenario);
@@ -1279,7 +1364,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.Step);
                 EndRule(context, RuleType.Scenario);
@@ -1289,7 +1374,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.Step);
                 EndRule(context, RuleType.Scenario);
@@ -1299,12 +1384,12 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 15;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 15;
@@ -1327,7 +1412,7 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
         int MatchTokenAt_16(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.DataTable);
                 EndRule(context, RuleType.Step);
@@ -1336,12 +1421,12 @@ namespace Gherkin
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TableRow(token))
+            if (Match_TableRow(context, token))
             {
                 Build(context, token);
                 return 16;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 EndRule(context, RuleType.DataTable);
                 EndRule(context, RuleType.Step);
@@ -1349,7 +1434,7 @@ namespace Gherkin
                 Build(context, token);
                 return 15;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.DataTable);
                 EndRule(context, RuleType.Step);
@@ -1360,7 +1445,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.DataTable);
                 EndRule(context, RuleType.Step);
@@ -1371,7 +1456,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.DataTable);
                 EndRule(context, RuleType.Step);
@@ -1382,12 +1467,12 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 16;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 16;
@@ -1410,36 +1495,36 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
         int MatchTokenAt_17(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 19;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 StartRule(context, RuleType.Step);
                 Build(context, token);
                 return 20;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 StartRule(context, RuleType.Examples);
                 StartRule(context, RuleType.Tags);
                 Build(context, token);
                 return 22;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ExamplesLine(token))
+            if (Match_ExamplesLine(context, token))
             {
                 StartRule(context, RuleType.Examples);
                 Build(context, token);
                 return 23;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Other(token))
+            if (Match_Other(context, token))
             {
                 StartRule(context, RuleType.Description);
                 Build(context, token);
@@ -1463,20 +1548,20 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
         int MatchTokenAt_18(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 EndRule(context, RuleType.Description);
                 Build(context, token);
                 return 19;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 StartRule(context, RuleType.Step);
                 Build(context, token);
                 return 20;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 StartRule(context, RuleType.Examples);
@@ -1484,14 +1569,14 @@ namespace Gherkin
                 Build(context, token);
                 return 22;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ExamplesLine(token))
+            if (Match_ExamplesLine(context, token))
             {
                 EndRule(context, RuleType.Description);
                 StartRule(context, RuleType.Examples);
                 Build(context, token);
                 return 23;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Other(token))
+            if (Match_Other(context, token))
             {
                 Build(context, token);
                 return 18;
@@ -1514,31 +1599,31 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
         int MatchTokenAt_19(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 19;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 StartRule(context, RuleType.Step);
                 Build(context, token);
                 return 20;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 StartRule(context, RuleType.Examples);
                 StartRule(context, RuleType.Tags);
                 Build(context, token);
                 return 22;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ExamplesLine(token))
+            if (Match_ExamplesLine(context, token))
             {
                 StartRule(context, RuleType.Examples);
                 Build(context, token);
                 return 23;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 19;
@@ -1561,26 +1646,26 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
         int MatchTokenAt_20(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_TableRow(token))
+            if (Match_TableRow(context, token))
             {
                 StartRule(context, RuleType.DataTable);
                 Build(context, token);
                 return 21;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_DocStringSeparator(token))
+            if (Match_DocStringSeparator(context, token))
             {
                 StartRule(context, RuleType.DocString);
                 Build(context, token);
                 return 28;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 EndRule(context, RuleType.Step);
                 StartRule(context, RuleType.Step);
                 Build(context, token);
                 return 20;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.Step);
                 StartRule(context, RuleType.Examples);
@@ -1588,19 +1673,19 @@ namespace Gherkin
                 Build(context, token);
                 return 22;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ExamplesLine(token))
+            if (Match_ExamplesLine(context, token))
             {
                 EndRule(context, RuleType.Step);
                 StartRule(context, RuleType.Examples);
                 Build(context, token);
                 return 23;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 20;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 20;
@@ -1623,12 +1708,12 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
         int MatchTokenAt_21(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_TableRow(token))
+            if (Match_TableRow(context, token))
             {
                 Build(context, token);
                 return 21;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 EndRule(context, RuleType.DataTable);
                 EndRule(context, RuleType.Step);
@@ -1636,7 +1721,7 @@ namespace Gherkin
                 Build(context, token);
                 return 20;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.DataTable);
                 EndRule(context, RuleType.Step);
@@ -1645,7 +1730,7 @@ namespace Gherkin
                 Build(context, token);
                 return 22;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ExamplesLine(token))
+            if (Match_ExamplesLine(context, token))
             {
                 EndRule(context, RuleType.DataTable);
                 EndRule(context, RuleType.Step);
@@ -1653,12 +1738,12 @@ namespace Gherkin
                 Build(context, token);
                 return 23;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 21;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 21;
@@ -1681,23 +1766,23 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
         int MatchTokenAt_22(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 Build(context, token);
                 return 22;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ExamplesLine(token))
+            if (Match_ExamplesLine(context, token))
             {
                 EndRule(context, RuleType.Tags);
                 Build(context, token);
                 return 23;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 22;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 22;
@@ -1720,22 +1805,22 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0
         int MatchTokenAt_23(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 23;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 25;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TableRow(token))
+            if (Match_TableRow(context, token))
             {
                 Build(context, token);
                 return 26;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Other(token))
+            if (Match_Other(context, token))
             {
                 StartRule(context, RuleType.Description);
                 Build(context, token);
@@ -1759,19 +1844,19 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
         int MatchTokenAt_24(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 EndRule(context, RuleType.Description);
                 Build(context, token);
                 return 25;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TableRow(token))
+            if (Match_TableRow(context, token))
             {
                 EndRule(context, RuleType.Description);
                 Build(context, token);
                 return 26;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Other(token))
+            if (Match_Other(context, token))
             {
                 Build(context, token);
                 return 24;
@@ -1794,17 +1879,17 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0
         int MatchTokenAt_25(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 25;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TableRow(token))
+            if (Match_TableRow(context, token))
             {
                 Build(context, token);
                 return 26;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 25;
@@ -1827,7 +1912,7 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0
         int MatchTokenAt_26(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.Examples);
                 EndRule(context, RuleType.ScenarioOutline);
@@ -1835,12 +1920,12 @@ namespace Gherkin
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TableRow(token))
+            if (Match_TableRow(context, token))
             {
                 Build(context, token);
                 return 26;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 if (LookAhead_0(context, token))
                 {
@@ -1851,7 +1936,7 @@ namespace Gherkin
                 return 22;
                 }
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.Examples);
                 EndRule(context, RuleType.ScenarioOutline);
@@ -1861,14 +1946,14 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ExamplesLine(token))
+            if (Match_ExamplesLine(context, token))
             {
                 EndRule(context, RuleType.Examples);
                 StartRule(context, RuleType.Examples);
                 Build(context, token);
                 return 23;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.Examples);
                 EndRule(context, RuleType.ScenarioOutline);
@@ -1878,7 +1963,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.Examples);
                 EndRule(context, RuleType.ScenarioOutline);
@@ -1888,12 +1973,12 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 26;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 26;
@@ -1916,12 +2001,12 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
         int MatchTokenAt_28(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_DocStringSeparator(token))
+            if (Match_DocStringSeparator(context, token))
             {
                 Build(context, token);
                 return 29;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Other(token))
+            if (Match_Other(context, token))
             {
                 Build(context, token);
                 return 28;
@@ -1944,7 +2029,7 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
         int MatchTokenAt_29(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 EndRule(context, RuleType.DocString);
                 EndRule(context, RuleType.Step);
@@ -1952,7 +2037,7 @@ namespace Gherkin
                 Build(context, token);
                 return 20;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.DocString);
                 EndRule(context, RuleType.Step);
@@ -1961,7 +2046,7 @@ namespace Gherkin
                 Build(context, token);
                 return 22;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ExamplesLine(token))
+            if (Match_ExamplesLine(context, token))
             {
                 EndRule(context, RuleType.DocString);
                 EndRule(context, RuleType.Step);
@@ -1969,12 +2054,12 @@ namespace Gherkin
                 Build(context, token);
                 return 23;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 29;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 29;
@@ -1997,12 +2082,12 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
         int MatchTokenAt_30(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_DocStringSeparator(token))
+            if (Match_DocStringSeparator(context, token))
             {
                 Build(context, token);
                 return 31;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Other(token))
+            if (Match_Other(context, token))
             {
                 Build(context, token);
                 return 30;
@@ -2025,7 +2110,7 @@ namespace Gherkin
         // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
         int MatchTokenAt_31(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.DocString);
                 EndRule(context, RuleType.Step);
@@ -2034,7 +2119,7 @@ namespace Gherkin
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 EndRule(context, RuleType.DocString);
                 EndRule(context, RuleType.Step);
@@ -2042,7 +2127,7 @@ namespace Gherkin
                 Build(context, token);
                 return 15;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.DocString);
                 EndRule(context, RuleType.Step);
@@ -2053,7 +2138,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.DocString);
                 EndRule(context, RuleType.Step);
@@ -2064,7 +2149,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.DocString);
                 EndRule(context, RuleType.Step);
@@ -2075,12 +2160,12 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 31;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 31;
@@ -2103,12 +2188,12 @@ namespace Gherkin
         // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
         int MatchTokenAt_32(Token token, ParserContext context)
         {
-            if (!token.IsEOF && context.TokenMatcher.Match_DocStringSeparator(token))
+            if (Match_DocStringSeparator(context, token))
             {
                 Build(context, token);
                 return 33;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Other(token))
+            if (Match_Other(context, token))
             {
                 Build(context, token);
                 return 32;
@@ -2131,7 +2216,7 @@ namespace Gherkin
         // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
         int MatchTokenAt_33(Token token, ParserContext context)
         {
-            if (context.TokenMatcher.Match_EOF(token))
+            if (Match_EOF(context, token))
             {
                 EndRule(context, RuleType.DocString);
                 EndRule(context, RuleType.Step);
@@ -2139,7 +2224,7 @@ namespace Gherkin
                 Build(context, token);
                 return 27;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_StepLine(token))
+            if (Match_StepLine(context, token))
             {
                 EndRule(context, RuleType.DocString);
                 EndRule(context, RuleType.Step);
@@ -2147,7 +2232,7 @@ namespace Gherkin
                 Build(context, token);
                 return 9;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_TagLine(token))
+            if (Match_TagLine(context, token))
             {
                 EndRule(context, RuleType.DocString);
                 EndRule(context, RuleType.Step);
@@ -2157,7 +2242,7 @@ namespace Gherkin
                 Build(context, token);
                 return 11;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioLine(token))
+            if (Match_ScenarioLine(context, token))
             {
                 EndRule(context, RuleType.DocString);
                 EndRule(context, RuleType.Step);
@@ -2167,7 +2252,7 @@ namespace Gherkin
                 Build(context, token);
                 return 12;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_ScenarioOutlineLine(token))
+            if (Match_ScenarioOutlineLine(context, token))
             {
                 EndRule(context, RuleType.DocString);
                 EndRule(context, RuleType.Step);
@@ -2177,12 +2262,12 @@ namespace Gherkin
                 Build(context, token);
                 return 17;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Comment(token))
+            if (Match_Comment(context, token))
             {
                 Build(context, token);
                 return 33;
             }
-            if (!token.IsEOF && context.TokenMatcher.Match_Empty(token))
+            if (Match_Empty(context, token))
             {
                 Build(context, token);
                 return 33;
@@ -2216,16 +2301,16 @@ namespace Gherkin
                 queue.Enqueue(token);
 
                 if (false
-                    || !token.IsEOF && context.TokenMatcher.Match_ExamplesLine(token)
+                    || Match_ExamplesLine(context, token)
                 )
                 {
                     match = true;
                     break;
                 }
             } while (false
-                || !token.IsEOF && context.TokenMatcher.Match_Empty(token)
-                || !token.IsEOF && context.TokenMatcher.Match_Comment(token)
-                || !token.IsEOF && context.TokenMatcher.Match_TagLine(token)
+                || Match_Empty(context, token)
+                || Match_Comment(context, token)
+                || Match_TagLine(context, token)
             );
             foreach(var t in queue)
                 context.TokenQueue.Enqueue(t);

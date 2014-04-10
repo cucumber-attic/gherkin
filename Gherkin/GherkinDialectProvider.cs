@@ -50,7 +50,7 @@ namespace Gherkin
                         new[] {"Men "});
             }
 
-            throw new NotImplementedException("Language not supported: " + language);
+            throw new NotSupportedException("Language not supported: " + language);
         }
     }
 }
