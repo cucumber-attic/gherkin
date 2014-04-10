@@ -19,7 +19,7 @@
             const string stateComment = "State: @state.Id - @Raw(state.Comment)";
             token.Detach();
             var expectedTokens = new string[] {"@Raw(string.Join("\", \"", expectedTokens))"};
-            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(token, expectedTokens, stateComment) 
                 : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
                 throw error;

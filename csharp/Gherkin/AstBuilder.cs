@@ -114,7 +114,7 @@ namespace Gherkin
                     var lineTokens = node.GetTokens(TokenType.Other);
 
                     // we need to trim tailing empty lines
-                    lineTokens = lineTokens.Reverse().SkipWhile(t => t.Line.IsEmpty()).Reverse();
+                    lineTokens = lineTokens.Reverse().SkipWhile(t => string.IsNullOrWhiteSpace(t.MatchedText)).Reverse();
 
                     return string.Join(Environment.NewLine, lineTokens.Select(lt => lt.MatchedText));
                 }
@@ -137,8 +137,7 @@ namespace Gherkin
 
         private Location GetLocation(Token token, int column = 0)
         {
-            column = column == 0 ? token.MatchedIndent + 1 : column;
-            return new Location(token.Line.LineNumber, column);
+            return column == 0 ? token.Location : new Location(token.Location.Line, column);
         }
 
         private Tag[] GetTags(AstNode node)
