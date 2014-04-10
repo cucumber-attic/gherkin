@@ -22,8 +22,6 @@ or
 
 Run `msbuild` from the `csharp` directory.
 
-TODO: invoke berp generation from MsBuild in an OS-independent way (or filter for Win only)
-
 #### OS X/Linux
 
 Run `make` from the `csharp` directory.
