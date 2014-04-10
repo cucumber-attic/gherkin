@@ -104,11 +104,6 @@ namespace Gherkin
                 state = MatchToken(state, token, context);
             } while(!token.IsEOF);
 
-            if (state != 27)
-            {
-                throw new InvalidOperationException("One of the grammar rules expected #EOF explicitly.");
-            }
-
             EndRule(context, RuleType.Feature);
 
             if (context.Errors.Count > 0)

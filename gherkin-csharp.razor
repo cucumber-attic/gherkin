@@ -95,11 +95,6 @@ namespace @Model.Namespace
                 state = MatchToken(state, token, context);
             } while(!token.IsEOF);
 
-            if (state != @Model.EndState.Id)
-            {
-                throw new InvalidOperationException("One of the grammar rules expected #EOF explicitly.");
-            }
-
             EndRule(context, RuleType.@Model.RuleSet.StartRule.Name);
 
             if (context.Errors.Count > 0)
