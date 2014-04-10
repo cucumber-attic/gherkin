@@ -2,4 +2,3 @@
 
 ## TODO
 
-* load gherkin dialect from json
