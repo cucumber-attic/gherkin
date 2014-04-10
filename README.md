@@ -16,7 +16,13 @@ You need .Net or Mono installed to generate the grammar.
 
 #### Windows
 
-TODO
+Open `Gherkin.CSharp.sln` from the `csharp` directory in Visual Studio 2013 and build
+
+or
+
+Run `msbuild` from the `csharp` directory.
+
+TODO: invoke berp generation from MsBuild in an OS-independent way (or filter for Win only)
 
 #### OS X/Linux
 
