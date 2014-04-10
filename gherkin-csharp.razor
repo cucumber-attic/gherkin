@@ -17,13 +17,14 @@
 @helper HandleParserError(IEnumerable<string> expectedTokens, State state)
 {<text>
             const string stateComment = "State: @state.Id - @Raw(state.Comment)";
+            token.Detach();
             var expectedTokens = new string[] {"@Raw(string.Join("\", \"", expectedTokens))"};
-            var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, stateComment) 
-                : new UnexpectedTokenError(token, expectedTokens, stateComment);
+            var error = token.IsEOF ? (ParserException)new UnexpectedEOFException(expectedTokens, stateComment) 
+                : new UnexpectedTokenException(token, expectedTokens, stateComment);
             if (StopAtFirstError)
-                throw new ParserException(ParserMessageProvider, error);
+                throw error;
             
-            context.Errors.Add(error);
+            AddError(context, error);
             return @state.Id;
 </text>}
 @helper MatchToken(TokenType tokenType)
@@ -48,55 +49,9 @@ namespace @Model.Namespace
 </text>}
     }
 
-    public abstract partial class ParserError
-    {
-    }
-
-    public partial class UnexpectedTokenError : ParserError
-    {
-        public string StateComment { get; private set; }
-
-        public Token ReceivedToken { get; private set; }
-        public string[] ExpectedTokenTypes { get; private set; }
-
-        public UnexpectedTokenError(Token receivedToken, string[] expectedTokenTypes, string stateComment)
-        {
-            this.ReceivedToken = receivedToken;
-            this.ExpectedTokenTypes = expectedTokenTypes;
-            this.StateComment = stateComment;
-        }
-    }
-
-    public partial class UnexpectedEOFError : UnexpectedTokenError
-    {
-        public UnexpectedEOFError(Token receivedToken, string[] expectedTokenTypes, string stateComment)
-            :base(receivedToken, expectedTokenTypes, stateComment)
-        {
-        }
-    }
-
-    public partial class ParserException : Exception
-    {
-        private ParserError[] errors = new ParserError[0];
-
-        public ParserError[] Errors { get { return errors; } }
-
-        public ParserException() { }
-        public ParserException(string message) : base(message) { }
-        public ParserException(string message, Exception inner) : base(message, inner) { }
-
-        public ParserException(IParserMessageProvider messageProvider, params ParserError[] errors) 
-            : base(messageProvider.GetDefaultExceptionMessage(errors))
-        {
-            if (errors != null)
-                this.errors = errors;
-        }
-    }
-
     public partial class @Model.ParserClassName
     {
         public bool StopAtFirstError { get; set;}
-        public IParserMessageProvider ParserMessageProvider { get; private set; }
 
         class ParserContext
         {
@@ -104,21 +59,16 @@ namespace @Model.Namespace
             public ITokenMatcher TokenMatcher { get; set; }
             public IAstBuilder Builder { get; set; }
             public Queue<Token> TokenQueue { get; set; }
-            public List<ParserError> Errors { get; set; }
+            public List<ParserException> Errors { get; set; }
         }
 
-        public @(Model.ParserClassName)() : this(new ParserMessageProvider())
+        public @(Model.ParserClassName)()
         {
         }
 
         public object Parse(ITokenScanner tokenScanner)
         {
             return Parse(tokenScanner, new TokenMatcher(), new AstBuilder());
-        }
-
-        public @(Model.ParserClassName)(IParserMessageProvider parserMessageProvider)
-        {
-            this.ParserMessageProvider = parserMessageProvider;
         }
 
         public object Parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder astBuilder)
@@ -129,7 +79,7 @@ namespace @Model.Namespace
                 TokenMatcher = tokenMatcher,
                 Builder = astBuilder,
                 TokenQueue = new Queue<Token>(),
-                Errors = new List<ParserError>()
+                Errors = new List<ParserException>()
             };
 
             StartRule(context, RuleType.@Model.RuleSet.StartRule.Name);
@@ -141,33 +91,64 @@ namespace @Model.Namespace
                 state = MatchToken(state, token, context);
             } while(!token.IsEOF);
 
-            if (context.Errors.Count > 0)
-            {
-                throw new ParserException(ParserMessageProvider, context.Errors.ToArray());
-            }
-
             if (state != @Model.EndState.Id)
             {
                 throw new InvalidOperationException("One of the grammar rules expected #EOF explicitly.");
             }
 
             EndRule(context, RuleType.@Model.RuleSet.StartRule.Name);
+
+            if (context.Errors.Count > 0)
+            {
+                throw new CompositeParserException(context.Errors.ToArray());
+            }
+
             return GetResult(context);
+        }
+
+        private void AddError(ParserContext context, ParserException error)
+        {
+            context.Errors.Add(error);
+            if (context.Errors.Count > 10)
+                throw new CompositeParserException(context.Errors.ToArray());
+        }
+
+        private void HandleAstError(ParserContext context, Action action)
+        {
+            if (StopAtFirstError)
+            {
+                action();
+                return;
+            }
+
+            try
+            {
+                action();
+            }
+            catch (CompositeParserException compositeParserException)
+            {
+                foreach (var error in compositeParserException.Errors)
+                    AddError(context, error);
+            }
+            catch (ParserException error)
+            {
+                AddError(context, error);
+            }
         }
 
         void Build(ParserContext context, Token token)
         {
-            context.Builder.Build(token);
+            HandleAstError(context, () => context.Builder.Build(token));
         }
 
         void StartRule(ParserContext context, RuleType ruleType)
         {
-            context.Builder.StartRule(ruleType);
+            HandleAstError(context, () => context.Builder.StartRule(ruleType));
         }
 
         void EndRule(ParserContext context, RuleType ruleType)
         {
-            context.Builder.EndRule(ruleType);
+            HandleAstError(context, () => context.Builder.EndRule(ruleType));
         }
 
         object GetResult(ParserContext context)
@@ -278,12 +259,6 @@ namespace @Model.Namespace
     public partial interface ITokenScanner 
     {
         Token Read();
-    }
-
-    public partial interface IParserMessageProvider 
-    {
-        string GetDefaultExceptionMessage(ParserError[] errors);
-        string GetParserErrorMessage(ParserError error);
     }
 
     public partial interface ITokenMatcher

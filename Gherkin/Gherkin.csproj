@@ -74,7 +74,7 @@
     <Compile Include="GherkinLineSpan.cs" />
     <Compile Include="IGherkinLine.cs" />
     <Compile Include="Parser.cs" />
-    <Compile Include="ParserMessageProvider.cs" />
+    <Compile Include="ParserException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="TokenMatcher.cs" />
