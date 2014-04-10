@@ -51,6 +51,7 @@ namespace Gherkin
                 .Concat(thenStepKeywords)
                 .Concat(andStepKeywords)
                 .Concat(butStepKeywords)
+                .Distinct()
                 .ToArray();
         }
     }
