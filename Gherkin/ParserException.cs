@@ -67,7 +67,7 @@ namespace Gherkin
 
             return string.Format("expected: {0}, got '{1}'",
                 string.Join(", ", expectedTokenTypes),
-                receivedToken.Line.GetLineText().Trim());
+                receivedToken.GetTokenValue().Trim());
         }
     }
 
@@ -75,8 +75,8 @@ namespace Gherkin
     {
         public string StateComment { get; private set; }
         public string[] ExpectedTokenTypes { get; private set; }
-        public UnexpectedEOFException(string[] expectedTokenTypes, string stateComment)
-            : base(GetMessage(expectedTokenTypes))
+        public UnexpectedEOFException(Token receivedToken, string[] expectedTokenTypes, string stateComment)
+            : base(GetMessage(expectedTokenTypes), receivedToken.Location)
         {
             if (expectedTokenTypes == null) throw new ArgumentNullException("expectedTokenTypes");
 

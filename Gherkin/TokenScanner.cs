@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Gherkin.Ast;
 
 namespace Gherkin
 {
@@ -17,7 +18,8 @@ namespace Gherkin
         public virtual Token Read()
         {
             var line = reader.ReadLine();
-            return line == null ? new Token(null) : new Token(new GherkinLine(line, ++lineNumber));
+            var location = new Location(++lineNumber);
+            return line == null ? new Token(null, location) : new Token(new GherkinLine(line, lineNumber), location);
         }
     }
 }

@@ -17,14 +17,21 @@ namespace Gherkin
         public GherkinDialect MatchedGherkinDialect { get; set; }
         public Location Location { get; set; }
 
-        public Token(IGherkinLine line)
+        public Token(IGherkinLine line, Location location)
         {
             Line = line;
+            Location = location;
         }
 
         public void Detach()
         {
-            Line.Detach();
+            if (Line != null)
+                Line.Detach();
+        }
+
+        public string GetTokenValue()
+        {
+            return IsEOF ? "EOF" : Line.GetLineText();
         }
 
         public override string ToString()

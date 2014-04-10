@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Gherkin.Ast;
 
 namespace Gherkin
 {
@@ -23,8 +24,9 @@ namespace Gherkin
             token.MatchedKeyword = keyword;
             token.MatchedText = text;
             token.MathcedItems = items;
-            token.MatchedIndent = indent ?? (token.Line == null ? 0 : token.Line.Indent);
             token.MatchedGherkinDialect = currentDialect;
+            token.MatchedIndent = indent ?? (token.Line == null ? 0 : token.Line.Indent);
+            token.Location = new Location(token.Location.Line, token.MatchedIndent + 1);
         }
 
         public bool Match_EOF(Token token)
@@ -39,9 +41,13 @@ namespace Gherkin
 
         public bool Match_Other(Token token)
         {
-            var text = token.Line.GetLineText(indentToRemove); //take the entire line, except removing DocString indents
-            SetTokenMatched(token, TokenType.Other, text, indent: 0);
-            return true;
+            if (!token.IsEOF)
+            { 
+                var text = token.Line.GetLineText(indentToRemove); //take the entire line, except removing DocString indents
+                SetTokenMatched(token, TokenType.Other, text, indent: 0);
+                return true;
+            }
+            return false;
         }
 
         public bool Match_Empty(Token token)
