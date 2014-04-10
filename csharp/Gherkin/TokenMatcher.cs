@@ -67,12 +67,25 @@ namespace Gherkin
             return false;
         }
 
+        private ParserException CreateTokenMatcherException(Token token, string message)
+        {
+            return new AstBuilderException(message, new Location(token.Location.Line, token.Line.Indent + 1));
+        }
+
         public bool Match_Language(Token token)
         {
             if (token.Line.StartsWith(GherkinLanguageConstants.LANGUAGE_PREFIX))
             {
                 var language = token.Line.GetRestTrimmed(GherkinLanguageConstants.LANGUAGE_PREFIX.Length);
-                currentDialect = dialectProvider.GetDialect(language);
+
+                try
+                {
+                    currentDialect = dialectProvider.GetDialect(language);
+                }
+                catch (NotSupportedException ex)
+                {
+                    throw CreateTokenMatcherException(token, ex.Message);
+                }
 
                 SetTokenMatched(token, TokenType.Language, language);
                 return true;

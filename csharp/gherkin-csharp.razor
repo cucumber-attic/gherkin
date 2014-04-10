@@ -28,11 +28,7 @@
             return @state.Id;
 </text>}
 @helper MatchToken(TokenType tokenType)
-{
-	if (!tokenType.Equals(TokenType.EOF))
-	{
-<text>!token.IsEOF && </text>}
-<text>context.TokenMatcher.Match_@(tokenType)(token)</text>}
+{<text>Match_@(tokenType)(context, token)</text>}
 using System;
 using System.Collections.Generic;
 namespace @Model.Namespace
@@ -64,10 +60,6 @@ namespace @Model.Namespace
             public IAstBuilder Builder { get; set; }
             public Queue<Token> TokenQueue { get; set; }
             public List<ParserException> Errors { get; set; }
-        }
-
-        public @(Model.ParserClassName)()
-        {
         }
 
         public object Parse(ITokenScanner tokenScanner)
@@ -114,15 +106,19 @@ namespace @Model.Namespace
 
         private void HandleAstError(ParserContext context, Action action)
         {
+            HandleExternalError(context, () => { action(); return true; });
+        }
+
+        private T HandleExternalError<T>(ParserContext context, Func<T> action, T defaultValue = default(T))
+        {
             if (StopAtFirstError)
             {
-                action();
-                return;
+                return action();
             }
 
             try
             {
-                action();
+                return action();
             }
             catch (CompositeParserException compositeParserException)
             {
@@ -133,6 +129,7 @@ namespace @Model.Namespace
             {
                 AddError(context, error);
             }
+            return defaultValue;
         }
 
         void Build(ParserContext context, Token token)
@@ -158,6 +155,18 @@ namespace @Model.Namespace
         Token ReadToken(ParserContext context)
         {
             return context.TokenQueue.Count > 0 ? context.TokenQueue.Dequeue() : context.TokenScanner.Read();
+        }
+
+        @foreach(var rule in Model.RuleSet.TokenRules)
+        {<text>
+        bool Match_@(rule.Name.Replace("#", ""))(ParserContext context, Token token)
+        {
+            @if (rule.Name != "#EOF")
+            {
+            @:if (token.IsEOF) return false;
+            }
+            return HandleExternalError(context, () => context.TokenMatcher.Match_@(rule.Name.Replace("#", ""))(token), false); 
+        }</text>
         }
 
         int MatchToken(int state, Token token, ParserContext context)
