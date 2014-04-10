@@ -16,7 +16,9 @@
 }
 @helper HandleParserError(IEnumerable<string> expectedTokens, State state)
 {
-	@:var error = new UnexpectedTokenError(token, new string[] {"@Raw(string.Join("\", \"", expectedTokens))"}, "State: @state.Id - @Raw(state.Comment)");
+  @:var expectedTokens = new string[] {"@Raw(string.Join("\", \"", expectedTokens))"};
+	@:var error = token.IsEOF ? new UnexpectedEOFError(token, expectedTokens, "State: @state.Id - @Raw(state.Comment)") 
+    @: : new UnexpectedTokenError(token, expectedTokens, "State: @state.Id - @Raw(state.Comment)");
 	@:if (StopAtFirstError)
 		@:throw new ParserException(ParserMessageProvider, error);
 
@@ -66,6 +68,14 @@ namespace @Model.Namespace
             this.ExpectedTokenTypes = expectedTokenTypes;
             this.StateComment = stateComment;
         }
+    }
+
+    public partial class UnexpectedEOFError : UnexpectedTokenError
+    {
+		public UnexpectedEOFError(Token receivedToken, string[] expectedTokenTypes, string stateComment)
+			:base(receivedToken, expectedTokenTypes, stateComment)
+		{
+		}
     }
 
     public partial class ParserException : Exception
