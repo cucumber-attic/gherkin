@@ -18,5 +18,6 @@ public class TokenScannerTest {
         assertEquals("(2:1)Empty://", scanner.read().toString());
         assertEquals("(3:3)ScenarioLine:Scenario/minimalistic/", scanner.read().toString());
         assertEquals("(4:5)StepLine:Given /the minimalism/", scanner.read().toString());
+        assertEquals("EOF", scanner.read().toString());
     }
 }

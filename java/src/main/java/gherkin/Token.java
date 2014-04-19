@@ -10,8 +10,8 @@ public class Token {
     private String text;
 
     public Token(String line, Location location, GherkinDialect dialect) {
-        this.unindentedLine = ltrim(line);
-        this.indent = line.length() - unindentedLine.length();
+        this.unindentedLine = line == null ? null : ltrim(line);
+        this.indent = line == null ? 0 : line.length() - unindentedLine.length();
         this.location = location;
         this.dialect = dialect;
     }
@@ -19,10 +19,14 @@ public class Token {
     @Override
     public String toString() {
         TokenType type = getType();
+        if (type == TokenType.EOF) return "EOF";
         return String.format("(%s)%s:%s/%s/", location, type, getKeyword() == null ? "" : getKeyword(), getText() == null ? "" : getText());
     }
 
     public TokenType getType() {
+        if (matchEof()) {
+            return TokenType.EOF;
+        }
         if (matchEmpty()) {
             return TokenType.Empty;
         }
@@ -36,6 +40,10 @@ public class Token {
             return TokenType.StepLine;
         }
         return TokenType.Other;
+    }
+
+    public boolean matchEof() {
+        return unindentedLine == null;
     }
 
     public boolean matchEmpty() {
