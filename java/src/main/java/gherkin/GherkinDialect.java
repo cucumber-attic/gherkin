@@ -10,7 +10,7 @@ public class GherkinDialect {
     }
 
     public String[] getStepKeywords() {
-        return new String[]{"Given ", "When ", "Then "};
+        return new String[]{"Given ", "When ", "Then ", "And ", "But "};
     }
 
     public String[] getBackgroundKeywords() {

@@ -87,7 +87,7 @@ public class Token {
 
     public boolean matchComment() {
         if (unindentedLine.charAt(0) == '#') {
-            location.setColumn(indent + 1);
+            location.setColumn(1);
             this.text = line;
             return true;
         }
