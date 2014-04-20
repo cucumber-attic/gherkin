@@ -35,7 +35,7 @@ public class TokenPrinterTest {
             }
         });
         File goodOut = new File(new File(new File(projectRoot, "java"), "target"), "good");
-        assertTrue(deleteDirectory(goodOut));
+        deleteDirectory(goodOut);
         assertTrue(goodOut.mkdirs());
         for (File featureFile : featureFiles) {
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(goodOut, featureFile.getName() + ".tokens")), "UTF-8"));
