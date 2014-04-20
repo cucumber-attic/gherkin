@@ -1,6 +1,7 @@
 package gherkin;
 
 public class Token {
+    private final String line;
     private final String unindentedLine;
     private final Location location;
     private final GherkinDialect dialect;
@@ -10,6 +11,7 @@ public class Token {
     private String text;
 
     public Token(String line, Location location, GherkinDialect dialect) {
+        this.line = line;
         this.unindentedLine = line == null ? null : ltrim(line);
         this.indent = line == null ? 0 : line.length() - unindentedLine.length();
         this.location = location;
@@ -26,27 +28,46 @@ public class Token {
     public TokenType getType() {
         if (matchEof()) {
             return TokenType.EOF;
-        }
-        if (matchEmpty()) {
+        } else if (matchEmpty()) {
             return TokenType.Empty;
-        }
-        if (matchLanguage()) {
+        } else if (matchComment()) {
+            return TokenType.Comment;
+        } else if (matchLanguage()) {
             return TokenType.Language;
-        }
-        if (matchFeatureLine()) {
+        } else if (matchFeatureLine()) {
             return TokenType.FeatureLine;
-        }
-        if (matchScenarioLine()) {
+        } else if (matchBackgroundLine()) {
+            return TokenType.BackgroundLine;
+        } else if (matchScenarioLine()) {
             return TokenType.ScenarioLine;
-        }
-        if (matchesStepLine()) {
+        } else if (matchScenarioOutlineLine()) {
+            return TokenType.ScenarioOutlineLine;
+        } else if (matchExamplesLine()) {
+            return TokenType.ExamplesLine;
+        } else if (matchesStepLine()) {
             return TokenType.StepLine;
+        } else {
+            return matchOther();
         }
+    }
+
+    private TokenType matchOther() {
+        this.text = line;
+        this.location.setColumn(1);
         return TokenType.Other;
     }
 
     public boolean matchEof() {
         return unindentedLine == null;
+    }
+
+    public boolean matchComment() {
+        if (unindentedLine.charAt(0) == '#') {
+            location.setColumn(indent + 1);
+            this.text = line;
+            return true;
+        }
+        return false;
     }
 
     public boolean matchLanguage() {
@@ -90,6 +111,18 @@ public class Token {
 
     public boolean matchScenarioLine() {
         return matchesTitleLine(dialect.getScenarioKeywords());
+    }
+
+    public boolean matchBackgroundLine() {
+        return matchesTitleLine(dialect.getBackgroundKeywords());
+    }
+
+    public boolean matchScenarioOutlineLine() {
+        return matchesTitleLine(dialect.getScenarioOutlineKeywords());
+    }
+
+    public boolean matchExamplesLine() {
+        return matchesTitleLine(dialect.getExamplesKeywords());
     }
 
     public boolean matchesStepLine() {
