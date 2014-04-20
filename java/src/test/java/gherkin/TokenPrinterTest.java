@@ -25,7 +25,7 @@ public class TokenPrinterTest {
     @Test
     public void prints_tokens_for_all_features() throws IOException {
         File pwd = new File(System.getProperty("user.dir"));
-        File projectRoot = findGitRoot(pwd);
+        File projectRoot = findProjectRoot(pwd);
 
         File good = new File(new File(projectRoot, "testdata"), "good");
         File[] featureFiles = good.listFiles(new FileFilter() {
@@ -53,10 +53,10 @@ public class TokenPrinterTest {
         }
     }
 
-    private File findGitRoot(File dir) {
+    private File findProjectRoot(File dir) {
         while (true) {
-            File dotGit = new File(dir, ".git");
-            if (dotGit.isDirectory()) {
+            File testdata = new File(dir, "testdata");
+            if (testdata.isDirectory()) {
                 break;
             }
             dir = dir.getParentFile();
