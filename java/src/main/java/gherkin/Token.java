@@ -30,6 +30,9 @@ public class Token {
         if (matchEmpty()) {
             return TokenType.Empty;
         }
+        if (matchLanguage()) {
+            return TokenType.Language;
+        }
         if (matchFeatureLine()) {
             return TokenType.FeatureLine;
         }
@@ -44,6 +47,33 @@ public class Token {
 
     public boolean matchEof() {
         return unindentedLine == null;
+    }
+
+    public boolean matchLanguage() {
+        if (unindentedLine.charAt(0) == '#') {
+            // eat space
+            int i = 1;
+            while (i < unindentedLine.length() && Character.isWhitespace(unindentedLine.charAt(i))) {
+                i++;
+            }
+            if (unindentedLine.substring(i).startsWith("language")) {
+                // eat more space
+                i += 8; // length of "language"
+                while (i < unindentedLine.length() && Character.isWhitespace(unindentedLine.charAt(i))) {
+                    i++;
+                }
+                if (unindentedLine.substring(i).startsWith(":")) {
+                    i += 1; // length of ":"
+                    while (i < unindentedLine.length() && Character.isWhitespace(unindentedLine.charAt(i))) {
+                        i++;
+                    }
+                    location.setColumn(indent + 1);
+                    this.text = unindentedLine.substring(i).trim();
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public boolean matchEmpty() {
