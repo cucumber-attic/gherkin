@@ -12,4 +12,16 @@ public class GherkinDialect {
     public String[] getStepKeywords() {
         return new String[]{"Given ", "When ", "Then "};
     }
+
+    public String[] getBackgroundKeywords() {
+        return new String[]{"Background"};
+    }
+
+    public String[] getScenarioOutlineKeywords() {
+        return new String[]{"Scenario Outline"};
+    }
+
+    public String[] getExamplesKeywords() {
+        return new String[]{"Examples"};
+    }
 }
