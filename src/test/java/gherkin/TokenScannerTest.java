@@ -20,4 +20,18 @@ public class TokenScannerTest {
         assertEquals("(4:5)StepLine:Given /the minimalism/", scanner.read().toString());
         assertEquals("EOF", scanner.read().toString());
     }
+
+    @Test
+    public void scans_tags_with_trailing_space() throws IOException {
+        String source = "   @tag1   @tag2    @tag3   \n";
+        TokenScanner scanner = new TokenScanner(source);
+        assertEquals("(1:4)TagLine://4:@tag1,12:@tag2,21:@tag3", scanner.read().toString());
+    }
+
+    @Test
+    public void scans_tags_without_trailing_space() throws IOException {
+        String source = "   @tag1   @tag2    @tag3\n";
+        TokenScanner scanner = new TokenScanner(source);
+        assertEquals("(1:4)TagLine://4:@tag1,12:@tag2,21:@tag3", scanner.read().toString());
+    }
 }

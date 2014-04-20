@@ -1,5 +1,8 @@
 package gherkin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Token {
     private final String line;
     private final String unindentedLine;
@@ -9,6 +12,7 @@ public class Token {
 
     private String keyword;
     private String text;
+    private List<LineSpan> lineSpans;
 
     public Token(String line, Location location, GherkinDialect dialect) {
         this.line = line;
@@ -22,7 +26,22 @@ public class Token {
     public String toString() {
         TokenType type = getType();
         if (type == TokenType.EOF) return "EOF";
-        return String.format("(%s)%s:%s/%s/", location, type, getKeyword() == null ? "" : getKeyword(), getText() == null ? "" : getText());
+        return String.format("(%s)%s:%s/%s/%s", location, type, getKeyword(), getText(), getLineSpansAsText());
+    }
+
+    private String getLineSpansAsText() {
+        if (lineSpans != null) {
+            StringBuilder sb = new StringBuilder();
+            boolean comma = false;
+            for (LineSpan lineSpan : lineSpans) {
+                if (comma) sb.append(",");
+                sb.append(lineSpan);
+                comma = true;
+            }
+            return sb.toString();
+        } else {
+            return "";
+        }
     }
 
     public TokenType getType() {
@@ -34,6 +53,8 @@ public class Token {
             return TokenType.Comment;
         } else if (matchLanguage()) {
             return TokenType.Language;
+        } else if (matchTagLine()) {
+            return TokenType.TagLine;
         } else if (matchFeatureLine()) {
             return TokenType.FeatureLine;
         } else if (matchBackgroundLine()) {
@@ -65,6 +86,36 @@ public class Token {
         if (unindentedLine.charAt(0) == '#') {
             location.setColumn(indent + 1);
             this.text = line;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean matchTagLine() {
+        if (unindentedLine.charAt(0) == '@') {
+            lineSpans = new ArrayList<LineSpan>();
+
+            location.setColumn(indent + 1);
+            int col = 0;
+            int tagStart = -1;
+            while (col < unindentedLine.length()) {
+                if (Character.isWhitespace(unindentedLine.charAt(col))) {
+                    if (tagStart > -1) {
+                        String tag = unindentedLine.substring(tagStart, col);
+                        lineSpans.add(new LineSpan(tagStart + indent + 1, tag));
+                        tagStart = -1;
+                    }
+                } else {
+                    if (tagStart == -1) {
+                        tagStart = col;
+                    }
+                }
+                col++;
+            }
+            if (tagStart > -1) {
+                String tag = unindentedLine.substring(tagStart, col);
+                lineSpans.add(new LineSpan(tagStart + indent + 1, tag));
+            }
             return true;
         }
         return false;
@@ -152,11 +203,11 @@ public class Token {
     }
 
     public String getKeyword() {
-        return keyword;
+        return keyword == null ? "" : keyword;
     }
 
     public String getText() {
-        return text;
+        return text == null ? "" : text;
     }
 
     private static String ltrim(String s) {
