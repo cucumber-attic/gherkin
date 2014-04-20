@@ -34,4 +34,11 @@ public class TokenScannerTest {
         TokenScanner scanner = new TokenScanner(source);
         assertEquals("(1:4)TagLine://4:@tag1,12:@tag2,21:@tag3", scanner.read().toString());
     }
+
+    @Test
+    public void scans_table_row() throws IOException {
+        String source = "   | cell_1 |cell_2|  cell_3|\n";
+        TokenScanner scanner = new TokenScanner(source);
+        assertEquals("(1:4)TableRow://6:cell_1,14:cell_2,23:cell_3", scanner.read().toString());
+    }
 }

@@ -2,6 +2,7 @@ package gherkin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Token {
     private final String line;
@@ -55,6 +56,8 @@ public class Token {
             return TokenType.Language;
         } else if (matchTagLine()) {
             return TokenType.TagLine;
+        } else if (matchTableRow()) {
+            return TokenType.TableRow;
         } else if (matchFeatureLine()) {
             return TokenType.FeatureLine;
         } else if (matchBackgroundLine()) {
@@ -96,6 +99,8 @@ public class Token {
             lineSpans = new ArrayList<LineSpan>();
 
             location.setColumn(indent + 1);
+
+            // TODO: Consider simpler Scanner based implementation like in matchTableRow()
             int col = 0;
             int tagStart = -1;
             while (col < unindentedLine.length()) {
@@ -115,6 +120,21 @@ public class Token {
             if (tagStart > -1) {
                 String tag = unindentedLine.substring(tagStart, col);
                 lineSpans.add(new LineSpan(tagStart + indent + 1, tag));
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean matchTableRow() {
+        if (unindentedLine.charAt(0) == '|') {
+            lineSpans = new ArrayList<LineSpan>();
+            location.setColumn(indent + 1);
+            Scanner scanner = new Scanner(unindentedLine).useDelimiter("\\s*\\|\\s*");
+            while (scanner.hasNext()) {
+                String cell = scanner.next();
+                int column = scanner.match().start() + indent + 1;
+                lineSpans.add(new LineSpan(column, cell));
             }
             return true;
         }
