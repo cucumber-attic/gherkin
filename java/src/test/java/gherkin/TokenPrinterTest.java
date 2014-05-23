@@ -37,6 +37,8 @@ public class TokenPrinterTest {
         File goodOut = new File(new File(new File(projectRoot, "java"), "target"), "good");
         deleteDirectory(goodOut);
         assertTrue(goodOut.mkdirs());
+
+        TokenMatcher tokenMatcher = new TokenMatcher();
         for (File featureFile : featureFiles) {
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(goodOut, featureFile.getName() + ".tokens")), "UTF-8"));
             TokenScanner scanner = new TokenScanner(new InputStreamReader(new FileInputStream(featureFile), "UTF-8"));
@@ -45,7 +47,7 @@ public class TokenPrinterTest {
                 token = scanner.read();
                 out.write(token.toString());
                 out.newLine();
-                if (token.matchEof()) {
+                if (tokenMatcher.Match_EOF(token)) {
                     out.close();
                     break;
                 }
