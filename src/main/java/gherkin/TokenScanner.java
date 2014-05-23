@@ -1,5 +1,7 @@
 package gherkin;
 
+import gherkin.ast.Location;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -9,7 +11,6 @@ public class TokenScanner {
 
     private BufferedReader reader;
     private int lineNumber;
-    private GherkinDialect dialect = new GherkinDialect();
 
     public TokenScanner(String source) {
         this(new StringReader(source));
@@ -21,7 +22,7 @@ public class TokenScanner {
 
     public Token read() throws IOException {
         String line = reader.readLine();
-        Location location = new Location(++lineNumber);
-        return new Token(line, location, dialect);
+        Location location = new Location(++lineNumber, 0);
+        return line == null ? new Token(null, location) : new Token(new GherkinLine(line, lineNumber), location);
     }
 }
