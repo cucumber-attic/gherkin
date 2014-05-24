@@ -3,11 +3,11 @@ package gherkin;
 public class GherkinDialectProvider implements IGherkinDialectProvider {
     @Override
     public GherkinDialect getDefaultDialect() {
-        throw new UnsupportedOperationException();
+        return new GherkinDialect();
     }
 
     @Override
     public GherkinDialect GetDialect(String language) throws NotSupportedException {
-        throw new UnsupportedOperationException();
+        return getDefaultDialect();
     }
 }

@@ -40,19 +40,28 @@ public class TokenPrinterTest {
 
         TokenMatcher tokenMatcher = new TokenMatcher();
         for (File featureFile : featureFiles) {
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(goodOut, featureFile.getName() + ".tokens")), "UTF-8"));
-            TokenScanner scanner = new TokenScanner(new InputStreamReader(new FileInputStream(featureFile), "UTF-8"));
-            Token token;
-            while (true) {
-                token = scanner.read();
-                out.write(token.toString());
-                out.newLine();
-                if (tokenMatcher.Match_EOF(token)) {
-                    out.close();
-                    break;
-                }
-            }
+            scan(goodOut, tokenMatcher, featureFile);
         }
+    }
+
+    private void scan(File goodOut, TokenMatcher tokenMatcher, File featureFile) throws IOException {
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(goodOut, featureFile.getName() + ".tokens")), "UTF-8"));
+        Parser.ITokenScanner scanner = new TokenScanner(new InputStreamReader(new FileInputStream(featureFile), "UTF-8"));
+
+        Parser parser = new Parser();
+        Parser.IAstBuilder tokenFormatterBuilder = new TokenFormatterBuilder();
+        Object feature = parser.Parse(scanner, tokenMatcher, tokenFormatterBuilder);
+        System.out.println(feature);
+//        Token token;
+//        while (true) {
+//            token = scanner.read();
+//            out.write(token.toString());
+//            out.newLine();
+//            if (tokenMatcher.Match_EOF(token)) {
+//                out.close();
+//                break;
+//            }
+//        }
     }
 
     private File findProjectRoot(File dir) {
