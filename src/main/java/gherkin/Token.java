@@ -10,7 +10,7 @@ public class Token {
     }
 
     public final IGherkinLine Line;
-    public TokenType MatchedType;
+    public Parser.TokenType MatchedType;
     public String MatchedKeyword;
     public String MatchedText;
     public List<GherkinLineSpan> MathcedItems;
