@@ -32,7 +32,8 @@ public class Token {
         return IsEOF() ? "EOF" : Line.GetLineText(-1);
     }
 
-    public String ToString() {
+    @Override
+    public String toString() {
         return String.format("%s: %s/%s", MatchedType, MatchedKeyword, MatchedText);
     }
 

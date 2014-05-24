@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
-public class TokenScanner {
+public class TokenScanner implements Parser.ITokenScanner {
 
     private BufferedReader reader;
     private int lineNumber;
@@ -20,9 +20,14 @@ public class TokenScanner {
         this.reader = new BufferedReader(source);
     }
 
-    public Token read() throws IOException {
-        String line = reader.readLine();
-        Location location = new Location(++lineNumber, 0);
-        return line == null ? new Token(null, location) : new Token(new GherkinLine(line, lineNumber), location);
+    @Override
+    public Token Read() {
+        try {
+            String line = reader.readLine();
+            Location location = new Location(++lineNumber, 0);
+            return line == null ? new Token(null, location) : new Token(new GherkinLine(line, lineNumber), location);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
