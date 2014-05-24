@@ -4,7 +4,10 @@ import gherkin.ast.Location;
 
 import java.util.List;
 
-public class TokenMatcher {
+import static gherkin.Parser.ITokenMatcher;
+import static gherkin.Parser.TokenType;
+
+public class TokenMatcher implements ITokenMatcher {
     private final IGherkinDialectProvider dialectProvider;
     private GherkinDialect currentDialect;
     private String activeDocStringSeparator = null;
@@ -38,6 +41,7 @@ public class TokenMatcher {
         SetTokenMatched(token, tokenType, null, null, null, null);
     }
 
+    @Override
     public boolean Match_EOF(Token token) {
         if (token.IsEOF()) {
             SetTokenMatched(token, TokenType.EOF);
@@ -46,12 +50,14 @@ public class TokenMatcher {
         return false;
     }
 
+    @Override
     public boolean Match_Other(Token token) {
         String text = token.Line.GetLineText(indentToRemove); //take the entire line, except removing DocString indents
         SetTokenMatched(token, TokenType.Other, text, null, 0, null);
         return true;
     }
 
+    @Override
     public boolean Match_Empty(Token token) {
         if (token.Line.IsEmpty()) {
             SetTokenMatched(token, TokenType.Empty);
@@ -60,6 +66,7 @@ public class TokenMatcher {
         return false;
     }
 
+    @Override
     public boolean Match_Comment(Token token) {
         if (token.Line.StartsWith(GherkinLanguageConstants.COMMENT_PREFIX)) {
             String text = token.Line.GetLineText(0); //take the entire line
@@ -70,9 +77,10 @@ public class TokenMatcher {
     }
 
     private ParserException CreateTokenMatcherException(Token token, String message) {
-        return new AstBuilderException(message, new Location(token.Location.Line, token.Line.Indent() + 1));
+        return new ParserException.AstBuilderException(message, new Location(token.Location.Line, token.Line.Indent() + 1));
     }
 
+    @Override
     public boolean Match_Language(Token token) {
         if (token.Line.StartsWith(GherkinLanguageConstants.LANGUAGE_PREFIX)) {
             String language = token.Line.GetRestTrimmed(GherkinLanguageConstants.LANGUAGE_PREFIX.length());
@@ -89,6 +97,7 @@ public class TokenMatcher {
         return false;
     }
 
+    @Override
     public boolean Match_TagLine(Token token) {
         if (token.Line.StartsWith(GherkinLanguageConstants.TAG_PREFIX)) {
             SetTokenMatched(token, TokenType.TagLine, null, null, null, token.Line.GetTags());
@@ -129,22 +138,27 @@ public class TokenMatcher {
 //        return false;
 //    }
 
+    @Override
     public boolean Match_FeatureLine(Token token) {
         return MatchTitleLine(token, TokenType.FeatureLine, currentDialect.getFeatureKeywords());
     }
 
+    @Override
     public boolean Match_BackgroundLine(Token token) {
         return MatchTitleLine(token, TokenType.BackgroundLine, currentDialect.getBackgroundKeywords());
     }
 
+    @Override
     public boolean Match_ScenarioLine(Token token) {
         return MatchTitleLine(token, TokenType.ScenarioLine, currentDialect.getScenarioKeywords());
     }
 
+    @Override
     public boolean Match_ScenarioOutlineLine(Token token) {
         return MatchTitleLine(token, TokenType.ScenarioOutlineLine, currentDialect.getScenarioOutlineKeywords());
     }
 
+    @Override
     public boolean Match_ExamplesLine(Token token) {
         return MatchTitleLine(token, TokenType.ExamplesLine, currentDialect.getExamplesKeywords());
     }
@@ -187,6 +201,7 @@ public class TokenMatcher {
         return false;
     }
 
+    @Override
     public boolean Match_StepLine(Token token) {
         String[] keywords = currentDialect.getStepKeywords();
         for (String keyword : keywords) {
