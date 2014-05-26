@@ -15,15 +15,14 @@ public class TokenMatcher implements ITokenMatcher {
 
     public TokenMatcher(IGherkinDialectProvider dialectProvider) {
         this.dialectProvider = dialectProvider;
+        currentDialect = dialectProvider.getDefaultDialect();
     }
 
     public TokenMatcher() {
-        this.dialectProvider = new GherkinDialectProvider();
+        this(new GherkinDialectProvider());
     }
 
     public GherkinDialect getCurrentDialect() {
-        if (currentDialect == null)
-            currentDialect = dialectProvider.getDefaultDialect();
         return currentDialect;
     }
 

@@ -50,6 +50,7 @@ public class TokenPrinterTest {
 
         Parser parser = new Parser();
         Parser.IAstBuilder tokenFormatterBuilder = new TokenFormatterBuilder();
+        System.out.println(featureFile.getName());
         Object feature = parser.Parse(scanner, tokenMatcher, tokenFormatterBuilder);
         System.out.println(feature);
 //        Token token;
