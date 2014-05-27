@@ -49,7 +49,7 @@ public class GherkinLine implements IGherkinLine {
 
     @Override
     public List<GherkinLineSpan> GetTags() {
-        throw new UnsupportedOperationException();
+        return getSpans("\\s+");
     }
 
     @Override
@@ -59,13 +59,17 @@ public class GherkinLine implements IGherkinLine {
                 trimmedLineText.startsWith(text) &&
                 trimmedLineText.substring(textLength, textLength + GherkinLanguageConstants.TITLE_KEYWORD_SEPARATOR.length())
                         .equals(GherkinLanguageConstants.TITLE_KEYWORD_SEPARATOR);
-        // TODO aslak: The C# implementation has another predicate here
+        // TODO aslak: extract startsWithFrom method for clarity
     }
 
     @Override
     public List<GherkinLineSpan> GetTableCells() {
+        return getSpans("\\s*\\|\\s*");
+    }
+
+    private List<GherkinLineSpan> getSpans(String delimiter) {
         List<GherkinLineSpan> lineSpans = new ArrayList<GherkinLineSpan>();
-        Scanner scanner = new Scanner(trimmedLineText).useDelimiter("\\s*\\|\\s*");
+        Scanner scanner = new Scanner(trimmedLineText).useDelimiter(delimiter);
         while (scanner.hasNext()) {
             String cell = scanner.next();
             int column = scanner.match().start() + Indent() + 1;

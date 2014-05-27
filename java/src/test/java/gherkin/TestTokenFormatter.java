@@ -13,12 +13,16 @@ public class TestTokenFormatter {
             return "EOF";
 
         return String.format("(%s:%s)%s:%s/%s/%s",
-                token.Location.Line,
-                token.Location.Column,
-                token.MatchedType,
-                token.MatchedKeyword,
-                token.MatchedText,
-                token.MathcedItems == null ? "" : StringUtils.join(SPAN_TO_STRING, ",", token.MathcedItems)
+                toString(token.Location.Line),
+                toString(token.Location.Column),
+                toString(token.MatchedType),
+                toString(token.MatchedKeyword),
+                toString(token.MatchedText),
+                toString(token.MathcedItems == null ? "" : StringUtils.join(SPAN_TO_STRING, ",", token.MathcedItems))
         );
+    }
+
+    private String toString(Object o) {
+        return o == null ? "" : o.toString();
     }
 }

@@ -11,4 +11,20 @@ public class GherkinLineSpan {
         Column = column;
         Text = text;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GherkinLineSpan that = (GherkinLineSpan) o;
+        return Column == that.Column && Text.equals(that.Text);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Column;
+        result = 31 * result + Text.hashCode();
+        return result;
+    }
 }
