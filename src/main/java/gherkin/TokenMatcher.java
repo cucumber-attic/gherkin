@@ -84,11 +84,7 @@ public class TokenMatcher implements ITokenMatcher {
         if (token.Line.StartsWith(GherkinLanguageConstants.LANGUAGE_PREFIX)) {
             String language = token.Line.GetRestTrimmed(GherkinLanguageConstants.LANGUAGE_PREFIX.length());
 
-            try {
-                currentDialect = dialectProvider.GetDialect(language);
-            } catch (NotSupportedException ex) {
-                throw CreateTokenMatcherException(token, ex.getMessage());
-            }
+            currentDialect = dialectProvider.GetDialect(language);
 
             SetTokenMatched(token, TokenType.Language, language, null, null, null);
             return true;
