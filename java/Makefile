@@ -3,3 +3,6 @@ src/main/java/gherkin/Parser.java: ../gherkin.berp gherkin-java.razor ../bin/ber
 	# Remove BOM
 	tail -c +4 $@ > $@.nobom
 	mv $@.nobom $@
+
+i18n:
+	

@@ -1,27 +1,35 @@
 package gherkin;
 
+import java.util.Map;
+
 public class GherkinDialect {
+    private final Map<String, String[]> keywords;
+
+    public GherkinDialect(Map<String,String[]> keywords) {
+        this.keywords = keywords;
+    }
+
     public String[] getFeatureKeywords() {
-        return new String[]{"Feature"};
+        return keywords.get("feature");
     }
 
     public String[] getScenarioKeywords() {
-        return new String[]{"Scenario"};
+        return keywords.get("scenario");
     }
 
     public String[] getStepKeywords() {
-        return new String[]{"Given ", "When ", "Then ", "And ", "But "};
+        return keywords.get("steps");
     }
 
     public String[] getBackgroundKeywords() {
-        return new String[]{"Background"};
+        return keywords.get("background");
     }
 
     public String[] getScenarioOutlineKeywords() {
-        return new String[]{"Scenario Outline"};
+        return keywords.get("scenario_outline");
     }
 
     public String[] getExamplesKeywords() {
-        return new String[]{"Examples"};
+        return keywords.get("examples");
     }
 }
