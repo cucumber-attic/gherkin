@@ -41,3 +41,7 @@ TODO
 ## Make a release
 
 TODO
+
+# TODO
+
+Try to implement the lexer using state functions as described in [Rob Pike’s talk on writing the text/template lexer](https://www.youtube.com/watch?v=HxaD_trXwRE)
