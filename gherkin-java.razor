@@ -53,7 +53,11 @@ import static java.util.Arrays.asList;
             None,
             @foreach(var rule in Model.RuleSet.TokenRules)
             {<text>        @rule.Name.Replace("#", ""),
-    </text>}
+    </text>};
+
+            public static TokenType cast(RuleType ruleType) {
+                return TokenType.values()[ruleType.ordinal()];
+            }
         }
 
         public enum RuleType
@@ -61,7 +65,11 @@ import static java.util.Arrays.asList;
             None,
             @foreach(var rule in Model.RuleSet.Where(r => !r.TempRule))
             {<text>        @rule.Name.Replace("#", "_"), // @rule.ToString(true)
-    </text>}
+    </text>};
+
+            public static RuleType cast(TokenType tokenType) {
+                return RuleType.values()[tokenType.ordinal()];
+            }
         }
 
 

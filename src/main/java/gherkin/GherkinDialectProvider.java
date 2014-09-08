@@ -24,7 +24,7 @@ public class GherkinDialectProvider implements IGherkinDialectProvider {
                 String[] keywords = properties.getProperty(key).split("\\|");
                 map.put(key, keywords);
             }
-            return new GherkinDialect(map);
+            return new GherkinDialect(language, map);
         } catch (IOException e) {
             throw new IllegalArgumentException(language);
         }
