@@ -4,8 +4,10 @@ import java.util.Map;
 
 public class GherkinDialect {
     private final Map<String, String[]> keywords;
+    private String language;
 
-    public GherkinDialect(Map<String,String[]> keywords) {
+    public GherkinDialect(String language, Map<String,String[]> keywords) {
+        this.language = language;
         this.keywords = keywords;
     }
 
@@ -31,5 +33,9 @@ public class GherkinDialect {
 
     public String[] getExamplesKeywords() {
         return keywords.get("examples");
+    }
+
+    public String getLanguage() {
+        return language;
     }
 }

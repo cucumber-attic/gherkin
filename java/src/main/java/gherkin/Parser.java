@@ -33,7 +33,12 @@ import static java.util.Arrays.asList;
             TableRow,
             Language,
             Other,
+    ;
+
+            public static TokenType cast(RuleType ruleType) {
+                return TokenType.values()[ruleType.ordinal()];
             }
+        }
 
         public enum RuleType
         {
@@ -74,7 +79,12 @@ import static java.util.Arrays.asList;
             Examples_Description, // Examples_Description := Description_Helper
             Description_Helper, // Description_Helper := #Empty* Description? #Comment*
             Description, // Description! := #Other+
+    ;
+
+            public static RuleType cast(TokenType tokenType) {
+                return RuleType.values()[tokenType.ordinal()];
             }
+        }
 
 
         public boolean StopAtFirstError;
