@@ -23,4 +23,8 @@ public class ScenarioDefinition {
     public String getTitle() {
         return name;
     }
+
+    public List<Step> getSteps() {
+        return steps;
+    }
 }
