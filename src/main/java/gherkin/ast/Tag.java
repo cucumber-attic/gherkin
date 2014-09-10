@@ -5,7 +5,6 @@ public class Tag {
     private final String name;
 
     public Tag(Location location, String name) {
-
         this.location = location;
         this.name = name;
     }

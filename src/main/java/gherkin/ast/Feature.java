@@ -10,7 +10,7 @@ public class Feature {
     private final String title;
     private final String description;
     private final Background background;
-    private final List<ScenarioDefinition> scenariodefinitions;
+    private final List<ScenarioDefinition> scenarioDefinitions;
 
     public Feature(
             List<Tag> tags,
@@ -20,7 +20,7 @@ public class Feature {
             String title,
             String description,
             Background background,
-            List<ScenarioDefinition> scenariodefinitions
+            List<ScenarioDefinition> scenarioDefinitions
     ) {
 
         this.tags = tags;
@@ -30,10 +30,14 @@ public class Feature {
         this.title = title;
         this.description = description;
         this.background = background;
-        this.scenariodefinitions = scenariodefinitions;
+        this.scenarioDefinitions = scenarioDefinitions;
     }
 
     public String getTitle() {
         return title;
+    }
+
+    public List<ScenarioDefinition> getScenarioDefinitions() {
+        return scenarioDefinitions;
     }
 }
