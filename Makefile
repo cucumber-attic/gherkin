@@ -13,9 +13,7 @@ clean:
 
 ### CSHARP
 
-csharp: csharp-tokens-check
-
-csharp-tokens-check: csharp-build $(CSHARP_TOKENS)
+csharp: csharp-build $(CSHARP_TOKENS) $(CSHARP_AST)
 	ruby compare.rb csharp
 
 csharp-build:
