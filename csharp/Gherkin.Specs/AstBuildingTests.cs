@@ -16,8 +16,6 @@ namespace Gherkin.Specs
         [Test, TestCaseSource(typeof(TestFileProvider), "GetValidTestFiles")]
         public void TestSuccessfulAstBuilding(string testFeatureFile)
         {
-            Console.WriteLine(testFeatureFile);
-
             var featureFileFolder = Path.GetDirectoryName(testFeatureFile);
             Debug.Assert(featureFileFolder != null);
             var expectedAstFile = testFeatureFile + ".ast";
@@ -28,8 +26,6 @@ namespace Gherkin.Specs
 
             var astFormatter = new TestAstFormatter();
             var astText = astFormatter.FormatAst(parsingResult);
-            Console.WriteLine(astText);
-
             var expectedAstText = LineEndingHelper.NormalizeLineEndings(File.ReadAllText(expectedAstFile));
 
             Assert.AreEqual(expectedAstText, astText);

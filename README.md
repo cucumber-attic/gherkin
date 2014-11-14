@@ -38,6 +38,14 @@ TODO
 
 TODO
 
+## Running tests
+
+Each sub project has its own unit tests that are run during the build of that project.
+
+In addition to these tests there are acceptance tests that verify that all parsers
+tokenise consistently and generate consitent ASTs. This is done by comparing string output
+from the tokeniser and the string representation of ASTs.
+
 ## Make a release
 
 TODO

@@ -12,8 +12,6 @@ namespace Gherkin.Specs
         [Test, TestCaseSource(typeof(TestFileProvider), "GetValidTestFiles")]
         public void TestSuccessfulTokenMatching(string testFeatureFile)
         {
-            Console.WriteLine(testFeatureFile);
-
             var featureFileFolder = Path.GetDirectoryName(testFeatureFile);
             Debug.Assert(featureFileFolder != null);
             var expectedTokensFile = testFeatureFile + ".tokens";
@@ -24,7 +22,6 @@ namespace Gherkin.Specs
                 parser.Parse(new TokenScanner(reader), new TokenMatcher(), tokenFormatterBuilder);
 
             var tokensText = tokenFormatterBuilder.GetTokensText();
-            Console.WriteLine(tokensText);
 
             var expectedTokensText = LineEndingHelper.NormalizeLineEndings(File.ReadAllText(expectedTokensFile));
 

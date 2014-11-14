@@ -4,19 +4,15 @@ if ARGV.length < 1
   exit 1
 end
 
-actual_dir = {
-  "csharp" => "testdata/good",
-  "java"   => "java/target/good",
-  "ruby"   => "TODO"
-}[ARGV[0]]
+language = ARGV[0]
+expected_files = ARGV.length > 1 ? ARGV[1..-1] : Dir['testdata/**/*.feature.{ast,tokens}']
 
-expected_files = ARGV.length > 1 ? ARGV[1..-1] : Dir['testdata/good/*.feature.tokens']
 failed = 0
 expected_files.each do |expected|
-  actual = File.join(actual_dir, File.basename(expected))
+  actual = expected.gsub(/feature/, language)
   diff = `diff --unified --ignore-all-space #{expected} #{actual}`
   if($?.exitstatus == 0)
-    puts "\e[32m#{actual}\e[0m"
+    # puts "\e[32m#{actual}\e[0m"
   else
     puts "\e[31m#{actual}\e[0m"
     puts diff

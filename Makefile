@@ -1,14 +1,29 @@
+GOOD_FEATURE_FILES = $(shell find testdata/good -name "*.feature")
+BAD_FEATURE_FILES  = $(shell find testdata/bad -name "*.feature")
+
+CSHARP_TOKENS = $(patsubst %.feature,%.csharp.tokens,$(GOOD_FEATURE_FILES))
+CSHARP_AST    = $(patsubst %.feature,%.csharp.ast,$(GOOD_FEATURE_FILES))
+
 all: csharp java ruby
 .PHONY: all
 
-csharp:
+clean:
+	rm -f $(CSHARP_TOKENS) $(CSHARP_AST)
+.PHONY: clean
+
+### CSHARP
+
+csharp: csharp-tokens-check
+
+csharp-tokens-check: csharp-build $(CSHARP_TOKENS)
+	ruby compare.rb csharp
+
+csharp-build:
 	cd csharp && make test
-.PHONY: csharp
+.PHONY: csharp-build
 
-java:
-	cd java && mvn test
-.PHONY: java
+%.csharp.tokens: %.feature
+	csharp/generate-tokens $< > $@
 
-ruby:
-	cd ruby && bundle && bundle exec rake
-.PHONY: ruby
+%.csharp.ast: %.feature
+	csharp/generate-ast $< > $@
