@@ -1,7 +1,7 @@
 package gherkin;
 
 public class TokenFormatterBuilder implements Parser.IAstBuilder {
-    private final TestTokenFormatter formatter = new TestTokenFormatter();
+    private final TokenFormatter formatter = new TokenFormatter();
     private final StringBuilder tokensTextBuilder = new StringBuilder();
 
     @Override
