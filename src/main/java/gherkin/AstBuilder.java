@@ -25,6 +25,7 @@ import java.util.List;
 import static gherkin.Parser.IAstBuilder;
 import static gherkin.Parser.RuleType;
 import static gherkin.Parser.TokenType;
+import static gherkin.StringUtils.join;
 
 public class AstBuilder implements IAstBuilder {
     private final Deque<AstNode> stack = new ArrayDeque<AstNode>();
@@ -72,13 +73,12 @@ public class AstBuilder implements IAstBuilder {
                 Token separatorToken = node.getTokens(TokenType.DocStringSeparator).get(0);
                 String contentType = separatorToken.MatchedText;
                 List<Token> lineTokens = node.getTokens(TokenType.Other);
-                StringBuilder content = new StringBuilder();
-                boolean newLine = false;
-                for (Token lineToken : lineTokens) {
-                    if (newLine) content.append("\n");
-                    newLine = true;
-                    content.append(lineToken.MatchedText);
-                }
+                String content = join(new StringUtils.ToString<Token>() {
+                    @Override
+                    public String toString(Token token) {
+                        return token.MatchedText;
+                    }
+                }, "\n", lineTokens);
                 return new DocString(getLocation(separatorToken, 0), contentType, content);
             }
             case DataTable: {
