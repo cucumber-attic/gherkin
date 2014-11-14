@@ -1,6 +1,6 @@
 package gherkin;
 
-public class TestTokenFormatter {
+public class TokenFormatter {
     private static final StringUtils.ToString<GherkinLineSpan> SPAN_TO_STRING = new StringUtils.ToString<GherkinLineSpan>() {
         @Override
         public String toString(GherkinLineSpan o) {
