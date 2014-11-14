@@ -21,7 +21,7 @@ packages/NUnit.Runners.2.6.3/tools/nunit-console.exe:
 	mono --runtime=v4.0 .nuget/NuGet.exe install NUnit.Runners -Version 2.6.3 -o packages
 
 test: Gherkin/bin/Debug/Gherkin.dll packages/NUnit.Runners.2.6.3/tools/nunit-console.exe
-	mono --runtime=v4.0 packages/NUnit.Runners.2.6.3/tools/nunit-console.exe -noxml -nodots -labels -stoponerror Gherkin.Specs/bin/Debug/Gherkin.Specs.dll
+	mono --runtime=v4.0 packages/NUnit.Runners.2.6.3/tools/nunit-console.exe -noxml -nodots -nologo -stoponerror Gherkin.Specs/bin/Debug/Gherkin.Specs.dll
 .PHONY: test
 
 clean:

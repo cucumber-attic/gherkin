@@ -16,8 +16,6 @@ namespace Gherkin.Specs
         [Test, TestCaseSource(typeof(TestFileProvider), "GetInvalidTestFiles")]
         public void TestParserErrors(string testFeatureFile)
         {
-            Console.WriteLine(testFeatureFile);
-
             var featureFileFolder = Path.GetDirectoryName(testFeatureFile);
             Debug.Assert(featureFileFolder != null);
             var expectedErrorsFile = testFeatureFile + ".errors";
@@ -31,7 +29,6 @@ namespace Gherkin.Specs
             catch (ParserException parserException)
             {
                 var errorsText = LineEndingHelper.NormalizeLineEndings(parserException.Message);
-                Console.WriteLine(errorsText);
 
                 var expectedErrorsText = LineEndingHelper.NormalizeLineEndings(File.ReadAllText(expectedErrorsFile));
                 Assert.AreEqual(expectedErrorsText, errorsText);

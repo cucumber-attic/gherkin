@@ -14,8 +14,6 @@ namespace Gherkin.Specs
         [Test, TestCaseSource(typeof(TestFileProvider), "GetValidTestFiles")]
         public void TestSuccessfulParsing(string testFeatureFile)
         {
-            Console.WriteLine(testFeatureFile);
-
             var parser = new Parser();
             var parsingResult = parser.Parse(testFeatureFile);
             Assert.IsNotNull(parsingResult);
