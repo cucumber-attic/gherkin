@@ -20,4 +20,8 @@ public class Step {
     public StepArgument getStepArgument() {
         return stepArgument;
     }
+
+    public String getKeyword() {
+        return keyword;
+    }
 }

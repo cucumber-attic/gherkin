@@ -52,4 +52,7 @@ TODO
 
 # TODO
 
-Try to implement the lexer using state functions as described in [Rob Pike’s talk on writing the text/template lexer](https://www.youtube.com/watch?v=HxaD_trXwRE)
+* Rename `title` to `name` in all impls
+* In .NET, rename step `text` to `name`
+* Refactor java code to use java naming conventions
+* Try to implement the lexer using state functions as described in [Rob Pike’s talk on writing the text/template lexer](https://www.youtube.com/watch?v=HxaD_trXwRE)
