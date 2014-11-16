@@ -114,7 +114,11 @@ public class AstBuilder implements IAstBuilder {
                 }
             }
             case Examples: {
-
+                List<Tag> tags = getTags(node);
+                Token examplesLine = node.getToken(TokenType.ExamplesLine);
+                String description = getDescription(node);
+                List<TableRow> rows = getTableRows(node);
+                return new Examples(tags, getLocation(examplesLine, 0), examplesLine.MatchedKeyword, examplesLine.MatchedText, description, rows);
             }
             case Description: {
                 List<Token> lineTokens = node.getTokens(TokenType.Other);

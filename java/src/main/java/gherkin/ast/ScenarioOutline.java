@@ -9,4 +9,8 @@ public class ScenarioOutline extends ScenarioDefinition {
         super(tags, location, keyword, name, description, steps);
         this.examplesList = examplesList;
     }
+
+    public List<Examples> getExamplesList() {
+        return examplesList;
+    }
 }

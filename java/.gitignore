@@ -2,3 +2,4 @@
 gherkin.iml
 target/
 acceptance/
+.built
