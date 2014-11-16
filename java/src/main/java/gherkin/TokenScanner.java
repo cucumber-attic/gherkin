@@ -9,7 +9,7 @@ import java.io.StringReader;
 
 public class TokenScanner implements Parser.ITokenScanner {
 
-    private BufferedReader reader;
+    private final BufferedReader reader;
     private int lineNumber;
 
     public TokenScanner(String source) {
