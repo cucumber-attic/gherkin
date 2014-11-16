@@ -85,14 +85,31 @@ public class AstFormatter {
         result.append(step.getKeyword());
         result.append(step.getName());
         result.append("\n");
+
+        if(step.getStepArgument() instanceof DataTable) {
+            DataTable dataTable = (DataTable) step.getStepArgument();
+            formatHasRows(dataTable, result);
+        } else if(step.getStepArgument() instanceof DocString) {
+            DocString docString = (DocString) step.getStepArgument();
+            formatDocString(docString, result);
+        }
+
+        return result;
+    }
+
+    private <T extends Appendable> T formatDocString(DocString docString, T result) throws IOException {
+        result.append(INDENT).append("\"\"\"");
+        result.append("\n");
+        for (DocStringLine line : docString.getLines()) {
+            result.append(INDENT).append(line.getValue()).append("\n");
+        }
+        result.append(INDENT).append("\"\"\"").append("\n");
         return result;
     }
 
     private <T extends Appendable> T formatHasDescription(HasDescription hasDescription, T result) throws IOException {
         result.append(format("%s: %s", hasDescription.getKeyword(), hasDescription.getTitle())).append("\n");
-        if (hasDescription.getDescription() != null) {
-            result.append(hasDescription.getDescription()).append("\n");
-        }
+        result.append(hasDescription.getDescription());
         return result;
     }
 

@@ -1,30 +1,13 @@
 package gherkin;
 
-import gherkin.ast.AstNode;
-import gherkin.ast.Background;
-import gherkin.ast.DataTable;
-import gherkin.ast.DocString;
-import gherkin.ast.EmptyStepArgument;
-import gherkin.ast.Examples;
-import gherkin.ast.Feature;
-import gherkin.ast.Location;
-import gherkin.ast.Scenario;
-import gherkin.ast.ScenarioDefinition;
-import gherkin.ast.ScenarioOutline;
-import gherkin.ast.Step;
-import gherkin.ast.StepArgument;
-import gherkin.ast.TableCell;
-import gherkin.ast.TableRow;
-import gherkin.ast.Tag;
+import gherkin.ast.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-import static gherkin.Parser.IAstBuilder;
-import static gherkin.Parser.RuleType;
-import static gherkin.Parser.TokenType;
+import static gherkin.Parser.*;
 import static gherkin.StringUtils.join;
 
 public class AstBuilder implements IAstBuilder {
@@ -73,13 +56,11 @@ public class AstBuilder implements IAstBuilder {
                 Token separatorToken = node.getTokens(TokenType.DocStringSeparator).get(0);
                 String contentType = separatorToken.MatchedText;
                 List<Token> lineTokens = node.getTokens(TokenType.Other);
-                String content = join(new StringUtils.ToString<Token>() {
-                    @Override
-                    public String toString(Token token) {
-                        return token.MatchedText;
-                    }
-                }, "\n", lineTokens);
-                return new DocString(getLocation(separatorToken, 0), contentType, content);
+                List<DocStringLine> lines = new ArrayList<DocStringLine>(lineTokens.size());
+                for (Token lineToken : lineTokens) {
+                    lines.add(new DocStringLine(lineToken.Location, lineToken.MatchedText));
+                }
+                return new DocString(getLocation(separatorToken, 0), contentType, lines);
             }
             case DataTable: {
                 List<TableRow> rows = getTableRows(node);
@@ -122,11 +103,12 @@ public class AstBuilder implements IAstBuilder {
             }
             case Description: {
                 List<Token> lineTokens = node.getTokens(TokenType.Other);
-                StringBuilder sb = new StringBuilder();
-                for (Token lineToken : lineTokens) {
-                    sb.append(lineToken.MatchedText).append("\n");
-                }
-                return sb.toString();
+                return join(new StringUtils.ToString<Token>() {
+                    @Override
+                    public String toString(Token t) {
+                        return t.MatchedText;
+                    }
+                }, "\n", lineTokens);
             }
             case Feature: {
                 AstNode header = node.getSingle(RuleType.Feature_Header, new AstNode(RuleType.Feature_Header));
@@ -181,7 +163,7 @@ public class AstBuilder implements IAstBuilder {
     }
 
     private String getDescription(AstNode node) {
-        return node.getSingle(RuleType.Description, null);
+        return node.getSingle(RuleType.Description, "");
     }
 
     private List<Tag> getTags(AstNode node) {
