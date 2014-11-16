@@ -1,2 +1,0 @@
-#!/bin/bash
-mono --runtime=v4.0 csharp/Gherkin.AstTester/bin/Debug/Gherkin.AstTester.exe $1
