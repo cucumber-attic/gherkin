@@ -2,7 +2,7 @@ package gherkin.ast;
 
 import java.util.List;
 
-public class Feature implements HasDescription {
+public class Feature implements HasDescription, HasTags {
     private final List<Tag> tags;
     private final Location location;
     private final String language;
@@ -41,6 +41,7 @@ public class Feature implements HasDescription {
         return language;
     }
 
+    @Override
     public List<Tag> getTags() {
         return tags;
     }

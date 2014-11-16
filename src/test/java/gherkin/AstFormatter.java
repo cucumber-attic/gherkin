@@ -16,9 +16,8 @@ public class AstFormatter {
         }
         formatTags(feature.getTags(), result);
         formatHasDescription(feature, result);
-        result.append("\n");
 
-        if(feature.getBackground() != null) {
+        if (feature.getBackground() != null) {
             formatBackground(feature.getBackground(), result);
         }
 
@@ -29,17 +28,48 @@ public class AstFormatter {
     }
 
     private <T extends Appendable> T formatScenarioDefinition(ScenarioDefinition scenarioDefinition, T result) throws IOException {
+        result.append("\n");
         formatTags(scenarioDefinition.getTags(), result);
         formatHasDescription(scenarioDefinition, result);
         formatHasSteps(scenarioDefinition, result);
+
+        if (scenarioDefinition instanceof ScenarioOutline) {
+            for (Examples examples : ((ScenarioOutline) scenarioDefinition).getExamplesList()) {
+                formatExamples(examples, result);
+            }
+        }
+        return result;
+    }
+
+    private <T extends Appendable> T formatExamples(Examples examples, T result) throws IOException {
         result.append("\n");
+        formatTags(examples.getTags(), result);
+        formatHasDescription(examples, result);
+        formatHasRows(examples, result);
+        return result;
+    }
+
+    private <T extends Appendable> T formatHasRows(HasRows hasRows, T result) throws IOException {
+        for (TableRow tableRow : hasRows.getRows()) {
+            formatRow(tableRow, result);
+        }
+        return result;
+    }
+
+    private <T extends Appendable> T formatRow(TableRow tableRow, T result) throws IOException {
+        result.append(INDENT);
+        for (TableCell tableCell : tableRow.getCells()) {
+            result.append("|");
+            result.append(tableCell.getValue());
+        }
+        result.append("|").append("\n");
         return result;
     }
 
     private <T extends Appendable> T formatBackground(Background background, T result) throws IOException {
+        result.append("\n");
         formatHasDescription(background, result);
         formatHasSteps(background, result);
-        result.append("\n");
         return result;
     }
 
