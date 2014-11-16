@@ -1,32 +1,54 @@
-CS_FILES = $(shell find . -type f \( -iname "*.cs" ! -iname "*.NETFramework*" \))
+GOOD_FEATURE_FILES = $(shell find ../testdata/good -name "*.feature")
+BAD_FEATURE_FILES  = $(shell find ../testdata/bad -name "*.feature")
 
-all: test
+TOKENS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.tokens,$(GOOD_FEATURE_FILES))
+AST      = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.ast,$(GOOD_FEATURE_FILES))
+
+CS_FILES = $(shell find . -type f \( -iname "*.cs" ! -iname "*.NETFramework*" \))
+NUNIT = packages/NUnit.Runners.2.6.3/tools/nunit-console.exe
+
+all: .compared
 .PHONY: all
 
-release: Gherkin/bin/Release/Gherkin.dll
-.PHONY: release
+.compared: .built $(TOKENS) $(AST)
+
+.built: Gherkin/bin/Debug/Gherkin.dll $(NUNIT) i18n.json
+	mono --runtime=v4.0 $(NUNIT) -noxml -nologo -stoponerror $<
+	touch $@
+
+acceptance/testdata/%.feature.tokens: ../testdata/%.feature .built
+	mkdir -p `dirname $@`
+	mono --runtime=v4.0 Gherkin.TokensTester/bin/Debug/Gherkin.TokensTester.exe $< > $@
+	diff --unified --ignore-all-space $<.tokens $@ || rm $@
+
+acceptance/testdata/%.feature.ast: ../testdata/%.feature .built
+	mkdir -p `dirname $@`
+	mono --runtime=v4.0 Gherkin.AstTester/bin/Debug/Gherkin.AstTester.exe $< > $@
+	diff --unified --ignore-all-space $<.ast $@ || rm $@
+
+clean:
+	rm -f .compared .built acceptance
+	rm -rf */bin
+	rm -rf */obj
+	rm -rf */packages
+	rm -f Gherkin/Parser.cs
+.PHONY: clean
 
 Gherkin/Parser.cs: ../gherkin.berp gherkin-csharp.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-csharp.razor -o $@
 
 Gherkin/bin/Debug/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES)
 	rm -f $@
-	xbuild
+	xbuild /p:Configuration=Debug
+	touch $@
 
 Gherkin/bin/Release/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES)
 	rm -f $@
 	xbuild /p:Configuration=Release
+	touch $@
 
-packages/NUnit.Runners.2.6.3/tools/nunit-console.exe:
+$(NUNIT):
 	mono --runtime=v4.0 .nuget/NuGet.exe install NUnit.Runners -Version 2.6.3 -o packages
 
-test: Gherkin/bin/Debug/Gherkin.dll packages/NUnit.Runners.2.6.3/tools/nunit-console.exe
-	mono --runtime=v4.0 packages/NUnit.Runners.2.6.3/tools/nunit-console.exe -noxml -nologo -stoponerror Gherkin.Specs/bin/Debug/Gherkin.Specs.dll
-.PHONY: test
-
-clean:
-	rm -rf */bin
-	rm -rf */obj
-	rm -rf */packages
-	rm -f Gherkin/Parser.cs
-.PHONY: clean
+i18n.json: ../i18n.json
+	cp $< $@

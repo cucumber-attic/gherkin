@@ -1,2 +1,0 @@
-#!/bin/bash
-mono --runtime=v4.0 csharp/Gherkin.TokensTester/bin/Debug/Gherkin.TokensTester.exe $1

@@ -156,3 +156,7 @@ $RECYCLE.BIN/
 .DS_Store
 
 packages/
+acceptance/
+.built
+.compared
+i18n.json
