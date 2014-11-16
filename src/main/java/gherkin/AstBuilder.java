@@ -86,7 +86,10 @@ public class AstBuilder implements IAstBuilder {
                 return new DataTable(rows);
             }
             case Background: {
-
+                Token backgroundLine = node.getToken(TokenType.BackgroundLine);
+                String description = getDescription(node);
+                List<Step> steps = getSteps(node);
+                return new Background(getLocation(backgroundLine, 0), backgroundLine.MatchedKeyword, backgroundLine.MatchedText, description, steps);
             }
             case Scenario_Definition: {
                 List<Tag> tags = getTags(node);
@@ -100,7 +103,7 @@ public class AstBuilder implements IAstBuilder {
                     return new Scenario(tags, getLocation(scenarioLine, 0), scenarioLine.MatchedKeyword, scenarioLine.MatchedText, description, steps);
                 } else {
                     AstNode scenarioOutlineNode = node.getSingle(RuleType.ScenarioOutline, null);
-                    Token scenarioOutlineLine = scenarioOutlineNode.getToken(TokenType.ScenarioLine);
+                    Token scenarioOutlineLine = scenarioOutlineNode.getToken(TokenType.ScenarioOutlineLine);
                     String description = getDescription(scenarioOutlineNode);
                     List<Step> steps = getSteps(scenarioOutlineNode);
 
@@ -174,7 +177,7 @@ public class AstBuilder implements IAstBuilder {
     }
 
     private String getDescription(AstNode node) {
-        return node.getSingle(RuleType.Description, "");
+        return node.getSingle(RuleType.Description, null);
     }
 
     private List<Tag> getTags(AstNode node) {

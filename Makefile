@@ -1,12 +1,32 @@
-all: test
+GOOD_FEATURE_FILES = $(shell find ../testdata/good -name "*.feature")
+BAD_FEATURE_FILES  = $(shell find ../testdata/bad -name "*.feature")
+
+TOKENS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.tokens,$(GOOD_FEATURE_FILES))
+AST      = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.ast,$(GOOD_FEATURE_FILES))
+
+JAVA_FILES = $(shell find . -name "*.java")
+
+all: .compared
 .PHONY: all
 
-test: src/main/java/gherkin/Parser.java
+.compared: .built $(TOKENS) $(AST)
+
+.built: src/main/java/gherkin/Parser.java $(JAVA_FILES)
 	mvn test
-.PHONY: test
+	touch $@
+
+acceptance/testdata/%.feature.tokens: ../testdata/%.feature .built
+	mkdir -p `dirname $@`
+	java -classpath target/classes:target/test-classes gherkin.GenerateTokens $< > $@
+	diff --unified --ignore-all-space $<.tokens $@ || rm $@
+
+acceptance/testdata/%.feature.ast: ../testdata/%.feature .built
+	mkdir -p `dirname $@`
+	java -classpath target/classes:target/test-classes gherkin.GenerateAst $< > $@
+	diff --unified --ignore-all-space $<.ast $@ || rm $@
 
 clean:
-	mvn clean
+	rm -rf .compared .built acceptance target
 .PHONY: clean
 
 src/main/java/gherkin/Parser.java: ../gherkin.berp gherkin-java.razor ../bin/berp.exe

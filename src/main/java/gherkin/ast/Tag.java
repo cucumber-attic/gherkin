@@ -8,4 +8,8 @@ public class Tag {
         this.location = location;
         this.name = name;
     }
+
+    public String getName() {
+        return name;
+    }
 }
