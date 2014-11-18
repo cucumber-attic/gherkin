@@ -27,7 +27,7 @@ acceptance/testdata/%.feature.ast: ../testdata/%.feature .built
 	diff --unified --ignore-all-space $<.ast $@ || rm $@
 
 clean:
-	rm -f .compared .built acceptance
+	rm -rf .compared .built acceptance
 	rm -rf */bin
 	rm -rf */obj
 	rm -rf */packages
