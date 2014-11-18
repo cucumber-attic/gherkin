@@ -16,4 +16,8 @@ public class DocString implements StepArgument {
     public List<DocStringLine> getLines() {
         return lines;
     }
+
+    public String getContentType() {
+        return contentType;
+    }
 }

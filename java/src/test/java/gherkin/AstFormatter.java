@@ -99,6 +99,9 @@ public class AstFormatter {
 
     private <T extends Appendable> T formatDocString(DocString docString, T result) throws IOException {
         result.append(INDENT).append("\"\"\"");
+        if (docString.getContentType() != null)
+            result.append(docString.getContentType());
+
         result.append("\n");
         for (DocStringLine line : docString.getLines()) {
             result.append(INDENT).append(line.getValue()).append("\n");
