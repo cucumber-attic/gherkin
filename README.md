@@ -52,6 +52,7 @@ TODO
 
 # TODO
 
+* Document the formatting algorithm - especially wrt newlines
 * Rename `title` to `name` in all impls
 * In .NET, rename step `text` to `name`
 * Refactor java code to use java naming conventions

@@ -1,6 +1,6 @@
 Feature: Background
 
-Background: a simple background
+  Background: a simple background
     Given the minimalism inside a background
 
 
