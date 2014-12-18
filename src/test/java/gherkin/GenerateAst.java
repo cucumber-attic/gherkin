@@ -12,6 +12,12 @@ public class GenerateAst {
         Parser.ITokenScanner scanner = new TokenScanner(in);
         Feature feature = (Feature) parser.Parse(scanner);
         AstFormatter formatter = new AstFormatter();
-        System.out.print(formatter.formatFeature(feature, new StringBuilder()));
+        StringBuilder formatted = formatter.formatFeature(feature, new StringBuilder());
+        String formattedString = formatted.toString();
+        // Strip the trailing \n
+//        if(formattedString.charAt(formattedString.length() -1) == '\n') {
+//            formattedString = formattedString.substring(0, formattedString.length() -2);
+//        }
+        System.out.print(formattedString);
     }
 }

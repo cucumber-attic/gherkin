@@ -1,13 +1,31 @@
 package gherkin;
 
-import gherkin.ast.*;
+import gherkin.ast.AstNode;
+import gherkin.ast.Background;
+import gherkin.ast.DataTable;
+import gherkin.ast.DocString;
+import gherkin.ast.DocStringLine;
+import gherkin.ast.EmptyStepArgument;
+import gherkin.ast.Examples;
+import gherkin.ast.Feature;
+import gherkin.ast.Location;
+import gherkin.ast.Scenario;
+import gherkin.ast.ScenarioDefinition;
+import gherkin.ast.ScenarioOutline;
+import gherkin.ast.Step;
+import gherkin.ast.StepArgument;
+import gherkin.ast.TableCell;
+import gherkin.ast.TableRow;
+import gherkin.ast.Tag;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-import static gherkin.Parser.*;
+import static gherkin.Parser.IAstBuilder;
+import static gherkin.Parser.RuleType;
+import static gherkin.Parser.TokenType;
 import static gherkin.StringUtils.join;
 
 public class AstBuilder implements IAstBuilder {
@@ -84,6 +102,9 @@ public class AstBuilder implements IAstBuilder {
                     return new Scenario(tags, getLocation(scenarioLine, 0), scenarioLine.MatchedKeyword, scenarioLine.MatchedText, description, steps);
                 } else {
                     AstNode scenarioOutlineNode = node.getSingle(RuleType.ScenarioOutline, null);
+                    if (scenarioOutlineNode == null) {
+                        throw new RuntimeException("Internal grammar error");
+                    }
                     Token scenarioOutlineLine = scenarioOutlineNode.getToken(TokenType.ScenarioOutlineLine);
                     String description = getDescription(scenarioOutlineNode);
                     List<Step> steps = getSteps(scenarioOutlineNode);
@@ -103,12 +124,20 @@ public class AstBuilder implements IAstBuilder {
             }
             case Description: {
                 List<Token> lineTokens = node.getTokens(TokenType.Other);
-                return join(new StringUtils.ToString<Token>() {
+                // Trim trailing spaces
+                int end = lineTokens.size();
+                while (end > 0 && lineTokens.get(end-1).MatchedText.matches("\\s*")) {
+                    end--;
+                }
+                lineTokens = lineTokens.subList(0, end);
+
+                String description = join(new StringUtils.ToString<Token>() {
                     @Override
                     public String toString(Token t) {
                         return t.MatchedText;
                     }
                 }, "\n", lineTokens);
+                return description;
             }
             case Feature: {
                 AstNode header = node.getSingle(RuleType.Feature_Header, new AstNode(RuleType.Feature_Header));
@@ -163,7 +192,7 @@ public class AstBuilder implements IAstBuilder {
     }
 
     private String getDescription(AstNode node) {
-        return node.getSingle(RuleType.Description, "");
+        return node.getSingle(RuleType.Description, null);
     }
 
     private List<Tag> getTags(AstNode node) {

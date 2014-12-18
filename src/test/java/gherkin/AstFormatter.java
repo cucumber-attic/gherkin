@@ -1,6 +1,20 @@
 package gherkin;
 
-import gherkin.ast.*;
+import gherkin.ast.Background;
+import gherkin.ast.DataTable;
+import gherkin.ast.DocString;
+import gherkin.ast.DocStringLine;
+import gherkin.ast.Examples;
+import gherkin.ast.Feature;
+import gherkin.ast.HasDescription;
+import gherkin.ast.HasRows;
+import gherkin.ast.HasSteps;
+import gherkin.ast.ScenarioDefinition;
+import gherkin.ast.ScenarioOutline;
+import gherkin.ast.Step;
+import gherkin.ast.TableCell;
+import gherkin.ast.TableRow;
+import gherkin.ast.Tag;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,6 +30,7 @@ public class AstFormatter {
         }
         formatTags(feature.getTags(), result);
         formatHasDescription(feature, result);
+        result.append("\n");
 
         if (feature.getBackground() != null) {
             formatBackground(feature.getBackground(), result);
@@ -27,11 +42,18 @@ public class AstFormatter {
         return result;
     }
 
-    private <T extends Appendable> T formatScenarioDefinition(ScenarioDefinition scenarioDefinition, T result) throws IOException {
+    private <T extends Appendable> T formatBackground(Background background, T result) throws IOException {
+        formatHasDescription(background, result);
+        formatHasSteps(background, result);
         result.append("\n");
+        return result;
+    }
+
+    private <T extends Appendable> T formatScenarioDefinition(ScenarioDefinition scenarioDefinition, T result) throws IOException {
         formatTags(scenarioDefinition.getTags(), result);
         formatHasDescription(scenarioDefinition, result);
         formatHasSteps(scenarioDefinition, result);
+        result.append("\n");
 
         if (scenarioDefinition instanceof ScenarioOutline) {
             for (Examples examples : ((ScenarioOutline) scenarioDefinition).getExamplesList()) {
@@ -42,34 +64,9 @@ public class AstFormatter {
     }
 
     private <T extends Appendable> T formatExamples(Examples examples, T result) throws IOException {
-        result.append("\n");
         formatTags(examples.getTags(), result);
         formatHasDescription(examples, result);
         formatHasRows(examples, result);
-        return result;
-    }
-
-    private <T extends Appendable> T formatHasRows(HasRows hasRows, T result) throws IOException {
-        for (TableRow tableRow : hasRows.getRows()) {
-            formatRow(tableRow, result);
-        }
-        return result;
-    }
-
-    private <T extends Appendable> T formatRow(TableRow tableRow, T result) throws IOException {
-        result.append(INDENT);
-        for (TableCell tableCell : tableRow.getCells()) {
-            result.append("|");
-            result.append(tableCell.getValue());
-        }
-        result.append("|").append("\n");
-        return result;
-    }
-
-    private <T extends Appendable> T formatBackground(Background background, T result) throws IOException {
-        result.append("\n");
-        formatHasDescription(background, result);
-        formatHasSteps(background, result);
         return result;
     }
 
@@ -86,10 +83,10 @@ public class AstFormatter {
         result.append(step.getName());
         result.append("\n");
 
-        if(step.getStepArgument() instanceof DataTable) {
+        if (step.getStepArgument() instanceof DataTable) {
             DataTable dataTable = (DataTable) step.getStepArgument();
             formatHasRows(dataTable, result);
-        } else if(step.getStepArgument() instanceof DocString) {
+        } else if (step.getStepArgument() instanceof DocString) {
             DocString docString = (DocString) step.getStepArgument();
             formatDocString(docString, result);
         }
@@ -110,9 +107,20 @@ public class AstFormatter {
         return result;
     }
 
-    private <T extends Appendable> T formatHasDescription(HasDescription hasDescription, T result) throws IOException {
-        result.append(format("%s: %s", hasDescription.getKeyword(), hasDescription.getTitle())).append("\n");
-        result.append(hasDescription.getDescription());
+    private <T extends Appendable> T formatHasRows(HasRows hasRows, T result) throws IOException {
+        for (TableRow tableRow : hasRows.getRows()) {
+            formatRow(tableRow, result);
+        }
+        return result;
+    }
+
+    private <T extends Appendable> T formatRow(TableRow tableRow, T result) throws IOException {
+        result.append(INDENT);
+        for (TableCell tableCell : tableRow.getCells()) {
+            result.append("|");
+            result.append(tableCell.getValue());
+        }
+        result.append("|").append("\n");
         return result;
     }
 
@@ -125,6 +133,14 @@ public class AstFormatter {
             result.append(tag.getName());
         }
         result.append("\n");
+        return result;
+    }
+
+    private <T extends Appendable> T formatHasDescription(HasDescription hasDescription, T result) throws IOException {
+        result.append(format("%s: %s", hasDescription.getKeyword(), hasDescription.getTitle())).append("\n");
+        if (hasDescription.getDescription() != null) {
+            result.append(hasDescription.getDescription()).append("\n");
+        }
         return result;
     }
 }
