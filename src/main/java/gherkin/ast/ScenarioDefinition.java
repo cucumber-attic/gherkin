@@ -2,7 +2,7 @@ package gherkin.ast;
 
 import java.util.List;
 
-public abstract class ScenarioDefinition implements HasDescription, HasSteps, HasTags {
+public abstract class ScenarioDefinition implements DescribesItself, HasDescription, HasSteps, HasTags {
     private final List<Tag> tags;
     private final Location location;
     private final String keyword;

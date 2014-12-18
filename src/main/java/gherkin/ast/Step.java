@@ -1,6 +1,6 @@
 package gherkin.ast;
 
-public class Step {
+public class Step implements DescribesItself {
     private final Location location;
     private final String keyword;
     private final String name;
@@ -23,5 +23,10 @@ public class Step {
 
     public String getKeyword() {
         return keyword;
+    }
+
+    @Override
+    public void describeTo(Visitor visitor) {
+        visitor.visitStep(this);
     }
 }

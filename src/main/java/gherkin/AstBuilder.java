@@ -6,7 +6,7 @@ import gherkin.ast.DataTable;
 import gherkin.ast.DocString;
 import gherkin.ast.DocStringLine;
 import gherkin.ast.EmptyStepArgument;
-import gherkin.ast.Examples;
+import gherkin.ast.ExamplesTable;
 import gherkin.ast.Feature;
 import gherkin.ast.Location;
 import gherkin.ast.Scenario;
@@ -109,9 +109,9 @@ public class AstBuilder implements IAstBuilder {
                     String description = getDescription(scenarioOutlineNode);
                     List<Step> steps = getSteps(scenarioOutlineNode);
 
-                    List<Examples> examplesList = scenarioOutlineNode.getItems(RuleType.Examples);
+                    List<ExamplesTable> examplesTableList = scenarioOutlineNode.getItems(RuleType.Examples);
 
-                    return new ScenarioOutline(tags, getLocation(scenarioOutlineLine, 0), scenarioOutlineLine.MatchedKeyword, scenarioOutlineLine.MatchedText, description, steps, examplesList);
+                    return new ScenarioOutline(tags, getLocation(scenarioOutlineLine, 0), scenarioOutlineLine.MatchedKeyword, scenarioOutlineLine.MatchedText, description, steps, examplesTableList);
 
                 }
             }
@@ -120,7 +120,7 @@ public class AstBuilder implements IAstBuilder {
                 Token examplesLine = node.getToken(TokenType.ExamplesLine);
                 String description = getDescription(node);
                 List<TableRow> rows = getTableRows(node);
-                return new Examples(tags, getLocation(examplesLine, 0), examplesLine.MatchedKeyword, examplesLine.MatchedText, description, rows);
+                return new ExamplesTable(tags, getLocation(examplesLine, 0), examplesLine.MatchedKeyword, examplesLine.MatchedText, description, rows);
             }
             case Description: {
                 List<Token> lineTokens = node.getTokens(TokenType.Other);

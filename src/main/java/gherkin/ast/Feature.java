@@ -2,7 +2,7 @@ package gherkin.ast;
 
 import java.util.List;
 
-public class Feature implements HasDescription, HasTags {
+public class Feature implements DescribesItself, HasDescription, HasTags {
     private final List<Tag> tags;
     private final Location location;
     private final String language;
@@ -67,5 +67,16 @@ public class Feature implements HasDescription, HasTags {
 
     public Background getBackground() {
         return background;
+    }
+
+    @Override
+    public void describeTo(Visitor visitor) {
+        visitor.visitFeature(this);
+        if(background != null) {
+            background.describeTo(visitor);
+        }
+        for (ScenarioDefinition scenarioDefinition : scenarioDefinitions) {
+            scenarioDefinition.describeTo(visitor);
+        }
     }
 }
