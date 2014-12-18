@@ -42,21 +42,25 @@ public class CompilerTest {
                 step("passing");
             });
         }));
-        assertEquals("[test_case, test_step]", receiver.toString());
+        assertEquals("[test_case, test_step(passing)]", receiver.toString());
     }
 
     @Test
-    public void compiles_a_feature_with_a_bacgkround() throws IOException {
+    public void compiles_a_feature_with_a_background() throws IOException {
         compiler.compile(feature(() -> {
             background(() -> {
-                step("passing");
+                step("a");
             });
 
             scenario(() -> {
-                step("passing");
+                step("b");
+            });
+
+            scenario(() -> {
+                step("c");
             });
         }));
-        assertEquals("[test_case, test_step, test_step]", receiver.toString());
+        assertEquals("[test_case, test_step(a), test_step(b), test_case, test_step(a), test_step(c)]", receiver.toString());
     }
 
     private Feature feature(Builder b) {

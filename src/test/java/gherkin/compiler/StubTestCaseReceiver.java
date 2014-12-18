@@ -17,7 +17,7 @@ class StubTestCaseReceiver implements TestCaseReceiver {
 
     @Override
     public void visitTestStep(TestStep testStep) {
-        s.add("test_step");
+        s.add(String.format("test_step(%s)", testStep.getName()));
     }
 
     @Override
