@@ -18,4 +18,8 @@ public class Source {
     public Source concat(DescribesItself node) {
         return new Source(this, node);
     }
+
+    public DescribesItself getNode() {
+        return node;
+    }
 }
