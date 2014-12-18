@@ -4,7 +4,7 @@ import gherkin.ast.Background;
 import gherkin.ast.DataTable;
 import gherkin.ast.DocString;
 import gherkin.ast.DocStringLine;
-import gherkin.ast.Examples;
+import gherkin.ast.ExamplesTable;
 import gherkin.ast.Feature;
 import gherkin.ast.HasDescription;
 import gherkin.ast.HasRows;
@@ -56,17 +56,17 @@ public class AstFormatter {
         result.append("\n");
 
         if (scenarioDefinition instanceof ScenarioOutline) {
-            for (Examples examples : ((ScenarioOutline) scenarioDefinition).getExamplesList()) {
-                formatExamples(examples, result);
+            for (ExamplesTable examplesTable : ((ScenarioOutline) scenarioDefinition).getExamplesTableList()) {
+                formatExamples(examplesTable, result);
             }
         }
         return result;
     }
 
-    private <T extends Appendable> T formatExamples(Examples examples, T result) throws IOException {
-        formatTags(examples.getTags(), result);
-        formatHasDescription(examples, result);
-        formatHasRows(examples, result);
+    private <T extends Appendable> T formatExamples(ExamplesTable examplesTable, T result) throws IOException {
+        formatTags(examplesTable.getTags(), result);
+        formatHasDescription(examplesTable, result);
+        formatHasRows(examplesTable, result);
         return result;
     }
 
