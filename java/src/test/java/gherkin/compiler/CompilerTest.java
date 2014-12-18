@@ -25,30 +25,50 @@ public class CompilerTest {
     private static final String LANGUAGE = "en";
     private static final String FEATURE = "Feature";
     private static final String GIVEN = "Given ";
+    private static final String BACKGROUND = "Background";
 
     private List<Step> steps;
     private Background background;
     private List<ScenarioDefinition> scenarioDefinitions;
 
+
+    private StubTestCaseReceiver receiver = new StubTestCaseReceiver();
+    private gherkin.compiler.Compiler compiler = new Compiler(receiver);
+
     @Test
     public void compiles_a_feature_with_a_single_scenario() throws IOException {
-        Feature feature = feature(() -> {
+        compiler.compile(feature(() -> {
             scenario(() -> {
                 step("passing");
             });
-        });
-
-        StubTestCaseReceiver receiver = new StubTestCaseReceiver();
-
-        gherkin.compiler.Compiler compiler = new Compiler(receiver);
-        compiler.compile(feature);
+        }));
         assertEquals("[test_case, test_step]", receiver.toString());
+    }
+
+    @Test
+    public void compiles_a_feature_with_a_bacgkround() throws IOException {
+        compiler.compile(feature(() -> {
+            background(() -> {
+                step("passing");
+            });
+
+            scenario(() -> {
+                step("passing");
+            });
+        }));
+        assertEquals("[test_case, test_step, test_step]", receiver.toString());
     }
 
     private Feature feature(Builder b) {
         scenarioDefinitions = new ArrayList<>();
         b.accept();
         return new Feature(EMPTY_TAGS, LOCATION, LANGUAGE, FEATURE, NAME, DESCRIPTION, background, scenarioDefinitions);
+    }
+
+    private void background(Builder b) {
+        steps = new ArrayList<>();
+        b.accept();
+        background = new Background(LOCATION, BACKGROUND, NAME, DESCRIPTION, steps);
     }
 
     private void scenario(Builder b) {
