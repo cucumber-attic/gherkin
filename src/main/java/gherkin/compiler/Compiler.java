@@ -36,12 +36,16 @@ public class Compiler {
             this.receiver = receiver;
         }
 
+        public void buildBackgroundStep(Source step) {
+            backgroundTestSteps.add(new TestStep(step));
+        }
+
         public void buildStep(Source step) {
             getTestSteps().add(new TestStep(step));
         }
 
-        public void buildTestCase(Source scenarioSource) {
-            new TestCase(getTestSteps(), scenarioSource).describeTo(receiver);
+        public void buildTestCase(Source scenario) {
+            new TestCase(getTestSteps(), scenario).describeTo(receiver);
         }
 
         private List<TestStep> getTestSteps() {
@@ -67,7 +71,9 @@ public class Compiler {
 
         @Override
         public void visitBackground(Background background) {
-            throw new UnsupportedOperationException();
+            Source backgroundSource = source.concat(background);
+            BackgroundCompiler backgroundCompiler = new BackgroundCompiler(backgroundSource, testCaseBuilder);
+            background.describeTo(backgroundCompiler);
         }
 
         @Override
@@ -92,8 +98,26 @@ public class Compiler {
         public void visitStep(Step step) {
         }
 
-        private class ScenarioCompiler extends BaseVisitor {
+        private class BackgroundCompiler extends BaseVisitor {
+            private final Source source;
+            private final TestCaseBuilder testCaseBuilder;
 
+            public BackgroundCompiler(Source source, TestCaseBuilder testCaseBuilder) {
+                this.source = source;
+                this.testCaseBuilder = testCaseBuilder;
+            }
+
+            @Override
+            public void visitBackground(Background background) {
+            }
+
+            @Override
+            public void visitStep(Step step) {
+                testCaseBuilder.buildBackgroundStep(source.concat(step));
+            }
+        }
+
+        private class ScenarioCompiler extends BaseVisitor {
             private final Source source;
             private final TestCaseBuilder testCaseBuilder;
 
