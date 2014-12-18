@@ -1,15 +1,13 @@
 package gherkin.compiler;
 
-import gherkin.test.Source;
-import gherkin.test.TestCaseReceiver;
 import gherkin.ast.Background;
 import gherkin.ast.BaseVisitor;
-import gherkin.ast.ExamplesTable;
 import gherkin.ast.Feature;
 import gherkin.ast.Scenario;
-import gherkin.ast.ScenarioOutline;
 import gherkin.ast.Step;
+import gherkin.test.Source;
 import gherkin.test.TestCase;
+import gherkin.test.TestCaseReceiver;
 import gherkin.test.TestStep;
 
 import java.util.ArrayList;
@@ -46,10 +44,11 @@ public class Compiler {
 
         public void buildTestCase(Source scenario) {
             new TestCase(getTestSteps(), scenario).describeTo(receiver);
+            testSteps = null;
         }
 
         private List<TestStep> getTestSteps() {
-            if(testSteps == null) {
+            if (testSteps == null) {
                 testSteps = new ArrayList<>(backgroundTestSteps);
             }
             return testSteps;
@@ -82,16 +81,6 @@ public class Compiler {
             ScenarioCompiler scenarioCompiler = new ScenarioCompiler(scenarioSource, testCaseBuilder);
             scenario.describeTo(scenarioCompiler);
             testCaseBuilder.buildTestCase(scenarioSource);
-        }
-
-        @Override
-        public void visitScenarioOutline(ScenarioOutline scenarioOutline) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void visitExamplesTable(ExamplesTable examplesTable) {
-            throw new UnsupportedOperationException();
         }
 
         @Override
