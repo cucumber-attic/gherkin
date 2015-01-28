@@ -65,7 +65,7 @@ namespace @Model.Namespace
         public bool StopAtFirstError { get; set;}
 
         [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        class ParserContext
+        protected class ParserContext
         {
             public ITokenScanner TokenScanner { get; set; }
             public ITokenMatcher TokenMatcher { get; set; }
@@ -181,7 +181,7 @@ namespace @Model.Namespace
         }</text>
         }
 
-        int MatchToken(int state, Token token, ParserContext context)
+        protected virtual int MatchToken(int state, Token token, ParserContext context)
         {
             int newState;
             switch(state)
