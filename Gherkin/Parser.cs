@@ -78,7 +78,7 @@ namespace Gherkin
         public bool StopAtFirstError { get; set;}
 
         [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        class ParserContext
+        protected class ParserContext
         {
             public ITokenScanner TokenScanner { get; set; }
             public ITokenMatcher TokenMatcher { get; set; }
@@ -266,7 +266,7 @@ namespace Gherkin
             return HandleExternalError(context, () => context.TokenMatcher.Match_Other(token), false); 
         }
 
-        int MatchToken(int state, Token token, ParserContext context)
+        protected virtual int MatchToken(int state, Token token, ParserContext context)
         {
             int newState;
             switch(state)
