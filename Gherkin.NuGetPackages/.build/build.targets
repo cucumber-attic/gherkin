@@ -1,0 +1,15 @@
+﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
+
+  <Target Name="Build"/>
+  <Target Name="Clean" />
+  <Target Name="Rebuild" />
+
+
+  <Target Name="Publish"/>
+  <Target Name="GetNativeManifest" />
+  <Target Name="GetCopyToOutputDirectoryItems" />
+
+
+  <Target Name="AfterBuild" AfterTargets="Build" />
+
+</Project>
