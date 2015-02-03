@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>Gherkin</id>
+    <version>3.0.0-alpha1</version>
+    <title>Gherkin Parser</title>
+    <authors>TechTalk</authors>
+    <owners>TechTalk</owners>
+    <summary>TODO</summary>
+    <description>TODO</description>
+    <releaseNotes>TODO</releaseNotes>
+    <language>en-US</language>
+    <projectUrl>https://github.com/cucumber/gherkin3</projectUrl>
+    <!--<iconUrl>TODO</iconUrl>-->
+    <!--<licenseUrl>TODO</licenseUrl>-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>TODO</copyright>
+    <tags>specflow gherkin cucumber</tags>
+  </metadata>
+</package>
