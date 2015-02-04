@@ -3,5 +3,11 @@
     <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\Gherkin\bin\$(Configuration)\Gherkin.dll">
       <targetFolder>Gherkin\lib\net45</targetFolder>
     </additionalFiles>
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\Gherkin\bin\$(Configuration)\Gherkin.pdb">
+      <targetFolder>Gherkin\lib\net45</targetFolder>
+    </additionalFiles>
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\i18n.json">
+      <targetFolder>Gherkin\content</targetFolder>
+    </additionalFiles>
   </ItemGroup>
 </Project>
