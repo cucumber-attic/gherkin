@@ -42,6 +42,10 @@ module Gherkin
 
     def detach
     end
+
+    def get_token_value
+      eof? ? "EOF" : @trimmed_line
+    end
   end
 
   class TokenMatcher
