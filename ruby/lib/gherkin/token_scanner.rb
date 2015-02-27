@@ -116,16 +116,24 @@ module Gherkin
 
   class TokenScanner
 
-    def initialize(file_path)
-      @file = File.open(file_path, 'r:BOM|UTF-8')
+    def initialize(source_or_path_or_io)
+      if String === source_or_path_or_io
+        if File.file?(source_or_path_or_io)
+          @io = File.open(source_or_path_or_io, 'r:BOM|UTF-8')
+        else
+          @io = StringIO.new(source_or_path_or_io)
+        end
+      else
+        @io = source_or_path_or_io
+      end
     end
 
     def read
-      if @file == nil || line = @file.gets
+      if @io.nil? || line = @io.gets
         Token.new(line)
       else
-        @file.close
-        @file = nil
+        @io.close
+        @io = nil
         Token.new(nil)
       end
     end
