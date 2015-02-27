@@ -71,11 +71,10 @@ module Gherkin
       start_rule(context, :Feature);
       state = 0
       token = nil
-      loop do
+      begin
         token = read_token(context)
         state = match_token(state, token, context)
-        break if token.eof?
-      end
+      end until(token.eof?)
 
       end_rule(context, :Feature)
 
@@ -100,6 +99,10 @@ module Gherkin
       handle_ast_error(context) do
         context.ast_builder.end_rule(rule_type)
       end
+    end
+
+    def get_result(context)
+      context.ast_builder.get_result
     end
 
     def read_token(context)
