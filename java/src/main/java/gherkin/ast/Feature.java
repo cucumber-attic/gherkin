@@ -56,7 +56,7 @@ public class Feature implements DescribesItself, HasDescription, HasTags {
     }
 
     @Override
-    public String getTitle() {
+    public String getName() {
         return title;
     }
 

@@ -30,4 +30,9 @@ public class BaseVisitor implements Visitor {
     public void visitStep(Step step) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void visitExample(ExamplesTableRow examplesTableRow) {
+        throw new UnsupportedOperationException();
+    }
 }

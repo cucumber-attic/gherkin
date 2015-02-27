@@ -1,30 +1,9 @@
 package gherkin.ast;
 
-public class Step implements DescribesItself {
-    private final Location location;
-    private final String keyword;
-    private final String name;
-    private final StepArgument stepArgument;
-
+public class Step extends AbstractStep {
     public Step(Location location, String keyword, String name, StepArgument stepArgument) {
-        this.location = location;
-        this.keyword = keyword;
-        this.name = name;
-        this.stepArgument = stepArgument;
+        super(location, keyword, name, stepArgument);
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public StepArgument getStepArgument() {
-        return stepArgument;
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
-
     @Override
     public void describeTo(Visitor visitor) {
         visitor.visitStep(this);

@@ -2,7 +2,7 @@ package gherkin.ast;
 
 import java.util.List;
 
-public class Background implements DescribesItself, HasDescription, HasSteps {
+public class Background implements DescribesItself, HasDescription, HasAbstractSteps {
     private final Location location;
     private final String keyword;
     private final String title;
@@ -27,7 +27,7 @@ public class Background implements DescribesItself, HasDescription, HasSteps {
     }
 
     @Override
-    public String getTitle() {
+    public String getName() {
         return title;
     }
 
@@ -37,15 +37,15 @@ public class Background implements DescribesItself, HasDescription, HasSteps {
     }
 
     @Override
-    public List<Step> getSteps() {
-        return steps;
-    }
-
-    @Override
     public void describeTo(Visitor visitor) {
         visitor.visitBackground(this);
         for (Step step : steps) {
             step.describeTo(visitor);
         }
+    }
+
+    @Override
+    public List<? extends AbstractStep> getSteps() {
+        return steps;
     }
 }

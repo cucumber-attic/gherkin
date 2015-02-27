@@ -1,7 +1,9 @@
 package gherkin.ast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExamplesTable implements DescribesItself, HasTags, HasDescription, HasRows {
     private final List<Tag> tags;
@@ -12,7 +14,7 @@ public class ExamplesTable implements DescribesItself, HasTags, HasDescription, 
     private final List<TableRow> rows;
 
     private final Header header;
-    private final List<Example> examples;
+    private final List<ExamplesTableRow> examplesTableRows;
 
     public ExamplesTable(List<Tag> tags, Location location, String keyword, String title, String description, List<TableRow> rows) {
         this.tags = tags;
@@ -23,9 +25,10 @@ public class ExamplesTable implements DescribesItself, HasTags, HasDescription, 
         this.rows = rows;
 
         header = new Header(rows.get(0));
-        examples = new ArrayList<>(rows.size() - 1);
-        for(int i = 1; i < rows.size(); i++) {
-            examples.add(new Example(rows.get(i)));
+        examplesTableRows = new ArrayList<>(rows.size() - 1);
+        for (int i = 1; i < rows.size(); i++) {
+//            examplesTableRows.add(new ExamplesTableRow(rows.get(i)));
+            examplesTableRows.add(header.buildRow(rows.get(i)));
         }
 
     }
@@ -41,7 +44,7 @@ public class ExamplesTable implements DescribesItself, HasTags, HasDescription, 
     }
 
     @Override
-    public String getTitle() {
+    public String getName() {
         return title;
     }
 
@@ -58,22 +61,26 @@ public class ExamplesTable implements DescribesItself, HasTags, HasDescription, 
     @Override
     public void describeTo(Visitor visitor) {
         visitor.visitExamplesTable(this);
-        // TOTO: iterate over rows
+        for (ExamplesTableRow examplesTableRow : examplesTableRows) {
+            examplesTableRow.describeTo(visitor);
+        }
     }
 
     public static class Header {
-        private final TableRow tableRow;
+        private final TableRow headerRow;
 
-        public Header(TableRow tableRow) {
-            this.tableRow = tableRow;
+        public Header(TableRow headerRow) {
+            this.headerRow = headerRow;
+        }
+
+        public ExamplesTableRow buildRow(TableRow dataRow) {
+            Map<String, String> data = new HashMap<>();
+            int i = 0;
+            for (TableCell tableCell : headerRow.getCells()) {
+                data.put(tableCell.getValue(), dataRow.getCells().get(i++).getValue());
+            }
+            return new ExamplesTableRow(data);
         }
     }
 
-    public static class Example {
-        private final TableRow tableRow;
-
-        public Example(TableRow tableRow) {
-            this.tableRow = tableRow;
-        }
-    }
 }

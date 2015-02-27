@@ -109,9 +109,9 @@ public class AstBuilder implements IAstBuilder {
                     String description = getDescription(scenarioOutlineNode);
                     List<Step> steps = getSteps(scenarioOutlineNode);
 
-                    List<ExamplesTable> examplesTableList = scenarioOutlineNode.getItems(RuleType.Examples);
+                    List<ExamplesTable> examplesTables = scenarioOutlineNode.getItems(RuleType.Examples);
 
-                    return new ScenarioOutline(tags, getLocation(scenarioOutlineLine, 0), scenarioOutlineLine.MatchedKeyword, scenarioOutlineLine.MatchedText, description, steps, examplesTableList);
+                    return new ScenarioOutline(tags, getLocation(scenarioOutlineLine, 0), scenarioOutlineLine.MatchedKeyword, scenarioOutlineLine.MatchedText, description, steps, examplesTables);
 
                 }
             }

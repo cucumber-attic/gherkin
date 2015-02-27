@@ -2,8 +2,11 @@ package gherkin.compiler;
 
 import gherkin.ast.Background;
 import gherkin.ast.BaseVisitor;
+import gherkin.ast.ExamplesTable;
+import gherkin.ast.ExamplesTableRow;
 import gherkin.ast.Feature;
 import gherkin.ast.Scenario;
+import gherkin.ast.ScenarioOutline;
 import gherkin.ast.Step;
 import gherkin.test.Source;
 import gherkin.test.TestCase;
@@ -84,7 +87,22 @@ public class Compiler {
         }
 
         @Override
+        public void visitScenarioOutline(ScenarioOutline scenarioOutline) {
+            Source scenarioOutlineSource = source.concat(scenarioOutline);
+            ScenarioOutlineCompiler scenarioOutlineCompiler = new ScenarioOutlineCompiler(scenarioOutlineSource, testCaseBuilder);
+            scenarioOutline.describeTo(scenarioOutlineCompiler);
+        }
+
+        @Override
         public void visitStep(Step step) {
+        }
+
+        @Override
+        public void visitExamplesTable(ExamplesTable examplesTable) {
+        }
+
+        @Override
+        public void visitExample(ExamplesTableRow examplesTableRow) {
         }
 
         private class BackgroundCompiler extends BaseVisitor {
@@ -122,6 +140,57 @@ public class Compiler {
             @Override
             public void visitStep(Step step) {
                 testCaseBuilder.buildStep(source.concat(step));
+            }
+        }
+
+        private class ScenarioOutlineCompiler extends BaseVisitor {
+            private final List<Step> outlineSteps = new ArrayList<>();
+            private final Source scenarioOutlineSource;
+            private final TestCaseBuilder testCaseBuilder;
+            private ExamplesTable examplesTable;
+
+            public ScenarioOutlineCompiler(Source scenarioOutlineSource, TestCaseBuilder testCaseBuilder) {
+                this.scenarioOutlineSource = scenarioOutlineSource;
+                this.testCaseBuilder = testCaseBuilder;
+            }
+
+            @Override
+            public void visitScenarioOutline(ScenarioOutline scenarioOutline) {
+            }
+
+            @Override
+            public void visitStep(Step outlineStep) {
+                outlineSteps.add(outlineStep);
+            }
+
+            @Override
+            public void visitExamplesTable(ExamplesTable examplesTable) {
+                this.examplesTable = examplesTable;
+            }
+
+            @Override
+            public void visitExample(ExamplesTableRow examplesTableRow) {
+                List<Step> steps = getSteps(examplesTableRow);
+                Source rowSource = scenarioOutlineSource.concat(examplesTable).concat(examplesTableRow);
+                for (Step step : steps) {
+                    Source stepSource = rowSource.concat(step);
+                    testCaseBuilder.buildStep(stepSource);
+                }
+                testCaseBuilder.buildTestCase(rowSource);
+            }
+
+            private List<Step> getSteps(ExamplesTableRow examplesTableRow) {
+                List<Step> steps = new ArrayList<>(outlineSteps.size());
+                for (Step outlineStep : outlineSteps) {
+                    steps.add(toStep(outlineStep, examplesTableRow));
+                }
+                return steps;
+            }
+
+            private Step toStep(Step outlineStep, ExamplesTableRow examplesTableRow) {
+                String stepName = examplesTableRow.expand(outlineStep.getName());
+                // TODO: Replace in stepArg too
+                return new Step(outlineStep.getLocation(), outlineStep.getKeyword(), stepName, outlineStep.getStepArgument());
             }
         }
     }

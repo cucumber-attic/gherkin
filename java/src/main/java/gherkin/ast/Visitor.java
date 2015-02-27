@@ -12,4 +12,6 @@ public interface Visitor {
     void visitExamplesTable(ExamplesTable examplesTable);
 
     void visitStep(Step step);
+
+    void visitExample(ExamplesTableRow examplesTableRow);
 }

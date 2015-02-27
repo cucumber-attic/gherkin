@@ -1,17 +1,17 @@
 package gherkin;
 
+import gherkin.ast.AbstractStep;
 import gherkin.ast.Background;
 import gherkin.ast.DataTable;
 import gherkin.ast.DocString;
 import gherkin.ast.DocStringLine;
 import gherkin.ast.ExamplesTable;
 import gherkin.ast.Feature;
+import gherkin.ast.HasAbstractSteps;
 import gherkin.ast.HasDescription;
 import gherkin.ast.HasRows;
-import gherkin.ast.HasSteps;
 import gherkin.ast.ScenarioDefinition;
 import gherkin.ast.ScenarioOutline;
-import gherkin.ast.Step;
 import gherkin.ast.TableCell;
 import gherkin.ast.TableRow;
 import gherkin.ast.Tag;
@@ -56,7 +56,7 @@ public class AstFormatter {
         result.append("\n");
 
         if (scenarioDefinition instanceof ScenarioOutline) {
-            for (ExamplesTable examplesTable : ((ScenarioOutline) scenarioDefinition).getExamplesTableList()) {
+            for (ExamplesTable examplesTable : ((ScenarioOutline) scenarioDefinition).getExamplesTables()) {
                 formatExamples(examplesTable, result);
             }
         }
@@ -70,14 +70,14 @@ public class AstFormatter {
         return result;
     }
 
-    private <T extends Appendable> T formatHasSteps(HasSteps hasSteps, T result) throws IOException {
-        for (Step step : hasSteps.getSteps()) {
-            formatStep(step, result);
+    private <T extends Appendable> T formatHasSteps(HasAbstractSteps hasAbstractSteps, T result) throws IOException {
+        for (AbstractStep abstractStep : hasAbstractSteps.getSteps()) {
+            formatStep(abstractStep, result);
         }
         return result;
     }
 
-    private <T extends Appendable> T formatStep(Step step, T result) throws IOException {
+    private <T extends Appendable> T formatStep(AbstractStep step, T result) throws IOException {
         result.append(INDENT);
         result.append(step.getKeyword());
         result.append(step.getName());
@@ -137,7 +137,7 @@ public class AstFormatter {
     }
 
     private <T extends Appendable> T formatHasDescription(HasDescription hasDescription, T result) throws IOException {
-        result.append(format("%s: %s", hasDescription.getKeyword(), hasDescription.getTitle())).append("\n");
+        result.append(format("%s: %s", hasDescription.getKeyword(), hasDescription.getName())).append("\n");
         if (hasDescription.getDescription() != null) {
             result.append(hasDescription.getDescription()).append("\n");
         }
