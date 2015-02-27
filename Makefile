@@ -10,17 +10,18 @@ all: .compared
 .PHONY: all
 
 .compared: .built $(TOKENS) $(AST)
+	touch $@
 
 .built: src/main/java/gherkin/Parser.java $(JAVA_FILES)
 	mvn test
 	touch $@
 
-acceptance/testdata/%.feature.tokens: ../testdata/%.feature .built
+acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
 	java -classpath target/classes:target/test-classes gherkin.GenerateTokens $< > $@
 	diff --unified --ignore-all-space $<.tokens $@ || rm $@
 
-acceptance/testdata/%.feature.ast: ../testdata/%.feature .built
+acceptance/testdata/%.feature.ast: ../testdata/%.feature ../testdata/%.feature.ast .built
 	mkdir -p `dirname $@`
 	java -classpath target/classes:target/test-classes gherkin.GenerateAst $< > $@
 	diff --unified --ignore-all-space $<.ast $@ || rm $@
