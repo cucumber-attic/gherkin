@@ -3,3 +3,4 @@ gherkin.iml
 target/
 acceptance/
 .built
+.compared
