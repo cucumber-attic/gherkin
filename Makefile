@@ -11,17 +11,18 @@ all: .compared
 .PHONY: all
 
 .compared: .built $(TOKENS) $(AST)
+	touch $@
 
 .built: Gherkin/bin/Debug/Gherkin.dll $(NUNIT) i18n.json
 	mono --runtime=v4.0 $(NUNIT) -noxml -nologo -stoponerror $<
 	touch $@
 
-acceptance/testdata/%.feature.tokens: ../testdata/%.feature .built
+acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
 	mono --runtime=v4.0 Gherkin.TokensTester/bin/Debug/Gherkin.TokensTester.exe $< > $@
 	diff --unified --ignore-all-space $<.tokens $@ || rm $@
 
-acceptance/testdata/%.feature.ast: ../testdata/%.feature .built
+acceptance/testdata/%.feature.ast: ../testdata/%.feature ../testdata/%.feature.ast .built
 	mkdir -p `dirname $@`
 	mono --runtime=v4.0 Gherkin.AstTester/bin/Debug/Gherkin.AstTester.exe $< > $@
 	diff --unified --ignore-all-space $<.ast $@ || rm $@
