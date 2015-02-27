@@ -132,7 +132,7 @@ module Gherkin
       if @io.nil? || line = @io.gets
         Token.new(line)
       else
-        @io.close
+        @io.close unless @io.closed? # ARGF closes the last file after final gets
         @io = nil
         Token.new(nil)
       end
