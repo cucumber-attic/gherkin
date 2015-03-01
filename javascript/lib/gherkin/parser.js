@@ -63,12 +63,20 @@ module.exports = function Parser() {
 
     endRule(context, 'Feature');
 
-    if(context.errors.length > 0) {
-      throw new CompositeParserException.new(context.errors)
+    if(context.errors.length == 1) {
+      throw context.errors[0];
+    } else if(context.errors.length > 1) {
+      throw Errors.CompositeParserException.create(context.errors);
     }
 
     return getResult(context);
   };
+
+  function addError(context, error) {
+    context.errors.push(error);
+    if (context.errors.length > 10)
+      throw Errors.CompositeParserException.create(context.errors);
+  }
 
   function startRule(context, ruleType) {
     handleAstError(context, function () {
@@ -193,7 +201,7 @@ module.exports = function Parser() {
     }
   }
 
-  
+
   // Start
   function matchTokenAt_0(token, context) {
     if(match_Language(context, token)) {
@@ -220,18 +228,18 @@ module.exports = function Parser() {
       build(context, token);
       return 0;
     }
-    
+
     var stateComment = "State: 0 - Start";
     token.detach();
     var expectedTokens = ["#Language", "#TagLine", "#FeatureLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 0;
   }
-  
+
   // Feature:0>Feature_Header:0>#Language:0
   function matchTokenAt_1(token, context) {
     if(match_TagLine(context, token)) {
@@ -251,18 +259,18 @@ module.exports = function Parser() {
       build(context, token);
       return 1;
     }
-    
+
     var stateComment = "State: 1 - Feature:0>Feature_Header:0>#Language:0";
     token.detach();
     var expectedTokens = ["#TagLine", "#FeatureLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 1;
   }
-  
+
   // Feature:0>Feature_Header:1>Tags:0>#TagLine:0
   function matchTokenAt_2(token, context) {
     if(match_TagLine(context, token)) {
@@ -282,18 +290,18 @@ module.exports = function Parser() {
       build(context, token);
       return 2;
     }
-    
+
     var stateComment = "State: 2 - Feature:0>Feature_Header:1>Tags:0>#TagLine:0";
     token.detach();
     var expectedTokens = ["#TagLine", "#FeatureLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 2;
   }
-  
+
   // Feature:0>Feature_Header:2>#FeatureLine:0
   function matchTokenAt_3(token, context) {
     if(match_EOF(context, token)) {
@@ -341,18 +349,18 @@ module.exports = function Parser() {
       build(context, token);
       return 4;
     }
-    
+
     var stateComment = "State: 3 - Feature:0>Feature_Header:2>#FeatureLine:0";
     token.detach();
     var expectedTokens = ["#EOF", "#Empty", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 3;
   }
-  
+
   // Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
   function matchTokenAt_4(token, context) {
     if(match_EOF(context, token)) {
@@ -401,18 +409,18 @@ module.exports = function Parser() {
       build(context, token);
       return 4;
     }
-    
+
     var stateComment = "State: 4 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0";
     token.detach();
     var expectedTokens = ["#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 4;
   }
-  
+
   // Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0
   function matchTokenAt_5(token, context) {
     if(match_EOF(context, token)) {
@@ -455,18 +463,18 @@ module.exports = function Parser() {
       build(context, token);
       return 5;
     }
-    
+
     var stateComment = "State: 5 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0";
     token.detach();
     var expectedTokens = ["#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 5;
   }
-  
+
   // Feature:1>Background:0>#BackgroundLine:0
   function matchTokenAt_6(token, context) {
     if(match_EOF(context, token)) {
@@ -513,18 +521,18 @@ module.exports = function Parser() {
       build(context, token);
       return 7;
     }
-    
+
     var stateComment = "State: 6 - Feature:1>Background:0>#BackgroundLine:0";
     token.detach();
     var expectedTokens = ["#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 6;
   }
-  
+
   // Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
   function matchTokenAt_7(token, context) {
     if(match_EOF(context, token)) {
@@ -572,18 +580,18 @@ module.exports = function Parser() {
       build(context, token);
       return 7;
     }
-    
+
     var stateComment = "State: 7 - Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0";
     token.detach();
     var expectedTokens = ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 7;
   }
-  
+
   // Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
   function matchTokenAt_8(token, context) {
     if(match_EOF(context, token)) {
@@ -625,18 +633,18 @@ module.exports = function Parser() {
       build(context, token);
       return 8;
     }
-    
+
     var stateComment = "State: 8 - Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0";
     token.detach();
     var expectedTokens = ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 8;
   }
-  
+
   // Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
   function matchTokenAt_9(token, context) {
     if(match_EOF(context, token)) {
@@ -693,18 +701,18 @@ module.exports = function Parser() {
       build(context, token);
       return 9;
     }
-    
+
     var stateComment = "State: 9 - Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0";
     token.detach();
     var expectedTokens = ["#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 9;
   }
-  
+
   // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
   function matchTokenAt_10(token, context) {
     if(match_EOF(context, token)) {
@@ -760,18 +768,18 @@ module.exports = function Parser() {
       build(context, token);
       return 10;
     }
-    
+
     var stateComment = "State: 10 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
     token.detach();
     var expectedTokens = ["#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 10;
   }
-  
+
   // Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0
   function matchTokenAt_11(token, context) {
     if(match_TagLine(context, token)) {
@@ -798,18 +806,18 @@ module.exports = function Parser() {
       build(context, token);
       return 11;
     }
-    
+
     var stateComment = "State: 11 - Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0";
     token.detach();
     var expectedTokens = ["#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 11;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0
   function matchTokenAt_12(token, context) {
     if(match_EOF(context, token)) {
@@ -860,18 +868,18 @@ module.exports = function Parser() {
       build(context, token);
       return 13;
     }
-    
+
     var stateComment = "State: 12 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0";
     token.detach();
     var expectedTokens = ["#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 12;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
   function matchTokenAt_13(token, context) {
     if(match_EOF(context, token)) {
@@ -923,18 +931,18 @@ module.exports = function Parser() {
       build(context, token);
       return 13;
     }
-    
+
     var stateComment = "State: 13 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0";
     token.detach();
     var expectedTokens = ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 13;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
   function matchTokenAt_14(token, context) {
     if(match_EOF(context, token)) {
@@ -980,18 +988,18 @@ module.exports = function Parser() {
       build(context, token);
       return 14;
     }
-    
+
     var stateComment = "State: 14 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0";
     token.detach();
     var expectedTokens = ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 14;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
   function matchTokenAt_15(token, context) {
     if(match_EOF(context, token)) {
@@ -1052,18 +1060,18 @@ module.exports = function Parser() {
       build(context, token);
       return 15;
     }
-    
+
     var stateComment = "State: 15 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0";
     token.detach();
     var expectedTokens = ["#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 15;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
   function matchTokenAt_16(token, context) {
     if(match_EOF(context, token)) {
@@ -1123,18 +1131,18 @@ module.exports = function Parser() {
       build(context, token);
       return 16;
     }
-    
+
     var stateComment = "State: 16 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
     token.detach();
     var expectedTokens = ["#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 16;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
   function matchTokenAt_17(token, context) {
     if(match_Empty(context, token)) {
@@ -1166,18 +1174,18 @@ module.exports = function Parser() {
       build(context, token);
       return 18;
     }
-    
+
     var stateComment = "State: 17 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0";
     token.detach();
     var expectedTokens = ["#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 17;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
   function matchTokenAt_18(token, context) {
     if(match_Comment(context, token)) {
@@ -1208,18 +1216,18 @@ module.exports = function Parser() {
       build(context, token);
       return 18;
     }
-    
+
     var stateComment = "State: 18 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0";
     token.detach();
     var expectedTokens = ["#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 18;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
   function matchTokenAt_19(token, context) {
     if(match_Comment(context, token)) {
@@ -1246,18 +1254,18 @@ module.exports = function Parser() {
       build(context, token);
       return 19;
     }
-    
+
     var stateComment = "State: 19 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0";
     token.detach();
     var expectedTokens = ["#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 19;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
   function matchTokenAt_20(token, context) {
     if(match_TableRow(context, token)) {
@@ -1297,18 +1305,18 @@ module.exports = function Parser() {
       build(context, token);
       return 20;
     }
-    
+
     var stateComment = "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0";
     token.detach();
     var expectedTokens = ["#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 20;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
   function matchTokenAt_21(token, context) {
     if(match_TableRow(context, token)) {
@@ -1345,18 +1353,18 @@ module.exports = function Parser() {
       build(context, token);
       return 21;
     }
-    
+
     var stateComment = "State: 21 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
     token.detach();
     var expectedTokens = ["#TableRow", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 21;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
   function matchTokenAt_22(token, context) {
     if(match_TagLine(context, token)) {
@@ -1376,18 +1384,18 @@ module.exports = function Parser() {
       build(context, token);
       return 22;
     }
-    
+
     var stateComment = "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0";
     token.detach();
     var expectedTokens = ["#TagLine", "#ExamplesLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 22;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0
   function matchTokenAt_23(token, context) {
     if(match_Empty(context, token)) {
@@ -1407,18 +1415,18 @@ module.exports = function Parser() {
       build(context, token);
       return 24;
     }
-    
+
     var stateComment = "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0";
     token.detach();
     var expectedTokens = ["#Empty", "#Comment", "#TableRow", "#Other"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 23;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
   function matchTokenAt_24(token, context) {
     if(match_Comment(context, token)) {
@@ -1435,18 +1443,18 @@ module.exports = function Parser() {
       build(context, token);
       return 24;
     }
-    
+
     var stateComment = "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0";
     token.detach();
     var expectedTokens = ["#Comment", "#TableRow", "#Other"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 24;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0
   function matchTokenAt_25(token, context) {
     if(match_Comment(context, token)) {
@@ -1461,18 +1469,18 @@ module.exports = function Parser() {
       build(context, token);
       return 25;
     }
-    
+
     var stateComment = "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0";
     token.detach();
     var expectedTokens = ["#Comment", "#TableRow", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 25;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0
   function matchTokenAt_26(token, context) {
     if(match_EOF(context, token)) {
@@ -1536,18 +1544,18 @@ module.exports = function Parser() {
       build(context, token);
       return 26;
     }
-    
+
     var stateComment = "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0";
     token.detach();
     var expectedTokens = ["#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 26;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
   function matchTokenAt_28(token, context) {
     if(match_DocStringSeparator(context, token)) {
@@ -1558,18 +1566,18 @@ module.exports = function Parser() {
       build(context, token);
       return 28;
     }
-    
+
     var stateComment = "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
     token.detach();
     var expectedTokens = ["#DocStringSeparator", "#Other"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 28;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
   function matchTokenAt_29(token, context) {
     if(match_StepLine(context, token)) {
@@ -1602,18 +1610,18 @@ module.exports = function Parser() {
       build(context, token);
       return 29;
     }
-    
+
     var stateComment = "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
     token.detach();
     var expectedTokens = ["#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 29;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
   function matchTokenAt_30(token, context) {
     if(match_DocStringSeparator(context, token)) {
@@ -1624,18 +1632,18 @@ module.exports = function Parser() {
       build(context, token);
       return 30;
     }
-    
+
     var stateComment = "State: 30 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
     token.detach();
     var expectedTokens = ["#DocStringSeparator", "#Other"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 30;
   }
-  
+
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
   function matchTokenAt_31(token, context) {
     if(match_EOF(context, token)) {
@@ -1691,18 +1699,18 @@ module.exports = function Parser() {
       build(context, token);
       return 31;
     }
-    
+
     var stateComment = "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
     token.detach();
     var expectedTokens = ["#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 31;
   }
-  
+
   // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
   function matchTokenAt_32(token, context) {
     if(match_DocStringSeparator(context, token)) {
@@ -1713,18 +1721,18 @@ module.exports = function Parser() {
       build(context, token);
       return 32;
     }
-    
+
     var stateComment = "State: 32 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
     token.detach();
     var expectedTokens = ["#DocStringSeparator", "#Other"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 32;
   }
-  
+
   // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
   function matchTokenAt_33(token, context) {
     if(match_EOF(context, token)) {
@@ -1776,13 +1784,13 @@ module.exports = function Parser() {
       build(context, token);
       return 33;
     }
-    
+
     var stateComment = "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
     token.detach();
     var expectedTokens = ["#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return 33;

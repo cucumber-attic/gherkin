@@ -21,7 +21,7 @@
     var expectedTokens = ["@Raw(string.Join("\", \"", expectedTokens))"];
     var error = token.isEof ?
       new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
-      new Errors.UnexpectedTokenException(token, expectedTokens, stateComment);
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
     return @state.Id;</text>}
@@ -60,11 +60,17 @@ module.exports = function Parser() {
     endRule(context, 'Feature');
 
     if(context.errors.length > 0) {
-      throw new CompositeParserException.new(context.errors)
+      throw Errors.CompositeParserException.create(context.errors);
     }
 
     return getResult(context);
   };
+
+  function addError(context, error) {
+    context.errors.push(error);
+    if (context.errors.length > 10)
+      throw Errors.CompositeParserException.create(context.errors);
+  }
 
   function startRule(context, ruleType) {
     handleAstError(context, function () {
