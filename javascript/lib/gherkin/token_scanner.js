@@ -4,6 +4,9 @@ var GherkinLine = require('./gherkin_line');
 
 module.exports = function TokenScanner(source) {
   var lines = source.split('\n');
+  if(lines.length > 0 && lines[lines.length-1].trim() == '') {
+    lines.pop();
+  }
   var lineNumber = 0;
 
   this.read = function () {
