@@ -4,7 +4,7 @@ BAD_FEATURE_FILES  = $(shell find ../testdata/bad -name "*.feature")
 TOKENS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.tokens,$(GOOD_FEATURE_FILES))
 AST      = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.ast,$(GOOD_FEATURE_FILES))
 
-RUBY_FILES = $(shell find . -name "*.rb")
+JAVASCRIPT_FILES = $(shell find . -name "*.js")
 
 all: .compared
 .PHONY: all
@@ -12,26 +12,29 @@ all: .compared
 .compared: .built $(TOKENS)
 	touch $@
 
-.built: lib/gherkin/parser.js $(RUBY_FILES)
+.built: lib/gherkin/parser.js lib/gherkin/dialects.json $(JAVASCRIPT_FILES)
 	./node_modules/.bin/mocha
 	touch $@
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
-	node bin/gherkin-generate-tokens $< > $@
+	node bin/gherkin-generate-tokens $< > $@ || rm $@
 	diff --unified --ignore-all-space $<.tokens $@ || rm $@
 
 acceptance/testdata/%.feature.ast: ../testdata/%.feature ../testdata/%.feature.ast .built
 	mkdir -p `dirname $@`
-	node bin/gherkin-generate-ast $< > $@
+	node bin/gherkin-generate-ast $< > $@ || rm $@
 	diff --unified --ignore-all-space $<.ast $@ || rm $@
-
-clean:
-	rm -rf .compared .built acceptance
-.PHONY: clean
 
 lib/gherkin/parser.js: ../gherkin.berp gherkin-javascript.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-javascript.razor -o $@
 	# Remove BOM
 	tail -c +4 $@ > $@.nobom
 	mv $@.nobom $@
+
+lib/gherkin/dialects.json: ../dialects.json
+	cp $^ $@
+
+clean:
+	rm -rf .compared .built acceptance lib/gherkin/parser.js lib/gherkin/dialects.json
+.PHONY: clean

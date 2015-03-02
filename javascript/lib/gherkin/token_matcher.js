@@ -1,35 +1,35 @@
-var GherkinDialect = require('./gherkin_dialect');
+var dialects = require('./dialects.json');
 var Errors = require('./errors');
 
 module.exports = function TokenMatcher() {
-  var dialect = new GherkinDialect();
+  var dialect = dialects['en'];
 
   this.match_TagLine = function match_TagLine(token) {
     if(token.line.startsWith('@')) {
-      setTokenMatched(token, 'TagLine', language);
+      setTokenMatched(token, 'TagLine', null, null, null, token.line.getTags());
       return true;
     }
     return false;
   };
 
   this.match_FeatureLine = function match_FeatureLine(token) {
-    return matchTitleLine(token, 'FeatureLine', dialect.featureKeywords);
+    return matchTitleLine(token, 'FeatureLine', dialect.feature);
   };
 
   this.match_ScenarioLine = function match_ScenarioLine(token) {
-    return matchTitleLine(token, 'ScenarioLine', dialect.scenarioKeywords);
+    return matchTitleLine(token, 'ScenarioLine', dialect.scenario);
   };
 
   this.match_ScenarioOutlineLine = function match_ScenarioOutlineLine(token) {
-    return matchTitleLine(token, 'ScenarioOutlineLine', dialect.scenarioOutlineKeywords);
+    return matchTitleLine(token, 'ScenarioOutlineLine', dialect.scenarioOutline);
   };
 
   this.match_BackgroundLine = function match_BackgroundLine(token) {
-    return matchTitleLine(token, 'BackgroundLine', dialect.backgroundKeywords);
+    return matchTitleLine(token, 'BackgroundLine', dialect.background);
   };
 
   this.match_ExamplesLine = function match_ExamplesLine(token) {
-    return matchTitleLine(token, 'ExamplesLine', dialect.examplesKeywords);
+    return matchTitleLine(token, 'ExamplesLine', dialect.examples);
   };
 
   this.match_TableRow = function match_TableRow(token) {
@@ -60,11 +60,10 @@ module.exports = function TokenMatcher() {
 
   this.match_Language = function match_Language(token) {
     if(token.line.startsWith('#language:')) {
-      var language = token.line.getRestTrimmed('#language:');
-      try {
-        dialect = dialectProvider.getDialect(language);
-      } catch (e) {
-        throw new Errors.CreateTokenMatcherException(token, e.message);
+      var language = token.line.getRestTrimmed('#language:'.length);
+      dialect = dialects[language];
+      if(!dialect) {
+        throw new Error("Unknown dialect: " + language);
       }
       setTokenMatched(token, 'Language', language);
       return true;
@@ -110,7 +109,12 @@ module.exports = function TokenMatcher() {
   };
 
   this.match_StepLine = function match_StepLine(token) {
-    var keywords = dialect.stepKeywords;
+    var keywords = []
+      .concat(dialect.given)
+      .concat(dialect.when)
+      .concat(dialect.then)
+      .concat(dialect.and)
+      .concat(dialect.but);
     var length = keywords.length;
     for(var i = 0, keyword; i < length; i++) {
       var keyword = keywords[i];

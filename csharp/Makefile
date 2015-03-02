@@ -19,12 +19,12 @@ all: .compared
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
-	mono --runtime=v4.0 Gherkin.TokensTester/bin/Debug/Gherkin.TokensTester.exe $< > $@
+	mono --runtime=v4.0 Gherkin.TokensTester/bin/Debug/Gherkin.TokensTester.exe $< > $@ || rm $@
 	diff --unified --ignore-all-space $<.tokens $@ || rm $@
 
 acceptance/testdata/%.feature.ast: ../testdata/%.feature ../testdata/%.feature.ast .built
 	mkdir -p `dirname $@`
-	mono --runtime=v4.0 Gherkin.AstTester/bin/Debug/Gherkin.AstTester.exe $< > $@
+	mono --runtime=v4.0 Gherkin.AstTester/bin/Debug/Gherkin.AstTester.exe $< > $@ || rm $@
 	diff --unified --ignore-all-space $<.ast $@ || rm $@
 
 clean:
