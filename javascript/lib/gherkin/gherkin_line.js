@@ -1,5 +1,3 @@
-var GherkinLineSpan = require('./gherkin_line_span');
-
 function GherkinLine(lineText, lineNumber) {
   this.lineText = lineText;
   this.lineNumber = lineNumber;
@@ -35,7 +33,7 @@ GherkinLine.prototype.getTableCells = function getTableCells() {
   items.pop(); // Skip the one after the last pipe
   return items.map(function (item) {
     var cellIndent = item.length - item.replace(/^\s+/g, '').length + 1;
-    var span = new GherkinLineSpan(column + cellIndent, item.trim());
+    var span = {column: column + cellIndent, text: item.trim()};
     column += item.length + 1;
     return span;
   });
@@ -47,7 +45,7 @@ GherkinLine.prototype.getTags = function getTags() {
   items.shift();
   return items.map(function (item) {
     var length = item.length;
-    var span = new GherkinLineSpan(column, '@' + item.trim());
+    var span = {column: column, text: '@' + item.trim()};
     column += length + 1;
     return span;
   });
