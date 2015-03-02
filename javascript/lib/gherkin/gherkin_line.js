@@ -41,4 +41,16 @@ GherkinLine.prototype.getTableCells = function getTableCells() {
   });
 };
 
+GherkinLine.prototype.getTags = function getTags() {
+  var column = this.indent + 1;
+  var items = this.trimmedLineText.trim().split('@');
+  items.shift();
+  return items.map(function (item) {
+    var length = item.length;
+    var span = new GherkinLineSpan(column, '@' + item.trim());
+    column += length + 1;
+    return span;
+  });
+};
+
 module.exports = GherkinLine;
