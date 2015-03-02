@@ -1,5 +1,4 @@
 var Token = require('./token');
-var Location = require('./location');
 var GherkinLine = require('./gherkin_line');
 
 module.exports = function TokenScanner(source) {
@@ -11,7 +10,7 @@ module.exports = function TokenScanner(source) {
 
   this.read = function () {
     var line = lines[lineNumber++];
-    var location = new Location(lineNumber);
+    var location = {line: lineNumber};
     return line == null ? new Token(null, location) : new Token(new GherkinLine(line, lineNumber), location);
   }
 };
