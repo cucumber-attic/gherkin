@@ -2,8 +2,6 @@ function Token(line, location) {
   this.line = line;
   this.location = location;
   this.isEof = line == null;
-
-  this.matchedItems = []; // TODO: Remove - should always be set by TokenMathcer?
 };
 
 Token.prototype.getTokenValue = function () {
