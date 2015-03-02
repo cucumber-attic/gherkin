@@ -105,7 +105,11 @@ module.exports = function TokenMatcher() {
   }
 
   this.match_EOF = function match_EOF(token) {
-    return token.isEof;
+    if(token.isEof) {
+      setTokenMatched(token, 'EOF');
+      return true;
+    }
+    return false;
   };
 
   this.match_StepLine = function match_StepLine(token) {

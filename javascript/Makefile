@@ -9,7 +9,7 @@ JAVASCRIPT_FILES = $(shell find . -name "*.js")
 all: .compared
 .PHONY: all
 
-.compared: .built $(TOKENS)
+.compared: .built $(TOKENS) $(AST)
 	touch $@
 
 .built: lib/gherkin/parser.js lib/gherkin/dialects.json $(JAVASCRIPT_FILES)

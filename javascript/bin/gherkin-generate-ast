@@ -3,10 +3,12 @@ var fs = require('fs');
 var Parser = require('../lib/gherkin/parser');
 var TokenScanner = require('../lib/gherkin/token_scanner');
 var TokenMatcher = require('../lib/gherkin/token_matcher');
-var TokenFormatterBuilder = require('../lib/gherkin/token_formatter_builder');
+var AstBuilder = require('../lib/gherkin/ast_builder');
 
 var parser = new Parser();
 parser.stopAtFirstError = true;
 var scanner = new TokenScanner(fs.readFileSync(process.argv[2], 'UTF-8'));
-var builder = new TokenFormatterBuilder();
-process.stdout.write(parser.parse(scanner, builder, new TokenMatcher()));
+var builder = new AstBuilder();
+var ast = parser.parse(scanner, builder, new TokenMatcher());
+
+console.log(ast);
