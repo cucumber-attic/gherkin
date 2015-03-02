@@ -146,7 +146,7 @@ module.exports = function TokenMatcher() {
     token.matchedText = text;
     token.matchedKeyword = keyword;
     token.matchedIndent = (typeof indent === 'number') ? indent : (token.line == null ? 0 : token.line.indent);
-    token.mathcedItems = items || [];
+    token.matchedItems = items || [];
 
     token.location.column = token.matchedIndent + 1;
     token.matchedGherkinDialect = null // TODO: getCurrentDialect();

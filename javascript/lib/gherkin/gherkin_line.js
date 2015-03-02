@@ -1,3 +1,5 @@
+var GherkinLineSpan = require('./gherkin_line_span');
+
 function GherkinLine(lineText, lineNumber) {
   this.lineText = lineText;
   this.lineNumber = lineNumber;
@@ -24,7 +26,18 @@ GherkinLine.prototype.getLineText = function getLineText(indentToRemove) {
 
 GherkinLine.prototype.getRestTrimmed = function getRestTrimmed(length) {
   return this.trimmedLineText.substring(length).trim();
-}
+};
+
+GherkinLine.prototype.getTableCells = function getTableCells() {
+  var position = this.indent;
+  var items = this.trimmedLineText.split('|');
+  items.shift(); // Skip the beginning of the line
+  items.pop(); // Skip the one after the last pipe
+  return items.map(function (item) {
+    // TODO: TDD (unit tests) the calculation of column for each cell...
+    return new GherkinLineSpan(null, item.trim());
+  });
+};
 
 
 module.exports = GherkinLine;
