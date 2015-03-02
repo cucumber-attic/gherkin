@@ -43,7 +43,7 @@ module.exports = function TokenMatcher() {
 
   this.match_Empty = function match_Empty(token) {
     if (token.line.isEmpty) {
-      setTokenMatched(token, 'Empty');
+      setTokenMatched(token, 'Empty', null, null, 0);
       return true;
     }
     return false;
@@ -51,8 +51,8 @@ module.exports = function TokenMatcher() {
 
   this.match_Comment = function match_Comment(token) {
     if(token.line.startsWith('#')) {
-      var text = token.line.getLineText(0); //take the entire line
-      setTokenMatched(token, 'Comment', text);
+      var text = token.line.getLineText(0); //take the entire line, including leading space
+      setTokenMatched(token, 'Comment', text, null, 0);
       return true;
     }
     return false;
