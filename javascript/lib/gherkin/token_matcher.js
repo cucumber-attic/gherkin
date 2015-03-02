@@ -90,7 +90,7 @@ module.exports = function TokenMatcher() {
     if (token.line.startsWith(separator)) {
       var contentType = null;
       if (isOpen) {
-        contentType = token.line.getRestTrimmed(separator.Length);
+        contentType = token.line.getRestTrimmed(separator.length);
         activeDocStringSeparator = separator;
         indentToRemove = token.line.indent;
       } else {
@@ -98,6 +98,7 @@ module.exports = function TokenMatcher() {
         indentToRemove = 0;
       }
 
+      // TODO: Use the separator as keyword. That's needed for pretty printing.
       setTokenMatched(token, 'DocStringSeparator', contentType);
       return true;
     }
@@ -124,7 +125,9 @@ module.exports = function TokenMatcher() {
   };
 
   this.match_Other = function match_Other(token) {
-    true;
+    var text = token.line.getLineText(indentToRemove); //take the entire line, except removing DocString indents
+    setTokenMatched(token, 'Other', text, null, 0);
+    return true;
   };
 
   function matchTitleLine(token, tokenType, keywords) {
