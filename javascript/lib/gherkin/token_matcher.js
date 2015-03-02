@@ -34,6 +34,7 @@ module.exports = function TokenMatcher() {
 
   this.match_TableRow = function match_TableRow(token) {
     if (token.line.startsWith('|')) {
+      // TODO: indent
       setTokenMatched(token, 'TableRow', null, null, null, token.line.getTableCells());
       return true;
     }
@@ -41,13 +42,17 @@ module.exports = function TokenMatcher() {
   };
 
   this.match_Empty = function match_Empty(token) {
-    return token.trimmedLine === '';
+    if (token.line.isEmpty) {
+      setTokenMatched(token, 'Empty');
+      return true;
+    }
+    return false;
   };
 
   this.match_Comment = function match_Comment(token) {
     if(token.line.startsWith('#')) {
       var text = token.line.getLineText(0); //take the entire line
-      setTokenMatched(token, 'Comment', text, {indent: 0});
+      setTokenMatched(token, 'Comment', text);
       return true;
     }
     return false;
@@ -111,7 +116,7 @@ module.exports = function TokenMatcher() {
 
       if (token.line.startsWith(keyword)) {
         var title = token.line.getRestTrimmed(keyword.length);
-        setTokenMatched(token, 'StepLine', keyword, title);
+        setTokenMatched(token, 'StepLine', title, keyword);
         return true;
       }
     }
@@ -128,8 +133,8 @@ module.exports = function TokenMatcher() {
       var keyword = keywords[i];
 
       if (token.line.startsWithTitleKeyword(keyword)) {
-        var title = token.line.getRestTrimmed(keyword.Length + ':'.length);
-        setTokenMatched(token, tokenType, keyword, title);
+        var title = token.line.getRestTrimmed(keyword.length + ':'.length);
+        setTokenMatched(token, tokenType, title, keyword);
         return true;
       }
     }

@@ -59,7 +59,10 @@ module.exports = function Parser() {
 
     endRule(context, 'Feature');
 
-    if(context.errors.length > 0) {
+    // TODO: Similar optimisation in C#/Java/JavaScript
+    if(context.errors.length == 1) {
+      throw context.errors[0];
+    } else if(context.errors.length > 1) {
       throw Errors.CompositeParserException.create(context.errors);
     }
 

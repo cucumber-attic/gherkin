@@ -23,9 +23,9 @@ module.exports = function TokenFormatterBuilder() {
     ")" +
     token.matchedType +
     ":" +
-    token.matchedKeyword +
+    (token.matchedKeyword === undefined ? '' : token.matchedKeyword) +
     "/" +
-    token.matchedText +
+    (token.matchedText === undefined ? '' : token.matchedText) +
     "/" +
     token.matchedItems.map(function (i) { return i.column + ':' + i.text; }).join(',');
   }
