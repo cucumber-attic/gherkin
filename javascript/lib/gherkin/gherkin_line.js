@@ -29,15 +29,16 @@ GherkinLine.prototype.getRestTrimmed = function getRestTrimmed(length) {
 };
 
 GherkinLine.prototype.getTableCells = function getTableCells() {
-  var position = this.indent;
+  var column = this.indent + 1;
   var items = this.trimmedLineText.split('|');
   items.shift(); // Skip the beginning of the line
   items.pop(); // Skip the one after the last pipe
   return items.map(function (item) {
-    // TODO: TDD (unit tests) the calculation of column for each cell...
-    return new GherkinLineSpan(null, item.trim());
+    var cellIndent = item.length - item.replace(/^\s+/g, '').length + 1;
+    var span = new GherkinLineSpan(column + cellIndent, item.trim());
+    column += item.length + 1;
+    return span;
   });
 };
-
 
 module.exports = GherkinLine;
