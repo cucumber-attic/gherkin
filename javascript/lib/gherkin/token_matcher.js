@@ -2,7 +2,8 @@ var dialects = require('./dialects.json');
 var Errors = require('./errors');
 
 module.exports = function TokenMatcher() {
-  var dialect = dialects['en'];
+  var dialectName = 'en'
+  var dialect = dialects[dialectName];
 
   this.match_TagLine = function match_TagLine(token) {
     if(token.line.startsWith('@')) {
@@ -60,12 +61,12 @@ module.exports = function TokenMatcher() {
 
   this.match_Language = function match_Language(token) {
     if(token.line.startsWith('#language:')) {
-      var language = token.line.getRestTrimmed('#language:'.length);
-      dialect = dialects[language];
+      dialectName = token.line.getRestTrimmed('#language:'.length);
+      dialect = dialects[dialectName];
       if(!dialect) {
-        throw new Error("Unknown dialect: " + language);
+        throw new Error("Unknown dialect: " + dialectName);
       }
-      setTokenMatched(token, 'Language', language);
+      setTokenMatched(token, 'Language', dialectName);
       return true;
     }
     return false;
@@ -160,6 +161,6 @@ module.exports = function TokenMatcher() {
     token.matchedItems = items || [];
 
     token.location.column = token.matchedIndent + 1;
-    token.matchedGherkinDialect = null // TODO: getCurrentDialect();
+    token.matchedGherkinDialect = dialectName;
   }
 };

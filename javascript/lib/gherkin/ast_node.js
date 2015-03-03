@@ -13,4 +13,16 @@ AstNode.prototype.getSingle = function (ruleType) {
   return (this._subItems[ruleType] || [])[0];
 }
 
+AstNode.prototype.getItems = function (ruleType) {
+  return this._subItems[ruleType] || [];
+}
+
+AstNode.prototype.getToken = function (tokenType) {
+  return this.getSingle(tokenType);
+}
+
+AstNode.prototype.getTokens = function (tokenType) {
+  return this._subItems[tokenType] || [];
+}
+
 module.exports = AstNode;
