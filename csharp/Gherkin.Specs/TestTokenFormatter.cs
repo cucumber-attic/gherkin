@@ -16,7 +16,7 @@ namespace Gherkin.Specs
                 token.MatchedType,
                 token.MatchedKeyword,
                 token.MatchedText,
-                token.MathcedItems == null ? "" : string.Join(",", token.MathcedItems.Select(i => i.Column + ":" + i.Text))
+                token.MatchedItems == null ? "" : string.Join(",", token.MatchedItems.Select(i => i.Column + ":" + i.Text))
                 );
         }
     }
