@@ -68,7 +68,7 @@ namespace Gherkin
         {
             if (token.Line.StartsWith(GherkinLanguageConstants.COMMENT_PREFIX))
             {
-                var text = token.Line.GetLineText(0); //take the entire line
+                var text = token.Line.GetLineText(); //take the entire line
                 SetTokenMatched(token, TokenType.Comment, text, indent: 0);
                 return true;
             }

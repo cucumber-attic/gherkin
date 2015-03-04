@@ -31,7 +31,7 @@ namespace Gherkin
 
         public string GetTokenValue()
         {
-            return IsEOF ? "EOF" : Line.GetLineText();
+            return IsEOF ? "EOF" : Line.GetLineText(-1);
         }
 
         public override string ToString()
