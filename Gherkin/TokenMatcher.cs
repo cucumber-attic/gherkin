@@ -31,7 +31,7 @@ namespace Gherkin
             token.MatchedType = matchedType;
             token.MatchedKeyword = keyword;
             token.MatchedText = text;
-            token.MathcedItems = items;
+            token.MatchedItems = items;
             token.MatchedGherkinDialect = CurrentDialect;
             token.MatchedIndent = indent ?? (token.Line == null ? 0 : token.Line.Indent);
             token.Location = new Location(token.Location.Line, token.MatchedIndent + 1);

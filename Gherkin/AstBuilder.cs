@@ -147,7 +147,7 @@ namespace Gherkin
                 return new Tag[0];
 
             return tagsNode.GetTokens(TokenType.TagLine)
-                .SelectMany(t => t.MathcedItems, (t, tagItem) =>
+                .SelectMany(t => t.MatchedItems, (t, tagItem) =>
                     new Tag(GetLocation(t, tagItem.Column), tagItem.Text))
                 .ToArray();
         }
@@ -176,7 +176,7 @@ namespace Gherkin
 
         private TableCell[] GetCells(Token tableRowToken)
         {
-            return tableRowToken.MathcedItems
+            return tableRowToken.MatchedItems
                 .Select(cellItem => new TableCell(GetLocation(tableRowToken, cellItem.Column), cellItem.Text))
                 .ToArray();
         }
