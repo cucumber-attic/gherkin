@@ -51,9 +51,9 @@ namespace Gherkin
         /// <summary>
         /// Returns the line text
         /// </summary>
-        /// <param name="indentToRemove">The maximum number of whitespace characters to remove. -1 removes all whitespaces.</param>
+        /// <param name="indentToRemove">The maximum number of whitespace characters to remove. -1 removes all leading whitespaces.</param>
         /// <returns>The line text.</returns>
-        string GetLineText(int indentToRemove = -1);
+        string GetLineText(int indentToRemove = 0);
         /// <summary>
         /// Returns the remaining part of the line.
         /// </summary>

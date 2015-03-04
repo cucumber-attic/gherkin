@@ -51,7 +51,7 @@ namespace Gherkin
             return string.CompareOrdinal(text, textIndex, value, 0, value.Length) == 0;
         }
 
-        public string GetLineText(int indentToRemove = -1)
+        public string GetLineText(int indentToRemove)
         {
             if (indentToRemove < 0 || indentToRemove > Indent)
                 return trimmedLineText;
