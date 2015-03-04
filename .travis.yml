@@ -6,6 +6,9 @@ rvm:
   - 2.0.0
   - jruby-head
 
+jdk:
+  - oraclejdk8
+
 env:
   global:
     - EnableNuGetPackageRestore=true
