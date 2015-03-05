@@ -10,11 +10,13 @@ function Compiler() {
       var scenario = scenarioDefinition;
 
       var testCase = {
+        name: scenario.keyword + ": " + scenario.name,
         location: scenario.location
       };
       self.emit('test-case', testCase);
       scenario.steps.forEach(function (step) {
         var testStep = {
+          name: step.keyword + step.name,
           location: step.location
         };
         self.emit('test-step', testStep);

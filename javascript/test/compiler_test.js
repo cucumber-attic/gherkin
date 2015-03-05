@@ -23,8 +23,12 @@ describe('Compiler', function () {
 
   it("compiles a feature with a single scenario", function () {
     var expected = [
-      { type: 'TestCase', value: { location: { column: 3, line: 3 } } },
-      { type: 'TestStep', value: { location: { column: 5, line: 4 } } }
+      { type: 'TestCase', value: {
+        name: 'Scenario: minimalistic',
+        location: { column: 3, line: 3 } } },
+      { type: 'TestStep', value: {
+        name: 'Given the minimalism',
+        location: { column: 5, line: 4 } } }
     ];
 
     assert.deepEqual(compile('../../testdata/good/minimal.feature.ast.json'), expected);
