@@ -33,4 +33,16 @@ describe('Compiler', function () {
 
     assert.deepEqual(compile('../../testdata/good/minimal.feature.ast.json'), expected);
   });
+
+  it("compiles a feature with a background", function () {
+    var expected = [
+      { type: 'TestCase',
+        value: { name: 'Scenario: minimalistic', location: { column: 3, line: 7 } } },
+      { type: 'TestStep',
+        value: { name: 'Given the minimalism inside a background', location: { column: 5, line: 4 } } },
+      { type: 'TestStep',
+        value: { name: 'Given the minimalism', location: { column: 5, line: 8 } } } ];
+
+    assert.deepEqual(compile('../../testdata/good/background.feature.ast.json'), expected);
+  });
 });
