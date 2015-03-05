@@ -2,11 +2,8 @@ require 'gherkin/dialect'
 
 module Gherkin
   class TokenMatcher
-    attr_reader :dialect
-
     def initialize(dialect_name = 'en')
-      @dialect_name = dialect_name
-      @dialect = Dialect.for(@dialect_name)
+      change_dialect(dialect_name)
       @active_doc_string_separator = nil
       @indent_to_remove = 0
     end
@@ -14,28 +11,28 @@ module Gherkin
     def match_TagLine(token)
       return false unless token.line.start_with?('@')
 
-      set_token_matched(token, 'TagLine', null, null, null, token.line.tags)
+      set_token_matched(token, 'TagLine', nil, nil, nil, token.line.tags)
       true
     end
 
     def match_FeatureLine(token)
-      match_title_line(token, 'FeatureLine', dialect.feature)
+      match_title_line(token, 'FeatureLine', @dialect.feature)
     end
 
     def match_ScenarioLine(token)
-      match_title_line(token, 'ScenarioLine', dialect.scenario)
+      match_title_line(token, 'ScenarioLine', @dialect.scenario)
     end
 
     def match_ScenarioOutlineLine(token)
-      match_title_line(token, 'ScenarioOutlineLine', dialect.scenario_outline)
+      match_title_line(token, 'ScenarioOutlineLine', @dialect.scenario_outline)
     end
 
     def match_BackgroundLine(token)
-      match_title_line(token, 'BackgroundLine', dialect.background)
+      match_title_line(token, 'BackgroundLine', @dialect.background)
     end
 
     def match_ExamplesLine(token)
-      match_title_line(token, 'ExamplesLine', dialect.examples)
+      match_title_line(token, 'ExamplesLine', @dialect.examples)
     end
 
     def match_TableRow(token)
@@ -61,9 +58,8 @@ module Gherkin
     def match_Language(token)
       return false unless token.line.start_with?('#language:')
 
-      @dialect_name = token.line.get_rest_trimmed('#language:'.length)
-      @dialec = Dialect.for(@dialect_name)
-      raise "Unknown dialect: #{@dialect_name}" unless dialect
+      change_dialect(token.line.get_rest_trimmed('#language:'.length))
+      raise "Unknown dialect: #{@dialect_name}" unless @dialect
       set_token_matched(token, 'Language', @dialect_name)
       true
     end
@@ -110,11 +106,11 @@ module Gherkin
     end
 
     def match_StepLine(token)
-      keywords = dialect.given +
-                 dialect.when +
-                 dialect.then +
-                 dialect.and +
-                 dialect.but
+      keywords = @dialect.given +
+                 @dialect.when +
+                 @dialect.then +
+                 @dialect.and +
+                 @dialect.but
 
       keyword = keywords.detect { |k| token.line.start_with?(k) }
 
@@ -126,6 +122,11 @@ module Gherkin
     end
 
     private
+    def change_dialect(name)
+      @dialect_name = name
+      @dialect = Dialect.for(@dialect_name)
+    end
+
     def match_title_line(token, token_type, keywords)
       keyword = keywords.detect { |k| token.line.start_with_title_keyword?(k) }
 
