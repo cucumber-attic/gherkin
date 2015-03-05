@@ -7,6 +7,7 @@ module Gherkin
     def initialize(dialect_name = 'en')
       @dialect_name = dialect_name
       @dialect = Dialect.for(@dialect_name)
+      @active_doc_string_separator = nil
     end
 
     def match_TagLine(token)
@@ -36,6 +37,13 @@ module Gherkin
       match_title_line(token, 'ExamplesLine', dialect.examples)
     end
 
+    def match_TableRow(token)
+      return false unless token.line.start_with?('|')
+      # TODO: indent
+      set_token_matched(token, 'TableRow', nil, nil, nil, token.line.table_cells)
+      true
+    end
+
     def match_Empty(token)
       return false unless token.line.empty?
       set_token_matched(token, 'Empty', nil, nil, 0)
@@ -56,6 +64,35 @@ module Gherkin
       @dialec = Dialect.for(@dialect_name)
       raise "Unknown dialect: #{@dialect_name}" unless dialect
       set_token_matched(token, 'Language', @dialect_name)
+      true
+    end
+
+    def match_DocStringSeparator(token)
+      if @active_doc_string_separator.nil?
+        # open
+        _match_DocStringSeparator(token, '"""', true) ||
+        _match_DocStringSeparator(token, '```', true)
+      else
+        # close
+        _match_DocStringSeparator(token, @active_doc_string_separator, false)
+      end
+    end
+
+    def _match_DocStringSeparator(token, separator, is_open)
+      return false unless token.line.start_with?(separator)
+
+      content_type = nil
+      if is_open
+        contentType = token.line.getRestTrimmed(separator.length)
+        @active_doc_string_separator = separator
+        indent_to_remove = token.line.indent
+      else
+        @active_doc_string_separator = nil
+        indent_to_remove = 0
+      end
+
+      # TODO: Use the separator as keyword. That's needed for pretty printing.
+      set_token_matched(token, 'DocStringSeparator', content_type)
       true
     end
 

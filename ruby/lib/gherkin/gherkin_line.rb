@@ -23,5 +23,26 @@ module Gherkin
     def empty?
       @trimmed_line_text.empty?
     end
+
+    def get_line_text(indent_to_remove)
+      if indent_to_remove < 0 || indent_to_remove > indent
+        @trimmed_line_text
+      else
+        @line_text[indent_to_remove..-1]
+      end
+    end
+
+    def table_cells
+      column = indent + 1
+      items = @trimmed_line_text.split('|')
+      items = items[1..-2] # Skip space before and after outer |
+      items.map do |item|
+        cell_indent = item.length - item.lstrip.length + 1
+        column += item.length + 1
+        Cell.new(column + cell_indent, item.strip)
+      end
+    end
+
+    class Cell < Struct.new(:column, :text); end
   end
 end
