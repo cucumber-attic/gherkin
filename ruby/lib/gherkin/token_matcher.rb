@@ -8,6 +8,7 @@ module Gherkin
       @dialect_name = dialect_name
       @dialect = Dialect.for(@dialect_name)
       @active_doc_string_separator = nil
+      @indent_to_remove = 0
     end
 
     def match_TagLine(token)
@@ -137,7 +138,7 @@ module Gherkin
 
     def set_token_matched(token, matched_type, text=nil, keyword=nil, indent=nil, items=[])
       token.matched_type = matched_type
-      token.matched_text = text
+      token.matched_text = text && text.chomp
       token.matched_keyword = keyword
       token.matched_indent = indent || (token.line && token.line.indent) || 0
       token.matched_items = items

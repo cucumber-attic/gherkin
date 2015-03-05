@@ -4,7 +4,7 @@ module Gherkin
     def initialize(line_text, line_number)
       @line_text = line_text
       @line_number = line_number
-      @trimmed_line_text = line_text.lstrip
+      @trimmed_line_text = @line_text.lstrip
       @indent = @line_text.length - @trimmed_line_text.length
     end
 
@@ -34,16 +34,29 @@ module Gherkin
     end
 
     def table_cells
-      column = indent + 1
+      column = @indent + 1
       items = @trimmed_line_text.split('|')
       items = items[1..-2] # Skip space before and after outer |
       items.map do |item|
         cell_indent = item.length - item.lstrip.length + 1
+        span = Span.new(column + cell_indent, item.strip)
         column += item.length + 1
-        Cell.new(column + cell_indent, item.strip)
+        span
       end
     end
 
-    class Cell < Struct.new(:column, :text); end
+    def tags
+      column = @indent + 1;
+      items = @trimmed_line_text.strip.split('@')
+      items = items[1..-1] # ignore before the first @
+      items.map do |item|
+        length = item.length
+        span = Span.new(column + cell_indent, '@' + item.strip)
+        column += length + 1
+        return span;
+      end
+    end
+
+    class Span < Struct.new(:column, :text); end
   end
 end
