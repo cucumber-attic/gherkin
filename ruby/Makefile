@@ -12,7 +12,7 @@ all: .compared
 .compared: .built $(TOKENS) $(AST)
 	touch $@
 
-.built: lib/gherkin/parser.rb $(RUBY_FILES)
+.built: lib/gherkin/parser.rb lib/gherkin/dialects.json $(RUBY_FILES)
 	bundle exec rspec
 	touch $@
 
@@ -26,8 +26,11 @@ acceptance/testdata/%.feature.ast: ../testdata/%.feature ../testdata/%.feature.a
 	bundle exec ruby bin/gherkin-generate-ast $< > $@ || rm $@
 	diff --unified --ignore-all-space $<.ast $@ || rm $@
 
+lib/gherkin/dialects.json: ../dialects.json
+	cp $^ $@
+
 clean:
-	rm -rf .compared .built acceptance
+	rm -rf .compared .built acceptance lib/gherkin/parser.rb lib/gherking/dialects.json
 .PHONY: clean
 
 lib/gherkin/parser.rb: ../gherkin.berp gherkin-ruby.razor ../bin/berp.exe
