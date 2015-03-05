@@ -1,1484 +1,1832 @@
-﻿# This file is generated. Do not edit! Edit gherkin-ruby.razor instead.
+# This file is generated. Do not edit! Edit gherkin-ruby.razor instead.
 require 'gherkin/ast_builder'
+require 'gherkin/errors'
 
 module Gherkin
-  class ParserContext
-    attr_reader :token_scanner
-    attr_reader :ast_builder
-    attr_reader :token_matcher
-    attr_reader :token_queue
 
-    def initialize(token_scanner, ast_builder, token_matcher)
+  RULE_TYPE = [
+    :None,
+    :_EOF, # #EOF
+    :_Empty, # #Empty
+    :_Comment, # #Comment
+    :_TagLine, # #TagLine
+    :_FeatureLine, # #FeatureLine
+    :_BackgroundLine, # #BackgroundLine
+    :_ScenarioLine, # #ScenarioLine
+    :_ScenarioOutlineLine, # #ScenarioOutlineLine
+    :_ExamplesLine, # #ExamplesLine
+    :_StepLine, # #StepLine
+    :_DocStringSeparator, # #DocStringSeparator
+    :_TableRow, # #TableRow
+    :_Language, # #Language
+    :_Other, # #Other
+    :Feature, # Feature! := Feature_Header Background? Scenario_Definition*
+    :Feature_Header, # Feature_Header! := #Language? Tags? #FeatureLine Feature_Description
+    :Background, # Background! := #BackgroundLine Background_Description Scenario_Step*
+    :Scenario_Definition, # Scenario_Definition! := Tags? (Scenario | ScenarioOutline)
+    :Scenario, # Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
+    :ScenarioOutline, # ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples+
+    :Examples, # Examples! [#Empty|#Comment|#TagLine-&gt;#ExamplesLine] := Tags? #ExamplesLine Examples_Description Examples_Table
+    :Examples_Table, # Examples_Table := #TableRow+
+    :Scenario_Step, # Scenario_Step := Step
+    :ScenarioOutline_Step, # ScenarioOutline_Step := Step
+    :Step, # Step! := #StepLine Step_Arg?
+    :Step_Arg, # Step_Arg := (DataTable | DocString)
+    :DataTable, # DataTable! := #TableRow+
+    :DocString, # DocString! := #DocStringSeparator #Other* #DocStringSeparator
+    :Tags, # Tags! := #TagLine+
+    :Feature_Description, # Feature_Description := Description_Helper
+    :Background_Description, # Background_Description := Description_Helper
+    :Scenario_Description, # Scenario_Description := Description_Helper
+    :ScenarioOutline_Description, # ScenarioOutline_Description := Description_Helper
+    :Examples_Description, # Examples_Description := Description_Helper
+    :Description_Helper, # Description_Helper := #Empty* Description? #Comment*
+    :Description, # Description! := #Other+
+  ]
+
+  class ParserContext
+    attr_reader :token_scanner, :ast_builder, :token_matcher, :token_queue, :errors
+
+    def initialize(token_scanner, ast_builder, token_matcher, token_queue, errors)
       @token_scanner = token_scanner
       @ast_builder = ast_builder
       @token_matcher = token_matcher
-
-      @token_queue = []
+      @token_queue = token_queue
+      @errors = errors
     end
   end
 
   class Parser
+    attr_accessor :stop_at_first_error
 
-    def parse(token_scanner)
-      context = ParserContext.new(token_scanner, ASTBuilder.new, TokenMatcher.new)
+    def parse(token_scanner, ast_builder, token_matcher)
+      context = ParserContext.new(
+        token_scanner,
+        ast_builder,
+        token_matcher,
+        [],
+        []
+      )
 
-      context.ast_builder.push(:rule_Feature)
+      start_rule(context, :Feature);
       state = 0
-      loop do
+      token = nil
+      begin
         token = read_token(context)
         state = match_token(state, token, context)
+      end until(token.eof?)
 
-        break if token.eof?
+      end_rule(context, :Feature)
+
+      raise CompositeParserException.new(context.errors) if context.errors.any?
+
+      get_result(context)
+    end
+
+    def build(context, token)
+      handle_ast_error(context) do
+        context.ast_builder.build(token)
       end
+    end
 
-      if (state != 27)
-        raise ParseError.new("parsing error: end of file expected")
+    def start_rule(context, rule_type)
+      handle_ast_error(context) do
+        context.ast_builder.start_rule(rule_type)
       end
+    end
 
-      context.ast_builder.pop(:rule_Feature)
-      context.ast_builder.root_node
+    def end_rule(context, rule_type)
+      handle_ast_error(context) do
+        context.ast_builder.end_rule(rule_type)
+      end
+    end
+
+    def get_result(context)
+      context.ast_builder.get_result
     end
 
     def read_token(context)
-      context.token_queue.count > 0 ? context.token_queue.shift : context.token_scanner.read
+      context.token_queue.any? ? context.token_queue.shift : context.token_scanner.read
+    end
+
+
+    def match_EOF( context, token)
+      return handle_external_error(context, false) do
+        context.token_matcher.match_EOF(token)
+      end
+    end
+
+    def match_Empty( context, token)
+      return false if token.eof?
+      return handle_external_error(context, false) do
+        context.token_matcher.match_Empty(token)
+      end
+    end
+
+    def match_Comment( context, token)
+      return false if token.eof?
+      return handle_external_error(context, false) do
+        context.token_matcher.match_Comment(token)
+      end
+    end
+
+    def match_TagLine( context, token)
+      return false if token.eof?
+      return handle_external_error(context, false) do
+        context.token_matcher.match_TagLine(token)
+      end
+    end
+
+    def match_FeatureLine( context, token)
+      return false if token.eof?
+      return handle_external_error(context, false) do
+        context.token_matcher.match_FeatureLine(token)
+      end
+    end
+
+    def match_BackgroundLine( context, token)
+      return false if token.eof?
+      return handle_external_error(context, false) do
+        context.token_matcher.match_BackgroundLine(token)
+      end
+    end
+
+    def match_ScenarioLine( context, token)
+      return false if token.eof?
+      return handle_external_error(context, false) do
+        context.token_matcher.match_ScenarioLine(token)
+      end
+    end
+
+    def match_ScenarioOutlineLine( context, token)
+      return false if token.eof?
+      return handle_external_error(context, false) do
+        context.token_matcher.match_ScenarioOutlineLine(token)
+      end
+    end
+
+    def match_ExamplesLine( context, token)
+      return false if token.eof?
+      return handle_external_error(context, false) do
+        context.token_matcher.match_ExamplesLine(token)
+      end
+    end
+
+    def match_StepLine( context, token)
+      return false if token.eof?
+      return handle_external_error(context, false) do
+        context.token_matcher.match_StepLine(token)
+      end
+    end
+
+    def match_DocStringSeparator( context, token)
+      return false if token.eof?
+      return handle_external_error(context, false) do
+        context.token_matcher.match_DocStringSeparator(token)
+      end
+    end
+
+    def match_TableRow( context, token)
+      return false if token.eof?
+      return handle_external_error(context, false) do
+        context.token_matcher.match_TableRow(token)
+      end
+    end
+
+    def match_Language( context, token)
+      return false if token.eof?
+      return handle_external_error(context, false) do
+        context.token_matcher.match_Language(token)
+      end
+    end
+
+    def match_Other( context, token)
+      return false if token.eof?
+      return handle_external_error(context, false) do
+        context.token_matcher.match_Other(token)
+      end
     end
 
     def match_token(state, token, context)
       case state
       when 0
-        new_state = match_token_at_0(token, context)
+        match_token_at_0(token, context)
       when 1
-        new_state = match_token_at_1(token, context)
+        match_token_at_1(token, context)
       when 2
-        new_state = match_token_at_2(token, context)
+        match_token_at_2(token, context)
       when 3
-        new_state = match_token_at_3(token, context)
+        match_token_at_3(token, context)
       when 4
-        new_state = match_token_at_4(token, context)
+        match_token_at_4(token, context)
       when 5
-        new_state = match_token_at_5(token, context)
+        match_token_at_5(token, context)
       when 6
-        new_state = match_token_at_6(token, context)
+        match_token_at_6(token, context)
       when 7
-        new_state = match_token_at_7(token, context)
+        match_token_at_7(token, context)
       when 8
-        new_state = match_token_at_8(token, context)
+        match_token_at_8(token, context)
       when 9
-        new_state = match_token_at_9(token, context)
+        match_token_at_9(token, context)
       when 10
-        new_state = match_token_at_10(token, context)
+        match_token_at_10(token, context)
       when 11
-        new_state = match_token_at_11(token, context)
+        match_token_at_11(token, context)
       when 12
-        new_state = match_token_at_12(token, context)
+        match_token_at_12(token, context)
       when 13
-        new_state = match_token_at_13(token, context)
+        match_token_at_13(token, context)
       when 14
-        new_state = match_token_at_14(token, context)
+        match_token_at_14(token, context)
       when 15
-        new_state = match_token_at_15(token, context)
+        match_token_at_15(token, context)
       when 16
-        new_state = match_token_at_16(token, context)
+        match_token_at_16(token, context)
       when 17
-        new_state = match_token_at_17(token, context)
+        match_token_at_17(token, context)
       when 18
-        new_state = match_token_at_18(token, context)
+        match_token_at_18(token, context)
       when 19
-        new_state = match_token_at_19(token, context)
+        match_token_at_19(token, context)
       when 20
-        new_state = match_token_at_20(token, context)
+        match_token_at_20(token, context)
       when 21
-        new_state = match_token_at_21(token, context)
+        match_token_at_21(token, context)
       when 22
-        new_state = match_token_at_22(token, context)
+        match_token_at_22(token, context)
       when 23
-        new_state = match_token_at_23(token, context)
+        match_token_at_23(token, context)
       when 24
-        new_state = match_token_at_24(token, context)
+        match_token_at_24(token, context)
       when 25
-        new_state = match_token_at_25(token, context)
+        match_token_at_25(token, context)
       when 26
-        new_state = match_token_at_26(token, context)
+        match_token_at_26(token, context)
       when 28
-        new_state = match_token_at_28(token, context)
+        match_token_at_28(token, context)
       when 29
-        new_state = match_token_at_29(token, context)
+        match_token_at_29(token, context)
       when 30
-        new_state = match_token_at_30(token, context)
+        match_token_at_30(token, context)
       when 31
-        new_state = match_token_at_31(token, context)
+        match_token_at_31(token, context)
       when 32
-        new_state = match_token_at_32(token, context)
+        match_token_at_32(token, context)
       when 33
-        new_state = match_token_at_33(token, context)
+        match_token_at_33(token, context)
       else
-        raise ParserError.new("unknown state")
+        raise InvalidOperationException, "Unknown state: #{state}"
       end
-
-      new_state
     end
 
     
     # Start
     def match_token_at_0(token, context)
-      if (context.token_matcher.match_Language(token))
-        context.ast_builder.push(:rule_Feature_Header)
-        context.ast_builder.build(token)
+      if match_Language(context, token)
+        start_rule(context, :Feature_Header);
+        build(context, token);
         return 1
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.push(:rule_Feature_Header)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        start_rule(context, :Feature_Header);
+        start_rule(context, :Tags);
+        build(context, token);
         return 2
       end
-      if (context.token_matcher.match_FeatureLine(token))
-        context.ast_builder.push(:rule_Feature_Header)
-        context.ast_builder.build(token)
+      if match_FeatureLine(context, token)
+        start_rule(context, :Feature_Header);
+        build(context, token);
         return 3
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 0
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 0
       end
-      raise ParseError.new
+      
+      state_comment = "State: 0 - Start"
+      token.detach
+      expected_tokens = ["#Language", "#TagLine", "#FeatureLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 0
     end
-    
     
     # Feature:0>Feature_Header:0>#Language:0
     def match_token_at_1(token, context)
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        start_rule(context, :Tags);
+        build(context, token);
         return 2
       end
-      if (context.token_matcher.match_FeatureLine(token))
-        context.ast_builder.build(token)
+      if match_FeatureLine(context, token)
+        build(context, token);
         return 3
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 1
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 1
       end
-      raise ParseError.new
+      
+      state_comment = "State: 1 - Feature:0>Feature_Header:0>#Language:0"
+      token.detach
+      expected_tokens = ["#TagLine", "#FeatureLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 1
     end
-    
     
     # Feature:0>Feature_Header:1>Tags:0>#TagLine:0
     def match_token_at_2(token, context)
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        build(context, token);
         return 2
       end
-      if (context.token_matcher.match_FeatureLine(token))
-        context.ast_builder.pop(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_FeatureLine(context, token)
+        end_rule(context, :Tags);
+        build(context, token);
         return 3
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 2
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 2
       end
-      raise ParseError.new
+      
+      state_comment = "State: 2 - Feature:0>Feature_Header:1>Tags:0>#TagLine:0"
+      token.detach
+      expected_tokens = ["#TagLine", "#FeatureLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 2
     end
-    
     
     # Feature:0>Feature_Header:2>#FeatureLine:0
     def match_token_at_3(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :Feature_Header);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 3
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 5
       end
-      if (context.token_matcher.match_BackgroundLine(token))
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.push(:rule_Background)
-        context.ast_builder.build(token)
+      if match_BackgroundLine(context, token)
+        end_rule(context, :Feature_Header);
+        start_rule(context, :Background);
+        build(context, token);
         return 6
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :Feature_Header);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :Feature_Header);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :Feature_Header);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.push(:rule_Description)
-        context.ast_builder.build(token)
+      if match_Other(context, token)
+        start_rule(context, :Description);
+        build(context, token);
         return 4
       end
-      raise ParseError.new
+      
+      state_comment = "State: 3 - Feature:0>Feature_Header:2>#FeatureLine:0"
+      token.detach
+      expected_tokens = ["#EOF", "#Empty", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 3
     end
-    
     
     # Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_4(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :Description);
+        end_rule(context, :Feature_Header);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        end_rule(context, :Description);
+        build(context, token);
         return 5
       end
-      if (context.token_matcher.match_BackgroundLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.push(:rule_Background)
-        context.ast_builder.build(token)
+      if match_BackgroundLine(context, token)
+        end_rule(context, :Description);
+        end_rule(context, :Feature_Header);
+        start_rule(context, :Background);
+        build(context, token);
         return 6
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :Description);
+        end_rule(context, :Feature_Header);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :Description);
+        end_rule(context, :Feature_Header);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :Description);
+        end_rule(context, :Feature_Header);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.build(token)
+      if match_Other(context, token)
+        build(context, token);
         return 4
       end
-      raise ParseError.new
+      
+      state_comment = "State: 4 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0"
+      token.detach
+      expected_tokens = ["#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 4
     end
-    
     
     # Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_5(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :Feature_Header);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 5
       end
-      if (context.token_matcher.match_BackgroundLine(token))
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.push(:rule_Background)
-        context.ast_builder.build(token)
+      if match_BackgroundLine(context, token)
+        end_rule(context, :Feature_Header);
+        start_rule(context, :Background);
+        build(context, token);
         return 6
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :Feature_Header);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :Feature_Header);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_Feature_Header)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :Feature_Header);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 5
       end
-      raise ParseError.new
+      
+      state_comment = "State: 5 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0"
+      token.detach
+      expected_tokens = ["#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 5
     end
-    
     
     # Feature:1>Background:0>#BackgroundLine:0
     def match_token_at_6(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :Background);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 6
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 8
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        start_rule(context, :Step);
+        build(context, token);
         return 9
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.push(:rule_Description)
-        context.ast_builder.build(token)
+      if match_Other(context, token)
+        start_rule(context, :Description);
+        build(context, token);
         return 7
       end
-      raise ParseError.new
+      
+      state_comment = "State: 6 - Feature:1>Background:0>#BackgroundLine:0"
+      token.detach
+      expected_tokens = ["#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 6
     end
-    
     
     # Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_7(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :Description);
+        end_rule(context, :Background);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        end_rule(context, :Description);
+        build(context, token);
         return 8
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        end_rule(context, :Description);
+        start_rule(context, :Step);
+        build(context, token);
         return 9
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :Description);
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :Description);
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :Description);
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.build(token)
+      if match_Other(context, token)
+        build(context, token);
         return 7
       end
-      raise ParseError.new
+      
+      state_comment = "State: 7 - Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0"
+      token.detach
+      expected_tokens = ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 7
     end
-    
     
     # Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_8(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :Background);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 8
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        start_rule(context, :Step);
+        build(context, token);
         return 9
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 8
       end
-      raise ParseError.new
+      
+      state_comment = "State: 8 - Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0"
+      token.detach
+      expected_tokens = ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 8
     end
-    
     
     # Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
     def match_token_at_9(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :Step);
+        end_rule(context, :Background);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.push(:rule_DataTable)
-        context.ast_builder.build(token)
+      if match_TableRow(context, token)
+        start_rule(context, :DataTable);
+        build(context, token);
         return 10
       end
-      if (context.token_matcher.match_DocStringSeparator(token))
-        context.ast_builder.push(:rule_DocString)
-        context.ast_builder.build(token)
+      if match_DocStringSeparator(context, token)
+        start_rule(context, :DocString);
+        build(context, token);
         return 32
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        end_rule(context, :Step);
+        start_rule(context, :Step);
+        build(context, token);
         return 9
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :Step);
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :Step);
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :Step);
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 9
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 9
       end
-      raise ParseError.new
+      
+      state_comment = "State: 9 - Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0"
+      token.detach
+      expected_tokens = ["#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 9
     end
-    
     
     # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     def match_token_at_10(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_DataTable)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :DataTable);
+        end_rule(context, :Step);
+        end_rule(context, :Background);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.build(token)
+      if match_TableRow(context, token)
+        build(context, token);
         return 10
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.pop(:rule_DataTable)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        end_rule(context, :DataTable);
+        end_rule(context, :Step);
+        start_rule(context, :Step);
+        build(context, token);
         return 9
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_DataTable)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :DataTable);
+        end_rule(context, :Step);
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_DataTable)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :DataTable);
+        end_rule(context, :Step);
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_DataTable)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :DataTable);
+        end_rule(context, :Step);
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 10
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 10
       end
-      raise ParseError.new
+      
+      state_comment = "State: 10 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0"
+      token.detach
+      expected_tokens = ["#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 10
     end
-    
     
     # Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0
     def match_token_at_11(token, context)
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_Tags)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :Tags);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_Tags)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :Tags);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 11
       end
-      raise ParseError.new
+      
+      state_comment = "State: 11 - Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0"
+      token.detach
+      expected_tokens = ["#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 11
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0
     def match_token_at_12(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 14
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        start_rule(context, :Step);
+        build(context, token);
         return 15
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.push(:rule_Description)
-        context.ast_builder.build(token)
+      if match_Other(context, token)
+        start_rule(context, :Description);
+        build(context, token);
         return 13
       end
-      raise ParseError.new
+      
+      state_comment = "State: 12 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0"
+      token.detach
+      expected_tokens = ["#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 12
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_13(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :Description);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        end_rule(context, :Description);
+        build(context, token);
         return 14
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        end_rule(context, :Description);
+        start_rule(context, :Step);
+        build(context, token);
         return 15
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :Description);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :Description);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :Description);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.build(token)
+      if match_Other(context, token)
+        build(context, token);
         return 13
       end
-      raise ParseError.new
+      
+      state_comment = "State: 13 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0"
+      token.detach
+      expected_tokens = ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 13
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_14(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 14
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        start_rule(context, :Step);
+        build(context, token);
         return 15
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 14
       end
-      raise ParseError.new
+      
+      state_comment = "State: 14 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0"
+      token.detach
+      expected_tokens = ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 14
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
     def match_token_at_15(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :Step);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.push(:rule_DataTable)
-        context.ast_builder.build(token)
+      if match_TableRow(context, token)
+        start_rule(context, :DataTable);
+        build(context, token);
         return 16
       end
-      if (context.token_matcher.match_DocStringSeparator(token))
-        context.ast_builder.push(:rule_DocString)
-        context.ast_builder.build(token)
+      if match_DocStringSeparator(context, token)
+        start_rule(context, :DocString);
+        build(context, token);
         return 30
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        end_rule(context, :Step);
+        start_rule(context, :Step);
+        build(context, token);
         return 15
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :Step);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :Step);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :Step);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 15
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 15
       end
-      raise ParseError.new
+      
+      state_comment = "State: 15 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0"
+      token.detach
+      expected_tokens = ["#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 15
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     def match_token_at_16(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_DataTable)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :DataTable);
+        end_rule(context, :Step);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.build(token)
+      if match_TableRow(context, token)
+        build(context, token);
         return 16
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.pop(:rule_DataTable)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        end_rule(context, :DataTable);
+        end_rule(context, :Step);
+        start_rule(context, :Step);
+        build(context, token);
         return 15
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_DataTable)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :DataTable);
+        end_rule(context, :Step);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_DataTable)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :DataTable);
+        end_rule(context, :Step);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_DataTable)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :DataTable);
+        end_rule(context, :Step);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 16
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 16
       end
-      raise ParseError.new
+      
+      state_comment = "State: 16 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0"
+      token.detach
+      expected_tokens = ["#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 16
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
     def match_token_at_17(token, context)
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 19
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        start_rule(context, :Step);
+        build(context, token);
         return 20
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        start_rule(context, :Examples);
+        start_rule(context, :Tags);
+        build(context, token);
         return 22
       end
-      if (context.token_matcher.match_ExamplesLine(token))
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
+      if match_ExamplesLine(context, token)
+        start_rule(context, :Examples);
+        build(context, token);
         return 23
       end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.push(:rule_Description)
-        context.ast_builder.build(token)
+      if match_Other(context, token)
+        start_rule(context, :Description);
+        build(context, token);
         return 18
       end
-      raise ParseError.new
+      
+      state_comment = "State: 17 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0"
+      token.detach
+      expected_tokens = ["#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 17
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_18(token, context)
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        end_rule(context, :Description);
+        build(context, token);
         return 19
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        end_rule(context, :Description);
+        start_rule(context, :Step);
+        build(context, token);
         return 20
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :Description);
+        start_rule(context, :Examples);
+        start_rule(context, :Tags);
+        build(context, token);
         return 22
       end
-      if (context.token_matcher.match_ExamplesLine(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
+      if match_ExamplesLine(context, token)
+        end_rule(context, :Description);
+        start_rule(context, :Examples);
+        build(context, token);
         return 23
       end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.build(token)
+      if match_Other(context, token)
+        build(context, token);
         return 18
       end
-      raise ParseError.new
+      
+      state_comment = "State: 18 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0"
+      token.detach
+      expected_tokens = ["#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 18
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_19(token, context)
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 19
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        start_rule(context, :Step);
+        build(context, token);
         return 20
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        start_rule(context, :Examples);
+        start_rule(context, :Tags);
+        build(context, token);
         return 22
       end
-      if (context.token_matcher.match_ExamplesLine(token))
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
+      if match_ExamplesLine(context, token)
+        start_rule(context, :Examples);
+        build(context, token);
         return 23
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 19
       end
-      raise ParseError.new
+      
+      state_comment = "State: 19 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0"
+      token.detach
+      expected_tokens = ["#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 19
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
     def match_token_at_20(token, context)
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.push(:rule_DataTable)
-        context.ast_builder.build(token)
+      if match_TableRow(context, token)
+        start_rule(context, :DataTable);
+        build(context, token);
         return 21
       end
-      if (context.token_matcher.match_DocStringSeparator(token))
-        context.ast_builder.push(:rule_DocString)
-        context.ast_builder.build(token)
+      if match_DocStringSeparator(context, token)
+        start_rule(context, :DocString);
+        build(context, token);
         return 28
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        end_rule(context, :Step);
+        start_rule(context, :Step);
+        build(context, token);
         return 20
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :Step);
+        start_rule(context, :Examples);
+        start_rule(context, :Tags);
+        build(context, token);
         return 22
       end
-      if (context.token_matcher.match_ExamplesLine(token))
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
+      if match_ExamplesLine(context, token)
+        end_rule(context, :Step);
+        start_rule(context, :Examples);
+        build(context, token);
         return 23
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 20
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 20
       end
-      raise ParseError.new
+      
+      state_comment = "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0"
+      token.detach
+      expected_tokens = ["#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 20
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     def match_token_at_21(token, context)
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.build(token)
+      if match_TableRow(context, token)
+        build(context, token);
         return 21
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.pop(:rule_DataTable)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        end_rule(context, :DataTable);
+        end_rule(context, :Step);
+        start_rule(context, :Step);
+        build(context, token);
         return 20
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_DataTable)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :DataTable);
+        end_rule(context, :Step);
+        start_rule(context, :Examples);
+        start_rule(context, :Tags);
+        build(context, token);
         return 22
       end
-      if (context.token_matcher.match_ExamplesLine(token))
-        context.ast_builder.pop(:rule_DataTable)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
+      if match_ExamplesLine(context, token)
+        end_rule(context, :DataTable);
+        end_rule(context, :Step);
+        start_rule(context, :Examples);
+        build(context, token);
         return 23
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 21
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 21
       end
-      raise ParseError.new
+      
+      state_comment = "State: 21 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0"
+      token.detach
+      expected_tokens = ["#TableRow", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 21
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
     def match_token_at_22(token, context)
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        build(context, token);
         return 22
       end
-      if (context.token_matcher.match_ExamplesLine(token))
-        context.ast_builder.pop(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_ExamplesLine(context, token)
+        end_rule(context, :Tags);
+        build(context, token);
         return 23
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 22
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 22
       end
-      raise ParseError.new
+      
+      state_comment = "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0"
+      token.detach
+      expected_tokens = ["#TagLine", "#ExamplesLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 22
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0
     def match_token_at_23(token, context)
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 23
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 25
       end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.build(token)
+      if match_TableRow(context, token)
+        build(context, token);
         return 26
       end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.push(:rule_Description)
-        context.ast_builder.build(token)
+      if match_Other(context, token)
+        start_rule(context, :Description);
+        build(context, token);
         return 24
       end
-      raise ParseError.new
+      
+      state_comment = "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0"
+      token.detach
+      expected_tokens = ["#Empty", "#Comment", "#TableRow", "#Other"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 23
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_24(token, context)
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        end_rule(context, :Description);
+        build(context, token);
         return 25
       end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.pop(:rule_Description)
-        context.ast_builder.build(token)
+      if match_TableRow(context, token)
+        end_rule(context, :Description);
+        build(context, token);
         return 26
       end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.build(token)
+      if match_Other(context, token)
+        build(context, token);
         return 24
       end
-      raise ParseError.new
+      
+      state_comment = "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0"
+      token.detach
+      expected_tokens = ["#Comment", "#TableRow", "#Other"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 24
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_25(token, context)
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 25
       end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.build(token)
+      if match_TableRow(context, token)
+        build(context, token);
         return 26
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 25
       end
-      raise ParseError.new
+      
+      state_comment = "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0"
+      token.detach
+      expected_tokens = ["#Comment", "#TableRow", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 25
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0
     def match_token_at_26(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_Examples)
-        context.ast_builder.pop(:rule_ScenarioOutline)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :Examples);
+        end_rule(context, :ScenarioOutline);
+        end_rule(context, :Scenario_Definition);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_TableRow(token))
-        context.ast_builder.build(token)
+      if match_TableRow(context, token)
+        build(context, token);
         return 26
       end
-      if (context.token_matcher.match_TagLine(token))
-        if (lookahead_0(context, token))
-        context.ast_builder.pop(:rule_Examples)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        if LookAhead_0(context, token)
+        end_rule(context, :Examples);
+        start_rule(context, :Examples);
+        start_rule(context, :Tags);
+        build(context, token);
         return 22
         end
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_Examples)
-        context.ast_builder.pop(:rule_ScenarioOutline)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :Examples);
+        end_rule(context, :ScenarioOutline);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ExamplesLine(token))
-        context.ast_builder.pop(:rule_Examples)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
+      if match_ExamplesLine(context, token)
+        end_rule(context, :Examples);
+        start_rule(context, :Examples);
+        build(context, token);
         return 23
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_Examples)
-        context.ast_builder.pop(:rule_ScenarioOutline)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :Examples);
+        end_rule(context, :ScenarioOutline);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_Examples)
-        context.ast_builder.pop(:rule_ScenarioOutline)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :Examples);
+        end_rule(context, :ScenarioOutline);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 26
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 26
       end
-      raise ParseError.new
+      
+      state_comment = "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0"
+      token.detach
+      expected_tokens = ["#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 26
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
     def match_token_at_28(token, context)
-      if (context.token_matcher.match_DocStringSeparator(token))
-        context.ast_builder.build(token)
+      if match_DocStringSeparator(context, token)
+        build(context, token);
         return 29
       end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.build(token)
+      if match_Other(context, token)
+        build(context, token);
         return 28
       end
-      raise ParseError.new
+      
+      state_comment = "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
+      token.detach
+      expected_tokens = ["#DocStringSeparator", "#Other"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 28
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
     def match_token_at_29(token, context)
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.pop(:rule_DocString)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        end_rule(context, :DocString);
+        end_rule(context, :Step);
+        start_rule(context, :Step);
+        build(context, token);
         return 20
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_DocString)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :DocString);
+        end_rule(context, :Step);
+        start_rule(context, :Examples);
+        start_rule(context, :Tags);
+        build(context, token);
         return 22
       end
-      if (context.token_matcher.match_ExamplesLine(token))
-        context.ast_builder.pop(:rule_DocString)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Examples)
-        context.ast_builder.build(token)
+      if match_ExamplesLine(context, token)
+        end_rule(context, :DocString);
+        end_rule(context, :Step);
+        start_rule(context, :Examples);
+        build(context, token);
         return 23
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 29
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 29
       end
-      raise ParseError.new
+      
+      state_comment = "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
+      token.detach
+      expected_tokens = ["#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 29
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
     def match_token_at_30(token, context)
-      if (context.token_matcher.match_DocStringSeparator(token))
-        context.ast_builder.build(token)
+      if match_DocStringSeparator(context, token)
+        build(context, token);
         return 31
       end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.build(token)
+      if match_Other(context, token)
+        build(context, token);
         return 30
       end
-      raise ParseError.new
+      
+      state_comment = "State: 30 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
+      token.detach
+      expected_tokens = ["#DocStringSeparator", "#Other"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 30
     end
-    
     
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
     def match_token_at_31(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_DocString)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :DocString);
+        end_rule(context, :Step);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.pop(:rule_DocString)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        end_rule(context, :DocString);
+        end_rule(context, :Step);
+        start_rule(context, :Step);
+        build(context, token);
         return 15
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_DocString)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :DocString);
+        end_rule(context, :Step);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_DocString)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :DocString);
+        end_rule(context, :Step);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_DocString)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Scenario)
-        context.ast_builder.pop(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :DocString);
+        end_rule(context, :Step);
+        end_rule(context, :Scenario);
+        end_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 31
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 31
       end
-      raise ParseError.new
+      
+      state_comment = "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
+      token.detach
+      expected_tokens = ["#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 31
     end
-    
     
     # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
     def match_token_at_32(token, context)
-      if (context.token_matcher.match_DocStringSeparator(token))
-        context.ast_builder.build(token)
+      if match_DocStringSeparator(context, token)
+        build(context, token);
         return 33
       end
-      if (context.token_matcher.match_Other(token))
-        context.ast_builder.build(token)
+      if match_Other(context, token)
+        build(context, token);
         return 32
       end
-      raise ParseError.new
+      
+      state_comment = "State: 32 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
+      token.detach
+      expected_tokens = ["#DocStringSeparator", "#Other"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 32
     end
-    
     
     # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
     def match_token_at_33(token, context)
-      if (context.token_matcher.match_EOF(token))
-        context.ast_builder.pop(:rule_DocString)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.build(token)
+      if match_EOF(context, token)
+        end_rule(context, :DocString);
+        end_rule(context, :Step);
+        end_rule(context, :Background);
+        build(context, token);
         return 27
       end
-      if (context.token_matcher.match_StepLine(token))
-        context.ast_builder.pop(:rule_DocString)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.push(:rule_Step)
-        context.ast_builder.build(token)
+      if match_StepLine(context, token)
+        end_rule(context, :DocString);
+        end_rule(context, :Step);
+        start_rule(context, :Step);
+        build(context, token);
         return 9
       end
-      if (context.token_matcher.match_TagLine(token))
-        context.ast_builder.pop(:rule_DocString)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Tags)
-        context.ast_builder.build(token)
+      if match_TagLine(context, token)
+        end_rule(context, :DocString);
+        end_rule(context, :Step);
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Tags);
+        build(context, token);
         return 11
       end
-      if (context.token_matcher.match_ScenarioLine(token))
-        context.ast_builder.pop(:rule_DocString)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_Scenario)
-        context.ast_builder.build(token)
+      if match_ScenarioLine(context, token)
+        end_rule(context, :DocString);
+        end_rule(context, :Step);
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :Scenario);
+        build(context, token);
         return 12
       end
-      if (context.token_matcher.match_ScenarioOutlineLine(token))
-        context.ast_builder.pop(:rule_DocString)
-        context.ast_builder.pop(:rule_Step)
-        context.ast_builder.pop(:rule_Background)
-        context.ast_builder.push(:rule_Scenario_Definition)
-        context.ast_builder.push(:rule_ScenarioOutline)
-        context.ast_builder.build(token)
+      if match_ScenarioOutlineLine(context, token)
+        end_rule(context, :DocString);
+        end_rule(context, :Step);
+        end_rule(context, :Background);
+        start_rule(context, :Scenario_Definition);
+        start_rule(context, :ScenarioOutline);
+        build(context, token);
         return 17
       end
-      if (context.token_matcher.match_Comment(token))
-        context.ast_builder.build(token)
+      if match_Comment(context, token)
+        build(context, token);
         return 33
       end
-      if (context.token_matcher.match_Empty(token))
-        context.ast_builder.build(token)
+      if match_Empty(context, token)
+        build(context, token);
         return 33
       end
-      raise ParseError.new
+      
+      state_comment = "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
+      token.detach
+      expected_tokens = ["#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return 33
     end
-    
 
-    
-    def lookahead_0(context, current_token)
-      current_token.detach
-      queue = []
-      match = false
-      loop do
-        token = read_token(context)
-        token.detach
-        queue.push(token)
+    private
 
-        if (false \
-          || context.token_matcher.match_ExamplesLine(token) \
-        )
-          match = true
-          break
-        end
-
-        if not(false \
-          || context.token_matcher.match_Empty(token) \
-          || context.token_matcher.match_Comment(token) \
-          || context.token_matcher.match_TagLine(token) \
-        )
-          break
-        end
-      end
-      queue.each do |t|
-        context.token_queue.push(t)
-      end
-      match
+    def handle_ast_error(context, &action)
+      handle_external_error(context, true, &action)
     end
-    
+
+    def handle_external_error(context, default_value, &action)
+      return action.call if stop_at_first_error
+
+      begin
+        return action.call
+      rescue CompositeParserException => e
+        e.errors.each { |error| add_error(context, error) }
+      rescue ParserException => e
+        add_error(context, e)
+      end
+      default_value
+    end
+
   end
 end

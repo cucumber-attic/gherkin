@@ -1,8 +1,8 @@
 # encoding: utf-8
 Gem::Specification.new do |s|
-  s.name        = 'cucumber-core'
+  s.name        = 'gherkin'
   s.version     = '3.0.0.alpha.1'
-  s.authors     = ["Gáspár Nagy", "Aslak Hellesøy"]
+  s.authors     = ["Gáspár Nagy", "Aslak Hellesøy", "Steve Tooke"]
   s.description = 'Gherkin parser'
   s.summary     = "gherkin-#{s.version}"
   s.email       = 'cukes@googlegroups.com'
@@ -11,9 +11,9 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
   s.required_ruby_version = ">= 1.9.3"
 
-  s.add_development_dependency 'bundler',   '>= 1.3.5'
-  s.add_development_dependency 'rake',      '>= 0.10.1'
-  s.add_development_dependency 'rspec',     '>= 2.14.1'
+  s.add_development_dependency 'bundler',   '>= 1.7.12'
+  s.add_development_dependency 'rake',      '>= 10.4.2'
+  s.add_development_dependency 'rspec',     '>= 3.2.0'
 
   # For coverage reports
   s.add_development_dependency 'coveralls', '>= 0.7.0'
