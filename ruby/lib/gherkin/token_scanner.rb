@@ -1,4 +1,7 @@
 require 'gherkin/location'
+require 'gherkin/token'
+require 'gherkin/gherkin_line'
+
 module Gherkin
   class TokenScanner
 
@@ -25,6 +28,6 @@ module Gherkin
         Token.new(nil, location)
       end
     end
-    
+
   end
 end
