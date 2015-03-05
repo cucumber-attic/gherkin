@@ -18,12 +18,12 @@ all: .compared
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
-	java -classpath target/classes:target/test-classes gherkin.GenerateTokens $< > $@
+	java -classpath target/classes:target/test-classes gherkin.GenerateTokens $< > $@ || rm $@
 	diff --unified --ignore-all-space $<.tokens $@ || rm $@
 
 acceptance/testdata/%.feature.ast: ../testdata/%.feature ../testdata/%.feature.ast .built
 	mkdir -p `dirname $@`
-	java -classpath target/classes:target/test-classes gherkin.GenerateAst $< > $@
+	java -classpath target/classes:target/test-classes gherkin.GenerateAst $< > $@ || rm $@
 	diff --unified --ignore-all-space $<.ast $@ || rm $@
 
 clean:
