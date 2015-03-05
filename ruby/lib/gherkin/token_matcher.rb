@@ -39,7 +39,14 @@ module Gherkin
     def match_Empty(token)
       return false unless token.line.empty?
       set_token_matched(token, 'Empty', nil, nil, 0)
-      return true
+      true
+    end
+
+    def match_Comment(token)
+      return false unless token.line.start_with?('#')
+      text = token.line.get_line_text(0) #take the entire line, including leading space
+      set_token_matched(token, 'Comment', text, nil, 0)
+      true
     end
 
     def match_Language(token)
@@ -55,18 +62,34 @@ module Gherkin
     def match_EOF(token)
       return false unless token.eof?
       set_token_matched(token, 'EOF')
+      true
+    end
+
+    def match_StepLine(token)
+      keywords = dialect.given +
+                 dialect.when +
+                 dialect.then +
+                 dialect.and +
+                 dialect.but
+
+      keyword = keywords.detect { |k| token.line.start_with?(k) }
+
+      return false unless keyword
+
+      title = token.line.get_rest_trimmed(keyword.length)
+      set_token_matched(token, 'StepLine', title, keyword)
       return true
     end
 
     private
     def match_title_line(token, token_type, keywords)
-      keyword = detect_keyword(token.line, keywords)
+      keyword = keywords.detect { |k| token.line.start_with_title_keyword?(k) }
 
       return false unless keyword
 
       title = token.line.get_rest_trimmed(keyword.length + ':'.length)
       set_token_matched(token, token_type, title, keyword)
-      return true
+      true
     end
 
     def set_token_matched(token, matched_type, text=nil, keyword=nil, indent=nil, items=[])
@@ -77,10 +100,6 @@ module Gherkin
       token.matched_items = items
       token.location.column = token.matched_indent + 1
       token.matched_gherkin_dialect = @dialect_name
-    end
-
-    def detect_keyword(line, keywords)
-      keywords.detect { |k| line.start_with_title_keyword?(k) }
     end
   end
 end
