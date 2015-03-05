@@ -1,26 +1,28 @@
+require 'gherkin/ast_node'
+
 module Gherkin
-  class ASTBuilder
+  class AstBuilder
+    attr_reader :stack
 
     def initialize
-      @stack = []
-      push(:root)
+      @stack = [AstNode.new('None')]
     end
 
-    def push(rule)
-      @stack.push([])
+    def start_rule(rule_type)
+      stack.push AstNode.new(rule_type)
+    end
+
+    def end_rule(rule_type)
+      node = stack.pop
+      current_node.add(node.rule_type, transform_node(node))
     end
 
     def build(token)
-      @stack.last.push(token)
+      current_node.add(token.matched_type, token)
     end
 
-    def pop(rule)
-      node = @stack.pop
-      @stack.last.push(node)
-    end
-
-    def root_node
-      @stack.first.first
+    def current_node
+      stack.last
     end
   end
 end

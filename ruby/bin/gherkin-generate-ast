@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__),"../lib"))
+require 'gherkin/parser'
+require 'gherkin/token_scanner'
+require 'gherkin/token_matcher'
+require 'gherkin/ast_builder'
+
+parser = Gherkin::Parser.new
+parser.stop_at_first_error = true
+scanner = Gherkin::TokenScanner.new(ARGF)
+builder = Gherkin::AstBuilder.new
+ast = parser.parse(scanner, builder, Gherkin::TokenMatcher.new)
+
+print JSON.generate(ast)
