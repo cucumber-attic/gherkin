@@ -84,7 +84,7 @@ module Gherkin
 
       content_type = nil
       if is_open
-        contentType = token.line.get_rest_trimmed(separator.length)
+        content_type = token.line.get_rest_trimmed(separator.length)
         @active_doc_string_separator = separator
         @indent_to_remove = token.line.indent
       else
