@@ -6,6 +6,8 @@ function Compiler() {
 
   var self = this;
   this.compile = function(feature) {
+    var backgroundSteps = feature.background ? feature.background.steps : [];
+
     feature.scenarioDefinitions.forEach(function (scenarioDefinition) {
       var scenario = scenarioDefinition;
 
@@ -14,7 +16,9 @@ function Compiler() {
         location: scenario.location
       };
       self.emit('test-case', testCase);
-      scenario.steps.forEach(function (step) {
+
+      var steps = [].concat(backgroundSteps).concat(scenario.steps);
+      steps.forEach(function (step) {
         var testStep = {
           name: step.keyword + step.name,
           location: step.location
