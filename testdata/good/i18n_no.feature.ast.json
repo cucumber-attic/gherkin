@@ -1,0 +1,55 @@
+{
+  "keyword": "Egenskap",
+  "language": "no",
+  "location": {
+    "column": 1,
+    "line": 2
+  },
+  "name": "i18n support",
+  "scenarioDefinitions": [
+    {
+      "keyword": "Scenario",
+      "location": {
+        "column": 3,
+        "line": 4
+      },
+      "name": "Parsing many languages",
+      "steps": [
+        {
+          "argument": null,
+          "keyword": "Gitt ",
+          "location": {
+            "column": 5,
+            "line": 5
+          },
+          "name": "Gherkin supports many languages",
+          "type": "Step"
+        },
+        {
+          "argument": null,
+          "keyword": "Når ",
+          "location": {
+            "column": 5,
+            "line": 6
+          },
+          "name": "Norwegian keywords are parsed",
+          "type": "Step"
+        },
+        {
+          "argument": null,
+          "keyword": "Så ",
+          "location": {
+            "column": 5,
+            "line": 7
+          },
+          "name": "they should be recognized",
+          "type": "Step"
+        }
+      ],
+      "tags": [],
+      "type": "Scenario"
+    }
+  ],
+  "tags": [],
+  "type": "Feature"
+}

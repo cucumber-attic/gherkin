@@ -31,14 +31,19 @@ module.exports = function AstBuilder () {
   }
 
   function getTags (node) {
+    var tags = [];
     var tagsNode = node.getSingle('Tags');
-    if (!tagsNode) return [];
-    console.log('TAGSNODE', tagsNode)
-    // return tagsNode.getTokens('TagLine').map(function (token) {
-    //   return {
-    //     location: getLocation(token)
-    //   }
-    // });
+    if (!tagsNode) return tags;
+    tagsNode.getTokens('TagLine').forEach(function (token) {
+      token.matchedItems.forEach(function (tagItem) {
+        tags.push({
+          location: getLocation(token, tagItem.column),
+          name: tagItem.text
+        });
+      });
+
+      return tags;
+    });
   }
 
   function getCells(tableRowToken) {
@@ -94,6 +99,25 @@ module.exports = function AstBuilder () {
           contentType: contentType,
           content: content
         };
+      case 'DataTable':
+        var rows = getTableRows(node);
+        return {
+          type: node.ruleType,
+          rows: rows,
+        }
+      case 'Background':
+        var backgroundLine = node.getToken('BackgroundLine');
+        var description = getDescription(node);
+        var steps = getSteps(node);
+
+        return {
+          type: node.ruleType,
+          location: getLocation(backgroundLine),
+          keyword: backgroundLine.matchedKeyword,
+          name: backgroundLine.matchedText,
+          description: description,
+          steps: steps
+        };
       case 'Scenario_Definition':
         var tags = getTags(node);
         var scenarioNode = node.getSingle('Scenario');
@@ -103,7 +127,7 @@ module.exports = function AstBuilder () {
           var steps = getSteps(scenarioNode);
 
           return {
-            type: node.ruleType,
+            type: scenarioNode.ruleType,
             tags: tags,
             location: getLocation(scenarioLine),
             keyword: scenarioLine.matchedKeyword,
@@ -121,7 +145,7 @@ module.exports = function AstBuilder () {
           var examples = scenarioOutlineNode.getItems('Examples');
 
           return {
-            type: node.ruleType,
+            type: scenarioOutlineNode.ruleType,
             tags: tags,
             location: getLocation(scenarioOutlineLine),
             keyword: scenarioOutlineLine.matchedKeyword,
@@ -150,6 +174,17 @@ module.exports = function AstBuilder () {
           header: header,
           rows: rows
         };
+      case 'Description':
+        var lineTokens = node.getTokens('Other');
+        // Trim trailing empty lines
+        var end = lineTokens.length;
+        while (end > 0 && lineTokens[end-1].line.trimmedLineText === '') {
+            end--;
+        }
+        lineTokens = lineTokens.slice(0, end);
+
+        var description = lineTokens.map(function (token) { return token.matchedText}).join("\n");
+        return description;
 
       case 'Feature':
         var header = node.getSingle('Feature_Header');

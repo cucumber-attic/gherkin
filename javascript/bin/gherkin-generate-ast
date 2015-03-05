@@ -11,4 +11,4 @@ var scanner = new TokenScanner(fs.readFileSync(process.argv[2], 'UTF-8'));
 var builder = new AstBuilder();
 var ast = parser.parse(scanner, builder, new TokenMatcher());
 
-console.log(JSON.stringify(ast, null, 2));
+console.log(JSON.stringify(ast));

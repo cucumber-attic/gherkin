@@ -1,0 +1,220 @@
+{
+  "description": "  This is a single line description",
+  "keyword": "Feature",
+  "language": "en",
+  "location": {
+    "column": 1,
+    "line": 1
+  },
+  "name": "Descriptions everywhere",
+  "scenarioDefinitions": [
+    {
+      "description": "  This description\n  has two lines and indented with two spaces",
+      "keyword": "Scenario",
+      "location": {
+        "column": 3,
+        "line": 4
+      },
+      "name": "two lines",
+      "steps": [
+        {
+          "argument": null,
+          "keyword": "Given ",
+          "location": {
+            "column": 5,
+            "line": 7
+          },
+          "name": "the minimalism",
+          "type": "Step"
+        }
+      ],
+      "tags": [],
+      "type": "Scenario"
+    },
+    {
+      "description": "This is a description without indentation",
+      "keyword": "Scenario",
+      "location": {
+        "column": 1,
+        "line": 9
+      },
+      "name": "without indentation",
+      "steps": [
+        {
+          "argument": null,
+          "keyword": "Given ",
+          "location": {
+            "column": 3,
+            "line": 11
+          },
+          "name": "the minimalism",
+          "type": "Step"
+        }
+      ],
+      "tags": [],
+      "type": "Scenario"
+    },
+    {
+      "description": "  This description\n\n  has an empty line in the middle",
+      "keyword": "Scenario",
+      "location": {
+        "column": 3,
+        "line": 13
+      },
+      "name": "empty lines in the middle",
+      "steps": [
+        {
+          "argument": null,
+          "keyword": "Given ",
+          "location": {
+            "column": 5,
+            "line": 17
+          },
+          "name": "the minimalism",
+          "type": "Step"
+        }
+      ],
+      "tags": [],
+      "type": "Scenario"
+    },
+    {
+      "description": "  This description\n  has an empty lines around",
+      "keyword": "Scenario",
+      "location": {
+        "column": 3,
+        "line": 19
+      },
+      "name": "empty lines around",
+      "steps": [
+        {
+          "argument": null,
+          "keyword": "Given ",
+          "location": {
+            "column": 5,
+            "line": 24
+          },
+          "name": "the minimalism",
+          "type": "Step"
+        }
+      ],
+      "tags": [],
+      "type": "Scenario"
+    },
+    {
+      "description": "  This description\n  has a comment after",
+      "keyword": "Scenario",
+      "location": {
+        "column": 3,
+        "line": 26
+      },
+      "name": "comment after description",
+      "steps": [
+        {
+          "argument": null,
+          "keyword": "Given ",
+          "location": {
+            "column": 5,
+            "line": 31
+          },
+          "name": "the minimalism",
+          "type": "Step"
+        }
+      ],
+      "tags": [],
+      "type": "Scenario"
+    },
+    {
+      "description": "  This description\n  has a comment right after",
+      "keyword": "Scenario",
+      "location": {
+        "column": 3,
+        "line": 33
+      },
+      "name": "comment right after description",
+      "steps": [
+        {
+          "argument": null,
+          "keyword": "Given ",
+          "location": {
+            "column": 5,
+            "line": 38
+          },
+          "name": "the minimalism",
+          "type": "Step"
+        }
+      ],
+      "tags": [],
+      "type": "Scenario"
+    },
+    {
+      "description": "This is a scenario outline description",
+      "examples": [
+        {
+          "description": "This is an examples description",
+          "header": {
+            "cells": [
+              {
+                "location": {
+                  "column": 7,
+                  "line": 46
+                },
+                "value": "foo"
+              }
+            ],
+            "location": {
+              "column": 5,
+              "line": 46
+            }
+          },
+          "keyword": "Examples",
+          "location": {
+            "column": 3,
+            "line": 44
+          },
+          "name": "examples with description",
+          "rows": [
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 7,
+                    "line": 47
+                  },
+                  "value": "bar"
+                }
+              ],
+              "location": {
+                "column": 5,
+                "line": 47
+              }
+            }
+          ],
+          "tags": [],
+          "type": "Examples"
+        }
+      ],
+      "keyword": "Scenario Outline",
+      "location": {
+        "column": 3,
+        "line": 40
+      },
+      "name": "scenario outline with a description",
+      "steps": [
+        {
+          "argument": null,
+          "keyword": "Given ",
+          "location": {
+            "column": 5,
+            "line": 42
+          },
+          "name": "the minimalism",
+          "type": "Step"
+        }
+      ],
+      "tags": [],
+      "type": "ScenarioOutline"
+    }
+  ],
+  "tags": [],
+  "type": "Feature"
+}
