@@ -12,7 +12,7 @@ namespace Gherkin
         public TokenType MatchedType { get; set; }
         public string MatchedKeyword { get; set; }
         public string MatchedText { get; set; }
-        public GherkinLineSpan[] MathcedItems { get; set; }
+        public GherkinLineSpan[] MatchedItems { get; set; }
         public int MatchedIndent { get; set; }
         public GherkinDialect MatchedGherkinDialect { get; set; }
         public Location Location { get; set; }
@@ -31,7 +31,7 @@ namespace Gherkin
 
         public string GetTokenValue()
         {
-            return IsEOF ? "EOF" : Line.GetLineText();
+            return IsEOF ? "EOF" : Line.GetLineText(-1);
         }
 
         public override string ToString()

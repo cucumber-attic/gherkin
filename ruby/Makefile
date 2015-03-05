@@ -18,12 +18,12 @@ all: .compared
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
-	bundle exec ruby bin/gherkin-generate-tokens $< > $@
+	bundle exec ruby bin/gherkin-generate-tokens $< > $@ || rm $@
 	diff --unified --ignore-all-space $<.tokens $@ || rm $@
 
 acceptance/testdata/%.feature.ast: ../testdata/%.feature ../testdata/%.feature.ast .built
 	mkdir -p `dirname $@`
-	bundle exec ruby bin/gherkin-generate-ast $< > $@
+	bundle exec ruby bin/gherkin-generate-ast $< > $@ || rm $@
 	diff --unified --ignore-all-space $<.ast $@ || rm $@
 
 clean:

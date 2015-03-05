@@ -52,7 +52,21 @@ TODO
 
 # TODO
 
+* Document the architecture
+  * Parser generator (berp)
+  * Lexer (line based)
+  * Ast
+  * Compiler
+* Document how to contribute
+  * How to write a parser in a new language
+    * Explain build system
+  * How to improve existing ones
 * Document the formatting algorithm - especially wrt newlines
+  * Actually - remove it from gherkin? We'll output JSON
+* Use JSON as the primary represenation of the AST for comparison
+  * Remove the `testdata/good/*.ast` files
+* Use the new `dialects.json` (maybe call it `languages.json`) in all impls. Remove `i18n.json`
+* Implement compiler (there is a start in one of the java branches - based on cucumber-ruby-core)
 * Rename `title` to `name` in all impls
 * In .NET, rename step `text` to `name`
 * Refactor java code to use java naming conventions

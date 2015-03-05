@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+var fs = require('fs');
+var Parser = require('../lib/gherkin/parser');
+var TokenScanner = require('../lib/gherkin/token_scanner');
+var TokenMatcher = require('../lib/gherkin/token_matcher');
+var AstBuilder = require('../lib/gherkin/ast_builder');
+
+var parser = new Parser();
+parser.stopAtFirstError = true;
+var scanner = new TokenScanner(fs.readFileSync(process.argv[2], 'UTF-8'));
+var builder = new AstBuilder();
+var ast = parser.parse(scanner, builder, new TokenMatcher());
+
+console.log(JSON.stringify(ast));

@@ -124,7 +124,7 @@ public class AstBuilder implements IAstBuilder {
             }
             case Description: {
                 List<Token> lineTokens = node.getTokens(TokenType.Other);
-                // Trim trailing spaces
+                // Trim trailing empty lines
                 int end = lineTokens.size();
                 while (end > 0 && lineTokens.get(end-1).MatchedText.matches("\\s*")) {
                     end--;

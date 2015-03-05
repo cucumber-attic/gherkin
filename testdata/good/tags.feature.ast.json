@@ -1,0 +1,97 @@
+{
+  "keyword": "Feature",
+  "language": "en",
+  "location": {
+    "column": 1,
+    "line": 3
+  },
+  "name": "Minimal Scenario Outline",
+  "scenarioDefinitions": [
+    {
+      "keyword": "Scenario",
+      "location": {
+        "column": 1,
+        "line": 7
+      },
+      "name": "minimalistic",
+      "steps": [
+        {
+          "argument": null,
+          "keyword": "Given ",
+          "location": {
+            "column": 5,
+            "line": 8
+          },
+          "name": "the minimalism",
+          "type": "Step"
+        }
+      ],
+      "type": "Scenario"
+    },
+    {
+      "examples": [
+        {
+          "header": {
+            "cells": [
+              {
+                "location": {
+                  "column": 5,
+                  "line": 18
+                },
+                "value": "what"
+              }
+            ],
+            "location": {
+              "column": 3,
+              "line": 18
+            }
+          },
+          "keyword": "Examples",
+          "location": {
+            "column": 1,
+            "line": 17
+          },
+          "name": "",
+          "rows": [
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 5,
+                    "line": 19
+                  },
+                  "value": "minimalism"
+                }
+              ],
+              "location": {
+                "column": 3,
+                "line": 19
+              }
+            }
+          ],
+          "type": "Examples"
+        }
+      ],
+      "keyword": "Scenario Outline",
+      "location": {
+        "column": 1,
+        "line": 12
+      },
+      "name": "minimalistic outline",
+      "steps": [
+        {
+          "argument": null,
+          "keyword": "Given ",
+          "location": {
+            "column": 5,
+            "line": 13
+          },
+          "name": "the <what>",
+          "type": "Step"
+        }
+      ],
+      "type": "ScenarioOutline"
+    }
+  ],
+  "type": "Feature"
+}

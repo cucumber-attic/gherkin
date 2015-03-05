@@ -13,18 +13,18 @@ all: .compared
 .compared: .built $(TOKENS) $(AST)
 	touch $@
 
-.built: Gherkin/bin/Debug/Gherkin.dll $(NUNIT) i18n.json
-	mono --runtime=v4.0 $(NUNIT) -noxml -nologo -stoponerror $<
+.built: .sln_built_debug $(NUNIT) i18n.json
+	mono --runtime=v4.0 $(NUNIT) -noxml -nologo -stoponerror Gherkin/bin/Debug/Gherkin.dll
 	touch $@
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
-	mono --runtime=v4.0 Gherkin.TokensTester/bin/Debug/Gherkin.TokensTester.exe $< > $@
+	mono --runtime=v4.0 Gherkin.TokensTester/bin/Debug/Gherkin.TokensTester.exe $< > $@ || rm $@
 	diff --unified --ignore-all-space $<.tokens $@ || rm $@
 
 acceptance/testdata/%.feature.ast: ../testdata/%.feature ../testdata/%.feature.ast .built
 	mkdir -p `dirname $@`
-	mono --runtime=v4.0 Gherkin.AstTester/bin/Debug/Gherkin.AstTester.exe $< > $@
+	mono --runtime=v4.0 Gherkin.AstTester/bin/Debug/Gherkin.AstTester.exe $< > $@ || rm $@
 	diff --unified --ignore-all-space $<.ast $@ || rm $@
 
 clean:
@@ -37,6 +37,12 @@ clean:
 
 Gherkin/Parser.cs: ../gherkin.berp gherkin-csharp.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-csharp.razor -o $@
+
+.sln_built_debug: Gherkin/Parser.cs $(CS_FILES)
+	rm -f $@
+	mono --runtime=v4.0 .nuget/NuGet.exe restore Gherkin.CSharp.sln
+	xbuild /p:Configuration=Debug
+	touch $@
 
 Gherkin/bin/Debug/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES)
 	rm -f $@

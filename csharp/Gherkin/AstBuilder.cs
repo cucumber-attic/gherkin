@@ -36,7 +36,7 @@ namespace Gherkin
         {
             return CurrentNode.GetSingle<Feature>(RuleType.Feature);
         }
-        
+
         private object GetTransformedNode(AstNode node)
         {
             switch (node.RuleType)
@@ -55,7 +55,7 @@ namespace Gherkin
                     var contentType = separatorToken.MatchedText;
                     var lineTokens = node.GetTokens(TokenType.Other);
                     var content = string.Join(Environment.NewLine, lineTokens.Select(lt => lt.MatchedText));
-        
+
                     return new DocString(GetLocation(separatorToken), contentType, content);
                 }
                 case RuleType.DataTable:
@@ -113,7 +113,7 @@ namespace Gherkin
                 {
                     var lineTokens = node.GetTokens(TokenType.Other);
 
-                    // we need to trim tailing empty lines
+                    // Trim trailing empty lines
                     lineTokens = lineTokens.Reverse().SkipWhile(t => string.IsNullOrWhiteSpace(t.MatchedText)).Reverse();
 
                     return string.Join(Environment.NewLine, lineTokens.Select(lt => lt.MatchedText));
@@ -147,7 +147,7 @@ namespace Gherkin
                 return new Tag[0];
 
             return tagsNode.GetTokens(TokenType.TagLine)
-                .SelectMany(t => t.MathcedItems, (t, tagItem) =>
+                .SelectMany(t => t.MatchedItems, (t, tagItem) =>
                     new Tag(GetLocation(t, tagItem.Column), tagItem.Text))
                 .ToArray();
         }
@@ -176,7 +176,7 @@ namespace Gherkin
 
         private TableCell[] GetCells(Token tableRowToken)
         {
-            return tableRowToken.MathcedItems
+            return tableRowToken.MatchedItems
                 .Select(cellItem => new TableCell(GetLocation(tableRowToken, cellItem.Column), cellItem.Text))
                 .ToArray();
         }
