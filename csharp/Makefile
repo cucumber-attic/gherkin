@@ -13,7 +13,6 @@ all: .compared
 .compared: .built $(TOKENS) $(AST)
 	touch $@
 
-#.built: Gherkin/bin/Debug/Gherkin.dll $(NUNIT) i18n.json
 .built: .sln_built_debug $(NUNIT) i18n.json
 	mono --runtime=v4.0 $(NUNIT) -noxml -nologo -stoponerror Gherkin/bin/Debug/Gherkin.dll
 	touch $@
