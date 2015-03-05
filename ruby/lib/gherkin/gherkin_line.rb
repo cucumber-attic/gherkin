@@ -25,6 +25,7 @@ module Gherkin
     end
 
     def get_line_text(indent_to_remove)
+      indent_to_remove ||= 0
       if indent_to_remove < 0 || indent_to_remove > indent
         @trimmed_line_text
       else

@@ -1,7 +1,7 @@
 module Gherkin
   class ParserException < StandardError
     def initialize(message, location)
-      super("(#{location.line}:#{location.column}): #{message}")
+      super("(#{location.line_number}:#{location.column}): #{message}")
     end
   end
 

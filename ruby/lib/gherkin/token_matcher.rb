@@ -83,12 +83,12 @@ module Gherkin
 
       content_type = nil
       if is_open
-        contentType = token.line.getRestTrimmed(separator.length)
+        contentType = token.line.get_rest_trimmed(separator.length)
         @active_doc_string_separator = separator
-        indent_to_remove = token.line.indent
+        @indent_to_remove = token.line.indent
       else
         @active_doc_string_separator = nil
-        indent_to_remove = 0
+        @indent_to_remove = 0
       end
 
       # TODO: Use the separator as keyword. That's needed for pretty printing.
@@ -99,6 +99,12 @@ module Gherkin
     def match_EOF(token)
       return false unless token.eof?
       set_token_matched(token, 'EOF')
+      true
+    end
+
+    def match_Other(token)
+      text = token.line.get_line_text(@indent_to_remove) # take the entire line, except removing DocString indents
+      set_token_matched(token, 'Other', text, nil, 0)
       true
     end
 
