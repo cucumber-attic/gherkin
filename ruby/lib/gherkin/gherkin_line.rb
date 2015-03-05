@@ -51,9 +51,9 @@ module Gherkin
       items = items[1..-1] # ignore before the first @
       items.map do |item|
         length = item.length
-        span = Span.new(column + cell_indent, '@' + item.strip)
+        span = Span.new(column, '@' + item.strip)
         column += length + 1
-        return span;
+        span
       end
     end
 
