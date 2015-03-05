@@ -23,7 +23,7 @@ module Gherkin
       return "EOF" if token.eof?
 
       sprintf "(%s:%s)%s:%s/%s/%s",
-        token.location.line,
+        token.location.line_number,
         token.location.column,
         token.matched_type,
         token.matched_keyword,

@@ -14,4 +14,7 @@ module Gherkin
       super(message, received_token.location)
     end
   end
+
+  class UnexpectedEOFException < UnexpectedTokenException
+  end
 end
