@@ -4,73 +4,128 @@
   switch(production.Type)
   {
     case ProductionRuleType.Start:
-        @:context.ast_builder.push(:rule_@production.RuleName)
+      @:  start_rule(context, :@production.RuleName);
       break;
     case ProductionRuleType.End:
-        @:context.ast_builder.pop(:rule_@production.RuleName)
+      @:  end_rule(context, :@production.RuleName);
       break;
     case ProductionRuleType.Process:
-        @:context.ast_builder.build(token)
+      @:  build(context, token);
       break;
   }
 }
+@helper HandleParserError(IEnumerable<string> expectedTokens, State state)
+{<text>
+      state_comment = "State: @state.Id - @Raw(state.Comment)"
+      token.detach
+      expected_tokens = ["@Raw(string.Join("\", \"", expectedTokens))"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return @state.Id</text>}
+@helper MatchToken(TokenType tokenType)
+{<text>match_@(tokenType)(context, token)</text>}
 # This file is generated. Do not edit! Edit gherkin-ruby.razor instead.
 require 'gherkin/ast_builder'
+require 'gherkin/errors'
 
 module @Model.Namespace
-  class ParserContext
-    attr_reader :token_scanner
-    attr_reader :ast_builder
-    attr_reader :token_matcher
-    attr_reader :token_queue
 
-    def initialize(token_scanner, ast_builder, token_matcher)
+  RULE_TYPE = [
+    :None,
+    @foreach(var rule in Model.RuleSet.Where(r => !r.TempRule))
+    {<text>    :@rule.Name.Replace("#", "_"), # @rule.ToString(true)
+</text>}
+  ]
+
+  class ParserContext
+    attr_reader :token_scanner, :ast_builder, :token_matcher, :token_queue, :errors
+
+    def initialize(token_scanner, ast_builder, token_matcher, token_queue, errors)
       @@token_scanner = token_scanner
       @@ast_builder = ast_builder
       @@token_matcher = token_matcher
-
-      @@token_queue = []
+      @@token_queue = token_queue
+      @@errors = errors
     end
   end
 
   class @Model.ParserClassName
+    attr_accessor :stop_at_first_error
 
-    def parse(token_scanner)
-      context = ParserContext.new(token_scanner, ASTBuilder.new, TokenMatcher.new)
+    def parse(token_scanner, ast_builder, token_matcher)
+      context = ParserContext.new(
+        token_scanner,
+        ast_builder,
+        token_matcher,
+        [],
+        []
+      )
 
-      context.ast_builder.push(:rule_@Model.RuleSet.StartRule.Name)
+      start_rule(context, :@Model.RuleSet.StartRule.Name);
       state = 0
-      loop do
+      token = nil
+      begin
         token = read_token(context)
         state = match_token(state, token, context)
+      end until(token.eof?)
 
-        break if token.eof?
+      end_rule(context, :@Model.RuleSet.StartRule.Name)
+
+      raise CompositeParserException.new(context.errors) if context.errors.any?
+
+      get_result(context)
+    end
+
+    def build(context, token)
+      handle_ast_error(context) do
+        context.ast_builder.build(token)
       end
+    end
 
-      if (state != @Model.EndState.Id)
-        raise ParseError.new("parsing error: end of file expected")
+    def start_rule(context, rule_type)
+      handle_ast_error(context) do
+        context.ast_builder.start_rule(rule_type)
       end
+    end
 
-      context.ast_builder.pop(:rule_@Model.RuleSet.StartRule.Name)
-      context.ast_builder.root_node
+    def end_rule(context, rule_type)
+      handle_ast_error(context) do
+        context.ast_builder.end_rule(rule_type)
+      end
+    end
+
+    def get_result(context)
+      context.ast_builder.get_result
     end
 
     def read_token(context)
-      context.token_queue.count > 0 ? context.token_queue.shift : context.token_scanner.read
+      context.token_queue.any? ? context.token_queue.shift : context.token_scanner.read
     end
+
+    @foreach(var rule in Model.RuleSet.TokenRules)
+    {<text>
+    def match_@(rule.Name.Replace("#", ""))( context, token)
+      @if (rule.Name != "#EOF")
+      {
+      @:return false if token.eof?
+      }
+      return handle_external_error(context, false) do
+        context.token_matcher.match_@(rule.Name.Replace("#", ""))(token)
+      end
+    end</text>
+    }
 
     def match_token(state, token, context)
       case state
       @foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
       {
       @:when @state.Id
-        @:new_state = match_token_at_@(state.Id)(token, context)
+        @:match_token_at_@(state.Id)(token, context)
       }
       else
-        raise ParserError.new("unknown state")
+        raise InvalidOperationException, "Unknown state: #{state}"
       end
-
-      new_state
     end
 
     @foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
@@ -78,12 +133,12 @@ module @Model.Namespace
     <text>
     # @Raw(state.Comment)
     def match_token_at_@(state.Id)(token, context)
-      @foreach (var transition in state.Transitions)
+      @foreach(var transition in state.Transitions)
       {
-      @:if (context.token_matcher.match_@(transition.TokenType)(token))
+      @:if @MatchToken(transition.TokenType)
         if (transition.LookAheadHint != null)
         {
-        @:if (lookahead_@(transition.LookAheadHint.Id)(context, token))
+        @:if LookAhead_@(transition.LookAheadHint.Id)(context, token)
         }
         foreach(var production in transition.Productions)
         {
@@ -96,48 +151,28 @@ module @Model.Namespace
         }
       @:end
       }
-      raise ParseError.new
-    end
-    </text>
+      @HandleParserError(state.Transitions.Select(t => "#" + t.TokenType.ToString()).Distinct(), state)
+    end</text>
     }
 
-    @foreach(var lookAheadHint in Model.RuleSet.LookAheadHints)
-    {
-    <text>
-    def lookahead_@(lookAheadHint.Id)(context, current_token)
-      current_token.detach
-      queue = []
-      match = false
-      loop do
-        token = read_token(context)
-        token.detach
-        queue.push(token)
+    private
 
-        if (false \
-        @foreach(var tokenType in lookAheadHint.ExpectedTokens)
-          {
-          @:|| context.token_matcher.match_@(tokenType)(token) \
-          }
-        )
-          match = true
-          break
-        end
-
-        if not(false \
-        @foreach(var tokenType in lookAheadHint.Skip)
-          {
-          @:|| context.token_matcher.match_@(tokenType)(token) \
-          }
-        )
-          break
-        end
-      end
-      queue.each do |t|
-        context.token_queue.push(t)
-      end
-      match
+    def handle_ast_error(context, &action)
+      handle_external_error(context, true, &action)
     end
-    </text>
-    }
+
+    def handle_external_error(context, default_value, &action)
+      return action.call if stop_at_first_error
+
+      begin
+        return action.call
+      rescue CompositeParserException => e
+        e.errors.each { |error| add_error(context, error) }
+      rescue ParserException => e
+        add_error(context, e)
+      end
+      default_value
+    end
+
   end
 end

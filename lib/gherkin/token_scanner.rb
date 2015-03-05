@@ -1,3 +1,4 @@
+require 'gherkin/location'
 module Gherkin
 
   class ParseError < StandardError
@@ -22,11 +23,13 @@ module Gherkin
   end
 
   class Token
-    attr_accessor :trimmed_line
+    attr_accessor :trimmed_line, :location, :matched_type,
+                  :matched_keyword, :matched_text, :matched_items
 
-    def initialize(line)
+    def initialize(line, location)
       @line = line
-      @trimmed_line = line == nil ? nil : line.strip
+      @location = location
+      @trimmed_line = line && line.strip
     end
 
     def eof?
@@ -38,6 +41,10 @@ module Gherkin
     end
 
     def detach
+    end
+
+    def get_token_value
+      eof? ? "EOF" : @trimmed_line
     end
   end
 
@@ -116,17 +123,27 @@ module Gherkin
 
   class TokenScanner
 
-    def initialize(file_path)
-      @file = File.open(file_path, 'r:BOM|UTF-8')
+    def initialize(source_or_path_or_io)
+      @line_number = 0
+      if String === source_or_path_or_io
+        if File.file?(source_or_path_or_io)
+          @io = File.open(source_or_path_or_io, 'r:BOM|UTF-8')
+        else
+          @io = StringIO.new(source_or_path_or_io)
+        end
+      else
+        @io = source_or_path_or_io
+      end
     end
 
     def read
-      if @file == nil || line = @file.gets
-        Token.new(line)
+      location = Location.new(@line_number += 1)
+      if @io.nil? || line = @io.gets
+        Token.new(line, location)
       else
-        @file.close
-        @file = nil
-        Token.new(nil)
+        @io.close unless @io.closed? # ARGF closes the last file after final gets
+        @io = nil
+        Token.new(nil, location)
       end
     end
 
