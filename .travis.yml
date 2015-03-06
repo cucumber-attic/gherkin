@@ -22,26 +22,29 @@ env:
     - TARGET_LANG=javascript MONO_VERSION="3.2.7" DMG=0
     exclude: 
       - env: TARGET_LANG=csharp MONO_VERSION="3.2.7" DMG=0
-        rvm:
-          - 2.0.0
-          - 2.1.0
-          - 2.2.0
+        rvm: 2.0.0
+      - env: TARGET_LANG=csharp MONO_VERSION="3.2.7" DMG=0
+        rvm: 2.1.0
+      - env: TARGET_LANG=csharp MONO_VERSION="3.2.7" DMG=0
+        rvm: 2.2.0
       - env: TARGET_LANG=csharp MONO_VERSION="3.0.12" DMG=1
-        rvm:
-          - 2.0.0
-          - 2.1.0
-          - 2.2.0
+        rvm: 2.0.0
+      - env: TARGET_LANG=csharp MONO_VERSION="3.0.12" DMG=1
+        rvm: 2.1.0
+      - env: TARGET_LANG=csharp MONO_VERSION="3.0.12" DMG=1
+        rvm: 2.2.0
       - env: TARGET_LANG=java MONO_VERSION="3.2.7" DMG=0
-        rvm:
-          - 2.0.0
-          - 2.1.0
-          - 2.2.0
+        rvm: 2.0.0
+      - env: TARGET_LANG=java MONO_VERSION="3.2.7" DMG=0
+        rvm: 2.1.0
+      - env: TARGET_LANG=java MONO_VERSION="3.2.7" DMG=0
+        rvm: 2.2.0
       - env: TARGET_LANG=javascript MONO_VERSION="3.2.7" DMG=0
-        rvm:
-          - 2.0.0
-          - 2.1.0
-          - 2.2.0
-      - env: TARGET_LANG=ruby MONO_VERSION="3.2.7" DMG=0
+        rvm: 2.0.0
+      - env: TARGET_LANG=javascript MONO_VERSION="3.2.7" DMG=0
+        rvm: 2.1.0
+      - env: TARGET_LANG=javascript MONO_VERSION="3.2.7" DMG=0
+        rvm: 2.2.0
 
 before_install:
   - "if [ \"$DMG\" = \"0\" ]; then wget \"http://download.xamarin.com/MonoFrameworkMDK/Macx86/MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.pkg\"; fi"
