@@ -1,11 +1,17 @@
 module Gherkin
-  class ParserException < StandardError
+  class ParserError < StandardError; end
+
+  class ParserException < ParserError
     def initialize(message, location)
       super("(#{location.line}:#{location.column}): #{message}")
     end
   end
 
-  class CompositeParserException < ParserException
+  class CompositeParserException < ParserError
+    def initialize(errors)
+      @errors = errors
+      super errors.map(&:message).join("\n")
+    end
   end
 
   class UnexpectedTokenException < ParserException
@@ -13,5 +19,8 @@ module Gherkin
       message = "expected: #{expected_token_types.join(", ")}, got '#{received_token.get_token_value.strip}'"
       super(message, received_token.location)
     end
+  end
+
+  class UnexpectedEOFException < UnexpectedTokenException
   end
 end
