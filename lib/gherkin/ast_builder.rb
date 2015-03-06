@@ -166,8 +166,7 @@ module Gherkin
         description = get_description(node)
 
         all_rows = get_table_rows(node)
-        header = all_rows[0]
-        rows = all_rows.slice(1)
+        header, *rows = all_rows
 
         reject_nils(
           type: node.rule_type,
