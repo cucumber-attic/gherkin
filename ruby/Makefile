@@ -12,9 +12,12 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS)
 	touch $@
 
-.built: lib/gherkin/parser.rb lib/gherkin/dialects.json $(RUBY_FILES)
+.built: lib/gherkin/parser.rb lib/gherkin/dialects.json $(RUBY_FILES) Gemfile.lock
 	bundle exec rspec
 	touch $@
+
+Gemfile.lock: Gemfile
+	bundle install
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
