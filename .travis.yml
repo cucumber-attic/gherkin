@@ -13,8 +13,14 @@ env:
   global:
     - EnableNuGetPackageRestore=true
   matrix:
-    - MONO_VERSION="3.2.7" DMG=0
-    - MONO_VERSION="3.0.12" DMG=1
+    - TARGET_LANG=csharp MONO_VERSION="3.2.7" DMG=0
+    - TARGET_LANG=csharp MONO_VERSION="3.0.12" DMG=1
+    - TARGET_LANG=java MONO_VERSION="3.2.7" DMG=0
+    - TARGET_LANG=java MONO_VERSION="3.0.12" DMG=1
+    - TARGET_LANG=ruby MONO_VERSION="3.2.7" DMG=0
+    - TARGET_LANG=ruby MONO_VERSION="3.0.12" DMG=1
+    - TARGET_LANG=javascript MONO_VERSION="3.2.7" DMG=0
+    - TARGET_LANG=javascript MONO_VERSION="3.0.12" DMG=1
 
 before_install:
   - "if [ \"$DMG\" = \"0\" ]; then wget \"http://download.xamarin.com/MonoFrameworkMDK/Macx86/MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.pkg\"; fi"
@@ -25,7 +31,7 @@ before_install:
   # https://github.com/travis-ci/travis-ci/issues/2839
   - export JAVA_HOME="$(/usr/libexec/java_home)"
 
-script: "make"
+script: "cd $TARGET_LANG; make"
 
 branches:
   only:
