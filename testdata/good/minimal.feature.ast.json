@@ -16,7 +16,6 @@
       "name": "minimalistic",
       "steps": [
         {
-          "argument": null,
           "keyword": "Given ",
           "location": {
             "column": 5,

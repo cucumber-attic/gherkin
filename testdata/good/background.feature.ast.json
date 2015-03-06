@@ -8,7 +8,6 @@
     "name": "a simple background",
     "steps": [
       {
-        "argument": null,
         "keyword": "Given ",
         "location": {
           "column": 5,
@@ -37,7 +36,6 @@
       "name": "minimalistic",
       "steps": [
         {
-          "argument": null,
           "keyword": "Given ",
           "location": {
             "column": 5,

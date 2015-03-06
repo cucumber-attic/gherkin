@@ -16,7 +16,6 @@
       "name": "Parsing many languages",
       "steps": [
         {
-          "argument": null,
           "keyword": "Gitt ",
           "location": {
             "column": 5,
@@ -26,7 +25,6 @@
           "type": "Step"
         },
         {
-          "argument": null,
           "keyword": "Når ",
           "location": {
             "column": 5,
@@ -36,7 +34,6 @@
           "type": "Step"
         },
         {
-          "argument": null,
           "keyword": "Så ",
           "location": {
             "column": 5,

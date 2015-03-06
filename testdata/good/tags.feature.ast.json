@@ -16,7 +16,6 @@
       "name": "minimalistic",
       "steps": [
         {
-          "argument": null,
           "keyword": "Given ",
           "location": {
             "column": 5,
@@ -80,7 +79,6 @@
       "name": "minimalistic outline",
       "steps": [
         {
-          "argument": null,
           "keyword": "Given ",
           "location": {
             "column": 5,
