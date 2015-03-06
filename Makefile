@@ -12,9 +12,12 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS)
 	touch $@
 
-.built: lib/gherkin/parser.js lib/gherkin/dialects.json $(JAVASCRIPT_FILES)
+.built: lib/gherkin/parser.js lib/gherkin/dialects.json $(JAVASCRIPT_FILES) node_modules
 	./node_modules/.bin/mocha
 	touch $@
+
+node_modules: package.json
+	npm install
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
