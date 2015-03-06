@@ -21,13 +21,15 @@ Gemfile.lock: Gemfile
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
-	bundle exec ruby bin/gherkin-generate-tokens $< > $@ || (rm $@ && false)
-	diff --unified --ignore-all-space $<.tokens $@ || (rm $@ && false)
+	bundle exec ruby bin/gherkin-generate-tokens $< > $@
+	diff --unified --ignore-all-space $<.tokens $@
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
 acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json .built
 	mkdir -p `dirname $@`
-	bundle exec ruby bin/gherkin-generate-ast $< | jq --sort-keys "." > $@ || (rm $@ && false)
-	diff --unified --ignore-all-space $<.ast.json $@ || (rm $@ && false)
+	bundle exec ruby bin/gherkin-generate-ast $< | jq --sort-keys "." > $@
+	diff --unified --ignore-all-space $<.ast.json $@
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
 
 lib/gherkin/dialects.json: ../dialects.json
 	cp $^ $@
