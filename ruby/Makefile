@@ -18,13 +18,13 @@ all: .compared
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
-	bundle exec ruby bin/gherkin-generate-tokens $< > $@ || rm $@
-	diff --unified --ignore-all-space $<.tokens $@ || rm $@
+	bundle exec ruby bin/gherkin-generate-tokens $< > $@ || (rm $@ && false)
+	diff --unified --ignore-all-space $<.tokens $@ || (rm $@ && false)
 
 acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json .built
 	mkdir -p `dirname $@`
-	bundle exec ruby bin/gherkin-generate-ast $< | jq --sort-keys "." > $@ || rm $@
-	diff --unified --ignore-all-space $<.ast.json $@ || rm $@
+	bundle exec ruby bin/gherkin-generate-ast $< | jq --sort-keys "." > $@ || (rm $@ && false)
+	diff --unified --ignore-all-space $<.ast.json $@ || (rm $@ && false)
 
 lib/gherkin/dialects.json: ../dialects.json
 	cp $^ $@
