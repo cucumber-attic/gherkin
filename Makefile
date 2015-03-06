@@ -1,4 +1,4 @@
-all: csharp/.compared java/.compared javascript/.compared ruby/.compared
+all: csharp/.compared javascript/.compared ruby/.compared
 .PHONY: all
 
 clean:
