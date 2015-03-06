@@ -85,44 +85,44 @@ module Gherkin
         step_line = node.get_token(:StepLine)
         step_argument = node.get_single(:DataTable) || node.get_single(:DocString) || nil
 
-        return {
+        reject_nils(
           type: node.rule_type,
           location: get_location(step_line),
           keyword: step_line.matched_keyword,
           name: step_line.matched_text,
           argument: step_argument
-        }
+        )
       when :DocString
         separator_token = node.get_tokens(:DocStringSeparator)[0]
         content_type = separator_token.matched_text
         line_tokens = node.get_tokens(:Other)
         content = line_tokens.map { |t| t.matched_text }.join("\n")
 
-        return {
+        reject_nils(
           type: node.rule_type,
           location: get_location(separator_token),
           contentType: content_type,
           content: content
-        }
+        )
       when :DataTable
         rows = get_table_rows(node)
-        return {
+        reject_nils(
           type: node.rule_type,
           rows: rows,
-        }
+        )
       when :Background
         background_line = node.get_token(:BackgroundLine)
         description = get_description(node)
         steps = get_steps(node)
 
-        return {
+        reject_nils(
           type: node.rule_type,
           location: get_location(background_line),
           keyword: background_line.matched_keyword,
           name: background_line.matched_text,
           description: description,
           steps: steps
-        }
+        )
       when :Scenario_Definition
         tags = get_tags(node)
         scenario_node = node.get_single(:Scenario)
@@ -131,7 +131,7 @@ module Gherkin
           description = get_description(scenario_node)
           steps = get_steps(scenario_node)
 
-          return {
+          reject_nils(
             type: scenario_node.rule_type,
             tags: tags,
             location: get_location(scenario_line),
@@ -139,7 +139,7 @@ module Gherkin
             name: scenario_line.matched_text,
             description: description,
             steps: steps
-          }
+          )
         else
           scenario_outline_node = node.get_single(:ScenarioOutline)
           raise 'Internal grammar error' unless scenario_outline_node
@@ -149,7 +149,7 @@ module Gherkin
           steps = get_steps(scenario_outline_node)
           examples = scenario_outline_node.get_items(:Examples)
 
-          return {
+          reject_nils(
             type: scenario_outline_node.rule_type,
             tags: tags,
             location: get_location(scenario_outline_line),
@@ -158,7 +158,7 @@ module Gherkin
             description: description,
             steps: steps,
             examples: examples
-          }
+          )
         end
       when :Examples
         tags = get_tags(node)
@@ -169,7 +169,7 @@ module Gherkin
         header = all_rows[0]
         rows = all_rows.slice(1)
 
-        return {
+        reject_nils(
           type: node.rule_type,
           tags: tags,
           location: get_location(examples_line),
@@ -178,7 +178,7 @@ module Gherkin
           description: description,
           header: header,
           rows: rows
-        }
+        )
       when :Description
         line_tokens = node.get_tokens(:Other)
         # Trim trailing empty lines
@@ -199,7 +199,7 @@ module Gherkin
         description = get_description(header)
         language = feature_line.matched_gherkin_dialect
 
-        return {
+        reject_nils(
           type: node.rule_type,
           tags: tags,
           location: get_location(feature_line),
@@ -209,10 +209,14 @@ module Gherkin
           description: description,
           background: background,
           scenarioDefinitions: scenario_definitions
-        }
+        )
       else
         return node
       end
+    end
+
+    def reject_nils(values)
+      values.reject { |k,v| v.nil? }
     end
   end
 end
