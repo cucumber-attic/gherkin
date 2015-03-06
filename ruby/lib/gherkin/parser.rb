@@ -89,6 +89,11 @@ module Gherkin
       end
     end
 
+    def add_error(context, error)
+      context.errors.push(error)
+      raise CompositeParserException, context.errors if context.errors.length > 10
+    end
+
     def start_rule(context, rule_type)
       handle_ast_error(context) do
         context.ast_builder.start_rule(rule_type)
