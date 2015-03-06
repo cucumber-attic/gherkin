@@ -182,14 +182,9 @@ module Gherkin
       when :Description
         line_tokens = node.get_tokens(:Other)
         # Trim trailing empty lines
-        last = line_tokens.length
-        while (last > 0 && line_tokens[last-1].line.trimmed_line_text === '') do
-            last -= 1
-        end
-
-        description = line_tokens.map { |token| token.matched_text}.join("\n")
+        last_non_empty = line_tokens.rindex { |token| !token.line.trimmed_line_text.empty? }
+        description = line_tokens[0..last_non_empty].map { |token| token.matched_text }.join("\n")
         return description
-
       when :Feature
         header = node.get_single(:Feature_Header)
         tags = get_tags(header)
