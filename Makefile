@@ -18,4 +18,4 @@ javascript/.compared:
 	cd javascript && make
 
 ruby/.compared:
-	cd java && make
+	cd ruby && make
