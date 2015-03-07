@@ -45,4 +45,8 @@ describe('Compiler', function () {
 
     assert.deepEqual(compile('../../testdata/good/background.feature.ast.json'), expected);
   });
+
+  it("compiles a scenario outline to test cases", function () {
+    var compiled = compile('../../testdata/good/scenario_outline.feature.ast.json');
+  });
 });
