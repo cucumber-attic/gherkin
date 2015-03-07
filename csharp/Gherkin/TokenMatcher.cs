@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Linq;
 using Gherkin.Ast;
 
@@ -6,6 +7,7 @@ namespace Gherkin
 {
     public class TokenMatcher : ITokenMatcher
     {
+		private readonly Regex LANGUAGE_PATTERN = new Regex ("^\\s*#\\s*language\\s*:\\s*([a-zA-Z\\-_]+)\\s*$");
         private readonly IGherkinDialectProvider dialectProvider;
         private GherkinDialect currentDialect;
         private string activeDocStringSeparator = null;
@@ -82,9 +84,11 @@ namespace Gherkin
 
         public bool Match_Language(Token token)
         {
-            if (token.Line.StartsWith(GherkinLanguageConstants.LANGUAGE_PREFIX))
+            var match = LANGUAGE_PATTERN.Match(token.Line.GetLineText());
+
+            if (match.Success)
             {
-                var language = token.Line.GetRestTrimmed(GherkinLanguageConstants.LANGUAGE_PREFIX.Length);
+                var language = match.Groups[1].Value;
 
                 try
                 {

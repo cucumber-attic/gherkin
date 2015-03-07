@@ -161,3 +161,4 @@ acceptance/
 .compared
 .sln_built_debug
 i18n.json
+*.userprefs

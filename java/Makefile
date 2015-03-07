@@ -18,13 +18,15 @@ all: .compared
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
-	java -classpath target/classes:target/test-classes gherkin.GenerateTokens $< > $@ || rm $@
-	diff --unified --ignore-all-space $<.tokens $@ || rm $@
+	java -classpath target/classes:target/test-classes gherkin.GenerateTokens $< > $@
+	diff --unified --ignore-all-space $<.tokens $@
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
 acceptance/testdata/%.feature.ast: ../testdata/%.feature ../testdata/%.feature.ast .built
 	mkdir -p `dirname $@`
-	java -classpath target/classes:target/test-classes gherkin.GenerateAst $< > $@ || rm $@
-	diff --unified --ignore-all-space $<.ast $@ || rm $@
+	java -classpath target/classes:target/test-classes gherkin.GenerateAst $< > $@
+	diff --unified --ignore-all-space $<.ast $@
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.ast
 
 clean:
 	rm -rf .compared .built acceptance target
