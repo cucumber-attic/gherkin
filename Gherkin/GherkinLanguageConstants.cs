@@ -7,7 +7,6 @@ namespace Gherkin
     {
         public const string TAG_PREFIX = "@";
         public const string COMMENT_PREFIX = "#";
-        public const string LANGUAGE_PREFIX = "#language:";
         public const string TITLE_KEYWORD_SEPARATOR = ":";
         public const string TABLE_CELL_SEPARATOR = "|";
         public const string DOCSTRING_SEPARATOR = "\"\"\"";
