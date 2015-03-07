@@ -3,11 +3,14 @@ package gherkin;
 import gherkin.ast.Location;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static gherkin.Parser.ITokenMatcher;
 import static gherkin.Parser.TokenType;
 
 public class TokenMatcher implements ITokenMatcher {
+    private static final Pattern LANGUAGE_PATTERN = Pattern.compile("^\\s*#\\s*language\\s*:\\s*([a-zA-Z\\-_]+)\\s*$");
     private final IGherkinDialectProvider dialectProvider;
     private GherkinDialect currentDialect;
     private String activeDocStringSeparator = null;
@@ -81,8 +84,9 @@ public class TokenMatcher implements ITokenMatcher {
 
     @Override
     public boolean Match_Language(Token token) {
-        if (token.Line.StartsWith(GherkinLanguageConstants.LANGUAGE_PREFIX)) {
-            String language = token.Line.GetRestTrimmed(GherkinLanguageConstants.LANGUAGE_PREFIX.length());
+        Matcher matcher = LANGUAGE_PATTERN.matcher(token.Line.GetLineText(0));
+        if(matcher.matches()) {
+            String language = matcher.group(1);
 
             currentDialect = dialectProvider.GetDialect(language);
 
