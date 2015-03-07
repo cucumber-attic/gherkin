@@ -2,6 +2,8 @@ require 'gherkin/dialect'
 
 module Gherkin
   class TokenMatcher
+    LANGUAGE_PATTERN = /^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$/
+
     def initialize(dialect_name = 'en')
       change_dialect(dialect_name)
       @active_doc_string_separator = nil
@@ -56,9 +58,9 @@ module Gherkin
     end
 
     def match_Language(token)
-      return false unless token.line.start_with?('#language:')
+      return false unless token.line.trimmed_line_text =~ LANGUAGE_PATTERN
 
-      change_dialect(token.line.get_rest_trimmed('#language:'.length))
+      change_dialect($1)
       raise "Unknown dialect: #{@dialect_name}" unless @dialect
       set_token_matched(token, :Language, @dialect_name)
       true
