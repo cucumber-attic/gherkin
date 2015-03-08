@@ -1,4 +1,14 @@
+## Benchmarking
 
+A simple way to benchmark the scanner:
+
+    ruby/bin/gherkin-generate-tokens       `find ../cucumber/examples -name "*.feature"`
+    javascript/bin/gherkin-generate-tokens `find ../cucumber/examples -name "*.feature"`
+
+or parser:
+
+    ruby/bin/gherkin-generate-ast       `find ../cucumber/examples -name "*.feature"`
+    javascript/bin/gherkin-generate-ast `find ../cucumber/examples -name "*.feature"`
 
 ## Adding good testdata
 
