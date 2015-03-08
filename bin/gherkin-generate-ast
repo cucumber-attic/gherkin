@@ -7,8 +7,10 @@ var AstBuilder = require('../lib/gherkin/ast_builder');
 
 var parser = new Parser();
 parser.stopAtFirstError = true;
-var scanner = new TokenScanner(fs.readFileSync(process.argv[2], 'UTF-8'));
-var builder = new AstBuilder();
-var ast = parser.parse(scanner, builder, new TokenMatcher());
-
-console.log(JSON.stringify(ast));
+var files = process.argv.slice(2);
+files.forEach(function (file) {
+  var scanner = new TokenScanner(fs.readFileSync(file, 'UTF-8'));
+  var builder = new AstBuilder();
+  var ast = parser.parse(scanner, builder, new TokenMatcher());
+  console.log(JSON.stringify(ast));
+});

@@ -7,6 +7,9 @@ var TokenFormatterBuilder = require('../lib/gherkin/token_formatter_builder');
 
 var parser = new Parser();
 parser.stopAtFirstError = true;
-var scanner = new TokenScanner(fs.readFileSync(process.argv[2], 'UTF-8'));
-var builder = new TokenFormatterBuilder();
-process.stdout.write(parser.parse(scanner, builder, new TokenMatcher()));
+var files = process.argv.slice(2)
+files.forEach(function (file) {
+  var scanner = new TokenScanner(fs.readFileSync(file, 'UTF-8'));
+  var builder = new TokenFormatterBuilder();
+  process.stdout.write(parser.parse(scanner, builder, new TokenMatcher()));
+});
