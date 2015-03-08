@@ -6,6 +6,9 @@ require 'gherkin/token_formatter_builder'
 require 'gherkin/token_matcher'
 
 parser = Gherkin::Parser.new
-scanner = Gherkin::TokenScanner.new(ARGF)
-builder = Gherkin::TokenFormatterBuilder.new
-print parser.parse(scanner, builder, Gherkin::TokenMatcher.new)
+files = ARGV + (STDIN.tty? ? [] : [STDIN])
+files.each do |file|
+  scanner = Gherkin::TokenScanner.new(file)
+  builder = Gherkin::TokenFormatterBuilder.new
+  print parser.parse(scanner, builder, Gherkin::TokenMatcher.new)
+end
