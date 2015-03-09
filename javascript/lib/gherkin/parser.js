@@ -202,7 +202,7 @@ module.exports = function Parser() {
     }
   }
 
-  
+
   // Start
   function matchTokenAt_0(token, context) {
     if(match_Language(context, token)) {
@@ -240,7 +240,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 0;
   }
-  
+
+
   // Feature:0>Feature_Header:0>#Language:0
   function matchTokenAt_1(token, context) {
     if(match_TagLine(context, token)) {
@@ -271,7 +272,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 1;
   }
-  
+
+
   // Feature:0>Feature_Header:1>Tags:0>#TagLine:0
   function matchTokenAt_2(token, context) {
     if(match_TagLine(context, token)) {
@@ -302,7 +304,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 2;
   }
-  
+
+
   // Feature:0>Feature_Header:2>#FeatureLine:0
   function matchTokenAt_3(token, context) {
     if(match_EOF(context, token)) {
@@ -361,7 +364,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 3;
   }
-  
+
+
   // Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
   function matchTokenAt_4(token, context) {
     if(match_EOF(context, token)) {
@@ -421,7 +425,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 4;
   }
-  
+
+
   // Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0
   function matchTokenAt_5(token, context) {
     if(match_EOF(context, token)) {
@@ -475,7 +480,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 5;
   }
-  
+
+
   // Feature:1>Background:0>#BackgroundLine:0
   function matchTokenAt_6(token, context) {
     if(match_EOF(context, token)) {
@@ -533,7 +539,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 6;
   }
-  
+
+
   // Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
   function matchTokenAt_7(token, context) {
     if(match_EOF(context, token)) {
@@ -592,7 +599,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 7;
   }
-  
+
+
   // Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
   function matchTokenAt_8(token, context) {
     if(match_EOF(context, token)) {
@@ -645,7 +653,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 8;
   }
-  
+
+
   // Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
   function matchTokenAt_9(token, context) {
     if(match_EOF(context, token)) {
@@ -713,7 +722,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 9;
   }
-  
+
+
   // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
   function matchTokenAt_10(token, context) {
     if(match_EOF(context, token)) {
@@ -780,7 +790,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 10;
   }
-  
+
+
   // Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0
   function matchTokenAt_11(token, context) {
     if(match_TagLine(context, token)) {
@@ -818,7 +829,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 11;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0
   function matchTokenAt_12(token, context) {
     if(match_EOF(context, token)) {
@@ -880,7 +892,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 12;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
   function matchTokenAt_13(token, context) {
     if(match_EOF(context, token)) {
@@ -943,7 +956,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 13;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
   function matchTokenAt_14(token, context) {
     if(match_EOF(context, token)) {
@@ -1000,7 +1014,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 14;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
   function matchTokenAt_15(token, context) {
     if(match_EOF(context, token)) {
@@ -1072,7 +1087,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 15;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
   function matchTokenAt_16(token, context) {
     if(match_EOF(context, token)) {
@@ -1143,7 +1159,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 16;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
   function matchTokenAt_17(token, context) {
     if(match_Empty(context, token)) {
@@ -1186,7 +1203,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 17;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
   function matchTokenAt_18(token, context) {
     if(match_Comment(context, token)) {
@@ -1228,7 +1246,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 18;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
   function matchTokenAt_19(token, context) {
     if(match_Comment(context, token)) {
@@ -1266,7 +1285,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 19;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
   function matchTokenAt_20(token, context) {
     if(match_TableRow(context, token)) {
@@ -1317,7 +1337,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 20;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
   function matchTokenAt_21(token, context) {
     if(match_TableRow(context, token)) {
@@ -1365,7 +1386,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 21;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
   function matchTokenAt_22(token, context) {
     if(match_TagLine(context, token)) {
@@ -1396,7 +1418,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 22;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0
   function matchTokenAt_23(token, context) {
     if(match_Empty(context, token)) {
@@ -1427,7 +1450,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 23;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
   function matchTokenAt_24(token, context) {
     if(match_Comment(context, token)) {
@@ -1455,7 +1479,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 24;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0
   function matchTokenAt_25(token, context) {
     if(match_Comment(context, token)) {
@@ -1481,7 +1506,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 25;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0
   function matchTokenAt_26(token, context) {
     if(match_EOF(context, token)) {
@@ -1496,7 +1522,7 @@ module.exports = function Parser() {
       return 26;
     }
     if(match_TagLine(context, token)) {
-      if(lookAhead_0(context, token)) {
+      if(lookahead_0(context, token)) {
       endRule(context, 'Examples');
       startRule(context, 'Examples');
       startRule(context, 'Tags');
@@ -1556,7 +1582,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 26;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
   function matchTokenAt_28(token, context) {
     if(match_DocStringSeparator(context, token)) {
@@ -1578,7 +1605,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 28;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
   function matchTokenAt_29(token, context) {
     if(match_StepLine(context, token)) {
@@ -1622,7 +1650,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 29;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
   function matchTokenAt_30(token, context) {
     if(match_DocStringSeparator(context, token)) {
@@ -1644,7 +1673,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 30;
   }
-  
+
+
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
   function matchTokenAt_31(token, context) {
     if(match_EOF(context, token)) {
@@ -1711,7 +1741,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 31;
   }
-  
+
+
   // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
   function matchTokenAt_32(token, context) {
     if(match_DocStringSeparator(context, token)) {
@@ -1733,7 +1764,8 @@ module.exports = function Parser() {
     addError(context, error);
     return 32;
   }
-  
+
+
   // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
   function matchTokenAt_33(token, context) {
     if(match_EOF(context, token)) {
@@ -1798,11 +1830,13 @@ module.exports = function Parser() {
   }
 
 
+
   function match_EOF(context, token) {
     return handleExternalError(context, false, function () {
       return context.tokenMatcher.match_EOF(token);
     });
   }
+
 
   function match_Empty(context, token) {
     if(token.isEof) return false;
@@ -1811,12 +1845,14 @@ module.exports = function Parser() {
     });
   }
 
+
   function match_Comment(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
       return context.tokenMatcher.match_Comment(token);
     });
   }
+
 
   function match_TagLine(context, token) {
     if(token.isEof) return false;
@@ -1825,12 +1861,14 @@ module.exports = function Parser() {
     });
   }
 
+
   function match_FeatureLine(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
       return context.tokenMatcher.match_FeatureLine(token);
     });
   }
+
 
   function match_BackgroundLine(context, token) {
     if(token.isEof) return false;
@@ -1839,12 +1877,14 @@ module.exports = function Parser() {
     });
   }
 
+
   function match_ScenarioLine(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
       return context.tokenMatcher.match_ScenarioLine(token);
     });
   }
+
 
   function match_ScenarioOutlineLine(context, token) {
     if(token.isEof) return false;
@@ -1853,12 +1893,14 @@ module.exports = function Parser() {
     });
   }
 
+
   function match_ExamplesLine(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
       return context.tokenMatcher.match_ExamplesLine(token);
     });
   }
+
 
   function match_StepLine(context, token) {
     if(token.isEof) return false;
@@ -1867,12 +1909,14 @@ module.exports = function Parser() {
     });
   }
 
+
   function match_DocStringSeparator(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
       return context.tokenMatcher.match_DocStringSeparator(token);
     });
   }
+
 
   function match_TableRow(context, token) {
     if(token.isEof) return false;
@@ -1881,6 +1925,7 @@ module.exports = function Parser() {
     });
   }
 
+
   function match_Language(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
@@ -1888,10 +1933,37 @@ module.exports = function Parser() {
     });
   }
 
+
   function match_Other(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
       return context.tokenMatcher.match_Other(token);
     });
   }
-};
+
+
+
+  function lookahead_0(context, currentToken) {
+    currentToken.detach();
+    var token;
+    var queue = [];
+    var match = false;
+    do {
+      token = readToken(context);
+      token.detach();
+      queue.push(token);
+
+      if (false  || match_ExamplesLine(context, token)) {
+        match = true;
+        break;
+      }
+    } while(false  || match_Empty(context, token) || match_Comment(context, token) || match_TagLine(context, token));
+
+    queue.forEach(function (token) {
+      context.tokenQueue.push(token);
+    });
+    return match;
+  }
+
+
+}

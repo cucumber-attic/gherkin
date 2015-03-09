@@ -427,7 +427,7 @@ public class Parser<T> {
         return newState;
     }
 
-    
+
     // Start
     int matchTokenAt_0(Token token, ParserContext context) {
         if (match_Language(context, token))
@@ -473,8 +473,8 @@ public class Parser<T> {
         return 0;
 
     }
-    
-    
+
+
     // Feature:0>Feature_Header:0>#Language:0
     int matchTokenAt_1(Token token, ParserContext context) {
         if (match_TagLine(context, token))
@@ -512,8 +512,8 @@ public class Parser<T> {
         return 1;
 
     }
-    
-    
+
+
     // Feature:0>Feature_Header:1>Tags:0>#TagLine:0
     int matchTokenAt_2(Token token, ParserContext context) {
         if (match_TagLine(context, token))
@@ -551,8 +551,8 @@ public class Parser<T> {
         return 2;
 
     }
-    
-    
+
+
     // Feature:0>Feature_Header:2>#FeatureLine:0
     int matchTokenAt_3(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -622,8 +622,8 @@ public class Parser<T> {
         return 3;
 
     }
-    
-    
+
+
     // Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
     int matchTokenAt_4(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -693,8 +693,8 @@ public class Parser<T> {
         return 4;
 
     }
-    
-    
+
+
     // Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0
     int matchTokenAt_5(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -758,8 +758,8 @@ public class Parser<T> {
         return 5;
 
     }
-    
-    
+
+
     // Feature:1>Background:0>#BackgroundLine:0
     int matchTokenAt_6(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -828,8 +828,8 @@ public class Parser<T> {
         return 6;
 
     }
-    
-    
+
+
     // Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
     int matchTokenAt_7(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -898,8 +898,8 @@ public class Parser<T> {
         return 7;
 
     }
-    
-    
+
+
     // Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
     int matchTokenAt_8(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -962,8 +962,8 @@ public class Parser<T> {
         return 8;
 
     }
-    
-    
+
+
     // Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
     int matchTokenAt_9(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -1043,8 +1043,8 @@ public class Parser<T> {
         return 9;
 
     }
-    
-    
+
+
     // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     int matchTokenAt_10(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -1122,8 +1122,8 @@ public class Parser<T> {
         return 10;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0
     int matchTokenAt_11(Token token, ParserContext context) {
         if (match_TagLine(context, token))
@@ -1169,8 +1169,8 @@ public class Parser<T> {
         return 11;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0
     int matchTokenAt_12(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -1243,8 +1243,8 @@ public class Parser<T> {
         return 12;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
     int matchTokenAt_13(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -1317,8 +1317,8 @@ public class Parser<T> {
         return 13;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
     int matchTokenAt_14(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -1385,8 +1385,8 @@ public class Parser<T> {
         return 14;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
     int matchTokenAt_15(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -1470,8 +1470,8 @@ public class Parser<T> {
         return 15;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     int matchTokenAt_16(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -1553,8 +1553,8 @@ public class Parser<T> {
         return 16;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
     int matchTokenAt_17(Token token, ParserContext context) {
         if (match_Empty(context, token))
@@ -1606,8 +1606,8 @@ public class Parser<T> {
         return 17;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
     int matchTokenAt_18(Token token, ParserContext context) {
         if (match_Comment(context, token))
@@ -1657,8 +1657,8 @@ public class Parser<T> {
         return 18;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
     int matchTokenAt_19(Token token, ParserContext context) {
         if (match_Comment(context, token))
@@ -1704,8 +1704,8 @@ public class Parser<T> {
         return 19;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
     int matchTokenAt_20(Token token, ParserContext context) {
         if (match_TableRow(context, token))
@@ -1766,8 +1766,8 @@ public class Parser<T> {
         return 20;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     int matchTokenAt_21(Token token, ParserContext context) {
         if (match_TableRow(context, token))
@@ -1824,8 +1824,8 @@ public class Parser<T> {
         return 21;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
     int matchTokenAt_22(Token token, ParserContext context) {
         if (match_TagLine(context, token))
@@ -1863,8 +1863,8 @@ public class Parser<T> {
         return 22;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0
     int matchTokenAt_23(Token token, ParserContext context) {
         if (match_Empty(context, token))
@@ -1902,8 +1902,8 @@ public class Parser<T> {
         return 23;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
     int matchTokenAt_24(Token token, ParserContext context) {
         if (match_Comment(context, token))
@@ -1937,8 +1937,8 @@ public class Parser<T> {
         return 24;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0
     int matchTokenAt_25(Token token, ParserContext context) {
         if (match_Comment(context, token))
@@ -1970,8 +1970,8 @@ public class Parser<T> {
         return 25;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0
     int matchTokenAt_26(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -1989,7 +1989,7 @@ public class Parser<T> {
         }
         if (match_TagLine(context, token))
         {
-            if (lookAhead_0(context, token))
+            if (lookahead_0(context, token))
             {
                 endRule(context, RuleType.Examples);
                 startRule(context, RuleType.Examples);
@@ -2059,8 +2059,8 @@ public class Parser<T> {
         return 26;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
     int matchTokenAt_28(Token token, ParserContext context) {
         if (match_DocStringSeparator(context, token))
@@ -2087,8 +2087,8 @@ public class Parser<T> {
         return 28;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
     int matchTokenAt_29(Token token, ParserContext context) {
         if (match_StepLine(context, token))
@@ -2140,8 +2140,8 @@ public class Parser<T> {
         return 29;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
     int matchTokenAt_30(Token token, ParserContext context) {
         if (match_DocStringSeparator(context, token))
@@ -2168,8 +2168,8 @@ public class Parser<T> {
         return 30;
 
     }
-    
-    
+
+
     // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
     int matchTokenAt_31(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -2246,8 +2246,8 @@ public class Parser<T> {
         return 31;
 
     }
-    
-    
+
+
     // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
     int matchTokenAt_32(Token token, ParserContext context) {
         if (match_DocStringSeparator(context, token))
@@ -2274,8 +2274,8 @@ public class Parser<T> {
         return 32;
 
     }
-    
-    
+
+
     // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
     int matchTokenAt_33(Token token, ParserContext context) {
         if (match_EOF(context, token))
@@ -2348,10 +2348,10 @@ public class Parser<T> {
         return 33;
 
     }
-    
 
-    
-    boolean lookAhead_0(ParserContext context, Token currentToken) {
+
+
+    boolean lookahead_0(ParserContext context, Token currentToken) {
         currentToken.detach();
         Token token;
         Queue<Token> queue = new ArrayDeque<Token>();
@@ -2379,7 +2379,7 @@ public class Parser<T> {
         }
         return match;
     }
-    
+
 
     public interface IAstBuilder<T> {
         void build(Token token);

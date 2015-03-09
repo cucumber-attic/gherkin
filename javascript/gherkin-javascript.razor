@@ -137,9 +137,9 @@ module.exports = function Parser() {
     }
   }
 
-  @foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
-  {
-  <text>
+@foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
+{
+<text>
   // @Raw(state.Comment)
   function matchTokenAt_@(state.Id)(token, context) {
     @foreach(var transition in state.Transitions)
@@ -147,7 +147,7 @@ module.exports = function Parser() {
     @:if(@MatchToken(transition.TokenType)) {
       if (transition.LookAheadHint != null)
       {
-      @:if(lookAhead_@(transition.LookAheadHint.Id)(context, token)) {
+      @:if(lookahead_@(transition.LookAheadHint.Id)(context, token)) {
       }
       foreach(var production in transition.Productions)
       {
@@ -161,11 +161,13 @@ module.exports = function Parser() {
     @:}
     }
     @HandleParserError(state.Transitions.Select(t => "#" + t.TokenType.ToString()).Distinct(), state)
-  }</text>
   }
+</text>
+}
 
-  @foreach(var rule in Model.RuleSet.TokenRules)
-  {<text>
+@foreach(var rule in Model.RuleSet.TokenRules)
+{
+<text>
   function match_@(rule.Name.Replace("#", ""))(context, token) {
     @if (rule.Name != "#EOF")
     {
@@ -174,6 +176,35 @@ module.exports = function Parser() {
     return handleExternalError(context, false, function () {
       return context.tokenMatcher.match_@(rule.Name.Replace("#", ""))(token);
     });
-  }</text>
   }
-};
+</text>
+}
+
+@foreach(var lookAheadHint in Model.RuleSet.LookAheadHints)
+{
+<text>
+  function lookahead_@(lookAheadHint.Id)(context, currentToken) {
+    currentToken.detach();
+    var token;
+    var queue = [];
+    var match = false;
+    do {
+      token = readToken(context);
+      token.detach();
+      queue.push(token);
+
+      if (false @foreach(var tokenType in lookAheadHint.ExpectedTokens) { <text>|| @MatchToken(tokenType)</text>}) {
+        match = true;
+        break;
+      }
+    } while(false @foreach(var tokenType in lookAheadHint.Skip) { <text>|| @MatchToken(tokenType)</text>});
+
+    queue.forEach(function (token) {
+      context.tokenQueue.push(token);
+    });
+    return match;
+  }
+</text>
+}
+
+}
