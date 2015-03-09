@@ -33,7 +33,7 @@ public class Parser<T> {
         TableRow,
         Language,
         Other,
-;
+        ;
 
         public static TokenType cast(RuleType ruleType) {
             return TokenType.values()[ruleType.ordinal()];
@@ -78,7 +78,7 @@ public class Parser<T> {
         Examples_Description, // Examples_Description := Description_Helper
         Description_Helper, // Description_Helper := #Empty* Description? #Comment*
         Description, // Description! := #Other+
-;
+        ;
 
         public static RuleType cast(TokenType tokenType) {
             return RuleType.values()[tokenType.ordinal()];
