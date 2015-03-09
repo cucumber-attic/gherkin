@@ -108,8 +108,8 @@ module @Model.Namespace
       context.token_queue.any? ? context.token_queue.shift : context.token_scanner.read
     end
 
-    @foreach(var rule in Model.RuleSet.TokenRules)
-    {<text>
+@foreach(var rule in Model.RuleSet.TokenRules)
+{<text>
     def match_@(rule.Name.Replace("#", ""))( context, token)
       @if (rule.Name != "#EOF")
       {
@@ -119,7 +119,7 @@ module @Model.Namespace
         context.token_matcher.match_@(rule.Name.Replace("#", ""))(token)
       end
     end</text>
-    }
+}
 
     def match_token(state, token, context)
       case state
@@ -133,9 +133,8 @@ module @Model.Namespace
       end
     end
 
-    @foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
-    {
-    <text>
+@foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
+{<text>
     # @Raw(state.Comment)
     def match_token_at_@(state.Id)(token, context)
       @foreach(var transition in state.Transitions)
@@ -143,7 +142,7 @@ module @Model.Namespace
       @:if @MatchToken(transition.TokenType)
         if (transition.LookAheadHint != null)
         {
-        @:if LookAhead_@(transition.LookAheadHint.Id)(context, token)
+        @:if lookahead_@(transition.LookAheadHint.Id)(context, token)
         }
         foreach(var production in transition.Productions)
         {
@@ -158,7 +157,36 @@ module @Model.Namespace
       }
       @HandleParserError(state.Transitions.Select(t => "#" + t.TokenType.ToString()).Distinct(), state)
     end</text>
-    }
+}
+
+@foreach(var lookAheadHint in Model.RuleSet.LookAheadHints)
+{
+    <text>
+    def lookahead_@(lookAheadHint.Id)(context, currentToken)
+      currentToken.detach
+      token = nil
+      queue = []
+      match = false
+      loop do
+        token = read_token(context)
+        token.detach
+        queue.unshift(token)
+
+        if (false @foreach(var tokenType in lookAheadHint.ExpectedTokens) {<text>|| @MatchToken(tokenType)</text>})
+          match = true
+          break
+        end
+
+        break unless (false @foreach(var tokenType in lookAheadHint.Skip) {<text>|| @MatchToken(tokenType)</text>})
+      end
+
+      queue.each do |token|
+        context.token_queue.push(token)
+      end
+      return match
+    end
+    </text>
+}
 
     private
 

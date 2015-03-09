@@ -285,7 +285,7 @@ module Gherkin
       end
     end
 
-    
+
     # Start
     def match_token_at_0(token, context)
       if match_Language(context, token)
@@ -321,7 +321,7 @@ module Gherkin
       add_error(context, error)
       return 0
     end
-    
+
     # Feature:0>Feature_Header:0>#Language:0
     def match_token_at_1(token, context)
       if match_TagLine(context, token)
@@ -350,7 +350,7 @@ module Gherkin
       add_error(context, error)
       return 1
     end
-    
+
     # Feature:0>Feature_Header:1>Tags:0>#TagLine:0
     def match_token_at_2(token, context)
       if match_TagLine(context, token)
@@ -379,7 +379,7 @@ module Gherkin
       add_error(context, error)
       return 2
     end
-    
+
     # Feature:0>Feature_Header:2>#FeatureLine:0
     def match_token_at_3(token, context)
       if match_EOF(context, token)
@@ -436,7 +436,7 @@ module Gherkin
       add_error(context, error)
       return 3
     end
-    
+
     # Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_4(token, context)
       if match_EOF(context, token)
@@ -494,7 +494,7 @@ module Gherkin
       add_error(context, error)
       return 4
     end
-    
+
     # Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_5(token, context)
       if match_EOF(context, token)
@@ -546,7 +546,7 @@ module Gherkin
       add_error(context, error)
       return 5
     end
-    
+
     # Feature:1>Background:0>#BackgroundLine:0
     def match_token_at_6(token, context)
       if match_EOF(context, token)
@@ -602,7 +602,7 @@ module Gherkin
       add_error(context, error)
       return 6
     end
-    
+
     # Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_7(token, context)
       if match_EOF(context, token)
@@ -659,7 +659,7 @@ module Gherkin
       add_error(context, error)
       return 7
     end
-    
+
     # Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_8(token, context)
       if match_EOF(context, token)
@@ -710,7 +710,7 @@ module Gherkin
       add_error(context, error)
       return 8
     end
-    
+
     # Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
     def match_token_at_9(token, context)
       if match_EOF(context, token)
@@ -776,7 +776,7 @@ module Gherkin
       add_error(context, error)
       return 9
     end
-    
+
     # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     def match_token_at_10(token, context)
       if match_EOF(context, token)
@@ -841,7 +841,7 @@ module Gherkin
       add_error(context, error)
       return 10
     end
-    
+
     # Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0
     def match_token_at_11(token, context)
       if match_TagLine(context, token)
@@ -877,7 +877,7 @@ module Gherkin
       add_error(context, error)
       return 11
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0
     def match_token_at_12(token, context)
       if match_EOF(context, token)
@@ -937,7 +937,7 @@ module Gherkin
       add_error(context, error)
       return 12
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_13(token, context)
       if match_EOF(context, token)
@@ -998,7 +998,7 @@ module Gherkin
       add_error(context, error)
       return 13
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_14(token, context)
       if match_EOF(context, token)
@@ -1053,7 +1053,7 @@ module Gherkin
       add_error(context, error)
       return 14
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
     def match_token_at_15(token, context)
       if match_EOF(context, token)
@@ -1123,7 +1123,7 @@ module Gherkin
       add_error(context, error)
       return 15
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     def match_token_at_16(token, context)
       if match_EOF(context, token)
@@ -1192,7 +1192,7 @@ module Gherkin
       add_error(context, error)
       return 16
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
     def match_token_at_17(token, context)
       if match_Empty(context, token)
@@ -1233,7 +1233,7 @@ module Gherkin
       add_error(context, error)
       return 17
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_18(token, context)
       if match_Comment(context, token)
@@ -1273,7 +1273,7 @@ module Gherkin
       add_error(context, error)
       return 18
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_19(token, context)
       if match_Comment(context, token)
@@ -1309,7 +1309,7 @@ module Gherkin
       add_error(context, error)
       return 19
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
     def match_token_at_20(token, context)
       if match_TableRow(context, token)
@@ -1358,7 +1358,7 @@ module Gherkin
       add_error(context, error)
       return 20
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     def match_token_at_21(token, context)
       if match_TableRow(context, token)
@@ -1404,7 +1404,7 @@ module Gherkin
       add_error(context, error)
       return 21
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
     def match_token_at_22(token, context)
       if match_TagLine(context, token)
@@ -1433,7 +1433,7 @@ module Gherkin
       add_error(context, error)
       return 22
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0
     def match_token_at_23(token, context)
       if match_Empty(context, token)
@@ -1462,7 +1462,7 @@ module Gherkin
       add_error(context, error)
       return 23
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_24(token, context)
       if match_Comment(context, token)
@@ -1488,7 +1488,7 @@ module Gherkin
       add_error(context, error)
       return 24
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_25(token, context)
       if match_Comment(context, token)
@@ -1512,7 +1512,7 @@ module Gherkin
       add_error(context, error)
       return 25
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0
     def match_token_at_26(token, context)
       if match_EOF(context, token)
@@ -1527,7 +1527,7 @@ module Gherkin
         return 26
       end
       if match_TagLine(context, token)
-        if LookAhead_0(context, token)
+        if lookahead_0(context, token)
         end_rule(context, :Examples);
         start_rule(context, :Examples);
         start_rule(context, :Tags);
@@ -1585,7 +1585,7 @@ module Gherkin
       add_error(context, error)
       return 26
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
     def match_token_at_28(token, context)
       if match_DocStringSeparator(context, token)
@@ -1605,7 +1605,7 @@ module Gherkin
       add_error(context, error)
       return 28
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
     def match_token_at_29(token, context)
       if match_StepLine(context, token)
@@ -1647,7 +1647,7 @@ module Gherkin
       add_error(context, error)
       return 29
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
     def match_token_at_30(token, context)
       if match_DocStringSeparator(context, token)
@@ -1667,7 +1667,7 @@ module Gherkin
       add_error(context, error)
       return 30
     end
-    
+
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
     def match_token_at_31(token, context)
       if match_EOF(context, token)
@@ -1732,7 +1732,7 @@ module Gherkin
       add_error(context, error)
       return 31
     end
-    
+
     # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
     def match_token_at_32(token, context)
       if match_DocStringSeparator(context, token)
@@ -1752,7 +1752,7 @@ module Gherkin
       add_error(context, error)
       return 32
     end
-    
+
     # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
     def match_token_at_33(token, context)
       if match_EOF(context, token)
@@ -1813,6 +1813,32 @@ module Gherkin
       add_error(context, error)
       return 33
     end
+
+    
+    def lookahead_0(context, currentToken)
+      currentToken.detach
+      token = nil
+      queue = []
+      match = false
+      loop do
+        token = read_token(context)
+        token.detach
+        queue.unshift(token)
+
+        if (false || match_ExamplesLine(context, token))
+          match = true
+          break
+        end
+
+        break unless (false || match_Empty(context, token)|| match_Comment(context, token)|| match_TagLine(context, token))
+      end
+
+      queue.each do |token|
+        context.token_queue.push(token)
+      end
+      return match
+    end
+    
 
     private
 
