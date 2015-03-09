@@ -1,32 +1,33 @@
 package gherkin;
 
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
+import gherkin.deps.com.google.gson.Gson;
+
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 public class GherkinDialectProvider implements IGherkinDialectProvider {
-    @Override
+    private static Map<String, Map<String, List<String>>> DIALECTS;
+
+    static {
+        Gson gson = new Gson();
+        try {
+            Reader dialects = new InputStreamReader(GherkinDialectProvider.class.getResourceAsStream("dialects.json"), "UTF-8");
+            DIALECTS = gson.fromJson(dialects, Map.class);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public GherkinDialect getDefaultDialect() {
-        return GetDialect("en");
+        return getDialect("en");
     }
 
     @Override
-    public GherkinDialect GetDialect(String language) {
-        try {
-            Properties properties = new Properties();
-            properties.load(getClass().getResourceAsStream(language + ".properties"));
-            Map<String, String[]> map = new HashMap<String, String[]>();
-            Enumeration<?> keys = properties.propertyNames();
-            while (keys.hasMoreElements()) {
-                String key = (String) keys.nextElement();
-                String[] keywords = properties.getProperty(key).split("\\|");
-                map.put(key, keywords);
-            }
-            return new GherkinDialect(language, map);
-        } catch (IOException e) {
-            throw new IllegalArgumentException(language);
-        }
+    public GherkinDialect getDialect(String language) {
+        Map<String, List<String>> map = DIALECTS.get(language);
+        return new GherkinDialect(language, map);
     }
 }

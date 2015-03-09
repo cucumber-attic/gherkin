@@ -3,5 +3,5 @@ package gherkin;
 public interface IGherkinDialectProvider {
     public GherkinDialect getDefaultDialect();
 
-    GherkinDialect GetDialect(String language);
+    GherkinDialect getDialect(String language);
 }

@@ -4,3 +4,4 @@ target/
 acceptance/
 .built
 .compared
+src/main/resources/gherkin/dialects.json

@@ -88,7 +88,7 @@ public class TokenMatcher implements ITokenMatcher {
         if (matcher.matches()) {
             String language = matcher.group(1);
 
-            currentDialect = dialectProvider.GetDialect(language);
+            currentDialect = dialectProvider.getDialect(language);
 
             SetTokenMatched(token, TokenType.Language, language, null, null, null);
             return true;
@@ -162,7 +162,7 @@ public class TokenMatcher implements ITokenMatcher {
         return matchTitleLine(token, TokenType.ExamplesLine, currentDialect.getExamplesKeywords());
     }
 
-    private boolean matchTitleLine(Token token, TokenType tokenType, String[] keywords) {
+    private boolean matchTitleLine(Token token, TokenType tokenType, List<String> keywords) {
         for (String keyword : keywords) {
             if (token.line.StartsWithTitleKeyword(keyword)) {
                 String title = token.line.GetRestTrimmed(keyword.length() + GherkinLanguageConstants.TITLE_KEYWORD_SEPARATOR.length());
@@ -202,7 +202,7 @@ public class TokenMatcher implements ITokenMatcher {
 
     @Override
     public boolean match_StepLine(Token token) {
-        String[] keywords = currentDialect.getStepKeywords();
+        List<String> keywords = currentDialect.getStepKeywords();
         for (String keyword : keywords) {
             if (token.line.StartsWith(keyword)) {
                 String stepText = token.line.GetRestTrimmed(keyword.length());
@@ -276,7 +276,7 @@ public class TokenMatcher implements ITokenMatcher {
 //        return false;
 //    }
 //
-//    private boolean matchesTitleLine(String[] keywords) {
+//    private boolean matchesTitleLine(List<String> keywords) {
 //        for (String keyword : keywords) {
 //            int stepIndex = unindentedLine.indexOf(keyword + ":"); // OPTIMIZE: don't create new string
 //            if (stepIndex != -1) {
