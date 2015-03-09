@@ -190,8 +190,8 @@ public class @Model.ParserClassName<T> {
         return context.tokenQueue.size() > 0 ? context.tokenQueue.remove() : context.tokenScanner.read();
     }
 
-    @foreach(var rule in Model.RuleSet.TokenRules)
-    {<text>
+@foreach(var rule in Model.RuleSet.TokenRules)
+{<text>
     boolean match_@(rule.Name.Replace("#", ""))(final ParserContext context, final Token token) {
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
@@ -199,7 +199,7 @@ public class @Model.ParserClassName<T> {
             }
         }, false);
     }</text>
-    }
+}
 
     int matchToken(int state, Token token, ParserContext context) {
         int newState;
@@ -219,7 +219,7 @@ public class @Model.ParserClassName<T> {
 
 @foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
 {
-    <text>
+<text>
     // @Raw(state.Comment)
     int matchTokenAt_@(state.Id)(Token token, ParserContext context) {
         @foreach(var transition in state.Transitions)
@@ -228,7 +228,7 @@ public class @Model.ParserClassName<T> {
         @:{
             if (transition.LookAheadHint != null)
             {
-            @:if (lookAhead_@(transition.LookAheadHint.Id)(context, token))
+            @:if (lookahead_@(transition.LookAheadHint.Id)(context, token))
             @:{
             }
             foreach(var production in transition.Productions)
@@ -244,13 +244,13 @@ public class @Model.ParserClassName<T> {
         }
         @HandleParserError(state.Transitions.Select(t => "#" + t.TokenType.ToString()).Distinct(), state)
     }
-    </text>
+</text>
 }
 
 @foreach(var lookAheadHint in Model.RuleSet.LookAheadHints)
 {
-    <text>
-    boolean lookAhead_@(lookAheadHint.Id)(ParserContext context, Token currentToken) {
+<text>
+    boolean lookahead_@(lookAheadHint.Id)(ParserContext context, Token currentToken) {
         currentToken.detach();
         Token token;
         Queue<Token> queue = new ArrayDeque<Token>();
@@ -282,7 +282,7 @@ public class @Model.ParserClassName<T> {
         }
         return match;
     }
-    </text>
+</text>
 }
 
     public interface IAstBuilder<T> {

@@ -24,7 +24,10 @@ acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.featur
 
 acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json .built
 	mkdir -p `dirname $@`
-	java -classpath ~/.m2/repository/info/cukes/gherkin-jvm-deps/1.0.2/gherkin-jvm-deps-1.0.2.jar:target/classes gherkin.GenerateAst $< | jq --sort-keys "." > $@
+	java \
+	    -javaagent:jacoco/jacocoagent.jar=destfile=target/jacoco.exec \
+	    -classpath ~/.m2/repository/info/cukes/gherkin-jvm-deps/1.0.2/gherkin-jvm-deps-1.0.2.jar:target/classes \
+	    gherkin.GenerateAst $< | jq --sort-keys "." > $@
 	diff --unified --ignore-all-space $<.ast.json $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
 
