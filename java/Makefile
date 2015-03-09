@@ -12,13 +12,13 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS)
 	touch $@
 
-.built: src/main/java/gherkin/Parser.java $(JAVA_FILES)
+.built: src/main/java/gherkin/Parser.java src/main/resources/gherkin/dialects.json $(JAVA_FILES)
 	mvn test
 	touch $@
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
-	java -classpath target/classes gherkin.GenerateTokens $< > $@
+	java -classpath ~/.m2/repository/info/cukes/gherkin-jvm-deps/1.0.2/gherkin-jvm-deps-1.0.2.jar:target/classes gherkin.GenerateTokens $< > $@
 	diff --unified --ignore-all-space $<.tokens $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
@@ -31,12 +31,16 @@ acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feat
 	diff --unified --ignore-all-space $<.ast.json $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
 
-clean:
-	rm -rf .compared .built acceptance target
-.PHONY: clean
-
 src/main/java/gherkin/Parser.java: ../gherkin.berp gherkin-java.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-java.razor -o $@
 	# Remove BOM
 	tail -c +4 $@ > $@.nobom
 	mv $@.nobom $@
+
+src/main/resources/gherkin/dialects.json: ../dialects.json
+	mkdir -p `dirname $@`
+	cp $^ $@
+
+clean:
+	rm -rf .compared .built acceptance target src/main/resources/gherkin/dialects.json
+.PHONY: clean

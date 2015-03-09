@@ -1,37 +1,45 @@
 package gherkin;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class GherkinDialect {
-    private final Map<String, String[]> keywords;
+    private final Map<String, List<String>> keywords;
     private String language;
 
-    public GherkinDialect(String language, Map<String,String[]> keywords) {
+    public GherkinDialect(String language, Map<String, List<String>> keywords) {
         this.language = language;
         this.keywords = keywords;
     }
 
-    public String[] getFeatureKeywords() {
+    public List<String> getFeatureKeywords() {
         return keywords.get("feature");
     }
 
-    public String[] getScenarioKeywords() {
+    public List<String> getScenarioKeywords() {
         return keywords.get("scenario");
     }
 
-    public String[] getStepKeywords() {
-        return keywords.get("steps");
+    public List<String> getStepKeywords() {
+        List<String> result = new ArrayList<>();
+        result.addAll(keywords.get("given"));
+        result.addAll(keywords.get("when"));
+        result.addAll(keywords.get("then"));
+        result.addAll(keywords.get("and"));
+        result.addAll(keywords.get("but"));
+        return result;
     }
 
-    public String[] getBackgroundKeywords() {
+    public List<String> getBackgroundKeywords() {
         return keywords.get("background");
     }
 
-    public String[] getScenarioOutlineKeywords() {
-        return keywords.get("scenario_outline");
+    public List<String> getScenarioOutlineKeywords() {
+        return keywords.get("scenarioOutline");
     }
 
-    public String[] getExamplesKeywords() {
+    public List<String> getExamplesKeywords() {
         return keywords.get("examples");
     }
 
