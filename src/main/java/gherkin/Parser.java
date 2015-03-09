@@ -6,6 +6,8 @@
 
 package gherkin;
 
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -14,7 +16,7 @@ import java.util.Queue;
 
 import static java.util.Arrays.asList;
 
-    public class Parser
+    public class Parser<T>
     {
         public enum TokenType
         {
@@ -93,12 +95,12 @@ import static java.util.Arrays.asList;
         {
             public final ITokenScanner TokenScanner;
             public final ITokenMatcher TokenMatcher;
-            public final IAstBuilder Builder;
+            public final IAstBuilder<T> Builder;
             public final Queue<Token> TokenQueue;
             public final List<ParserException> Errors;
 
 
-            ParserContext(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder builder, Queue<Token> tokenQueue, List<ParserException> errors) {
+            ParserContext(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder<T> builder, Queue<Token> tokenQueue, List<ParserException> errors) {
                 TokenScanner = tokenScanner;
                 TokenMatcher = tokenMatcher;
                 Builder = builder;
@@ -107,12 +109,22 @@ import static java.util.Arrays.asList;
             }
         }
 
-        public Object Parse(ITokenScanner tokenScanner)
+        public T Parse(String source)
+        {
+            return Parse(new StringReader(source));
+        }
+
+        public T Parse(Reader source)
+        {
+            return Parse(new TokenScanner(source));
+        }
+
+        public T Parse(ITokenScanner tokenScanner)
         {
             return Parse(tokenScanner, new TokenMatcher(), new AstBuilder());
         }
 
-        public Object Parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder astBuilder)
+        public T Parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder astBuilder)
         {
             ParserContext context = new ParserContext(
                 tokenScanner,
@@ -199,7 +211,7 @@ import static java.util.Arrays.asList;
         });
     }
 
-        Object GetResult(ParserContext context)
+        T GetResult(ParserContext context)
         {
             return context.Builder.GetResult();
         }
@@ -2420,12 +2432,12 @@ import static java.util.Arrays.asList;
         }
 
 
-    public interface IAstBuilder
+    public interface IAstBuilder<T>
     {
         void Build(Token token);
         void StartRule(RuleType ruleType);
         void EndRule(RuleType ruleType);
-        Object GetResult();
+        T GetResult();
     }
 
     public interface ITokenScanner
