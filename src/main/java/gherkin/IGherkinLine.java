@@ -5,7 +5,7 @@ import java.util.List;
 public interface IGherkinLine {
     public Integer Indent();
 
-    public void Detach();
+    public void detach();
 
     public String GetLineText(int indentToRemove);
 

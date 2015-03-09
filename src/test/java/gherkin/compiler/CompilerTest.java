@@ -15,7 +15,7 @@ public class CompilerTest {
 
     @Test
     public void compiles_a_feature_with_a_single_scenario() throws IOException {
-        compiler.compile(parser.Parse("" +
+        compiler.compile(parser.parse("" +
                 "Feature: f\n" +
                 "  Scenario: s\n" +
                 "    Given passing\n"));
@@ -24,7 +24,7 @@ public class CompilerTest {
 
     @Test
     public void compiles_a_feature_with_a_background() throws IOException {
-        compiler.compile(parser.Parse("" +
+        compiler.compile(parser.parse("" +
                 "Feature: f\n" +
                 "  Background:\n" +
                 "    Given a\n" +

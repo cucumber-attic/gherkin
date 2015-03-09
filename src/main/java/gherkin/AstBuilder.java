@@ -25,33 +25,33 @@ import static gherkin.Parser.RuleType;
 import static gherkin.Parser.TokenType;
 import static gherkin.StringUtils.join;
 
-public class AstBuilder implements IAstBuilder {
-    private final Deque<AstNode> stack = new ArrayDeque<AstNode>();
+public class AstBuilder<T> implements IAstBuilder<T> {
+    private final Deque<AstNode> stack = new ArrayDeque<>();
 
     public AstBuilder() {
         stack.push(new AstNode(RuleType.None));
     }
 
-    private AstNode CurrentNode() {
+    private AstNode currentNode() {
         return stack.peek();
     }
 
     @Override
-    public void Build(Token token) {
-        RuleType ruleType = RuleType.cast(token.MatchedType);
-        CurrentNode().add(ruleType, token);
+    public void build(Token token) {
+        RuleType ruleType = RuleType.cast(token.matchedType);
+        currentNode().add(ruleType, token);
     }
 
     @Override
-    public void StartRule(RuleType ruleType) {
+    public void startRule(RuleType ruleType) {
         stack.push(new AstNode(ruleType));
     }
 
     @Override
-    public void EndRule(RuleType ruleType) {
+    public void endRule(RuleType ruleType) {
         AstNode node = stack.pop();
         Object transformedNode = getTransformedNode(node);
-        CurrentNode().add(node.ruleType, transformedNode);
+        currentNode().add(node.ruleType, transformedNode);
     }
 
     private Object getTransformedNode(AstNode node) {
@@ -62,18 +62,18 @@ public class AstBuilder implements IAstBuilder {
                 if (stepArg == null) {
                     stepArg = node.getSingle(RuleType.DocString, null);
                 }
-                return new Step(getLocation(stepLine, 0), stepLine.MatchedKeyword, stepLine.MatchedText, stepArg);
+                return new Step(getLocation(stepLine, 0), stepLine.matchedKeyword, stepLine.matchedText, stepArg);
             }
             case DocString: {
                 Token separatorToken = node.getTokens(TokenType.DocStringSeparator).get(0);
-                String contentType = separatorToken.MatchedText;
+                String contentType = separatorToken.matchedText;
                 List<Token> lineTokens = node.getTokens(TokenType.Other);
                 StringBuilder content = new StringBuilder();
                 boolean newLine = false;
                 for (Token lineToken : lineTokens) {
                     if (newLine) content.append("\n");
                     newLine = true;
-                    content.append(lineToken.MatchedText);
+                    content.append(lineToken.matchedText);
                 }
                 return new DocString(getLocation(separatorToken, 0), contentType, content.toString());
             }
@@ -85,7 +85,7 @@ public class AstBuilder implements IAstBuilder {
                 Token backgroundLine = node.getToken(TokenType.BackgroundLine);
                 String description = getDescription(node);
                 List<Step> steps = getSteps(node);
-                return new Background(getLocation(backgroundLine, 0), backgroundLine.MatchedKeyword, backgroundLine.MatchedText, description, steps);
+                return new Background(getLocation(backgroundLine, 0), backgroundLine.matchedKeyword, backgroundLine.matchedText, description, steps);
             }
             case Scenario_Definition: {
                 List<Tag> tags = getTags(node);
@@ -96,7 +96,7 @@ public class AstBuilder implements IAstBuilder {
                     String description = getDescription(scenarioNode);
                     List<Step> steps = getSteps(scenarioNode);
 
-                    return new Scenario(tags, getLocation(scenarioLine, 0), scenarioLine.MatchedKeyword, scenarioLine.MatchedText, description, steps);
+                    return new Scenario(tags, getLocation(scenarioLine, 0), scenarioLine.matchedKeyword, scenarioLine.matchedText, description, steps);
                 } else {
                     AstNode scenarioOutlineNode = node.getSingle(RuleType.ScenarioOutline, null);
                     if (scenarioOutlineNode == null) {
@@ -108,7 +108,7 @@ public class AstBuilder implements IAstBuilder {
 
                     List<Examples> examplesList = scenarioOutlineNode.getItems(RuleType.Examples);
 
-                    return new ScenarioOutline(tags, getLocation(scenarioOutlineLine, 0), scenarioOutlineLine.MatchedKeyword, scenarioOutlineLine.MatchedText, description, steps, examplesList);
+                    return new ScenarioOutline(tags, getLocation(scenarioOutlineLine, 0), scenarioOutlineLine.matchedKeyword, scenarioOutlineLine.matchedText, description, steps, examplesList);
 
                 }
             }
@@ -119,24 +119,23 @@ public class AstBuilder implements IAstBuilder {
                 List<TableRow> allRows = getTableRows(node);
                 TableRow header = allRows.get(0);
                 List<TableRow> rows = allRows.subList(1, allRows.size());
-                return new Examples(tags, getLocation(examplesLine, 0), examplesLine.MatchedKeyword, examplesLine.MatchedText, description, header, rows);
+                return new Examples(tags, getLocation(examplesLine, 0), examplesLine.matchedKeyword, examplesLine.matchedText, description, header, rows);
             }
             case Description: {
                 List<Token> lineTokens = node.getTokens(TokenType.Other);
                 // Trim trailing empty lines
                 int end = lineTokens.size();
-                while (end > 0 && lineTokens.get(end - 1).MatchedText.matches("\\s*")) {
+                while (end > 0 && lineTokens.get(end - 1).matchedText.matches("\\s*")) {
                     end--;
                 }
                 lineTokens = lineTokens.subList(0, end);
 
-                String description = join(new StringUtils.ToString<Token>() {
+                return join(new StringUtils.ToString<Token>() {
                     @Override
                     public String toString(Token t) {
-                        return t.MatchedText;
+                        return t.matchedText;
                     }
                 }, "\n", lineTokens);
-                return description;
             }
             case Feature: {
                 AstNode header = node.getSingle(RuleType.Feature_Header, new AstNode(RuleType.Feature_Header));
@@ -145,9 +144,9 @@ public class AstBuilder implements IAstBuilder {
                 Background background = node.getSingle(RuleType.Background, null);
                 List<ScenarioDefinition> scenarioDefinitions = node.getItems(RuleType.Scenario_Definition);
                 String description = getDescription(header);
-                String language = featureLine.MatchedGherkinDialect.getLanguage();
+                String language = featureLine.matchedGherkinDialect.getLanguage();
 
-                return new Feature(tags, getLocation(featureLine, 0), language, featureLine.MatchedKeyword, featureLine.MatchedText, description, background, scenarioDefinitions);
+                return new Feature(tags, getLocation(featureLine, 0), language, featureLine.matchedKeyword, featureLine.matchedText, description, background, scenarioDefinitions);
             }
 
         }
@@ -155,7 +154,7 @@ public class AstBuilder implements IAstBuilder {
     }
 
     private List<TableRow> getTableRows(AstNode node) {
-        List<TableRow> rows = new ArrayList<TableRow>();
+        List<TableRow> rows = new ArrayList<>();
         for (Token token : node.getTokens(TokenType.TableRow)) {
             rows.add(new TableRow(getLocation(token, 0), getCells(token)));
         }
@@ -175,8 +174,8 @@ public class AstBuilder implements IAstBuilder {
     }
 
     private List<TableCell> getCells(Token token) {
-        List<TableCell> cells = new ArrayList<TableCell>();
-        for (GherkinLineSpan cellItem : token.MathcedItems) {
+        List<TableCell> cells = new ArrayList<>();
+        for (GherkinLineSpan cellItem : token.mathcedItems) {
             cells.add(new TableCell(getLocation(token, cellItem.Column), cellItem.Text));
         }
         return cells;
@@ -187,7 +186,7 @@ public class AstBuilder implements IAstBuilder {
     }
 
     private Location getLocation(Token token, int column) {
-        return column == 0 ? token.Location : new Location(token.Location.line, column);
+        return column == 0 ? token.location : new Location(token.location.line, column);
     }
 
     private String getDescription(AstNode node) {
@@ -197,12 +196,12 @@ public class AstBuilder implements IAstBuilder {
     private List<Tag> getTags(AstNode node) {
         AstNode tagsNode = node.getSingle(RuleType.Tags, new AstNode(RuleType.None));
         if (tagsNode == null)
-            return new ArrayList<Tag>();
+            return new ArrayList<>();
 
         List<Token> tokens = tagsNode.getTokens(TokenType.TagLine);
-        List<Tag> tags = new ArrayList<Tag>();
+        List<Tag> tags = new ArrayList<>();
         for (Token token : tokens) {
-            for (GherkinLineSpan tagItem : token.MathcedItems) {
+            for (GherkinLineSpan tagItem : token.mathcedItems) {
                 tags.add(new Tag(getLocation(token, tagItem.Column), tagItem.Text));
             }
         }
@@ -210,7 +209,7 @@ public class AstBuilder implements IAstBuilder {
     }
 
     @Override
-    public Object GetResult() {
-        return CurrentNode().getSingle(RuleType.Feature, null);
+    public T getResult() {
+        return currentNode().getSingle(RuleType.Feature, null);
     }
 }
