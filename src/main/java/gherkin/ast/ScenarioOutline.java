@@ -3,15 +3,15 @@ package gherkin.ast;
 import java.util.List;
 
 public class ScenarioOutline extends ScenarioDefinition {
-    private final List<ExamplesTable> examplesTableList;
+    private final List<Examples> examples;
 
-    public ScenarioOutline(List<Tag> tags, Location location, String keyword, String name, String description, List<Step> steps, List<ExamplesTable> examplesTableList) {
+    public ScenarioOutline(List<Tag> tags, Location location, String keyword, String name, String description, List<Step> steps, List<Examples> examples) {
         super(tags, location, keyword, name, description, steps);
-        this.examplesTableList = examplesTableList;
+        this.examples = examples;
     }
 
-    public List<ExamplesTable> getExamplesTableList() {
-        return examplesTableList;
+    public List<Examples> getExamples() {
+        return examples;
     }
 
     @Override
@@ -20,8 +20,8 @@ public class ScenarioOutline extends ScenarioDefinition {
         for (Step step : getSteps()) {
            step.describeTo(visitor);
         }
-        for (ExamplesTable examplesTable : examplesTableList) {
-            examplesTable.describeTo(visitor);
+        for (Examples examples : this.examples) {
+            examples.describeTo(visitor);
         }
     }
 }

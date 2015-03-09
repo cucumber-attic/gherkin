@@ -1,12 +1,9 @@
 package gherkin;
 
-import gherkin.ast.AstNode;
 import gherkin.ast.Background;
 import gherkin.ast.DataTable;
 import gherkin.ast.DocString;
-import gherkin.ast.DocStringLine;
-import gherkin.ast.EmptyStepArgument;
-import gherkin.ast.ExamplesTable;
+import gherkin.ast.Examples;
 import gherkin.ast.Feature;
 import gherkin.ast.Location;
 import gherkin.ast.Scenario;
@@ -64,9 +61,6 @@ public class AstBuilder implements IAstBuilder {
                 StepArgument stepArg = node.getSingle(RuleType.DataTable, null);
                 if (stepArg == null) {
                     stepArg = node.getSingle(RuleType.DocString, null);
-                    if (stepArg == null) {
-                        stepArg = new EmptyStepArgument();
-                    }
                 }
                 return new Step(getLocation(stepLine, 0), stepLine.MatchedKeyword, stepLine.MatchedText, stepArg);
             }
@@ -74,11 +68,14 @@ public class AstBuilder implements IAstBuilder {
                 Token separatorToken = node.getTokens(TokenType.DocStringSeparator).get(0);
                 String contentType = separatorToken.MatchedText;
                 List<Token> lineTokens = node.getTokens(TokenType.Other);
-                List<DocStringLine> lines = new ArrayList<DocStringLine>(lineTokens.size());
+                StringBuilder content = new StringBuilder();
+                boolean newLine = false;
                 for (Token lineToken : lineTokens) {
-                    lines.add(new DocStringLine(lineToken.Location, lineToken.MatchedText));
+                    if (newLine) content.append("\n");
+                    newLine = true;
+                    content.append(lineToken.MatchedText);
                 }
-                return new DocString(getLocation(separatorToken, 0), contentType, lines);
+                return new DocString(getLocation(separatorToken, 0), contentType, content.toString());
             }
             case DataTable: {
                 List<TableRow> rows = getTableRows(node);
@@ -109,9 +106,9 @@ public class AstBuilder implements IAstBuilder {
                     String description = getDescription(scenarioOutlineNode);
                     List<Step> steps = getSteps(scenarioOutlineNode);
 
-                    List<ExamplesTable> examplesTableList = scenarioOutlineNode.getItems(RuleType.Examples);
+                    List<Examples> examplesList = scenarioOutlineNode.getItems(RuleType.Examples);
 
-                    return new ScenarioOutline(tags, getLocation(scenarioOutlineLine, 0), scenarioOutlineLine.MatchedKeyword, scenarioOutlineLine.MatchedText, description, steps, examplesTableList);
+                    return new ScenarioOutline(tags, getLocation(scenarioOutlineLine, 0), scenarioOutlineLine.MatchedKeyword, scenarioOutlineLine.MatchedText, description, steps, examplesList);
 
                 }
             }
@@ -119,14 +116,16 @@ public class AstBuilder implements IAstBuilder {
                 List<Tag> tags = getTags(node);
                 Token examplesLine = node.getToken(TokenType.ExamplesLine);
                 String description = getDescription(node);
-                List<TableRow> rows = getTableRows(node);
-                return new ExamplesTable(tags, getLocation(examplesLine, 0), examplesLine.MatchedKeyword, examplesLine.MatchedText, description, rows);
+                List<TableRow> allRows = getTableRows(node);
+                TableRow header = allRows.get(0);
+                List<TableRow> rows = allRows.subList(1, allRows.size());
+                return new Examples(tags, getLocation(examplesLine, 0), examplesLine.MatchedKeyword, examplesLine.MatchedText, description, header, rows);
             }
             case Description: {
                 List<Token> lineTokens = node.getTokens(TokenType.Other);
                 // Trim trailing empty lines
                 int end = lineTokens.size();
-                while (end > 0 && lineTokens.get(end-1).MatchedText.matches("\\s*")) {
+                while (end > 0 && lineTokens.get(end - 1).MatchedText.matches("\\s*")) {
                     end--;
                 }
                 lineTokens = lineTokens.subList(0, end);
@@ -188,7 +187,7 @@ public class AstBuilder implements IAstBuilder {
     }
 
     private Location getLocation(Token token, int column) {
-        return column == 0 ? token.Location : new Location(token.Location.Line, column);
+        return column == 0 ? token.Location : new Location(token.Location.line, column);
     }
 
     private String getDescription(AstNode node) {
