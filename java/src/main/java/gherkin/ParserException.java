@@ -42,7 +42,7 @@ public class ParserException extends RuntimeException {
         public final List<String> ExpectedTokenTypes;
 
         public UnexpectedTokenException(Token receivedToken, List<String> expectedTokenTypes, String stateComment) {
-            super(GetMessage(receivedToken, expectedTokenTypes), receivedToken.Location);
+            super(GetMessage(receivedToken, expectedTokenTypes), receivedToken.location);
             ReceivedToken = receivedToken;
             ExpectedTokenTypes = expectedTokenTypes;
             StateComment = stateComment;
@@ -54,7 +54,7 @@ public class ParserException extends RuntimeException {
 
             return String.format("expected: %s, got '%s'",
                     StringUtils.join(", ", expectedTokenTypes),
-                    receivedToken.GetTokenValue().trim());
+                    receivedToken.getTokenValue().trim());
         }
     }
 
@@ -63,7 +63,7 @@ public class ParserException extends RuntimeException {
         public final List<String> ExpectedTokenTypes;
 
         public UnexpectedEOFException(Token receivedToken, List<String> expectedTokenTypes, String stateComment) {
-            super(GetMessage(expectedTokenTypes), receivedToken.Location);
+            super(GetMessage(expectedTokenTypes), receivedToken.location);
             ExpectedTokenTypes = expectedTokenTypes;
             StateComment = stateComment;
         }

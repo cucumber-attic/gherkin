@@ -21,7 +21,7 @@ public class TokenScanner implements Parser.ITokenScanner {
     }
 
     @Override
-    public Token Read() {
+    public Token read() {
         try {
             String line = reader.readLine();
             Location location = new Location(++lineNumber, 0);

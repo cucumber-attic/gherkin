@@ -6,35 +6,35 @@ import java.util.List;
 
 public class Token {
     public boolean IsEOF() {
-        return Line == null;
+        return line == null;
     }
 
-    public final IGherkinLine Line;
-    public Parser.TokenType MatchedType;
-    public String MatchedKeyword;
-    public String MatchedText;
-    public List<GherkinLineSpan> MathcedItems;
-    public int MatchedIndent;
-    public GherkinDialect MatchedGherkinDialect;
-    public gherkin.ast.Location Location;
+    public final IGherkinLine line;
+    public Parser.TokenType matchedType;
+    public String matchedKeyword;
+    public String matchedText;
+    public List<GherkinLineSpan> mathcedItems;
+    public int matchedIndent;
+    public GherkinDialect matchedGherkinDialect;
+    public Location location;
 
     public Token(IGherkinLine line, Location location) {
-        Line = line;
-        Location = location;
+        this.line = line;
+        this.location = location;
     }
 
-    public void Detach() {
-        if (Line != null)
-            Line.Detach();
+    public void detach() {
+        if (line != null)
+            line.detach();
     }
 
-    public String GetTokenValue() {
-        return IsEOF() ? "EOF" : Line.GetLineText(-1);
+    public String getTokenValue() {
+        return IsEOF() ? "EOF" : line.GetLineText(-1);
     }
 
     @Override
     public String toString() {
-        return String.format("%s: %s/%s", MatchedType, MatchedKeyword, MatchedText);
+        return String.format("%s: %s/%s", matchedType, matchedKeyword, matchedText);
     }
 
 }

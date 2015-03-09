@@ -13,12 +13,12 @@ public class TokenFormatter {
             return "EOF";
 
         return String.format("(%s:%s)%s:%s/%s/%s",
-                toString(token.Location.line),
-                toString(token.Location.column),
-                toString(token.MatchedType),
-                toString(token.MatchedKeyword),
-                toString(token.MatchedText),
-                toString(token.MathcedItems == null ? "" : StringUtils.join(SPAN_TO_STRING, ",", token.MathcedItems))
+                toString(token.location.line),
+                toString(token.location.column),
+                toString(token.matchedType),
+                toString(token.matchedKeyword),
+                toString(token.matchedText),
+                toString(token.mathcedItems == null ? "" : StringUtils.join(SPAN_TO_STRING, ",", token.mathcedItems))
         );
     }
 

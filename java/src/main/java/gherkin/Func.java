@@ -1,5 +1,5 @@
 package gherkin;
 
-public interface Func<T> {
-    T call();
+public interface Func<V> {
+    V call();
 }

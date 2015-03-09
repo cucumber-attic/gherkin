@@ -23,7 +23,7 @@ public class GherkinLine implements IGherkinLine {
     }
 
     @Override
-    public void Detach() {
+    public void detach() {
 
     }
 
