@@ -1,23 +1,14 @@
 package gherkin.ast;
 
-import java.util.List;
-
 public class DocString implements StepArgument {
+    private final String type = getClass().getSimpleName();
     private final Location location;
     private final String contentType;
-    private final List<DocStringLine> lines;
+    private final String content;
 
-    public DocString(Location location, String contentType, List<DocStringLine> lines) {
+    public DocString(Location location, String contentType, String content) {
         this.location = location;
         this.contentType = contentType;
-        this.lines = lines;
-    }
-
-    public List<DocStringLine> getLines() {
-        return lines;
-    }
-
-    public String getContentType() {
-        return contentType;
+        this.content = content;
     }
 }

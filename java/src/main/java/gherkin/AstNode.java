@@ -1,6 +1,4 @@
-package gherkin.ast;
-
-import gherkin.Token;
+package gherkin;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,13 +26,6 @@ public class AstNode {
         items.add(obj);
     }
 
-    // TODO: The C# version looks like this:
-    /*
-        public T GetSingle<T>(RuleType ruleType)
-        {
-            return GetItems<T>(ruleType).SingleOrDefault();
-        }
-     */
     public <T> T getSingle(RuleType ruleType, T defaultResult) {
         List<Object> items = getItems(ruleType);
         return (T) (items.isEmpty() ? defaultResult : items.get(0));

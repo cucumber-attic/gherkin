@@ -2,24 +2,29 @@ package gherkin.ast;
 
 import java.util.List;
 
-public class Background implements DescribesItself, HasDescription, HasSteps {
+public class Examples implements DescribesItself, HasTags, HasDescription, HasRows {
     private final String type = getClass().getSimpleName();
+    private final List<Tag> tags;
     private final Location location;
     private final String keyword;
     private final String name;
     private final String description;
-    private final List<Step> steps;
+    private final TableRow header;
+    private final List<TableRow> rows;
 
-    public Background(Location location, String keyword, String name, String description, List<Step> steps) {
+    public Examples(List<Tag> tags, Location location, String keyword, String name, String description, TableRow header, List<TableRow> rows) {
+        this.tags = tags;
         this.location = location;
         this.keyword = keyword;
         this.name = name;
         this.description = description;
-        this.steps = steps;
+        this.header = header;
+        this.rows = rows;
     }
 
-    public Location getLocation() {
-        return location;
+    @Override
+    public List<Tag> getTags() {
+        return tags;
     }
 
     @Override
@@ -38,15 +43,13 @@ public class Background implements DescribesItself, HasDescription, HasSteps {
     }
 
     @Override
-    public List<Step> getSteps() {
-        return steps;
+    public List<TableRow> getRows() {
+        return rows;
     }
 
     @Override
     public void describeTo(Visitor visitor) {
-        visitor.visitBackground(this);
-        for (Step step : steps) {
-            step.describeTo(visitor);
-        }
+        visitor.visitExamples(this);
+        // TOTO: iterate over rows
     }
 }

@@ -36,7 +36,7 @@ public class TokenMatcher implements ITokenMatcher {
         token.MathcedItems = items;
         token.MatchedGherkinDialect = getCurrentDialect();
         token.MatchedIndent = indent != null ? indent : (token.Line == null ? 0 : token.Line.Indent());
-        token.Location = new Location(token.Location.Line, token.MatchedIndent + 1);
+        token.Location = new Location(token.Location.line, token.MatchedIndent + 1);
     }
 
     private void SetTokenMatched(Token token, TokenType tokenType) {
@@ -79,7 +79,7 @@ public class TokenMatcher implements ITokenMatcher {
     }
 
     private ParserException CreateTokenMatcherException(Token token, String message) {
-        return new ParserException.AstBuilderException(message, new Location(token.Location.Line, token.Line.Indent() + 1));
+        return new ParserException.AstBuilderException(message, new Location(token.Location.line, token.Line.Indent() + 1));
     }
 
     @Override

@@ -9,7 +9,7 @@ public interface Visitor {
 
     void visitScenarioOutline(ScenarioOutline scenarioOutline);
 
-    void visitExamplesTable(ExamplesTable examplesTable);
+    void visitExamples(Examples examples);
 
     void visitStep(Step step);
 }

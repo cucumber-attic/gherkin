@@ -13,8 +13,8 @@ public class TokenFormatter {
             return "EOF";
 
         return String.format("(%s:%s)%s:%s/%s/%s",
-                toString(token.Location.Line),
-                toString(token.Location.Column),
+                toString(token.Location.line),
+                toString(token.Location.column),
                 toString(token.MatchedType),
                 toString(token.MatchedKeyword),
                 toString(token.MatchedText),

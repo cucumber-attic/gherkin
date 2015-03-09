@@ -22,7 +22,7 @@ public class BaseVisitor implements Visitor {
     }
 
     @Override
-    public void visitExamplesTable(ExamplesTable examplesTable) {
+    public void visitExamples(Examples examples) {
         throw new UnsupportedOperationException();
     }
 

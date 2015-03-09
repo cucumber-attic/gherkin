@@ -21,7 +21,7 @@ public class ParserException extends RuntimeException {
     private static String GetMessage(String message, Location location) {
         if (location == null) throw new NullPointerException("location");
 
-        return String.format("(%s:%s): %s", location.Line, location.Column, message);
+        return String.format("(%s:%s): %s", location.line, location.column, message);
     }
 
     public static class AstBuilderException extends ParserException {
