@@ -1959,9 +1959,8 @@ module.exports = function Parser() {
       }
     } while(false  || match_Empty(context, token) || match_Comment(context, token) || match_TagLine(context, token));
 
-    queue.forEach(function (token) {
-      context.tokenQueue.push(token);
-    });
+    context.tokenQueue = context.tokenQueue.concat(queue);
+
     return match;
   }
 

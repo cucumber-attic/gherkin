@@ -2374,9 +2374,9 @@ public class Parser<T> {
             || match_Comment(context, token)
             || match_TagLine(context, token)
         );
-        for (Token t : queue) {
-            context.tokenQueue.add(t);
-        }
+
+        context.tokenQueue.addAll(queue);
+
         return match;
     }
 

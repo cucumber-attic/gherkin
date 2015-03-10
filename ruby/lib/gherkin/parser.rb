@@ -1833,9 +1833,8 @@ module Gherkin
         break unless (false || match_Empty(context, token)|| match_Comment(context, token)|| match_TagLine(context, token))
       end
 
-      queue.each do |token|
-        context.token_queue.push(token)
-      end
+      context.token_queue.concat(queue)
+
       return match
     end
     
