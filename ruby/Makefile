@@ -13,7 +13,7 @@ all: .compared
 	touch $@
 
 .built: lib/gherkin/parser.rb lib/gherkin/dialects.json $(RUBY_FILES) Gemfile.lock
-	bundle exec rspec
+	bundle exec rspec --color
 	touch $@
 
 Gemfile.lock: Gemfile

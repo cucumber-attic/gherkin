@@ -1,12 +1,14 @@
-# Gherkin 3 - JavaScript Parser
+# Gherkin 3 - Ruby Parser
 
 ## Using make
 
 Just run `make` from this directory.
 
-## Using npm
+Even if you prefer `make` - run `rake` occasionally, as it reports better warnings.
 
-Just run `npm test` from this directory (you need to `npm test` first).
+## Using rake
+
+Just run `rake` from this directory.
 
 Keep in mind that this will only run unit tests. The acceptance tests are only
 run when you build with `make`.
