@@ -53,6 +53,10 @@ var parser = new Parser();
 var feature = parser.parse(gherkinDoc);
 ```
 
+## Why Gherkin 3?
+
+I wrote up a summary [here](https://groups.google.com/d/msg/cukes/YLKsqbBMBoI/DYhfFx8GBegJ).
+
 ## Architecture
 
 The following diagram outlines the architecture:
