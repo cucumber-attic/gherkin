@@ -277,9 +277,9 @@ public class @Model.ParserClassName<T> {
             @:|| @matchToken(tokenType)
         }
         );
-        for (Token t : queue) {
-            context.tokenQueue.add(t);
-        }
+
+        context.tokenQueue.addAll(queue);
+
         return match;
     }
 </text>
