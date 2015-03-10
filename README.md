@@ -80,7 +80,7 @@ Berp takes a grammar file (`gherkin.berp`) and a template file (`gherkin-X.razor
 and outputs a parser in language *X*:
 
     +------------+   +-----+   +---------------+
-    |gherkin.berp|-->| berp|-->|gherkin-X.razor|
+    |gherkin.berp|-->| berp|<--|gherkin-X.razor|
     +------------+   +--+--+   +---------------+
                         |
                         V
