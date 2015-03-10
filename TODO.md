@@ -1,13 +1,33 @@
 # TODO
 
-- [ ] Make the C# parser generic (like the Java one)
-- [ ] .NET: Use JSON as the primary represenation of the AST for comparison
-  - [ ] Remove the `testdata/good/*.ast` files
-- [ ] .NET: Use the new `dialects.json` file
+We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow.
+
+- [ ] Implement compiler
+  - Base it on the compiler in cucumber-ruby-core
+  - Need `/testdata/good/*.feature.tescase.json` files
+  - [ ] C#
+  - [x] Ruby
+  - [x] JavaScript
+  - [x] Java
+- [ ] Make the Parser.parse() return a generic type
+  - [ ] C#
+  - [x] Java
+- [ ] Use JSON as the primary representation of the AST for comparison
+  - [ ] C#
+  - [x] Ruby
+  - [x] JavaScript
+  - [x] Java
+- [ ] Remove the `testdata/good/*.ast` files
+- [ ] Use the new `dialects.json` file
+  - [ ] C#
+  - [x] Ruby
+  - [x] JavaScript
+  - [x] Java
   - [ ] Remove `i18n.json`
-- [ ] Implement compiler (based it on cucumber-ruby-core)
-  - [ ] Need `/testdata/good/*.feature.tescase.json` files
-- [ ] Rename `title` to `name` in all implementations
-- [ ] .NET: rename step `text` to `name`
-- [ ] Java: Use uber jar to compile in gson
+- [ ] Rename `title` or `text` to `name`
+  - [ ] C#
+  - [ ] Ruby
+  - [ ] JavaScript
+  - [x] Java
+- [ ] Java: Use uberjar to compile in Gson
   - [ ] Remove dependency on `gherkin-jvm-deps`

@@ -2,8 +2,10 @@
 
 [![Build Status](https://travis-ci.org/cucumber/gherkin3.png)](https://travis-ci.org/cucumber/gherkin3)
 
-Gherkin 3 is a parser and compiler for the Gherkin language,
-used by [Cucumber](https://cukes.info) to parse `.feature` files.
+Gherkin 3 is a parser and compiler for the Gherkin language.
+
+It is intended to replace [Gherkin 2](https://github.com/cucumber/gherkin) and be used by
+all [Cucumber](https://cukes.info) implementations to parse `.feature` files.
 
 Gherkin 3 is currently implemented for the following platforms:
 
@@ -11,6 +13,9 @@ Gherkin 3 is currently implemented for the following platforms:
 * JVM (Java)
 * JavaScript (Browser or Node.js/IO.js)
 * Ruby (MRI, JRuby or any other Ruby implementation)
+
+See `TODO.md` for what's remaining before we're ready to roll it out and refactor
+the Cucumber implementations to use it.
 
 See `CONTRIBUTING.md` if you want to contribute a parser for a new language.
 Our wish-list is (in no particular order):
