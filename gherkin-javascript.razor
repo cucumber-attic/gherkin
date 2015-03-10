@@ -199,9 +199,8 @@ module.exports = function Parser() {
       }
     } while(false @foreach(var tokenType in lookAheadHint.Skip) { <text>|| @MatchToken(tokenType)</text>});
 
-    queue.forEach(function (token) {
-      context.tokenQueue.push(token);
-    });
+    context.tokenQueue = context.tokenQueue.concat(queue);
+
     return match;
   }
 </text>
