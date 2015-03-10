@@ -84,6 +84,9 @@ and outputs a parser in language *X*:
                     |Parser.x|
                     +--------+
 
+Also see the [wiki](https://github.com/cucumber/gherkin3/wiki) for some early
+design docs (which might be a little outdated, but mostly OK).
+
 ### Compiler
 
 (Work in progress)
@@ -139,6 +142,9 @@ for simplicity):
 
 Each `TestCase` will also keep a reference back to the original AST nodes for
 rendering and error reporting (stack traces).
+
+Cucumber will further transform this list of `TestCase` to add various hooks and
+link Step Definitions.
 
 ## Building Gherkin 3
 
