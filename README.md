@@ -93,13 +93,13 @@ design docs (which might be a little outdated, but mostly OK).
 
 The compiler compiles the AST produced by the parser
 into a simpler form - *Test cases*. The rationale is to provide a simpler
-data structure to Cucumber, which greately simplifies the internals of Cucumber.
+data structure to Cucumber, which simplifies the internals of Cucumber.
 
     +------------+   +-------+   +------+   +--------+   +----------+
     |Feature file|-->|Scanner|-->|Parser|-->|Compiler|-->|Test cases|
     +------------+   +-------+   +------+   +--------+   +----------+
 
-Each scenario will be compiled into a `TestCase`, as will `Examples` rows under
+Each `Scenario` will be compiled into a `TestCase`, as will `Examples` rows under
 a `Scenario Outline`. Any `Background` steps will also be compiled into each
 `TestCase`. Tags will be compiled into the `TestCase` as well.
 
