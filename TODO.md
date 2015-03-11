@@ -6,9 +6,14 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
   - Base it on the compiler in cucumber-ruby-core
   - Need `/testdata/good/*.feature.tescase.json` files
   - [ ] C#
-  - [x] Ruby
-  - [x] JavaScript
-  - [x] Java
+  - [ ] Ruby
+  - [ ] JavaScript
+  - [ ] Java
+- [ ] Initialise parser with language (allows for global language config)
+  - [ ] C#
+  - [ ] Ruby
+  - [ ] JavaScript
+  - [ ] Java
 - [ ] Make the Parser.parse() return a generic type
   - [ ] C#
   - [x] Java
@@ -23,8 +28,9 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
   - [x] Ruby
   - [x] JavaScript
   - [x] Java
+  - [ ] Rename to `gherkin-languages.json`
   - [ ] Remove `i18n.json`
-- [ ] Rename `title` or `text` to `name`
+- [ ] Rename `title` or `text` to `name` (check wiki, maybe discuss again)
   - [ ] C#
   - [ ] Ruby
   - [ ] JavaScript
