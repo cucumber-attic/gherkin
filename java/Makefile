@@ -18,7 +18,7 @@ all: .compared
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
-	java -classpath ~/.m2/repository/info/cukes/gherkin-jvm-deps/1.0.2/gherkin-jvm-deps-1.0.2.jar:target/classes gherkin.GenerateTokens $< > $@
+	java -classpath ~/.m2/repository/info/cukes/gherkin-jvm-deps/1.0.3/gherkin-jvm-deps-1.0.3.jar:target/classes gherkin.GenerateTokens $< > $@
 	diff --unified --ignore-all-space $<.tokens $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
@@ -26,7 +26,7 @@ acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feat
 	mkdir -p `dirname $@`
 	java \
 	    -javaagent:jacoco/jacocoagent.jar=destfile=target/jacoco.exec \
-	    -classpath ~/.m2/repository/info/cukes/gherkin-jvm-deps/1.0.2/gherkin-jvm-deps-1.0.2.jar:target/classes \
+	    -classpath ~/.m2/repository/info/cukes/gherkin-jvm-deps/1.0.3/gherkin-jvm-deps-1.0.3.jar:target/classes \
 	    gherkin.GenerateAst $< | jq --sort-keys "." > $@
 	diff --unified --ignore-all-space $<.ast.json $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
