@@ -1,7 +1,7 @@
 package gherkin;
 
 import gherkin.ast.Feature;
-import gherkin.deps.com.google.gson.Gson;
+import com.google.gson.Gson;
 
 import java.io.FileInputStream;
 import java.io.IOException;

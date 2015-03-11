@@ -30,20 +30,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>gherkin-jvm-deps</artifactId>
-            <version>1.0.3</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.code.gson</groupId>
-                    <artifactId>gson</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>net.iharder</groupId>
-                    <artifactId>base64</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.3.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
