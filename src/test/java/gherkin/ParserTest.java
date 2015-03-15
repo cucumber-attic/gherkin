@@ -57,4 +57,19 @@ public class ParserTest {
             assertThat(actualMessage, is("Parser errors: \nNo such language: no-such"));
         }
     }
+
+    @Test
+    public void fail_parser_on_unexpected_eof() {
+        Parser<Feature> parser = new Parser<>();
+
+        try {
+            parser.parse("Feature: Unexpected end of file\n" +
+                    "\n" +
+                    "  Scenario Outline: minimalistic\n" +
+                    "    Given the minimalism\n");
+        } catch (ParserException.CompositeParserException e) {
+            String actualMessage = e.getMessage();
+            assertThat(actualMessage, is("Parser errors: \n(5:0): unexpected end of file, expected: #TableRow, #DocStringSeparator, #StepLine, #TagLine, #ExamplesLine, #Comment, #Empty"));
+        }
+    }
 }
