@@ -1,5 +1,6 @@
 package gherkin.ast;
 
+import java.util.Collections;
 import java.util.List;
 
 public class DataTable implements StepArgument, HasRows {
@@ -7,7 +8,7 @@ public class DataTable implements StepArgument, HasRows {
     private final List<TableRow> rows;
 
     public DataTable(List<TableRow> rows) {
-        this.rows = rows;
+        this.rows = Collections.unmodifiableList(rows);
     }
 
     @Override

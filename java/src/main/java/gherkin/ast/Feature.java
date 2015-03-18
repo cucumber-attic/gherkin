@@ -1,5 +1,6 @@
 package gherkin.ast;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Feature implements DescribesItself, HasDescription, HasTags {
@@ -24,14 +25,14 @@ public class Feature implements DescribesItself, HasDescription, HasTags {
             List<ScenarioDefinition> scenarioDefinitions
     ) {
 
-        this.tags = tags;
+        this.tags = Collections.unmodifiableList(tags);
         this.location = location;
         this.language = language;
         this.keyword = keyword;
         this.name = name;
         this.description = description;
         this.background = background;
-        this.scenarioDefinitions = scenarioDefinitions;
+        this.scenarioDefinitions = Collections.unmodifiableList(scenarioDefinitions);
     }
 
     public List<ScenarioDefinition> getScenarioDefinitions() {

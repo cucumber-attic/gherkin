@@ -1,5 +1,6 @@
 package gherkin.ast;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TableRow {
@@ -8,7 +9,7 @@ public class TableRow {
 
     public TableRow(Location location, List<TableCell> cells) {
         this.location = location;
-        this.cells = cells;
+        this.cells = Collections.unmodifiableList(cells);
     }
 
     public List<TableCell> getCells() {

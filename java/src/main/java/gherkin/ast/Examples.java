@@ -1,5 +1,6 @@
 package gherkin.ast;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Examples implements DescribesItself, HasTags, HasDescription, HasRows {
@@ -13,13 +14,13 @@ public class Examples implements DescribesItself, HasTags, HasDescription, HasRo
     private final List<TableRow> rows;
 
     public Examples(List<Tag> tags, Location location, String keyword, String name, String description, TableRow header, List<TableRow> rows) {
-        this.tags = tags;
+        this.tags = Collections.unmodifiableList(tags);
         this.location = location;
         this.keyword = keyword;
         this.name = name;
         this.description = description;
         this.header = header;
-        this.rows = rows;
+        this.rows = Collections.unmodifiableList(rows);
     }
 
     @Override
