@@ -1,5 +1,6 @@
 package gherkin.ast;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Background implements DescribesItself, HasDescription, HasSteps {
@@ -15,7 +16,7 @@ public class Background implements DescribesItself, HasDescription, HasSteps {
         this.keyword = keyword;
         this.name = name;
         this.description = description;
-        this.steps = steps;
+        this.steps = Collections.unmodifiableList(steps);
     }
 
     public Location getLocation() {

@@ -1,5 +1,6 @@
 package gherkin.ast;
 
+import java.util.Collections;
 import java.util.List;
 
 public abstract class ScenarioDefinition implements DescribesItself, HasDescription, HasSteps, HasTags {
@@ -12,12 +13,12 @@ public abstract class ScenarioDefinition implements DescribesItself, HasDescript
     private final List<Step> steps;
 
     public ScenarioDefinition(List<Tag> tags, Location location, String keyword, String name, String description, List<Step> steps) {
-        this.tags = tags;
+        this.tags = Collections.unmodifiableList(tags);
         this.location = location;
         this.keyword = keyword;
         this.name = name;
         this.description = description;
-        this.steps = steps;
+        this.steps = Collections.unmodifiableList(steps);
     }
 
     @Override
