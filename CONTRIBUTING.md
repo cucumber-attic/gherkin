@@ -26,10 +26,16 @@ In addition to these tests, `make` will run acceptance tests that verify the out
 
 * the scanner
 * the parser
-* the compiler
+* the compiler (WIP)
 
 This is done by consuming the `*.feature` files under `/testdata` and comparing the actual
-output with expected output (`*.feature.tokens` and `*.feature.ast.json` files).
+output with expected output (`*.feature.tokens` and `*.feature.ast.json` files) using `diff`.
+
+`make` will remove the generated file unless it is identical to the expected file so that
+it will try to regenerate it the next time you run `make`.
+
+When all files are identical and successfully compared, `make` will create the `.compared`
+file, indicating that the acceptance tests passed.
 
 ## Implementing a parser for a new language
 
@@ -48,11 +54,12 @@ When you run `make` it should complain that `gherkin-x.razor` does not exist.
 
 Now, copy a `.razor` file form one of the other implementations.
 
-Your `.built` target should compile your code (if necessary) and run unit test.
+Your `.built` target should compile your code (if necessary) and run unit tests.
 You won't need a lot of unit tests (the cross-platform acceptance tests are pretty
-good), but implementing a few during development might help you progress.
+good), but writing a few during development might help you progress.
 
-You'll spend quite a bit of time just creating code that is syntactically correct.
+You'll spend quite a bit of time fiddling with the `.razor` template to make it
+generate code that is syntactically correct.
 
 When you get to that stage, `make` will run the acceptance tests, which iterate
 over all the `.feature` files under `/testdata`, passes them through your
