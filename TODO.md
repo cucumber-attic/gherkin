@@ -35,5 +35,3 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
   - [ ] Ruby
   - [ ] JavaScript
   - [x] Java
-- [ ] Java: Use uberjar to compile in Gson
-  - [ ] Remove dependency on `gherkin-jvm-deps`
