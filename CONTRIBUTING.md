@@ -13,6 +13,13 @@ Prerequisites:
 
 With all this installed, just run `make` from the root directory.
 
+## Contributing changes
+
+If you change code, please make sure all implementations are changed accordingly.
+
+If you don't to do this, we might reject your patch because the burden to keep
+parsers in sync is now on us.
+
 ## Building individual parsers
 
 It's possible to build the parser for a single language too. Please refer to
