@@ -15,10 +15,10 @@ With all this installed, just run `make` from the root directory.
 
 ## Contributing changes
 
-If you change code, please make sure all implementations are changed accordingly.
-
-If you don't to do this, we might reject your patch because the burden to keep
-parsers in sync is now on us.
+* Create a feature branch for your change.
+* Don't lump unrelated changes together.
+* If you change code, please make sure all implementations are changed accordingly.
+  * If you don't to do this, we might reject your patch because the burden to keep parsers in sync is now on us.
 
 ## Building individual parsers
 
