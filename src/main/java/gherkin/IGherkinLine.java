@@ -3,21 +3,21 @@ package gherkin;
 import java.util.List;
 
 public interface IGherkinLine {
-    public Integer Indent();
+    public Integer indent();
 
     public void detach();
 
-    public String GetLineText(int indentToRemove);
+    public String getLineText(int indentToRemove);
 
-    public boolean IsEmpty();
+    public boolean isEmpty();
 
-    boolean StartsWith(String prefix);
+    boolean startsWith(String prefix);
 
-    String GetRestTrimmed(int length);
+    String getRestTrimmed(int length);
 
-    List<GherkinLineSpan> GetTags();
+    List<GherkinLineSpan> getTags();
 
-    boolean StartsWithTitleKeyword(String keyword);
+    boolean startsWithTitleKeyword(String keyword);
 
-    List<GherkinLineSpan> GetTableCells();
+    List<GherkinLineSpan> getTableCells();
 }

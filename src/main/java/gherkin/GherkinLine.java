@@ -18,7 +18,7 @@ public class GherkinLine implements IGherkinLine {
     }
 
     @Override
-    public Integer Indent() {
+    public Integer indent() {
         return lineText.length() - trimmedLineText.length();
     }
 
@@ -28,32 +28,32 @@ public class GherkinLine implements IGherkinLine {
     }
 
     @Override
-    public String GetLineText(int indentToRemove) {
+    public String getLineText(int indentToRemove) {
         return lineText;
     }
 
     @Override
-    public boolean IsEmpty() {
+    public boolean isEmpty() {
         return trimmedLineText.length() == 0;
     }
 
     @Override
-    public boolean StartsWith(String prefix) {
+    public boolean startsWith(String prefix) {
         return trimmedLineText.startsWith(prefix);
     }
 
     @Override
-    public String GetRestTrimmed(int length) {
+    public String getRestTrimmed(int length) {
         return trimmedLineText.substring(length).trim();
     }
 
     @Override
-    public List<GherkinLineSpan> GetTags() {
+    public List<GherkinLineSpan> getTags() {
         return getSpans("\\s+");
     }
 
     @Override
-    public boolean StartsWithTitleKeyword(String text) {
+    public boolean startsWithTitleKeyword(String text) {
         int textLength = text.length();
         return trimmedLineText.length() > textLength &&
                 trimmedLineText.startsWith(text) &&
@@ -63,7 +63,7 @@ public class GherkinLine implements IGherkinLine {
     }
 
     @Override
-    public List<GherkinLineSpan> GetTableCells() {
+    public List<GherkinLineSpan> getTableCells() {
         return getSpans("\\s*\\|\\s*");
     }
 
@@ -72,7 +72,7 @@ public class GherkinLine implements IGherkinLine {
         Scanner scanner = new Scanner(trimmedLineText).useDelimiter(delimiter);
         while (scanner.hasNext()) {
             String cell = scanner.next();
-            int column = scanner.match().start() + Indent() + 1;
+            int column = scanner.match().start() + indent() + 1;
             lineSpans.add(new GherkinLineSpan(column, cell));
         }
         return lineSpans;

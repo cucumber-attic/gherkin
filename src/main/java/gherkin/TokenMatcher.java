@@ -35,7 +35,7 @@ public class TokenMatcher implements ITokenMatcher {
         token.matchedText = text;
         token.mathcedItems = items;
         token.matchedGherkinDialect = getCurrentDialect();
-        token.matchedIndent = indent != null ? indent : (token.line == null ? 0 : token.line.Indent());
+        token.matchedIndent = indent != null ? indent : (token.line == null ? 0 : token.line.indent());
         token.location = new Location(token.location.line, token.matchedIndent + 1);
     }
 
@@ -54,14 +54,14 @@ public class TokenMatcher implements ITokenMatcher {
 
     @Override
     public boolean match_Other(Token token) {
-        String text = token.line.GetLineText(indentToRemove); //take the entire line, except removing DocString indents
+        String text = token.line.getLineText(indentToRemove); //take the entire line, except removing DocString indents
         SetTokenMatched(token, TokenType.Other, text, null, 0, null);
         return true;
     }
 
     @Override
     public boolean match_Empty(Token token) {
-        if (token.line.IsEmpty()) {
+        if (token.line.isEmpty()) {
             SetTokenMatched(token, TokenType.Empty);
             return true;
         }
@@ -70,8 +70,8 @@ public class TokenMatcher implements ITokenMatcher {
 
     @Override
     public boolean match_Comment(Token token) {
-        if (token.line.StartsWith(GherkinLanguageConstants.COMMENT_PREFIX)) {
-            String text = token.line.GetLineText(0); //take the entire line
+        if (token.line.startsWith(GherkinLanguageConstants.COMMENT_PREFIX)) {
+            String text = token.line.getLineText(0); //take the entire line
             SetTokenMatched(token, TokenType.Comment, text, null, 0, null);
             return true;
         }
@@ -79,12 +79,12 @@ public class TokenMatcher implements ITokenMatcher {
     }
 
     private ParserException CreateTokenMatcherException(Token token, String message) {
-        return new ParserException.AstBuilderException(message, new Location(token.location.line, token.line.Indent() + 1));
+        return new ParserException.AstBuilderException(message, new Location(token.location.line, token.line.indent() + 1));
     }
 
     @Override
     public boolean match_Language(Token token) {
-        Matcher matcher = LANGUAGE_PATTERN.matcher(token.line.GetLineText(0));
+        Matcher matcher = LANGUAGE_PATTERN.matcher(token.line.getLineText(0));
         if (matcher.matches()) {
             String language = matcher.group(1);
 
@@ -98,8 +98,8 @@ public class TokenMatcher implements ITokenMatcher {
 
     @Override
     public boolean match_TagLine(Token token) {
-        if (token.line.StartsWith(GherkinLanguageConstants.TAG_PREFIX)) {
-            SetTokenMatched(token, TokenType.TagLine, null, null, null, token.line.GetTags());
+        if (token.line.startsWith(GherkinLanguageConstants.TAG_PREFIX)) {
+            SetTokenMatched(token, TokenType.TagLine, null, null, null, token.line.getTags());
             return true;
         }
         return false;
@@ -164,8 +164,8 @@ public class TokenMatcher implements ITokenMatcher {
 
     private boolean matchTitleLine(Token token, TokenType tokenType, List<String> keywords) {
         for (String keyword : keywords) {
-            if (token.line.StartsWithTitleKeyword(keyword)) {
-                String title = token.line.GetRestTrimmed(keyword.length() + GherkinLanguageConstants.TITLE_KEYWORD_SEPARATOR.length());
+            if (token.line.startsWithTitleKeyword(keyword)) {
+                String title = token.line.getRestTrimmed(keyword.length() + GherkinLanguageConstants.TITLE_KEYWORD_SEPARATOR.length());
                 SetTokenMatched(token, tokenType, title, keyword, null, null);
                 return true;
             }
@@ -183,12 +183,12 @@ public class TokenMatcher implements ITokenMatcher {
     }
 
     private boolean match_DocStringSeparator(Token token, String separator, boolean isOpen) {
-        if (token.line.StartsWith(separator)) {
+        if (token.line.startsWith(separator)) {
             String contentType = null;
             if (isOpen) {
-                contentType = token.line.GetRestTrimmed(separator.length());
+                contentType = token.line.getRestTrimmed(separator.length());
                 activeDocStringSeparator = separator;
-                indentToRemove = token.line.Indent();
+                indentToRemove = token.line.indent();
             } else {
                 activeDocStringSeparator = null;
                 indentToRemove = 0;
@@ -204,8 +204,8 @@ public class TokenMatcher implements ITokenMatcher {
     public boolean match_StepLine(Token token) {
         List<String> keywords = currentDialect.getStepKeywords();
         for (String keyword : keywords) {
-            if (token.line.StartsWith(keyword)) {
-                String stepText = token.line.GetRestTrimmed(keyword.length());
+            if (token.line.startsWith(keyword)) {
+                String stepText = token.line.getRestTrimmed(keyword.length());
                 SetTokenMatched(token, TokenType.StepLine, stepText, keyword, null, null);
                 return true;
             }
@@ -214,8 +214,8 @@ public class TokenMatcher implements ITokenMatcher {
     }
 
     public boolean match_TableRow(Token token) {
-        if (token.line.StartsWith(GherkinLanguageConstants.TABLE_CELL_SEPARATOR)) {
-            SetTokenMatched(token, TokenType.TableRow, null, null, null, token.line.GetTableCells());
+        if (token.line.startsWith(GherkinLanguageConstants.TABLE_CELL_SEPARATOR)) {
+            SetTokenMatched(token, TokenType.TableRow, null, null, null, token.line.getTableCells());
             return true;
         }
         return false;
