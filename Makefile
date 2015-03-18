@@ -18,16 +18,13 @@ all: .compared
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
-	java -classpath ~/.m2/repository/info/cukes/gherkin-jvm-deps/1.0.3/gherkin-jvm-deps-1.0.3.jar:target/classes gherkin.GenerateTokens $< > $@
+	bin/gherkin-generate-tokens $< > $@
 	diff --unified --ignore-all-space $<.tokens $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
 acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json .built
 	mkdir -p `dirname $@`
-	java \
-	    -javaagent:jacoco/jacocoagent.jar=destfile=target/jacoco.exec \
-	    -classpath ~/.m2/repository/info/cukes/gherkin-jvm-deps/1.0.3/gherkin-jvm-deps-1.0.3.jar:target/classes \
-	    gherkin.GenerateAst $< | jq --sort-keys "." > $@
+	bin/gherkin-generate-ast $< | jq --sort-keys "." > $@
 	diff --unified --ignore-all-space $<.ast.json $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
 
