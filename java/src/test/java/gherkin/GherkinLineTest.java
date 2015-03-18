@@ -11,7 +11,7 @@ public class GherkinLineTest {
     @Test
     public void finds_tags() {
         GherkinLine gherkinLine = new GherkinLine("    @this @is  @atag  ", 0);
-        List<GherkinLineSpan> gherkinLineSpans = gherkinLine.GetTags();
+        List<GherkinLineSpan> gherkinLineSpans = gherkinLine.getTags();
 
         assertEquals(asList(
                 new GherkinLineSpan(5, "@this"),

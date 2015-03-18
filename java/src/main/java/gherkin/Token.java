@@ -29,7 +29,7 @@ public class Token {
     }
 
     public String getTokenValue() {
-        return IsEOF() ? "EOF" : line.GetLineText(-1);
+        return IsEOF() ? "EOF" : line.getLineText(-1);
     }
 
     @Override
