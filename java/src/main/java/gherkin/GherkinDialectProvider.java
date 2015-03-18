@@ -28,6 +28,10 @@ public class GherkinDialectProvider implements IGherkinDialectProvider {
     @Override
     public GherkinDialect getDialect(String language) {
         Map<String, List<String>> map = DIALECTS.get(language);
+        if (map == null) {
+            throw new ParserException("No such language: " + language);
+        }
+
         return new GherkinDialect(language, map);
     }
 }
