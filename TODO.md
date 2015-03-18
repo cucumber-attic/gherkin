@@ -2,6 +2,12 @@
 
 We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow.
 
+- [ ] Error message with path
+- [ ] Integration tests for `testdata/bad/*.feature` that verifies file path and error message
+  - [ ] C#
+  - [ ] Ruby
+  - [ ] JavaScript
+  - [ ] Java
 - [ ] Implement compiler
   - Base it on the compiler in cucumber-ruby-core
   - Need `/testdata/good/*.feature.tescase.json` files

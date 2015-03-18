@@ -89,13 +89,11 @@ TODO
 
 A simple way to benchmark the scanner:
 
-    ruby/bin/gherkin-generate-tokens       `find ../cucumber/examples -name "*.feature"`
-    javascript/bin/gherkin-generate-tokens `find ../cucumber/examples -name "*.feature"`
+    [LANGUAGE]/bin/gherkin-generate-tokens `find ../cucumber/examples -name "*.feature"`
 
 or parser:
 
-    ruby/bin/gherkin-generate-ast       `find ../cucumber/examples -name "*.feature"`
-    javascript/bin/gherkin-generate-ast `find ../cucumber/examples -name "*.feature"`
+    [LANGUAGE]/bin/gherkin-generate-ast `find ../cucumber/examples -name "*.feature"`
 
 ## Adding new good testdata
 
@@ -103,18 +101,17 @@ or parser:
 2) Generate the tokens:
 
     # For example
-    ruby ruby/bin/gherkin-generate-tokens \
+    [LANGUAGE]/bin/gherkin-generate-tokens \
     testdata/good/newfile.feature > \
     testdata/good/newfile.feature.tokens
 
 3) Inspect the generated `.feature.tokens` file manually to see if it's good.
-4) Generate the tokens:
+4) Generate the ast:
 
-    # For example
-    ruby ruby/bin/gherkin-generate-tokens \
+    [LANGUAGE]/bin/gherkin-generate-ast \
     testdata/good/newfile.feature | \
     jq --sort-keys "." > \
-    testdata/good/newfile.feature.tokens
+    testdata/good/newfile.feature.ast.json
 
 5) Inspect the generated `.feature.ast.json` file manually to see if it's good.
 6) Run `make` from the root directory to verify that all parsers parse it ok.
