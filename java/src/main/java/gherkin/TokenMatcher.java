@@ -78,10 +78,6 @@ public class TokenMatcher implements ITokenMatcher {
         return false;
     }
 
-    private ParserException CreateTokenMatcherException(Token token, String message) {
-        return new ParserException.AstBuilderException(message, new Location(token.location.line, token.line.indent() + 1));
-    }
-
     @Override
     public boolean match_Language(Token token) {
         Matcher matcher = LANGUAGE_PATTERN.matcher(token.line.getLineText(0));
@@ -104,38 +100,6 @@ public class TokenMatcher implements ITokenMatcher {
         }
         return false;
     }
-
-//    public boolean matchTagLine(Token token) {
-//        if (unindentedLine.charAt(0) == '@') {
-//            lineSpans = new ArrayList<LineSpan>();
-//
-//            location.setColumn(indent + 1);
-//
-//            // TODO: Consider simpler Scanner based implementation like in matchTableRow()
-//            int col = 0;
-//            int tagStart = -1;
-//            while (col < unindentedLine.length()) {
-//                if (Character.isWhitespace(unindentedLine.charAt(col))) {
-//                    if (tagStart > -1) {
-//                        String tag = unindentedLine.substring(tagStart, col);
-//                        lineSpans.add(new LineSpan(tagStart + indent + 1, tag));
-//                        tagStart = -1;
-//                    }
-//                } else {
-//                    if (tagStart == -1) {
-//                        tagStart = col;
-//                    }
-//                }
-//                col++;
-//            }
-//            if (tagStart > -1) {
-//                String tag = unindentedLine.substring(tagStart, col);
-//                lineSpans.add(new LineSpan(tagStart + indent + 1, tag));
-//            }
-//            return true;
-//        }
-//        return false;
-//    }
 
     @Override
     public boolean match_FeatureLine(Token token) {
@@ -220,72 +184,4 @@ public class TokenMatcher implements ITokenMatcher {
         }
         return false;
     }
-
-//    public boolean matchTableRow(Token token) {
-//        if (unindentedLine.charAt(0) == '|') {
-//            lineSpans = new ArrayList<LineSpan>();
-//            location.setColumn(indent + 1);
-//            Scanner scanner = new Scanner(unindentedLine).useDelimiter("\\s*\\|\\s*");
-//            while (scanner.hasNext()) {
-//                String cell = scanner.next();
-//                int column = scanner.match().start() + indent + 1;
-//                lineSpans.add(new LineSpan(column, cell));
-//            }
-//            return true;
-//        }
-//        return false;
-//    }
-
-//    public boolean matchLanguage(Token token) {
-//        if (unindentedLine.charAt(0) == '#') {
-//            // eat space
-//            int i = 1;
-//            while (i < unindentedLine.length() && Character.isWhitespace(unindentedLine.charAt(i))) {
-//                i++;
-//            }
-//            if (unindentedLine.substring(i).startsWith("language")) {
-//                // eat more space
-//                i += 8; // length of "language"
-//                while (i < unindentedLine.length() && Character.isWhitespace(unindentedLine.charAt(i))) {
-//                    i++;
-//                }
-//                if (unindentedLine.substring(i).startsWith(":")) {
-//                    i += 1; // length of ":"
-//                    while (i < unindentedLine.length() && Character.isWhitespace(unindentedLine.charAt(i))) {
-//                        i++;
-//                    }
-//                    location.setColumn(indent + 1);
-//                    this.text = unindentedLine.substring(i).trim();
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
-
-//    public boolean matchesStepLine(Token token) {
-//        for (String keyword : dialect.getStepKeywords()) {
-//            int stepIndex = unindentedLine.indexOf(keyword);
-//            if (unindentedLine.startsWith(keyword)) {
-//                this.location.setColumn(indent + stepIndex + 1);
-//                this.keyword = keyword;
-//                this.text = unindentedLine.substring(keyword.length()).trim();
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//
-//    private boolean matchesTitleLine(List<String> keywords) {
-//        for (String keyword : keywords) {
-//            int stepIndex = unindentedLine.indexOf(keyword + ":"); // OPTIMIZE: don't create new string
-//            if (stepIndex != -1) {
-//                this.location.setColumn(indent + stepIndex + 1);
-//                this.keyword = keyword;
-//                this.text = unindentedLine.substring(keyword.length() + 1).trim();
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 }
