@@ -129,7 +129,7 @@ public class Parser<T> {
         {
             token = readToken(context);
             state = matchToken(state, token, context);
-        } while(!token.IsEOF());
+        } while(!token.isEOF());
 
         endRule(context, RuleType.Feature);
 
@@ -463,7 +463,7 @@ public class Parser<T> {
         final String stateComment = "State: 0 - Start";
         token.detach();
         List<String> expectedTokens = asList("#Language", "#TagLine", "#FeatureLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -502,7 +502,7 @@ public class Parser<T> {
         final String stateComment = "State: 1 - Feature:0>Feature_Header:0>#Language:0";
         token.detach();
         List<String> expectedTokens = asList("#TagLine", "#FeatureLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -541,7 +541,7 @@ public class Parser<T> {
         final String stateComment = "State: 2 - Feature:0>Feature_Header:1>Tags:0>#TagLine:0";
         token.detach();
         List<String> expectedTokens = asList("#TagLine", "#FeatureLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -612,7 +612,7 @@ public class Parser<T> {
         final String stateComment = "State: 3 - Feature:0>Feature_Header:2>#FeatureLine:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#Empty", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -683,7 +683,7 @@ public class Parser<T> {
         final String stateComment = "State: 4 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -748,7 +748,7 @@ public class Parser<T> {
         final String stateComment = "State: 5 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -818,7 +818,7 @@ public class Parser<T> {
         final String stateComment = "State: 6 - Feature:1>Background:0>#BackgroundLine:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -888,7 +888,7 @@ public class Parser<T> {
         final String stateComment = "State: 7 - Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -952,7 +952,7 @@ public class Parser<T> {
         final String stateComment = "State: 8 - Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1033,7 +1033,7 @@ public class Parser<T> {
         final String stateComment = "State: 9 - Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1112,7 +1112,7 @@ public class Parser<T> {
         final String stateComment = "State: 10 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1159,7 +1159,7 @@ public class Parser<T> {
         final String stateComment = "State: 11 - Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0";
         token.detach();
         List<String> expectedTokens = asList("#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1233,7 +1233,7 @@ public class Parser<T> {
         final String stateComment = "State: 12 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1307,7 +1307,7 @@ public class Parser<T> {
         final String stateComment = "State: 13 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1375,7 +1375,7 @@ public class Parser<T> {
         final String stateComment = "State: 14 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1460,7 +1460,7 @@ public class Parser<T> {
         final String stateComment = "State: 15 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1543,7 +1543,7 @@ public class Parser<T> {
         final String stateComment = "State: 16 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1596,7 +1596,7 @@ public class Parser<T> {
         final String stateComment = "State: 17 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0";
         token.detach();
         List<String> expectedTokens = asList("#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1647,7 +1647,7 @@ public class Parser<T> {
         final String stateComment = "State: 18 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0";
         token.detach();
         List<String> expectedTokens = asList("#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1694,7 +1694,7 @@ public class Parser<T> {
         final String stateComment = "State: 19 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0";
         token.detach();
         List<String> expectedTokens = asList("#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1756,7 +1756,7 @@ public class Parser<T> {
         final String stateComment = "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0";
         token.detach();
         List<String> expectedTokens = asList("#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1814,7 +1814,7 @@ public class Parser<T> {
         final String stateComment = "State: 21 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
         token.detach();
         List<String> expectedTokens = asList("#TableRow", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1853,7 +1853,7 @@ public class Parser<T> {
         final String stateComment = "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0";
         token.detach();
         List<String> expectedTokens = asList("#TagLine", "#ExamplesLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1892,7 +1892,7 @@ public class Parser<T> {
         final String stateComment = "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0";
         token.detach();
         List<String> expectedTokens = asList("#Empty", "#Comment", "#TableRow", "#Other");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1927,7 +1927,7 @@ public class Parser<T> {
         final String stateComment = "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0";
         token.detach();
         List<String> expectedTokens = asList("#Comment", "#TableRow", "#Other");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -1960,7 +1960,7 @@ public class Parser<T> {
         final String stateComment = "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0";
         token.detach();
         List<String> expectedTokens = asList("#Comment", "#TableRow", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -2049,7 +2049,7 @@ public class Parser<T> {
         final String stateComment = "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>Examples_Table:0>#TableRow:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -2077,7 +2077,7 @@ public class Parser<T> {
         final String stateComment = "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
         token.detach();
         List<String> expectedTokens = asList("#DocStringSeparator", "#Other");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -2130,7 +2130,7 @@ public class Parser<T> {
         final String stateComment = "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
         token.detach();
         List<String> expectedTokens = asList("#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -2158,7 +2158,7 @@ public class Parser<T> {
         final String stateComment = "State: 30 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
         token.detach();
         List<String> expectedTokens = asList("#DocStringSeparator", "#Other");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -2236,7 +2236,7 @@ public class Parser<T> {
         final String stateComment = "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -2264,7 +2264,7 @@ public class Parser<T> {
         final String stateComment = "State: 32 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
         token.detach();
         List<String> expectedTokens = asList("#DocStringSeparator", "#Other");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -2338,7 +2338,7 @@ public class Parser<T> {
         final String stateComment = "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
         token.detach();
         List<String> expectedTokens = asList("#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)

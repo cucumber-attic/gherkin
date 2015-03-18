@@ -9,7 +9,7 @@ public class TokenFormatter {
     };
 
     public String FormatToken(Token token) {
-        if (token.IsEOF())
+        if (token.isEOF())
             return "EOF";
 
         return String.format("(%s:%s)%s:%s/%s/%s",

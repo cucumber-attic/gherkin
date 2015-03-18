@@ -45,7 +45,7 @@ public class TokenMatcher implements ITokenMatcher {
 
     @Override
     public boolean match_EOF(Token token) {
-        if (token.IsEOF()) {
+        if (token.isEOF()) {
             SetTokenMatched(token, TokenType.EOF);
             return true;
         }
@@ -54,6 +54,7 @@ public class TokenMatcher implements ITokenMatcher {
 
     @Override
     public boolean match_Other(Token token) {
+        if (token.isEOF()) return false;
         String text = token.line.getLineText(indentToRemove); //take the entire line, except removing DocString indents
         SetTokenMatched(token, TokenType.Other, text, null, 0, null);
         return true;
@@ -61,6 +62,7 @@ public class TokenMatcher implements ITokenMatcher {
 
     @Override
     public boolean match_Empty(Token token) {
+        if (token.isEOF()) return false;
         if (token.line.isEmpty()) {
             SetTokenMatched(token, TokenType.Empty);
             return true;
@@ -70,6 +72,7 @@ public class TokenMatcher implements ITokenMatcher {
 
     @Override
     public boolean match_Comment(Token token) {
+        if (token.isEOF()) return false;
         if (token.line.startsWith(GherkinLanguageConstants.COMMENT_PREFIX)) {
             String text = token.line.getLineText(0); //take the entire line
             SetTokenMatched(token, TokenType.Comment, text, null, 0, null);
@@ -80,6 +83,7 @@ public class TokenMatcher implements ITokenMatcher {
 
     @Override
     public boolean match_Language(Token token) {
+        if (token.isEOF()) return false;
         Matcher matcher = LANGUAGE_PATTERN.matcher(token.line.getLineText(0));
         if (matcher.matches()) {
             String language = matcher.group(1);
@@ -94,6 +98,7 @@ public class TokenMatcher implements ITokenMatcher {
 
     @Override
     public boolean match_TagLine(Token token) {
+        if (token.isEOF()) return false;
         if (token.line.startsWith(GherkinLanguageConstants.TAG_PREFIX)) {
             SetTokenMatched(token, TokenType.TagLine, null, null, null, token.line.getTags());
             return true;
@@ -103,21 +108,25 @@ public class TokenMatcher implements ITokenMatcher {
 
     @Override
     public boolean match_FeatureLine(Token token) {
+        if (token.isEOF()) return false;
         return matchTitleLine(token, TokenType.FeatureLine, currentDialect.getFeatureKeywords());
     }
 
     @Override
     public boolean match_BackgroundLine(Token token) {
+        if (token.isEOF()) return false;
         return matchTitleLine(token, TokenType.BackgroundLine, currentDialect.getBackgroundKeywords());
     }
 
     @Override
     public boolean match_ScenarioLine(Token token) {
+        if (token.isEOF()) return false;
         return matchTitleLine(token, TokenType.ScenarioLine, currentDialect.getScenarioKeywords());
     }
 
     @Override
     public boolean match_ScenarioOutlineLine(Token token) {
+        if (token.isEOF()) return false;
         return matchTitleLine(token, TokenType.ScenarioOutlineLine, currentDialect.getScenarioOutlineKeywords());
     }
 
@@ -127,6 +136,7 @@ public class TokenMatcher implements ITokenMatcher {
     }
 
     private boolean matchTitleLine(Token token, TokenType tokenType, List<String> keywords) {
+        if (token.isEOF()) return false;
         for (String keyword : keywords) {
             if (token.line.startsWithTitleKeyword(keyword)) {
                 String title = token.line.getRestTrimmed(keyword.length() + GherkinLanguageConstants.TITLE_KEYWORD_SEPARATOR.length());
@@ -137,7 +147,9 @@ public class TokenMatcher implements ITokenMatcher {
         return false;
     }
 
+    @Override
     public boolean match_DocStringSeparator(Token token) {
+        if (token.isEOF()) return false;
         return activeDocStringSeparator == null
                 // open
                 ? match_DocStringSeparator(token, GherkinLanguageConstants.DOCSTRING_SEPARATOR, true) ||
@@ -147,6 +159,7 @@ public class TokenMatcher implements ITokenMatcher {
     }
 
     private boolean match_DocStringSeparator(Token token, String separator, boolean isOpen) {
+        if (token.isEOF()) return false;
         if (token.line.startsWith(separator)) {
             String contentType = null;
             if (isOpen) {
@@ -166,6 +179,7 @@ public class TokenMatcher implements ITokenMatcher {
 
     @Override
     public boolean match_StepLine(Token token) {
+        if (token.isEOF()) return false;
         List<String> keywords = currentDialect.getStepKeywords();
         for (String keyword : keywords) {
             if (token.line.startsWith(keyword)) {
@@ -177,7 +191,9 @@ public class TokenMatcher implements ITokenMatcher {
         return false;
     }
 
+    @Override
     public boolean match_TableRow(Token token) {
+        if (token.isEOF()) return false;
         if (token.line.startsWith(GherkinLanguageConstants.TABLE_CELL_SEPARATOR)) {
             SetTokenMatched(token, TokenType.TableRow, null, null, null, token.line.getTableCells());
             return true;
