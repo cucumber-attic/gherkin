@@ -19,13 +19,13 @@ all: .compared
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
-	mono --runtime=v4.0 Gherkin.TokensTester/bin/Debug/Gherkin.TokensTester.exe $< > $@
+	bin/gherkin-generate-tokens $< > $@
 	diff --unified --ignore-all-space $<.tokens $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
 acceptance/testdata/%.feature.ast: ../testdata/%.feature ../testdata/%.feature.ast .built
 	mkdir -p `dirname $@`
-	mono --runtime=v4.0 Gherkin.AstTester/bin/Debug/Gherkin.AstTester.exe $< > $@
+	bin/gherkin-generate-ast-text $< > $@
 	diff --unified --ignore-all-space $<.ast $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast
 

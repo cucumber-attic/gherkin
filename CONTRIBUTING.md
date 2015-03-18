@@ -70,8 +70,8 @@ generate code that is syntactically correct.
 
 When you get to that stage, `make` will run the acceptance tests, which iterate
 over all the `.feature` files under `/testdata`, passes them through your
-*generate-tokens* and *generate-ast* command-line programs, and compares the output
-using `diff`.
+`bin/gherkin-generate-tokens` and `bin/gherkin-generate-ast` command-line programs,
+and compares the output using `diff`.
 
 You'll start out with lots of errors, and now you just code until all acceptance tests
 pass!

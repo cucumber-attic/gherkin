@@ -21,13 +21,13 @@ node_modules: package.json
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
-	node bin/gherkin-generate-tokens $< > $@
+	bin/gherkin-generate-tokens $< > $@
 	diff --unified --ignore-all-space $<.tokens $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
 acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json .built
 	mkdir -p `dirname $@`
-	node bin/gherkin-generate-ast $< | jq --sort-keys "." > $@
+	bin/gherkin-generate-ast $< | jq --sort-keys "." > $@
 	diff --unified --ignore-all-space $<.ast.json $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
 
