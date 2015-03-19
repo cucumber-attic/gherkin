@@ -20,7 +20,7 @@
     token.detach();
     var expectedTokens = ["@Raw(string.Join("\", \"", expectedTokens))"];
     var error = token.isEof ?
-      new Errors.UnexpectedEOFException(token, expectedTokens, stateComment) :
+      Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
@@ -59,10 +59,7 @@ module.exports = function Parser() {
 
     endRule(context, 'Feature');
 
-    // TODO: Similar optimisation in C#/Java/JavaScript
-    if(context.errors.length == 1) {
-      throw context.errors[0];
-    } else if(context.errors.length > 1) {
+    if(context.errors.length > 0) {
       throw Errors.CompositeParserException.create(context.errors);
     }
 
@@ -110,7 +107,12 @@ module.exports = function Parser() {
         e.errors.forEach(function (error) {
           addError(context, error);
         });
-      } else if(e instanceof Errors.ParserException) {
+      } else if(
+        e instanceof Errors.ParserException ||
+        e instanceof Errors.AstBuilderException ||
+        e instanceof Errors.UnexpectedTokenException ||
+        e instanceof Errors.NoSuchLanguageException
+      ) {
         addError(context, e);
       } else {
         throw e;

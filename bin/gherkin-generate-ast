@@ -6,11 +6,16 @@ var TokenMatcher = require('../lib/gherkin/token_matcher');
 var AstBuilder = require('../lib/gherkin/ast_builder');
 
 var parser = new Parser();
-parser.stopAtFirstError = true;
+parser.stopAtFirstError = false;
 var files = process.argv.slice(2);
 files.forEach(function (file) {
   var scanner = new TokenScanner(fs.readFileSync(file, 'UTF-8'));
   var builder = new AstBuilder();
-  var ast = parser.parse(scanner, builder, new TokenMatcher());
-  console.log(JSON.stringify(ast));
+  try {
+    var ast = parser.parse(scanner, builder, new TokenMatcher());
+    console.log(JSON.stringify(ast));
+  } catch (e) {
+    console.error(e.message);
+    process.exit(1);
+  }
 });
