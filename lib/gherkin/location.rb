@@ -1,6 +1,6 @@
 module Gherkin
   class Location < Struct.new(:line, :column)
-    def initialize(line, column=nil)
+    def initialize(line, column=0)
       super
     end
 

@@ -1,4 +1,5 @@
 require 'json'
+
 module Gherkin
   DIALECT_FILE_PATH = File.expand_path("dialects.json", File.dirname(__FILE__))
   DIALECTS = JSON.parse File.read(DIALECT_FILE_PATH)
@@ -25,6 +26,7 @@ module Gherkin
     end
 
     private
+
     def normalise_method_name(original)
       first, *rest = original.split("_")
       first + rest.map(&:capitalize).join

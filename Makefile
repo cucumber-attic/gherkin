@@ -3,13 +3,14 @@ BAD_FEATURE_FILES  = $(shell find ../testdata/bad -name "*.feature")
 
 TOKENS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.tokens,$(GOOD_FEATURE_FILES))
 ASTS     = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.ast.json,$(GOOD_FEATURE_FILES))
+ERRORS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.errors,$(BAD_FEATURE_FILES))
 
 RUBY_FILES = $(shell find . -name "*.rb")
 
 all: .compared
 .PHONY: all
 
-.compared: .built $(TOKENS) $(ASTS)
+.compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
 .built: lib/gherkin/parser.rb lib/gherkin/dialects.json $(RUBY_FILES) Gemfile.lock
@@ -30,6 +31,12 @@ acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feat
 	bin/gherkin-generate-ast $< | jq --sort-keys "." > $@
 	diff --unified --ignore-all-space $<.ast.json $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
+
+acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors .built
+	mkdir -p `dirname $@`
+	! bin/gherkin-generate-ast $< 2> $@
+	diff --unified --ignore-all-space $<.errors $@
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
 lib/gherkin/dialects.json: ../dialects.json
 	cp $^ $@
