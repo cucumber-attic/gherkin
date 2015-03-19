@@ -3,6 +3,7 @@ BAD_FEATURE_FILES  = $(shell find ../testdata/bad -name "*.feature")
 
 TOKENS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.tokens,$(GOOD_FEATURE_FILES))
 AST      = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.ast,$(GOOD_FEATURE_FILES))
+ERRORS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.errors,$(BAD_FEATURE_FILES))
 
 CS_FILES = $(shell find . -type f \( -iname "*.cs" ! -iname "*.NETFramework*" \))
 NUNIT = packages/NUnit.Runners.2.6.3/tools/nunit-console.exe
@@ -10,7 +11,7 @@ NUNIT = packages/NUnit.Runners.2.6.3/tools/nunit-console.exe
 all: .compared
 .PHONY: all
 
-.compared: .built $(TOKENS) $(AST)
+.compared: .built $(TOKENS) $(AST) $(ERRORS)
 	touch $@
 
 .built: .sln_built_debug $(NUNIT) i18n.json
@@ -28,6 +29,12 @@ acceptance/testdata/%.feature.ast: ../testdata/%.feature ../testdata/%.feature.a
 	bin/gherkin-generate-ast-text $< > $@
 	diff --unified --ignore-all-space $<.ast $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast
+
+acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors .built
+	mkdir -p `dirname $@`
+	! bin/gherkin-generate-ast-text $< > $@
+	diff --unified --ignore-all-space $<.errors $@
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
 clean:
 	rm -rf .compared .built acceptance
