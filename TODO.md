@@ -5,7 +5,7 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
 - [ ] Error message with path
 - [ ] Integration tests for `testdata/bad/*.feature` that verifies file path and error message
   - [ ] C#
-  - [ ] Ruby
+  - [x] Ruby
   - [ ] JavaScript
   - [ ] Java
 - [ ] Implement compiler
@@ -13,6 +13,11 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
   - Need `/testdata/good/*.feature.tescase.json` files
   - [ ] C#
   - [ ] Ruby
+  - [ ] JavaScript
+  - [ ] Java
+- [ ] Custom NoSuchLanguageException error
+  - [ ] C#
+  - [x] Ruby
   - [ ] JavaScript
   - [ ] Java
 - [ ] Initialise parser with language (allows for global language config)
@@ -31,6 +36,7 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
 - [ ] Remove the `testdata/good/*.ast` files
 - [ ] Use the new `dialects.json` file
   - [ ] C#
+    - [ ] Don't load JSON file from the file system, but from a resource embedded in the dll.
   - [x] Ruby
   - [x] JavaScript
   - [x] Java

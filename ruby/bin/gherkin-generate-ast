@@ -7,12 +7,15 @@ require 'gherkin/ast_builder'
 require 'json'
 
 parser = Gherkin::Parser.new
-parser.stop_at_first_error = true
+parser.stop_at_first_error = false
 files = ARGV + (STDIN.tty? ? [] : [STDIN])
 files.each do |file|
   scanner = Gherkin::TokenScanner.new(file)
   builder = Gherkin::AstBuilder.new
-  ast = parser.parse(scanner, builder, Gherkin::TokenMatcher.new)
-
-  puts JSON.generate(ast)
+  begin
+    puts JSON.generate(parser.parse(scanner, builder, Gherkin::TokenMatcher.new))
+  rescue Gherkin::ParserError => e
+    STDERR.puts e.message
+    exit 1
+  end
 end

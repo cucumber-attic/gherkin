@@ -109,7 +109,7 @@ namespace Gherkin
         {
             if (errors == null) throw new ArgumentNullException("errors");
 
-            return "Parser errors: " + Environment.NewLine + string.Join(Environment.NewLine, errors.Select(e => e.Message));
+            return "Parser errors:" + Environment.NewLine + string.Join(Environment.NewLine, errors.Select(e => e.Message));
         }
     }
 }

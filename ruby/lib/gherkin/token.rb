@@ -11,7 +11,7 @@ module Gherkin
       # TODO: detach line - is this needed?
     end
 
-    def get_token_value
+    def token_value
       eof? ? "EOF" : line.get_line_text(-1)
     end
   end

@@ -1,2 +1,2 @@
-Parser errors: 
+Parser errors:
 (5:0): unexpected end of file, expected: #TableRow, #DocStringSeparator, #StepLine, #TagLine, #ExamplesLine, #Comment, #Empty

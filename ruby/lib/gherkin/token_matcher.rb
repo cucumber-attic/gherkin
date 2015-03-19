@@ -1,4 +1,5 @@
-require 'gherkin/dialect'
+require_relative 'dialect'
+require_relative 'errors'
 
 module Gherkin
   class TokenMatcher
@@ -60,9 +61,11 @@ module Gherkin
     def match_Language(token)
       return false unless token.line.trimmed_line_text =~ LANGUAGE_PATTERN
 
-      change_dialect($1)
-      raise "Unknown dialect: #{@dialect_name}" unless @dialect
-      set_token_matched(token, :Language, @dialect_name)
+      dialect_name = $1
+      set_token_matched(token, :Language, dialect_name)
+
+      change_dialect(dialect_name, token.location)
+
       true
     end
 
@@ -124,9 +127,13 @@ module Gherkin
     end
 
     private
-    def change_dialect(name)
-      @dialect_name = name
-      @dialect = Dialect.for(@dialect_name)
+
+    def change_dialect(dialect_name, location=Location.new(0))
+      dialect = Dialect.for(dialect_name)
+      raise NoSuchLanguageException.new(dialect_name, location) if dialect.nil?
+
+      @dialect_name = dialect_name
+      @dialect = dialect
     end
 
     def match_title_line(token, token_type, keywords)

@@ -58,8 +58,18 @@ module Gherkin
           cells: get_cells(token)
         }
       end
-      #EnsureCellCount(rows);
+      ensure_cell_count(rows);
       rows
+    end
+
+    def ensure_cell_count(rows)
+      return if rows.empty?
+      cell_count = rows[0][:cells].length
+      rows.each do |row|
+          if (row[:cells].length != cell_count)
+            raise AstBuilderException.new("inconsistent cell count within the table", row[:location]);
+          end
+      end
     end
 
     def get_cells(table_row_token)
