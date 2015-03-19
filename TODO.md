@@ -4,7 +4,7 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
 
 - [ ] Error message with path
 - [ ] Integration tests for `testdata/bad/*.feature` that verifies file path and error message
-  - [ ] C#
+  - [x] C#
   - [x] Ruby
   - [ ] JavaScript
   - [ ] Java
