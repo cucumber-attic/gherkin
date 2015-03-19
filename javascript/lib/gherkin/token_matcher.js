@@ -3,8 +3,7 @@ var Errors = require('./errors');
 
 module.exports = function TokenMatcher() {
   var LANGUAGE_PATTERN = /^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$/;
-  var dialectName = 'en'
-  var dialect = dialects[dialectName];
+  changeDialect('en');
 
   this.match_TagLine = function match_TagLine(token) {
     if(token.line.startsWith('@')) {
@@ -63,16 +62,24 @@ module.exports = function TokenMatcher() {
   this.match_Language = function match_Language(token) {
     var match;
     if(match = token.line.trimmedLineText.match(LANGUAGE_PATTERN)) {
-      dialectName = match[1];
-      dialect = dialects[dialectName];
-      if(!dialect) {
-        throw new Error("Unknown dialect: " + dialectName);
-      }
-      setTokenMatched(token, 'Language', dialectName);
+      newDialectName = match[1];
+      setTokenMatched(token, 'Language', newDialectName);
+
+      changeDialect(newDialectName, token.location);
       return true;
     }
     return false;
   };
+
+  function changeDialect(newDialectName, location) {
+    newDialect = dialects[newDialectName];
+    if(!newDialect) {
+      throw Errors.NoSuchLanguageException.create(newDialectName, location);
+    }
+
+    dialectName = newDialectName;
+    dialect = newDialect;
+  }
 
   var activeDocStringSeparator = null;
   var indentToRemove = null;

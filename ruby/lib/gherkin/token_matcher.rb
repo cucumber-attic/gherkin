@@ -6,7 +6,7 @@ module Gherkin
     LANGUAGE_PATTERN = /^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$/
 
     def initialize(dialect_name = 'en')
-      change_dialect(dialect_name)
+      change_dialect(dialect_name, nil)
       @active_doc_string_separator = nil
       @indent_to_remove = 0
     end
@@ -128,7 +128,7 @@ module Gherkin
 
     private
 
-    def change_dialect(dialect_name, location=Location.new(0))
+    def change_dialect(dialect_name, location)
       dialect = Dialect.for(dialect_name)
       raise NoSuchLanguageException.new(dialect_name, location) if dialect.nil?
 
