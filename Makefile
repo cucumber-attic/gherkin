@@ -23,19 +23,19 @@ node_modules: package.json
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
 	bin/gherkin-generate-tokens $< > $@
-	diff --unified --ignore-all-space $<.tokens $@
+	diff --unified $<.tokens $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
 acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json .built
 	mkdir -p `dirname $@`
 	bin/gherkin-generate-ast $< | jq --sort-keys "." > $@
-	diff --unified --ignore-all-space $<.ast.json $@
+	diff --unified $<.ast.json $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
 
 acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors .built
 	mkdir -p `dirname $@`
 	! bin/gherkin-generate-ast $< 2> $@
-	diff --unified --ignore-all-space $<.errors $@
+	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
 lib/gherkin/parser.js: ../gherkin.berp gherkin-javascript.razor ../bin/berp.exe
