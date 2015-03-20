@@ -1,4 +1,3 @@
-require 'gherkin/location'
 require 'gherkin/token'
 require 'gherkin/gherkin_line'
 
@@ -19,9 +18,9 @@ module Gherkin
     end
 
     def read
-      location = Location.new(@line_number += 1)
+      location = {line: @line_number += 1}
       if @io.nil? || line = @io.gets
-        gherkin_line = line ? GherkinLine.new(line, location.line) : nil
+        gherkin_line = line ? GherkinLine.new(line, location[:line]) : nil
         Token.new(gherkin_line, location)
       else
         @io.close unless @io.closed? # ARGF closes the last file after final gets

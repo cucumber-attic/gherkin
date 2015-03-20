@@ -152,7 +152,7 @@ module Gherkin
       token.matched_keyword = keyword
       token.matched_indent = indent || (token.line && token.line.indent) || 0
       token.matched_items = items
-      token.location.column = token.matched_indent + 1
+      token.location[:column] = token.matched_indent + 1
       token.matched_gherkin_dialect = @dialect_name
     end
   end
