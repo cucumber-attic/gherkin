@@ -2,12 +2,6 @@
 
 We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow.
 
-- [ ] Error message with path
-- [x] Integration tests for `testdata/bad/*.feature` that verifies file path and error message
-  - [x] C#
-  - [x] Ruby
-  - [x] JavaScript
-  - [x] Java
 - [ ] Implement compiler
   - Base it on the compiler in cucumber-ruby-core
   - Need `/testdata/good/*.feature.tescase.json` files
@@ -15,11 +9,6 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
   - [ ] Ruby
   - [ ] JavaScript
   - [ ] Java
-- [ ] Custom NoSuchLanguageException error
-  - [ ] C#
-  - [x] Ruby
-  - [x] JavaScript
-  - [x] Java
 - [ ] Initialise parser with language (allows for global language config)
   - [ ] C#
   - [ ] Ruby
@@ -44,6 +33,11 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
   - [ ] Remove `i18n.json`
 - [ ] Rename `title` or `text` to `name` (check wiki, maybe discuss again)
   - [ ] C#
-  - [ ] Ruby
-  - [ ] JavaScript
+  - [x] Ruby
+  - [x] JavaScript
+  - [x] Java
+- [ ] Custom NoSuchLanguageException error
+  - [ ] C#
+  - [x] Ruby
+  - [x] JavaScript
   - [x] Java
