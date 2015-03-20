@@ -39,7 +39,7 @@ lib/gherkin/dialects.json: ../dialects.json
 	cp $^ $@
 
 clean:
-	rm -rf .compared .built acceptance lib/gherkin/parser.rb lib/gherking/dialects.json
+	rm -rf .compared .built acceptance lib/gherkin/parser.rb lib/gherking/dialects.json coverage
 .PHONY: clean
 
 lib/gherkin/parser.rb: ../gherkin.berp gherkin-ruby.razor ../bin/berp.exe
