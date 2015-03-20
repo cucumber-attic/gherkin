@@ -23,7 +23,7 @@
         final String stateComment = "State: @state.Id - @Raw(state.Comment)";
         token.detach();
         List<String> expectedTokens = asList("@Raw(string.Join("\", \"", expectedTokens))");
-        ParserException error = token.IsEOF()
+        ParserException error = token.isEOF()
                 ? new ParserException.UnexpectedEOFException(token, expectedTokens, stateComment)
                 : new ParserException.UnexpectedTokenException(token, expectedTokens, stateComment);
         if (stopAtFirstError)
@@ -114,7 +114,7 @@ public class @Model.ParserClassName<T> {
         {
             token = readToken(context);
             state = matchToken(state, token, context);
-        } while(!token.IsEOF());
+        } while(!token.isEOF());
 
         endRule(context, RuleType.@Model.RuleSet.StartRule.Name);
 
@@ -144,7 +144,7 @@ public class @Model.ParserClassName<T> {
         try {
             return action.call();
         } catch (ParserException.CompositeParserException compositeParserException) {
-            for (ParserException error : compositeParserException.Errors) {
+            for (ParserException error : compositeParserException.errors) {
                 addError(context, error);
             }
         } catch (ParserException error) {
@@ -193,6 +193,10 @@ public class @Model.ParserClassName<T> {
 @foreach(var rule in Model.RuleSet.TokenRules)
 {<text>
     boolean match_@(rule.Name.Replace("#", ""))(final ParserContext context, final Token token) {
+        @if (rule.Name != "#EOF")
+        {
+        @:if (token.isEOF()) return false;
+        }
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_@(rule.Name.Replace("#", ""))(token);
