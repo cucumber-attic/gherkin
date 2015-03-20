@@ -38,6 +38,7 @@ module.exports = function AstBuilder () {
     tagsNode.getTokens('TagLine').forEach(function (token) {
       token.matchedItems.forEach(function (tagItem) {
         tags.push({
+          type: 'Tag',
           location: getLocation(token, tagItem.column),
           name: tagItem.text
         });
@@ -50,6 +51,7 @@ module.exports = function AstBuilder () {
   function getCells(tableRowToken) {
     return tableRowToken.matchedItems.map(function (cellItem) {
       return {
+        type: 'TableCell',
         location: getLocation(tableRowToken, cellItem.column),
         value: cellItem.text
       }
@@ -67,6 +69,7 @@ module.exports = function AstBuilder () {
   function getTableRows(node) {
     var rows = node.getTokens('TableRow').map(function (token) {
       return {
+        type: 'TableRow',
         location: getLocation(token),
         cells: getCells(token)
       };
@@ -115,6 +118,7 @@ module.exports = function AstBuilder () {
         var rows = getTableRows(node);
         return {
           type: node.ruleType,
+          location: rows[0].location,
           rows: rows,
         }
       case 'Background':

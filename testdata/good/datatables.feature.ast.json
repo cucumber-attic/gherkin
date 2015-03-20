@@ -17,6 +17,10 @@
       "steps": [
         {
           "argument": {
+            "location": {
+              "column": 7,
+              "line": 5
+            },
             "rows": [
               {
                 "cells": [
@@ -25,6 +29,7 @@
                       "column": 9,
                       "line": 5
                     },
+                    "type": "TableCell",
                     "value": "foo"
                   },
                   {
@@ -32,13 +37,15 @@
                       "column": 15,
                       "line": 5
                     },
+                    "type": "TableCell",
                     "value": "bar"
                   }
                 ],
                 "location": {
                   "column": 7,
                   "line": 5
-                }
+                },
+                "type": "TableRow"
               },
               {
                 "cells": [
@@ -47,6 +54,7 @@
                       "column": 9,
                       "line": 6
                     },
+                    "type": "TableCell",
                     "value": "boz"
                   },
                   {
@@ -54,13 +62,15 @@
                       "column": 15,
                       "line": 6
                     },
+                    "type": "TableCell",
                     "value": "boo"
                   }
                 ],
                 "location": {
                   "column": 7,
                   "line": 6
-                }
+                },
+                "type": "TableRow"
               }
             ],
             "type": "DataTable"
@@ -75,6 +85,10 @@
         },
         {
           "argument": {
+            "location": {
+              "column": 7,
+              "line": 8
+            },
             "rows": [
               {
                 "cells": [
@@ -83,13 +97,15 @@
                       "column": 9,
                       "line": 8
                     },
+                    "type": "TableCell",
                     "value": "foo"
                   }
                 ],
                 "location": {
                   "column": 7,
                   "line": 8
-                }
+                },
+                "type": "TableRow"
               }
             ],
             "type": "DataTable"
@@ -104,6 +120,10 @@
         },
         {
           "argument": {
+            "location": {
+              "column": 7,
+              "line": 10
+            },
             "rows": [
               {
                 "cells": [
@@ -112,6 +132,7 @@
                       "column": 11,
                       "line": 10
                     },
+                    "type": "TableCell",
                     "value": "foo"
                   },
                   {
@@ -119,6 +140,7 @@
                       "column": 15,
                       "line": 10
                     },
+                    "type": "TableCell",
                     "value": "bar"
                   },
                   {
@@ -126,13 +148,15 @@
                       "column": 23,
                       "line": 10
                     },
+                    "type": "TableCell",
                     "value": "boz"
                   }
                 ],
                 "location": {
                   "column": 7,
                   "line": 10
-                }
+                },
+                "type": "TableRow"
               }
             ],
             "type": "DataTable"
@@ -147,6 +171,10 @@
         },
         {
           "argument": {
+            "location": {
+              "column": 7,
+              "line": 12
+            },
             "rows": [
               {
                 "cells": [
@@ -155,6 +183,7 @@
                       "column": 8,
                       "line": 12
                     },
+                    "type": "TableCell",
                     "value": "foo"
                   },
                   {
@@ -162,6 +191,7 @@
                       "column": 12,
                       "line": 12
                     },
+                    "type": "TableCell",
                     "value": ""
                   },
                   {
@@ -169,13 +199,15 @@
                       "column": 13,
                       "line": 12
                     },
+                    "type": "TableCell",
                     "value": "boz"
                   }
                 ],
                 "location": {
                   "column": 7,
                   "line": 12
-                }
+                },
+                "type": "TableRow"
               }
             ],
             "type": "DataTable"
@@ -190,6 +222,10 @@
         },
         {
           "argument": {
+            "location": {
+              "column": 7,
+              "line": 14
+            },
             "rows": [
               {
                 "cells": [
@@ -198,6 +234,7 @@
                       "column": 9,
                       "line": 14
                     },
+                    "type": "TableCell",
                     "value": "foo"
                   },
                   {
@@ -205,13 +242,15 @@
                       "column": 15,
                       "line": 14
                     },
+                    "type": "TableCell",
                     "value": "bar"
                   }
                 ],
                 "location": {
                   "column": 7,
                   "line": 14
-                }
+                },
+                "type": "TableRow"
               },
               {
                 "cells": [
@@ -220,6 +259,7 @@
                       "column": 9,
                       "line": 16
                     },
+                    "type": "TableCell",
                     "value": "boz"
                   },
                   {
@@ -227,13 +267,15 @@
                       "column": 16,
                       "line": 16
                     },
+                    "type": "TableCell",
                     "value": "boo"
                   }
                 ],
                 "location": {
                   "column": 7,
                   "line": 16
-                }
+                },
+                "type": "TableRow"
               },
               {
                 "cells": [
@@ -242,6 +284,7 @@
                       "column": 9,
                       "line": 18
                     },
+                    "type": "TableCell",
                     "value": "boz2"
                   },
                   {
@@ -249,13 +292,15 @@
                       "column": 16,
                       "line": 18
                     },
+                    "type": "TableCell",
                     "value": "boo2"
                   }
                 ],
                 "location": {
                   "column": 7,
                   "line": 18
-                }
+                },
+                "type": "TableRow"
               }
             ],
             "type": "DataTable"

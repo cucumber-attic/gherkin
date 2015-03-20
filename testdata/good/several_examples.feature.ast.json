@@ -17,13 +17,15 @@
                   "column": 9,
                   "line": 8
                 },
+                "type": "TableCell",
                 "value": "what"
               }
             ],
             "location": {
               "column": 7,
               "line": 8
-            }
+            },
+            "type": "TableRow"
           },
           "keyword": "Examples",
           "location": {
@@ -39,13 +41,15 @@
                     "column": 9,
                     "line": 9
                   },
+                  "type": "TableCell",
                   "value": "foo"
                 }
               ],
               "location": {
                 "column": 7,
                 "line": 9
-              }
+              },
+              "type": "TableRow"
             }
           ],
           "tags": [
@@ -54,7 +58,8 @@
                 "column": 5,
                 "line": 6
               },
-              "name": "@foo"
+              "name": "@foo",
+              "type": "Tag"
             }
           ],
           "type": "Examples"
@@ -67,13 +72,15 @@
                   "column": 9,
                   "line": 13
                 },
+                "type": "TableCell",
                 "value": "what"
               }
             ],
             "location": {
               "column": 7,
               "line": 13
-            }
+            },
+            "type": "TableRow"
           },
           "keyword": "Examples",
           "location": {
@@ -89,13 +96,15 @@
                     "column": 9,
                     "line": 14
                   },
+                  "type": "TableCell",
                   "value": "bar"
                 }
               ],
               "location": {
                 "column": 7,
                 "line": 14
-              }
+              },
+              "type": "TableRow"
             }
           ],
           "tags": [
@@ -104,7 +113,8 @@
                 "column": 5,
                 "line": 11
               },
-              "name": "@bar"
+              "name": "@bar",
+              "type": "Tag"
             }
           ],
           "type": "Examples"
@@ -144,7 +154,8 @@
             "column": 3,
             "line": 16
           },
-          "name": "@zap"
+          "name": "@zap",
+          "type": "Tag"
         }
       ],
       "type": "Scenario"

@@ -119,7 +119,7 @@ public class AstBuilder<T> implements IAstBuilder<T> {
                 List<TableRow> allRows = getTableRows(node);
                 TableRow header = allRows.get(0);
                 List<TableRow> rows = allRows.subList(1, allRows.size());
-                return new Examples(tags, getLocation(examplesLine, 0), examplesLine.matchedKeyword, examplesLine.matchedText, description, header, rows);
+                return new Examples(getLocation(examplesLine, 0), tags, examplesLine.matchedKeyword, examplesLine.matchedText, description, header, rows);
             }
             case Description: {
                 List<Token> lineTokens = node.getTokens(TokenType.Other);
@@ -186,7 +186,7 @@ public class AstBuilder<T> implements IAstBuilder<T> {
     }
 
     private Location getLocation(Token token, int column) {
-        return column == 0 ? token.location : new Location(token.location.line, column);
+        return column == 0 ? token.location : new Location(token.location.getLine(), column);
     }
 
     private String getDescription(AstNode node) {

@@ -1,11 +1,10 @@
 package gherkin.ast;
 
-public class TableCell {
-    private final Location location;
+public class TableCell extends Node {
     private final String value;
 
     public TableCell(Location location, String value) {
-        this.location = location;
+        super(location);
         this.value = value;
     }
 

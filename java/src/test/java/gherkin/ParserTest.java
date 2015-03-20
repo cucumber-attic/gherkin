@@ -54,7 +54,7 @@ public class ParserTest {
                     "    Given the minimalism\n");
         } catch (ParserException.CompositeParserException e) {
             String actualMessage = e.getMessage();
-            assertThat(actualMessage, is("Parser errors: \n(1:1): Language not supported: no-such"));
+            assertThat(actualMessage, is("Parser errors:\n(1:1): Language not supported: no-such"));
         }
     }
 
@@ -69,7 +69,7 @@ public class ParserTest {
                     "    Given the minimalism\n");
         } catch (ParserException.CompositeParserException e) {
             String actualMessage = e.getMessage();
-            assertThat(actualMessage, is("Parser errors: \n(5:0): unexpected end of file, expected: #TableRow, #DocStringSeparator, #StepLine, #TagLine, #ExamplesLine, #Comment, #Empty"));
+            assertThat(actualMessage, is("Parser errors:\n(5:0): unexpected end of file, expected: #TableRow, #DocStringSeparator, #StepLine, #TagLine, #ExamplesLine, #Comment, #Empty"));
         }
     }
 }

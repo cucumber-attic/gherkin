@@ -152,13 +152,15 @@
                   "column": 7,
                   "line": 46
                 },
+                "type": "TableCell",
                 "value": "foo"
               }
             ],
             "location": {
               "column": 5,
               "line": 46
-            }
+            },
+            "type": "TableRow"
           },
           "keyword": "Examples",
           "location": {
@@ -174,13 +176,15 @@
                     "column": 7,
                     "line": 47
                   },
+                  "type": "TableCell",
                   "value": "bar"
                 }
               ],
               "location": {
                 "column": 5,
                 "line": 47
-              }
+              },
+              "type": "TableRow"
             }
           ],
           "tags": [],

@@ -19,7 +19,7 @@ public class ParserException extends RuntimeException {
     }
 
     private static String getMessage(String message, Location location) {
-        return String.format("(%s:%s): %s", location.line, location.column, message);
+        return String.format("(%s:%s): %s", location.getLine(), location.getColumn(), message);
     }
 
     public static class AstBuilderException extends ParserException {
@@ -87,7 +87,7 @@ public class ParserException extends RuntimeException {
                     return e.getMessage();
                 }
             };
-            return "Parser errors: \n" + StringUtils.join(exceptionToString, "\n", errors);
+            return "Parser errors:\n" + StringUtils.join(exceptionToString, "\n", errors);
         }
     }
 }

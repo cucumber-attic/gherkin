@@ -1,13 +1,11 @@
 package gherkin.ast;
 
-public class DocString implements StepArgument {
-    private final String type = getClass().getSimpleName();
-    private final Location location;
+public class DocString extends Node implements StepArgument {
     private final String contentType;
     private final String content;
 
     public DocString(Location location, String contentType, String content) {
-        this.location = location;
+        super(location);
         this.contentType = contentType;
         this.content = content;
     }

@@ -3,10 +3,8 @@ package gherkin.ast;
 import java.util.Collections;
 import java.util.List;
 
-public class Feature implements DescribesItself, HasDescription, HasTags {
-    private final String type = getClass().getSimpleName();
+public class Feature extends Node implements DescribesItself, HasDescription, HasTags {
     private final List<Tag> tags;
-    private final Location location;
     private final String language;
     private final String keyword;
     private final String name;
@@ -24,9 +22,8 @@ public class Feature implements DescribesItself, HasDescription, HasTags {
             Background background,
             List<ScenarioDefinition> scenarioDefinitions
     ) {
-
+        super(location);
         this.tags = Collections.unmodifiableList(tags);
-        this.location = location;
         this.language = language;
         this.keyword = keyword;
         this.name = name;
@@ -46,10 +43,6 @@ public class Feature implements DescribesItself, HasDescription, HasTags {
     @Override
     public List<Tag> getTags() {
         return tags;
-    }
-
-    public Location getLocation() {
-        return location;
     }
 
     @Override
@@ -74,7 +67,7 @@ public class Feature implements DescribesItself, HasDescription, HasTags {
     @Override
     public void describeTo(Visitor visitor) {
         visitor.visitFeature(this);
-        if(background != null) {
+        if (background != null) {
             background.describeTo(visitor);
         }
         for (ScenarioDefinition scenarioDefinition : scenarioDefinitions) {

@@ -36,7 +36,7 @@ public class TokenMatcher implements ITokenMatcher {
         token.mathcedItems = items;
         token.matchedGherkinDialect = getCurrentDialect();
         token.matchedIndent = indent != null ? indent : (token.line == null ? 0 : token.line.indent());
-        token.location = new Location(token.location.line, token.matchedIndent + 1);
+        token.location = new Location(token.location.getLine(), token.matchedIndent + 1);
     }
 
     private void SetTokenMatched(Token token, TokenType tokenType) {

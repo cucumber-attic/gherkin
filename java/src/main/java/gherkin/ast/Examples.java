@@ -3,19 +3,17 @@ package gherkin.ast;
 import java.util.Collections;
 import java.util.List;
 
-public class Examples implements DescribesItself, HasTags, HasDescription, HasRows {
-    private final String type = getClass().getSimpleName();
+public class Examples extends Node implements DescribesItself, HasTags, HasDescription, HasRows {
     private final List<Tag> tags;
-    private final Location location;
     private final String keyword;
     private final String name;
     private final String description;
     private final TableRow header;
     private final List<TableRow> rows;
 
-    public Examples(List<Tag> tags, Location location, String keyword, String name, String description, TableRow header, List<TableRow> rows) {
+    public Examples(Location location, List<Tag> tags, String keyword, String name, String description, TableRow header, List<TableRow> rows) {
+        super(location);
         this.tags = Collections.unmodifiableList(tags);
-        this.location = location;
         this.keyword = keyword;
         this.name = name;
         this.description = description;

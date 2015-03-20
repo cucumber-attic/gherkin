@@ -17,13 +17,15 @@
                   "column": 5,
                   "line": 7
                 },
+                "type": "TableCell",
                 "value": "what"
               }
             ],
             "location": {
               "column": 3,
               "line": 7
-            }
+            },
+            "type": "TableRow"
           },
           "keyword": "Examples",
           "location": {
@@ -39,13 +41,15 @@
                     "column": 5,
                     "line": 8
                   },
+                  "type": "TableCell",
                   "value": "minimalism"
                 }
               ],
               "location": {
                 "column": 3,
                 "line": 8
-              }
+              },
+              "type": "TableRow"
             }
           ],
           "tags": [],
