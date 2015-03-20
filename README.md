@@ -91,6 +91,20 @@ and outputs a parser in language *X*:
 Also see the [wiki](https://github.com/cucumber/gherkin3/wiki) for some early
 design docs (which might be a little outdated, but mostly OK).
 
+### AST
+
+The AST produced by the parser has the following structure:
+
+![](https://github.com/cucumber/gherkin3/blob/master/docs/ast.png)
+
+The implementation is simple objects without behaviour, only data. It's up to
+the implementation to decide whether to use classes or just basic collections,
+but the AST must have a JSON representation.
+
+You can see some examples in the
+[tesdata/good](https://github.com/cucumber/gherkin3/tree/master/testdata/good)
+directory.
+
 ### Compiler
 
 (Work in progress)
