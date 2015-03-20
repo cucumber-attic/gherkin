@@ -1,11 +1,10 @@
 package gherkin.ast;
 
-public class Tag {
-    private final Location location;
+public class Tag extends Node {
     private final String name;
 
     public Tag(Location location, String name) {
-        this.location = location;
+        super(location);
         this.name = name;
     }
 
