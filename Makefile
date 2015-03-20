@@ -21,19 +21,19 @@ all: .compared
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
 	bin/gherkin-generate-tokens $< > $@
-	diff --unified --ignore-all-space $<.tokens $@
+	diff --unified $<.tokens $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
 acceptance/testdata/%.feature.ast: ../testdata/%.feature ../testdata/%.feature.ast .built
 	mkdir -p `dirname $@`
 	bin/gherkin-generate-ast-text $< > $@
-	diff --unified --ignore-all-space $<.ast $@
+	diff --unified $<.ast $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast
 
 acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors .built
 	mkdir -p `dirname $@`
 	! bin/gherkin-generate-ast-text $< > $@
-	diff --unified --ignore-all-space $<.errors $@
+	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
 clean:
