@@ -42,6 +42,7 @@ module Gherkin
       tags_node.get_tokens(:TagLine).each do |token|
         token.matched_items.each do |tag_item|
           tags.push({
+            type: 'Tag',
             location: get_location(token, tag_item.column),
             name: tag_item.text
           })
@@ -54,6 +55,7 @@ module Gherkin
     def get_table_rows(node)
       rows = node.get_tokens(:TableRow).map do |token|
         {
+          type: 'TableRow',
           location: get_location(token),
           cells: get_cells(token)
         }
@@ -75,6 +77,7 @@ module Gherkin
     def get_cells(table_row_token)
       table_row_token.matched_items.map do |cell_item|
         {
+          type: 'TableCell',
           location: get_location(table_row_token, cell_item.column),
           value: cell_item.text
         }
@@ -118,6 +121,7 @@ module Gherkin
         rows = get_table_rows(node)
         reject_nils(
           type: node.rule_type,
+          location: rows[0][:location],
           rows: rows,
         )
       when :Background
