@@ -93,13 +93,18 @@ design docs (which might be a little outdated, but mostly OK).
 
 ### AST
 
-The AST produced by the parser has the following structure:
+The AST produced by the parser can be described with the following class diagram:
 
 ![](https://github.com/cucumber/gherkin3/blob/master/docs/ast.png)
 
+Every class represents a node in the AST. Every node has a `Location` that describes
+the line number and column number in the input file. These numbers are 1-indexed.
+
+All fields on nodes are strings (except for `Location.line` and `Location.column`).
+
 The implementation is simple objects without behaviour, only data. It's up to
 the implementation to decide whether to use classes or just basic collections,
-but the AST must have a JSON representation.
+but the AST *must* have a JSON representation (this is used for testing).
 
 You can see some examples in the
 [tesdata/good](https://github.com/cucumber/gherkin3/tree/master/testdata/good)
