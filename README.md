@@ -106,6 +106,9 @@ The implementation is simple objects without behaviour, only data. It's up to
 the implementation to decide whether to use classes or just basic collections,
 but the AST *must* have a JSON representation (this is used for testing).
 
+Each node in the JSON representation also has a `type` property with the name
+of the node type.
+
 You can see some examples in the
 [tesdata/good](https://github.com/cucumber/gherkin3/tree/master/testdata/good)
 directory.
