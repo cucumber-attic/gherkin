@@ -54,7 +54,7 @@ public class ParserTest {
                     "    Given the minimalism\n");
         } catch (ParserException.CompositeParserException e) {
             String actualMessage = e.getMessage();
-            assertThat(actualMessage, is("Parser errors: \nNo such language: no-such"));
+            assertThat(actualMessage, is("Parser errors: \n(1:1): Language not supported: no-such"));
         }
     }
 

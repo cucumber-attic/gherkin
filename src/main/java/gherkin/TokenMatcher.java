@@ -87,10 +87,9 @@ public class TokenMatcher implements ITokenMatcher {
         Matcher matcher = LANGUAGE_PATTERN.matcher(token.line.getLineText(0));
         if (matcher.matches()) {
             String language = matcher.group(1);
-
-            currentDialect = dialectProvider.getDialect(language);
-
             SetTokenMatched(token, TokenType.Language, language, null, null, null);
+
+            currentDialect = dialectProvider.getDialect(language, token.location);
             return true;
         }
         return false;
