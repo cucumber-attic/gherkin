@@ -159,7 +159,7 @@ public class Parser<T> {
         try {
             return action.call();
         } catch (ParserException.CompositeParserException compositeParserException) {
-            for (ParserException error : compositeParserException.Errors) {
+            for (ParserException error : compositeParserException.errors) {
                 addError(context, error);
             }
         } catch (ParserException error) {

@@ -1,5 +1,6 @@
 package gherkin;
 
+import gherkin.ast.Location;
 import gherkin.deps.com.google.gson.Gson;
 
 import java.io.InputStreamReader;
@@ -22,14 +23,14 @@ public class GherkinDialectProvider implements IGherkinDialectProvider {
     }
 
     public GherkinDialect getDefaultDialect() {
-        return getDialect("en");
+        return getDialect("en", null);
     }
 
     @Override
-    public GherkinDialect getDialect(String language) {
+    public GherkinDialect getDialect(String language, Location location) {
         Map<String, List<String>> map = DIALECTS.get(language);
         if (map == null) {
-            throw new ParserException("No such language: " + language);
+            throw new ParserException.NoSuchLanguageException(language, location);
         }
 
         return new GherkinDialect(language, map);

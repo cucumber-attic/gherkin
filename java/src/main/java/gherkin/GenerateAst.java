@@ -14,8 +14,13 @@ public class GenerateAst {
 
         for (String fileName : args) {
             InputStreamReader in = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
-            Feature feature = parser.parse(in);
-            System.out.println(gson.toJson(feature));
+            try {
+                Feature feature = parser.parse(in);
+                System.out.println(gson.toJson(feature));
+            } catch (ParserException e) {
+                System.err.println(e.getMessage());
+                System.exit(1);
+            }
         }
     }
 
