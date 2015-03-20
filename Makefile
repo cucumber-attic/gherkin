@@ -17,9 +17,6 @@ all: .compared
 	bundle exec rspec --color
 	touch $@
 
-Gemfile.lock: Gemfile
-	bundle install
-
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
 	bin/gherkin-generate-tokens $< > $@
@@ -50,3 +47,6 @@ lib/gherkin/parser.rb: ../gherkin.berp gherkin-ruby.razor ../bin/berp.exe
 	# Remove BOM
 	tail -c +4 $@ > $@.nobom
 	mv $@.nobom $@
+
+Gemfile.lock: Gemfile
+	bundle install
