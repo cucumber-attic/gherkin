@@ -215,6 +215,7 @@ public class Parser<T> {
     }
 
     boolean match_Empty(final ParserContext context, final Token token) {
+        if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_Empty(token);
@@ -223,6 +224,7 @@ public class Parser<T> {
     }
 
     boolean match_Comment(final ParserContext context, final Token token) {
+        if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_Comment(token);
@@ -231,6 +233,7 @@ public class Parser<T> {
     }
 
     boolean match_TagLine(final ParserContext context, final Token token) {
+        if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_TagLine(token);
@@ -239,6 +242,7 @@ public class Parser<T> {
     }
 
     boolean match_FeatureLine(final ParserContext context, final Token token) {
+        if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_FeatureLine(token);
@@ -247,6 +251,7 @@ public class Parser<T> {
     }
 
     boolean match_BackgroundLine(final ParserContext context, final Token token) {
+        if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_BackgroundLine(token);
@@ -255,6 +260,7 @@ public class Parser<T> {
     }
 
     boolean match_ScenarioLine(final ParserContext context, final Token token) {
+        if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_ScenarioLine(token);
@@ -263,6 +269,7 @@ public class Parser<T> {
     }
 
     boolean match_ScenarioOutlineLine(final ParserContext context, final Token token) {
+        if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_ScenarioOutlineLine(token);
@@ -271,6 +278,7 @@ public class Parser<T> {
     }
 
     boolean match_ExamplesLine(final ParserContext context, final Token token) {
+        if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_ExamplesLine(token);
@@ -279,6 +287,7 @@ public class Parser<T> {
     }
 
     boolean match_StepLine(final ParserContext context, final Token token) {
+        if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_StepLine(token);
@@ -287,6 +296,7 @@ public class Parser<T> {
     }
 
     boolean match_DocStringSeparator(final ParserContext context, final Token token) {
+        if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_DocStringSeparator(token);
@@ -295,6 +305,7 @@ public class Parser<T> {
     }
 
     boolean match_TableRow(final ParserContext context, final Token token) {
+        if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_TableRow(token);
@@ -303,6 +314,7 @@ public class Parser<T> {
     }
 
     boolean match_Language(final ParserContext context, final Token token) {
+        if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_Language(token);
@@ -311,6 +323,7 @@ public class Parser<T> {
     }
 
     boolean match_Other(final ParserContext context, final Token token) {
+        if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_Other(token);
