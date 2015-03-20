@@ -31,7 +31,7 @@ module Gherkin
 
     def get_location(token, column=nil)
       # TODO: translated from JS... is it right?
-      (column.nil? || column.zero?) ? token.location : {line: token.location.line, column: column}
+      (column.nil? || column.zero?) ? token.location : {line: token.location[:line], column: column}
     end
 
     def get_tags(node)

@@ -6,7 +6,7 @@ module Gherkin
 
     def initialize(message, location)
       @location = location
-      super("(#{location.line}:#{location.column}): #{message}")
+      super("(#{location[:line]}:#{location[:column] || 0}): #{message}")
     end
   end
 
