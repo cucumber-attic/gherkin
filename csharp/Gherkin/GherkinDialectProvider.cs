@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Script.Serialization;
+using Gherkin.Ast;
 
 namespace Gherkin
 {
     public interface IGherkinDialectProvider
     {
         GherkinDialect DefaultDialect { get; }
-        GherkinDialect GetDialect(string language);
+        GherkinDialect GetDialect(string language, Location location);
     }
 
     public class GherkinDialectProvider : IGherkinDialectProvider
@@ -41,13 +42,13 @@ namespace Gherkin
 
         public GherkinDialectProvider(string defaultLanguage = "en")
         {
-            defaultDialect = new Lazy<GherkinDialect>(() => GetDialect(defaultLanguage));
+            defaultDialect = new Lazy<GherkinDialect>(() => GetDialect(defaultLanguage, null));
         }
 
-        public virtual GherkinDialect GetDialect(string language)
+        public virtual GherkinDialect GetDialect(string language, Location location)
         {
             var gherkinLanguageSettings = LoadLanguageSettings();
-            return GetDialect(language, gherkinLanguageSettings);
+            return GetDialect(language, gherkinLanguageSettings, location);
         }
 
         protected virtual Dictionary<string, GherkinLanguageSetting> LoadLanguageSettings()
@@ -68,11 +69,11 @@ namespace Gherkin
             return jsonSerializer.Deserialize<Dictionary<string, GherkinLanguageSetting>>(languagesFileContent);
         }
 
-        protected virtual GherkinDialect GetDialect(string language, Dictionary<string, GherkinLanguageSetting> gherkinLanguageSettings)
+        protected virtual GherkinDialect GetDialect(string language, Dictionary<string, GherkinLanguageSetting> gherkinLanguageSettings, Location location)
         {
             GherkinLanguageSetting languageSettings;
             if (!gherkinLanguageSettings.TryGetValue(language, out languageSettings))
-                throw new NotSupportedException("Language not supported: " + language);
+                throw new NoSuchLanguageException(language, location);
 
             return CreateGherkinDialect(language, languageSettings);
         }

@@ -89,17 +89,17 @@ namespace Gherkin
             if (match.Success)
             {
                 var language = match.Groups[1].Value;
+                SetTokenMatched(token, TokenType.Language, language);
 
                 try
                 {
-                    currentDialect = dialectProvider.GetDialect(language);
+                    currentDialect = dialectProvider.GetDialect(language, token.Location);
                 }
                 catch (NotSupportedException ex)
                 {
                     throw CreateTokenMatcherException(token, ex.Message);
                 }
 
-                SetTokenMatched(token, TokenType.Language, language);
                 return true;
             }
             return false;

@@ -36,8 +36,8 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
   - [x] Ruby
   - [x] JavaScript
   - [x] Java
-- [ ] Custom NoSuchLanguageException error
-  - [ ] C#
+- [x] Custom NoSuchLanguageException error
+  - [x] C#
   - [x] Ruby
   - [x] JavaScript
   - [x] Java
