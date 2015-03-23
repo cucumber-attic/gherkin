@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Gherkin.Ast;
 
-namespace Gherkin.AstTester
+namespace Gherkin.AstGenerator
 {
     class Program
     {
@@ -10,7 +9,7 @@ namespace Gherkin.AstTester
         {
             if (args.Length < 1)
             {
-                Console.WriteLine("Usage: Gherkin.AstTester.exe test-feature-file.feature");
+                Console.WriteLine("Usage: Gherkin.AstGenerator.exe test-feature-file.feature");
                 return 100;
             }
 

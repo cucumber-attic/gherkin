@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{03DF2D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.Specs", "Gherkin.Specs\Gherkin.Specs.csproj", "{214A8851-F162-460A-8CF4-9E1B3FC2BFC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.AstTester", "Gherkin.AstTester\Gherkin.AstTester.csproj", "{D8EAD6E5-CE46-49F8-A750-0523B9FB531E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.AstGenerator", "Gherkin.AstGenerator\Gherkin.AstGenerator.csproj", "{D8EAD6E5-CE46-49F8-A750-0523B9FB531E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.TokensTester", "Gherkin.TokensTester\Gherkin.TokensTester.csproj", "{B7311B05-D061-4A82-B8DF-1C1EE65EEA70}"
 EndProject

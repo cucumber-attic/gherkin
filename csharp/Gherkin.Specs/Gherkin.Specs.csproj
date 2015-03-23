@@ -73,9 +73,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gherkin.AstTester\Gherkin.AstTester.csproj">
+    <ProjectReference Include="..\Gherkin.AstGenerator\Gherkin.AstGenerator.csproj">
       <Project>{d8ead6e5-ce46-49f8-a750-0523b9fb531e}</Project>
-      <Name>Gherkin.AstTester</Name>
+      <Name>Gherkin.AstGenerator</Name>
     </ProjectReference>
     <ProjectReference Include="..\Gherkin\Gherkin.csproj">
       <Project>{370982b4-9938-4533-8ea1-6f9044b84130}</Project>

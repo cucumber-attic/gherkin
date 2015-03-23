@@ -7,8 +7,8 @@
     <ProjectGuid>{D8EAD6E5-CE46-49F8-A750-0523B9FB531E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gherkin.AstTester</RootNamespace>
-    <AssemblyName>Gherkin.AstTester</AssemblyName>
+    <RootNamespace>Gherkin.AstGenerator</RootNamespace>
+    <AssemblyName>Gherkin.AstGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Gherkin.AstTester;
+using Gherkin.AstGenerator;
 using NUnit.Framework;
 
 namespace Gherkin.Specs
