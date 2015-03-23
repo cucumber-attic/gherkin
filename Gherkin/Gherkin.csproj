@@ -85,10 +85,10 @@
     <Compile Include="Parser.Extensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\i18n.json">
-      <Link>i18n.json</Link>
+    <None Include="..\..\dialects.json">
+      <Link>dialects.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

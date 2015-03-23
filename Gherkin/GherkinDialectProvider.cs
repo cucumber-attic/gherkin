@@ -16,18 +16,20 @@ namespace Gherkin
     {
         protected class GherkinLanguageSetting
         {
+            // ReSharper disable InconsistentNaming
             public string name;
             public string native;
-            public string feature;
-            public string background;
-            public string scenario;
-            public string scenario_outline;
-            public string examples;
-            public string given;
-            public string when;
-            public string then;
-            public string and;
-            public string but;
+            public string[] feature;
+            public string[] background;
+            public string[] scenario;
+            public string[] scenarioOutline;
+            public string[] examples;
+            public string[] given;
+            public string[] when;
+            public string[] then;
+            public string[] and;
+            public string[] but;
+            // ReSharper restore InconsistentNaming
         }
 
         private readonly Lazy<GherkinDialect> defaultDialect;
@@ -50,7 +52,7 @@ namespace Gherkin
 
         protected virtual Dictionary<string, GherkinLanguageSetting> LoadLanguageSettings()
         {
-            string languagesFile = Path.GetFullPath("i18n.json");
+            string languagesFile = Path.GetFullPath("dialects.json");
             if (!File.Exists(languagesFile))
             {
                 throw new InvalidOperationException("Gherkin language settings file not found: " + languagesFile);
@@ -82,7 +84,7 @@ namespace Gherkin
                 ParseTitleKeywords(languageSettings.feature),
                 ParseTitleKeywords(languageSettings.background),
                 ParseTitleKeywords(languageSettings.scenario),
-                ParseTitleKeywords(languageSettings.scenario_outline),
+                ParseTitleKeywords(languageSettings.scenarioOutline),
                 ParseTitleKeywords(languageSettings.examples),
                 ParseStepKeywords(languageSettings.given),
                 ParseStepKeywords(languageSettings.when),
@@ -92,14 +94,14 @@ namespace Gherkin
             );
         }
 
-        private string[] ParseStepKeywords(string stepKeywords)
+        private string[] ParseStepKeywords(string[] stepKeywords)
         {
-            return stepKeywords.Split('|').Select(k => k.EndsWith("<") ? k.Substring(0, k.Length - 1) : k + " ").ToArray();
+            return stepKeywords;
         }
 
-        private string[] ParseTitleKeywords(string keywords)
+        private string[] ParseTitleKeywords(string[] keywords)
         {
-            return keywords.Split('|');
+            return keywords;
         }
 
         protected static GherkinDialect GetFactoryDefault()
