@@ -42,6 +42,14 @@ namespace Gherkin
         }
     }
 
+    public class NoSuchLanguageException : ParserException
+    {
+        public NoSuchLanguageException(string language, Location location) :
+            base("Language not supported: " + language, location)
+        {
+        }
+    }
+    
     public class UnexpectedTokenException : ParserException
     {
         public string StateComment { get; private set; }
