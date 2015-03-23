@@ -53,12 +53,11 @@ namespace Gherkin
 
         protected virtual Dictionary<string, GherkinLanguageSetting> LoadLanguageSettings()
         {
-            string languagesFile = Path.GetFullPath("dialects.json");
-            if (!File.Exists(languagesFile))
-            {
-                throw new InvalidOperationException("Gherkin language settings file not found: " + languagesFile);
-            }
-            var languagesFileContent = File.ReadAllText(languagesFile);
+            const string languageFileName = "dialects.json";
+            var resourceStream = typeof(GherkinDialectProvider).Assembly.GetManifestResourceStream(typeof(GherkinDialectProvider), languageFileName);
+            if (resourceStream == null)
+                throw new InvalidOperationException("Gherkin language resource not found: " + languageFileName);
+            var languagesFileContent = new StreamReader(resourceStream).ReadToEnd();
 
             return ParseJsonContent(languagesFileContent);
         }

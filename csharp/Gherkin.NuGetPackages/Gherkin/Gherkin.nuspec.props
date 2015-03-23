@@ -6,8 +6,5 @@
     <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\Gherkin\bin\$(Configuration)\Gherkin.pdb">
       <targetFolder>Gherkin\lib\net45</targetFolder>
     </additionalFiles>
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\dialects.json">
-      <targetFolder>Gherkin\content</targetFolder>
-    </additionalFiles>
   </ItemGroup>
 </Project>

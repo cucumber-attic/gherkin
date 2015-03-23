@@ -85,10 +85,9 @@
     <Compile Include="Parser.Extensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\dialects.json">
+    <EmbeddedResource Include="..\..\dialects.json">
       <Link>dialects.json</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
