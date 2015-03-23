@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using Gherkin.Ast;
 
-namespace Gherkin.Specs
+namespace Gherkin.AstTester
 {
     public class TestAstFormatter
     {

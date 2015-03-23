@@ -41,14 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AstGenerator.cs" />
+    <Compile Include="LineEndingHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestAstFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gherkin.Specs\Gherkin.Specs.csproj">
-      <Project>{214a8851-f162-460a-8cf4-9e1b3fc2bfc9}</Project>
-      <Name>Gherkin.Specs</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Gherkin\Gherkin.csproj">
       <Project>{370982b4-9938-4533-8ea1-6f9044b84130}</Project>
       <Name>Gherkin</Name>
