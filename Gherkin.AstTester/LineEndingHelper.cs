@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 
-namespace Gherkin.Specs
+namespace Gherkin.AstTester
 {
     public static class LineEndingHelper
     {
-        internal static string NormalizeLineEndings(string text)
+        public static string NormalizeLineEndings(string text)
         {
             return text.Replace("\r\n", "\n").TrimEnd('\n');
         }
