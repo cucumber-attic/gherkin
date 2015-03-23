@@ -24,7 +24,7 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
   - [x] Java
 - [ ] Remove the `testdata/good/*.ast` files
 - [ ] Use the new `dialects.json` file
-  - [ ] C#
+  - [x] C#
     - [ ] Don't load JSON file from the file system, but from a resource embedded in the dll.
   - [x] Ruby
   - [x] JavaScript

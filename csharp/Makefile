@@ -14,7 +14,7 @@ all: .compared
 .compared: .built $(TOKENS) $(AST) $(ERRORS)
 	touch $@
 
-.built: .sln_built_debug $(NUNIT) i18n.json
+.built: .sln_built_debug $(NUNIT) dialects.json
 	mono --runtime=v4.0 $(NUNIT) -noxml -nologo -stoponerror Gherkin/bin/Debug/Gherkin.dll
 	touch $@
 
@@ -66,5 +66,5 @@ Gherkin/bin/Release/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES)
 $(NUNIT):
 	mono --runtime=v4.0 .nuget/NuGet.exe install NUnit.Runners -Version 2.6.3 -o packages
 
-i18n.json: ../i18n.json
+dialects.json: ../dialects.json
 	cp $< $@
