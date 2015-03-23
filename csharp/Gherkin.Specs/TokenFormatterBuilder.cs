@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Gherkin.Specs
 {
-    public class TokenFormatterBuilder : IAstBuilder
+    public class TokenFormatterBuilder : IAstBuilder<object>
     {
         private readonly TestTokenFormatter formatter = new TestTokenFormatter();
         private readonly StringBuilder tokensTextBuilder = new StringBuilder();

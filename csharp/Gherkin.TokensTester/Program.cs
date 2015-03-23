@@ -35,7 +35,7 @@ namespace Gherkin.TokensTester
 
         private static int TestTokensInternal(string featureFilePath)
         {
-            var parser = new Parser();
+            var parser = new Parser<object>();
             var tokenFormatterBuilder = new TokenFormatterBuilder();
             using (var reader = new StreamReader(featureFilePath))
                 parser.Parse(new TokenScanner(reader), new TokenMatcher(), tokenFormatterBuilder);

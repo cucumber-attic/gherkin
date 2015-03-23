@@ -73,7 +73,7 @@ namespace Gherkin
     }
 
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class Parser
+    public partial class Parser<T>
     {
         public bool StopAtFirstError { get; set;}
 
@@ -82,17 +82,17 @@ namespace Gherkin
         {
             public ITokenScanner TokenScanner { get; set; }
             public ITokenMatcher TokenMatcher { get; set; }
-            public IAstBuilder Builder { get; set; }
+            public IAstBuilder<T> Builder { get; set; }
             public Queue<Token> TokenQueue { get; set; }
             public List<ParserException> Errors { get; set; }
         }
 
-        public object Parse(ITokenScanner tokenScanner)
+        public T Parse(ITokenScanner tokenScanner)
         {
-            return Parse(tokenScanner, new TokenMatcher(), new AstBuilder());
+            return Parse(tokenScanner, new TokenMatcher(), new AstBuilder<T>());
         }
 
-        public object Parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder astBuilder)
+        public T Parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder<T> astBuilder)
         {
             var context = new ParserContext
             {
@@ -172,7 +172,7 @@ namespace Gherkin
             HandleAstError(context, () => context.Builder.EndRule(ruleType));
         }
 
-        object GetResult(ParserContext context)
+        T GetResult(ParserContext context)
         {
             return context.Builder.GetResult();
         }
@@ -2331,12 +2331,12 @@ namespace Gherkin
         
     }
 
-    public partial interface IAstBuilder 
+    public partial interface IAstBuilder<T> 
     {
         void Build(Token token);
         void StartRule(RuleType ruleType);
         void EndRule(RuleType ruleType);
-        object GetResult();
+        T GetResult();
     }
 
     public partial interface ITokenScanner 

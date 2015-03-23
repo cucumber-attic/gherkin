@@ -5,7 +5,7 @@ using Gherkin.Ast;
 
 namespace Gherkin
 {
-    public class AstBuilder : IAstBuilder
+    public class AstBuilder<T> : IAstBuilder<T>
     {
         private readonly Stack<AstNode> stack = new Stack<AstNode>();
         private AstNode CurrentNode { get { return stack.Peek(); } }
@@ -32,9 +32,9 @@ namespace Gherkin
             CurrentNode.Add(node.RuleType, transformedNode);
         }
 
-        public object GetResult()
+        public T GetResult()
         {
-            return CurrentNode.GetSingle<Feature>(RuleType.Feature);
+            return CurrentNode.GetSingle<T>(RuleType.Feature);
         }
 
         private object GetTransformedNode(AstNode node)
