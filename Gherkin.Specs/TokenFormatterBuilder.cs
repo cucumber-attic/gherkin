@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using Gherkin.AstTester;
+using Gherkin.AstGenerator;
 
 namespace Gherkin.Specs
 {

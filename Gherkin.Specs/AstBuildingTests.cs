@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Gherkin.Ast;
-using Gherkin.AstTester;
+using Gherkin.AstGenerator;
 using NUnit.Framework;
 
 namespace Gherkin.Specs
@@ -21,7 +21,7 @@ namespace Gherkin.Specs
             Debug.Assert(featureFileFolder != null);
             var expectedAstFile = testFeatureFile + ".ast";
 
-            var astText = AstGenerator.GenerateAst(testFeatureFile);
+            var astText = AstGenerator.AstGenerator.GenerateAst(testFeatureFile);
             var expectedAstText = LineEndingHelper.NormalizeLineEndings(File.ReadAllText(expectedAstFile));
 
             Assert.AreEqual(expectedAstText, astText);

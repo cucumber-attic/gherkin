@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Gherkin.AstTester
+namespace Gherkin.AstGenerator
 {
     public static class LineEndingHelper
     {
