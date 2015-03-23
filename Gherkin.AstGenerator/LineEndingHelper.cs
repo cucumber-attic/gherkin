@@ -9,5 +9,10 @@ namespace Gherkin.AstGenerator
         {
             return text.Replace("\r\n", "\n").TrimEnd('\n');
         }
+
+        public static string NormalizeJSonLineEndings(string text)
+        {
+            return text.Replace("\\r\\n", "\\n");
+        }
     }
 }
