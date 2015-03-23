@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Gherkin.Ast;
 
 namespace Gherkin
 {
-    public partial class Parser
+    public class Parser : Parser<Feature>
     {
-        public object Parse(TextReader reader)
+        public Feature Parse(TextReader reader)
         {
             return Parse(new TokenScanner(reader));
         }
 
-        public object Parse(string sourceFile)
+        public Feature Parse(string sourceFile)
         {
             using (var reader = new StreamReader(sourceFile))
             {
