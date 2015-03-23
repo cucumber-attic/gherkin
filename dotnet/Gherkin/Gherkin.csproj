@@ -60,6 +60,7 @@
     <Compile Include="Ast\IHasSteps.cs" />
     <Compile Include="Ast\IHasTags.cs" />
     <Compile Include="Ast\Location.cs" />
+    <Compile Include="Ast\Node.cs" />
     <Compile Include="Ast\Scenario.cs" />
     <Compile Include="Ast\ScenarioDefinition.cs" />
     <Compile Include="Ast\ScenarioOutline.cs" />

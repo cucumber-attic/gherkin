@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Gherkin.AstGenerator
 {
@@ -13,9 +14,12 @@ namespace Gherkin.AstGenerator
             if (parsingResult == null)
                 throw new InvalidOperationException("parser returned null");
 
-            var astFormatter = new TestAstFormatter();
-            var astText = astFormatter.FormatAst(parsingResult);
-            return astText;
+            var jsonSerializerSettings = new JsonSerializerSettings();
+            jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            jsonSerializerSettings.ContractResolver = new FeatureAstJSonContractResolver();
+            var astText = JsonConvert.SerializeObject(parsingResult, jsonSerializerSettings);
+
+            return LineEndingHelper.NormalizeJSonLineEndings(astText);
         }
 
     }
