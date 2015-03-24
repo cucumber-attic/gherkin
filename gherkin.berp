@@ -11,7 +11,7 @@ Feature_Header! := #Language? Tags? #FeatureLine Feature_Description
 
 Background! := #BackgroundLine Background_Description Scenario_Step*
 
-// we could avoid defining Scenario_Base, but that would require regular look-aheads, so worse performance
+// we could avoid defining Scenario_Definition, but that would require regular look-aheads, so worse performance
 Scenario_Definition! := Tags? (Scenario | ScenarioOutline)
 
 Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
