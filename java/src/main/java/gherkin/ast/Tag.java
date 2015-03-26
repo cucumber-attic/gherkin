@@ -11,4 +11,9 @@ public class Tag extends Node {
     public String getName() {
         return name;
     }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitTag(this);
+    }
 }

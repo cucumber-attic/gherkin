@@ -3,7 +3,7 @@ package gherkin.ast;
 import java.util.Collections;
 import java.util.List;
 
-public class Examples extends Node implements DescribesItself, HasTags, HasDescription, HasRows {
+public class Examples extends Node {
     private final List<Tag> tags;
     private final String keyword;
     private final String name;
@@ -21,34 +21,24 @@ public class Examples extends Node implements DescribesItself, HasTags, HasDescr
         this.rows = Collections.unmodifiableList(rows);
     }
 
-    @Override
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    @Override
     public String getKeyword() {
         return keyword;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public String getDescription() {
         return description;
     }
 
     @Override
-    public List<TableRow> getRows() {
-        return rows;
-    }
-
-    @Override
-    public void describeTo(Visitor visitor) {
-        // TODO: iterate over rows
+    public void accept(Visitor visitor) {
+        header.accept(visitor);
+        for (TableRow tableRow : rows) {
+            tableRow.accept(visitor);
+        }
         visitor.visitExamples(this);
     }
 }

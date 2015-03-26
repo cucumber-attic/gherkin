@@ -8,9 +8,9 @@ public class Scenario extends ScenarioDefinition {
     }
 
     @Override
-    public void describeTo(Visitor visitor) {
+    public void accept(Visitor visitor) {
         for (Step step : getSteps()) {
-            step.describeTo(visitor);
+            step.accept(visitor);
         }
         visitor.visitScenario(this);
     }

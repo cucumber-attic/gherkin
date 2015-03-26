@@ -3,7 +3,7 @@ package gherkin.ast;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class ScenarioDefinition extends Node implements DescribesItself, HasDescription, HasSteps, HasTags {
+public abstract class ScenarioDefinition extends Node {
     private final List<Tag> tags;
     private final String keyword;
     private final String name;
@@ -19,28 +19,19 @@ public abstract class ScenarioDefinition extends Node implements DescribesItself
         this.steps = Collections.unmodifiableList(steps);
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
-    public List<Step> getSteps() {
-        return steps;
-    }
-
-    @Override
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    @Override
     public String getKeyword() {
         return keyword;
     }
 
-    @Override
     public String getDescription() {
         return description;
+    }
+
+    protected List<Step> getSteps() {
+        return steps;
     }
 }

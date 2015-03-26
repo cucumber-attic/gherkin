@@ -14,4 +14,12 @@ public class TableRow extends Node {
     public List<TableCell> getCells() {
         return cells;
     }
+
+    @Override
+    public void accept(Visitor visitor) {
+        for (TableCell cell : cells) {
+            cell.accept(visitor);
+        }
+        visitor.visitTableRow(this);
+    }
 }

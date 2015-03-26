@@ -1,19 +1,19 @@
 package gherkin.test;
 
-import gherkin.ast.Step;
+import gherkin.ast.Node;
 import gherkin.compiler.TestCaseVisitor;
 
 public class TestStep {
-    private final transient Step step;
     private final String name;
+    private final transient Node[] source;
 
-    public TestStep(Step step) {
-        this.step = step;
-        this.name = step.getKeyword() + step.getName();
+    public TestStep(String name, Node... source) {
+        this.name = name;
+        this.source = source;
     }
 
     public String getName() {
-        return step.getName();
+        return name;
     }
 
     public void accept(TestCaseVisitor visitor) {

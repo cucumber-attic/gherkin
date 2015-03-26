@@ -1,6 +1,6 @@
 package gherkin.ast;
 
-public class Step extends Node implements DescribesItself {
+public class Step extends Node {
     private final String keyword;
     private final String name;
     private final StepArgument argument;
@@ -25,7 +25,7 @@ public class Step extends Node implements DescribesItself {
     }
 
     @Override
-    public void describeTo(Visitor visitor) {
+    public void accept(Visitor visitor) {
         visitor.visitStep(this);
     }
 }

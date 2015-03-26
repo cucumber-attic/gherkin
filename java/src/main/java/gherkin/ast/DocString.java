@@ -9,4 +9,9 @@ public class DocString extends Node implements StepArgument {
         this.contentType = contentType;
         this.content = content;
     }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitDocString(this);
+    }
 }

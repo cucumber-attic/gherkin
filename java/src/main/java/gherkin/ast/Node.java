@@ -1,6 +1,6 @@
 package gherkin.ast;
 
-class Node {
+public abstract class Node {
     private final String type = getClass().getSimpleName();
     private final Location location;
 
@@ -11,4 +11,6 @@ class Node {
     public Location getLocation() {
         return location;
     }
+
+    public abstract void accept(Visitor visitor);
 }

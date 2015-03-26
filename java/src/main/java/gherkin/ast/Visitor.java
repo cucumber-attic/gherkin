@@ -12,4 +12,14 @@ public interface Visitor {
     void visitExamples(Examples examples);
 
     void visitStep(Step step);
+
+    void visitTag(Tag tag);
+
+    void visitTableRow(TableRow tableRow);
+
+    void visitTableCell(TableCell tableCell);
+
+    void visitDocString(DocString docString);
+
+    void visitDataTable(DataTable dataTable);
 }

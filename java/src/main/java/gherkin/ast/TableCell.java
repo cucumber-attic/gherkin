@@ -11,4 +11,9 @@ public class TableCell extends Node {
     public String getValue() {
         return value;
     }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visitTableCell(this);
+    }
 }

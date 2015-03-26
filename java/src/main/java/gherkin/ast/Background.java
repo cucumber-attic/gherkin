@@ -3,7 +3,7 @@ package gherkin.ast;
 import java.util.Collections;
 import java.util.List;
 
-public class Background extends Node implements DescribesItself, HasDescription, HasSteps {
+public class Background extends Node {
     private final String keyword;
     private final String name;
     private final String description;
@@ -17,30 +17,22 @@ public class Background extends Node implements DescribesItself, HasDescription,
         this.steps = Collections.unmodifiableList(steps);
     }
 
-    @Override
     public String getKeyword() {
         return keyword;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public String getDescription() {
         return description;
     }
 
     @Override
-    public List<Step> getSteps() {
-        return steps;
-    }
-
-    @Override
-    public void describeTo(Visitor visitor) {
+    public void accept(Visitor visitor) {
         for (Step step : steps) {
-            step.describeTo(visitor);
+            step.accept(visitor);
         }
         visitor.visitBackground(this);
     }

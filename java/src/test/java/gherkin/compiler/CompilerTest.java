@@ -39,4 +39,20 @@ public class CompilerTest {
         compiler.getTestCaseCollection().accept(printer);
         assertEquals("[{\"testSteps\":[{\"name\":\"Given a\"},{\"name\":\"Given b\"}]},{\"testSteps\":[{\"name\":\"Given a\"},{\"name\":\"Given c\"}]}]", printer.getResult());
     }
+
+    @Test
+    public void compiles_scenario_outline() throws IOException {
+        compiler.compile(parser.parse("" +
+                "Feature: Minimal Scenario Outline\n" +
+                "\n" +
+                "  Scenario Outline: minimalistic\n" +
+                "    Given the <what>\n" +
+                "\n" +
+                "    Examples: \n" +
+                "      | what       |\n" +
+                "      | minimalism |\n"));
+        compiler.getTestCaseCollection().accept(printer);
+        System.out.println(printer.getResult());
+        assertEquals("[{\"testSteps\":[{\"name\":\"Given the minimalism\"}]}]", printer.getResult());
+    }
 }
