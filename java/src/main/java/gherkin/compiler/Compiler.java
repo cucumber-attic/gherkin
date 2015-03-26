@@ -1,17 +1,12 @@
 package gherkin.compiler;
 
 import gherkin.ast.Background;
-import gherkin.ast.DataTable;
-import gherkin.ast.DocString;
+import gherkin.ast.DefaultVisitor;
 import gherkin.ast.Examples;
 import gherkin.ast.Feature;
 import gherkin.ast.Scenario;
 import gherkin.ast.ScenarioOutline;
 import gherkin.ast.Step;
-import gherkin.ast.TableCell;
-import gherkin.ast.TableRow;
-import gherkin.ast.Tag;
-import gherkin.ast.Visitor;
 import gherkin.test.TestCase;
 import gherkin.test.TestStep;
 
@@ -30,14 +25,14 @@ public class Compiler {
         return testCaseCollection;
     }
 
-    private class CompilerVisitor implements Visitor {
+    private class CompilerVisitor extends DefaultVisitor {
         private final List<Step> steps = new ArrayList<>();
         private final List<TestStep> backgroundSteps = new ArrayList<>();
-        private final List<TableRow> tableRows = new ArrayList<>();
         private final List<ExamplesCompiler> examplesCompilers = new ArrayList<>();
 
         @Override
         public void visitFeature(Feature feature) {
+            backgroundSteps.clear();
         }
 
         @Override
@@ -68,6 +63,7 @@ public class Compiler {
                 examplesCompiler.compile(testCase, steps);
             }
             steps.clear();
+            examplesCompilers.clear();
         }
 
         @Override
@@ -79,27 +75,6 @@ public class Compiler {
         @Override
         public void visitStep(Step step) {
             steps.add(step);
-        }
-
-        @Override
-        public void visitTag(Tag tag) {
-        }
-
-        @Override
-        public void visitTableRow(TableRow tableRow) {
-            tableRows.add(tableRow);
-        }
-
-        @Override
-        public void visitTableCell(TableCell tableCell) {
-        }
-
-        @Override
-        public void visitDocString(DocString docString) {
-        }
-
-        @Override
-        public void visitDataTable(DataTable dataTable) {
         }
 
         private TestCase createTestCaseWithBackgroundSteps() {

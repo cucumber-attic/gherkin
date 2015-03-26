@@ -52,7 +52,6 @@ public class CompilerTest {
                 "      | what       |\n" +
                 "      | minimalism |\n"));
         compiler.getTestCaseCollection().accept(printer);
-        System.out.println(printer.getResult());
         assertEquals("[{\"testSteps\":[{\"name\":\"Given the minimalism\"}]}]", printer.getResult());
     }
 
@@ -70,7 +69,6 @@ public class CompilerTest {
                 "      | what       |\n" +
                 "      | minimalism |\n"));
         compiler.getTestCaseCollection().accept(printer);
-        System.out.println(printer.getResult());
         assertEquals("[{\"testSteps\":[{\"name\":\"Given a\"},{\"name\":\"Given the minimalism\"}]}]", printer.getResult());
     }
 }
