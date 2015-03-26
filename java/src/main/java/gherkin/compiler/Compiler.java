@@ -36,8 +36,6 @@ public class Compiler {
         private final List<TableRow> tableRows = new ArrayList<>();
         private final List<ExamplesCompiler> examplesCompilers = new ArrayList<>();
 
-        private TestCase testCase;
-
         @Override
         public void visitFeature(Feature feature) {
         }
@@ -53,10 +51,7 @@ public class Compiler {
 
         @Override
         public void visitScenario(Scenario scenario) {
-            testCase = new TestCase();
-            for (TestStep backgroundStep : backgroundSteps) {
-                testCase.addTestStep(backgroundStep);
-            }
+            TestCase testCase = createTestCaseWithBackgroundSteps();
             for (Step step : steps) {
                 String name = step.getKeyword() + step.getName();
                 testCase.addTestStep(new TestStep(name, step));
@@ -68,7 +63,9 @@ public class Compiler {
         @Override
         public void visitScenarioOutline(ScenarioOutline scenarioOutline) {
             for (ExamplesCompiler examplesCompiler : examplesCompilers) {
-                examplesCompiler.compile(backgroundSteps, steps, testCaseCollection);
+                TestCase testCase = createTestCaseWithBackgroundSteps();
+                testCaseCollection.addTestCase(testCase);
+                examplesCompiler.compile(testCase, steps);
             }
             steps.clear();
         }
@@ -104,6 +101,15 @@ public class Compiler {
         @Override
         public void visitDataTable(DataTable dataTable) {
         }
+
+        private TestCase createTestCaseWithBackgroundSteps() {
+            TestCase testCase = new TestCase();
+            for (TestStep backgroundStep : backgroundSteps) {
+                testCase.addTestStep(backgroundStep);
+            }
+            return testCase;
+        }
+
     }
 
 }

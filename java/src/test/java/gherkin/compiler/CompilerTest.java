@@ -14,7 +14,7 @@ public class CompilerTest {
     private final TestCasePrinter printer = new TestCasePrinter();
 
     @Test
-    public void compiles_a_feature_with_a_single_scenario() throws IOException {
+    public void compiles_a_scenario() throws IOException {
         compiler.compile(parser.parse("" +
                 "Feature: f\n" +
                 "  Scenario: s\n" +
@@ -24,7 +24,7 @@ public class CompilerTest {
     }
 
     @Test
-    public void compiles_a_feature_with_a_background() throws IOException {
+    public void compiles_in_a_background() throws IOException {
         compiler.compile(parser.parse("" +
                 "Feature: f\n" +
                 "  Background:\n" +
@@ -41,7 +41,7 @@ public class CompilerTest {
     }
 
     @Test
-    public void compiles_scenario_outline() throws IOException {
+    public void compiles_a_scenario_outline() throws IOException {
         compiler.compile(parser.parse("" +
                 "Feature: Minimal Scenario Outline\n" +
                 "\n" +
@@ -54,5 +54,23 @@ public class CompilerTest {
         compiler.getTestCaseCollection().accept(printer);
         System.out.println(printer.getResult());
         assertEquals("[{\"testSteps\":[{\"name\":\"Given the minimalism\"}]}]", printer.getResult());
+    }
+
+    @Test
+    public void compiles_a_scenario_outline_with_background() throws IOException {
+        compiler.compile(parser.parse("" +
+                "Feature: Minimal Scenario Outline\n" +
+                "  Background:\n" +
+                "    Given a\n" +
+                "\n" +
+                "  Scenario Outline: minimalistic\n" +
+                "    Given the <what>\n" +
+                "\n" +
+                "    Examples: \n" +
+                "      | what       |\n" +
+                "      | minimalism |\n"));
+        compiler.getTestCaseCollection().accept(printer);
+        System.out.println(printer.getResult());
+        assertEquals("[{\"testSteps\":[{\"name\":\"Given a\"},{\"name\":\"Given the minimalism\"}]}]", printer.getResult());
     }
 }

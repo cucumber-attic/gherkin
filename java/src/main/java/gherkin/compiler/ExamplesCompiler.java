@@ -2,7 +2,7 @@ package gherkin.compiler;
 
 import gherkin.ast.Examples;
 import gherkin.ast.Step;
-import gherkin.test.TestStep;
+import gherkin.test.TestCase;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ class ExamplesCompiler {
         this.examples = examples;
     }
 
-    public void compile(List<TestStep> backgroundSteps, List<Step> steps, TestCaseCollection testCaseCollection) {
-        ExamplesVisitor visitor = new ExamplesVisitor(steps, testCaseCollection);
+    public void compile(TestCase testCase, List<Step> steps) {
+        ExamplesVisitor visitor = new ExamplesVisitor(testCase, steps);
         examples.accept(visitor);
     }
 }

@@ -19,14 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExamplesVisitor implements Visitor {
-    private final TestCaseCollection testCaseCollection;
-    private final List<Step> steps;
+    private final TestCase testCase;
+    private final List<Step> outlineSteps;
     private final List<TableCell> tableCells = new ArrayList<>();
     private final List<TableCell> headerCells = new ArrayList<>();
 
-    public ExamplesVisitor(List<Step> steps, TestCaseCollection testCaseCollection) {
-        this.steps = steps;
-        this.testCaseCollection = testCaseCollection;
+    public ExamplesVisitor(TestCase testCase, List<Step> outlineSteps) {
+        this.testCase = testCase;
+        this.outlineSteps = outlineSteps;
     }
 
     @Override
@@ -68,9 +68,8 @@ public class ExamplesVisitor implements Visitor {
         if (headerCells.isEmpty()) {
             headerCells.addAll(tableCells);
         } else {
-            TestCase testCase = new TestCase();
-            for (Step step : steps) {
-                String text = step.getName();
+            for (Step outlineStep : outlineSteps) {
+                String text = outlineStep.getName();
                 int col = 0;
                 for (TableCell headerCell : headerCells) {
                     TableCell valueCell = tableCells.get(col++);
@@ -78,11 +77,10 @@ public class ExamplesVisitor implements Visitor {
                     String value = valueCell.getValue();
                     text = text.replace("<" + header + ">", value);
                 }
-                String name = step.getKeyword() + text;
-                TestStep testStep = new TestStep(name, step, tableRow);
+                String name = outlineStep.getKeyword() + text;
+                TestStep testStep = new TestStep(name, outlineStep, tableRow);
                 testCase.addTestStep(testStep);
             }
-            testCaseCollection.addTestCase(testCase);
         }
         tableCells.clear();
     }
