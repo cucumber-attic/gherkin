@@ -3,9 +3,9 @@ package gherkin.ast;
 public class Step extends Node {
     private final String keyword;
     private final String name;
-    private final StepArgument argument;
+    private final Node argument;
 
-    public Step(Location location, String keyword, String name, StepArgument argument) {
+    public Step(Location location, String keyword, String name, Node argument) {
         super(location);
         this.keyword = keyword;
         this.name = name;
@@ -16,16 +16,15 @@ public class Step extends Node {
         return name;
     }
 
-    public StepArgument getArgument() {
-        return argument;
-    }
-
     public String getKeyword() {
         return keyword;
     }
 
     @Override
     public void accept(Visitor visitor) {
+        if (argument != null) {
+            argument.accept(visitor);
+        }
         visitor.visitStep(this);
     }
 }

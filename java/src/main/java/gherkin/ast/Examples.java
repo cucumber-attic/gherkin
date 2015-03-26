@@ -8,16 +8,14 @@ public class Examples extends Node {
     private final String keyword;
     private final String name;
     private final String description;
-    private final TableRow header;
     private final List<TableRow> rows;
 
-    public Examples(Location location, List<Tag> tags, String keyword, String name, String description, TableRow header, List<TableRow> rows) {
+    public Examples(Location location, List<Tag> tags, String keyword, String name, String description, List<TableRow> rows) {
         super(location);
         this.tags = Collections.unmodifiableList(tags);
         this.keyword = keyword;
         this.name = name;
         this.description = description;
-        this.header = header;
         this.rows = Collections.unmodifiableList(rows);
     }
 
@@ -35,7 +33,6 @@ public class Examples extends Node {
 
     @Override
     public void accept(Visitor visitor) {
-        header.accept(visitor);
         for (TableRow tableRow : rows) {
             tableRow.accept(visitor);
         }

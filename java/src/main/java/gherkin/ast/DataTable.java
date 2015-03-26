@@ -3,7 +3,7 @@ package gherkin.ast;
 import java.util.Collections;
 import java.util.List;
 
-public class DataTable extends Node implements StepArgument {
+public class DataTable extends Node {
     private final List<TableRow> rows;
 
     public DataTable(List<TableRow> rows) {
