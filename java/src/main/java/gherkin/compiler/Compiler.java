@@ -38,8 +38,7 @@ public class Compiler {
         @Override
         public void visitBackground(Background background) {
             for (Step step : steps) {
-                String name = step.getKeyword() + step.getName();
-                backgroundSteps.add(new CompiledStep(name, step));
+                backgroundSteps.add(new CompiledStep(step.getName(), step.getLocation()));
             }
             steps.clear();
         }
@@ -49,8 +48,8 @@ public class Compiler {
             String testCaseName = scenario.getKeyword() + ": " + scenario.getName();
             CompiledScenario compiledScenario = createTestCaseWithBackgroundSteps(testCaseName, scenario.getLocation());
             for (Step step : steps) {
-                String name = step.getKeyword() + step.getName();
-                compiledScenario.addTestStep(new CompiledStep(name, step));
+                // TODO: Add DataTable and DocString
+                compiledScenario.addTestStep(new CompiledStep(step.getName(), step.getLocation()));
             }
             steps.clear();
             testCases.add(compiledScenario);

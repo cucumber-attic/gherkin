@@ -38,20 +38,24 @@ class ExamplesCompiler {
                 headerCells.addAll(tableCells);
             } else {
                 for (Step outlineStep : outlineSteps) {
-                    String text = outlineStep.getName();
-                    int col = 0;
-                    for (TableCell headerCell : headerCells) {
-                        TableCell valueCell = tableCells.get(col++);
-                        String header = headerCell.getValue();
-                        String value = valueCell.getValue();
-                        text = text.replace("<" + header + ">", value);
-                    }
-                    String name = outlineStep.getKeyword() + text;
-                    CompiledStep compiledStep = new CompiledStep(name, outlineStep, tableRow);
+                    String name = outlineStep.getName();
+                    name = interpolate(name);
+                    CompiledStep compiledStep = new CompiledStep(name, outlineStep.getLocation(), tableRow.getLocation());
                     compiledScenario.addTestStep(compiledStep);
                 }
             }
             tableCells.clear();
+        }
+
+        private String interpolate(String name) {
+            int col = 0;
+            for (TableCell headerCell : headerCells) {
+                TableCell valueCell = tableCells.get(col++);
+                String header = headerCell.getValue();
+                String value = valueCell.getValue();
+                name = name.replace("<" + header + ">", value);
+            }
+            return name;
         }
 
         @Override

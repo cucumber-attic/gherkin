@@ -1,22 +1,19 @@
 package gherkin.compiler;
 
 import gherkin.ast.Location;
-import gherkin.ast.Node;
 import pickles.TestStep;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class CompiledStep implements TestStep {
     private final String name;
     private final List<Location> source;
 
-    public CompiledStep(String name, Node... source) {
+    public CompiledStep(String name, Location... source) {
         this.name = name;
-        this.source = new ArrayList<>();
-        for (Node node : source) {
-            this.source.add(node.getLocation());
-        }
+        this.source = asList(source);
     }
 
     @Override
