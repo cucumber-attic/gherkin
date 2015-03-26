@@ -1,20 +1,24 @@
 package gherkin.test;
 
+import gherkin.ast.Step;
+import gherkin.compiler.TestCaseVisitor;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestCase {
-    private final List<TestStep> testSteps;
-    private final Source scenarioSource;
+    private final List<TestStep> testSteps = new ArrayList<>();
 
-    public TestCase(List<TestStep> testSteps, Source scenarioSource) {
-        this.testSteps = testSteps;
-        this.scenarioSource = scenarioSource;
+    public void appendSteps(List<Step> steps) {
+        for (Step step : steps) {
+            testSteps.add(new TestStep(step));
+        }
     }
 
-    public void describeTo(TestCaseReceiver receiver) {
-        receiver.visitTestCase(this);
+    public void accept(TestCaseVisitor visitor) {
         for (TestStep testStep : testSteps) {
-            testStep.describeTo(receiver);
+            testStep.accept(visitor);
         }
+        visitor.visitTestCase(this);
     }
 }

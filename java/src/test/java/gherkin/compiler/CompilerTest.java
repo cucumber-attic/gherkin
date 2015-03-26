@@ -10,8 +10,8 @@ import static org.junit.Assert.assertEquals;
 
 public class CompilerTest {
     private final Parser<Feature> parser = new Parser<>();
-    private StubTestCaseReceiver receiver = new StubTestCaseReceiver();
-    private gherkin.compiler.Compiler compiler = new Compiler(receiver);
+    private final Compiler compiler = new Compiler();
+    private final TestCasePrinter printer = new TestCasePrinter();
 
     @Test
     public void compiles_a_feature_with_a_single_scenario() throws IOException {
@@ -19,7 +19,8 @@ public class CompilerTest {
                 "Feature: f\n" +
                 "  Scenario: s\n" +
                 "    Given passing\n"));
-        assertEquals("[test_case, test_step(passing)]", receiver.toString());
+        compiler.getTestCaseCollection().accept(printer);
+        assertEquals("[{\"testSteps\":[{\"name\":\"Given passing\"}]}]", printer.getResult());
     }
 
     @Test
@@ -35,6 +36,7 @@ public class CompilerTest {
                 "  Scenario:\n" +
                 "    Given c\n"));
 
-        assertEquals("[test_case, test_step(a), test_step(b), test_case, test_step(a), test_step(c)]", receiver.toString());
+        compiler.getTestCaseCollection().accept(printer);
+        assertEquals("[{\"testSteps\":[{\"name\":\"Given a\"},{\"name\":\"Given b\"}]},{\"testSteps\":[{\"name\":\"Given a\"},{\"name\":\"Given c\"}]}]", printer.getResult());
     }
 }

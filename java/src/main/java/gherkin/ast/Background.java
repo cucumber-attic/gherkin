@@ -39,9 +39,9 @@ public class Background extends Node implements DescribesItself, HasDescription,
 
     @Override
     public void describeTo(Visitor visitor) {
-        visitor.visitBackground(this);
         for (Step step : steps) {
             step.describeTo(visitor);
         }
+        visitor.visitBackground(this);
     }
 }

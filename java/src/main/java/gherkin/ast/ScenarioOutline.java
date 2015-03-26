@@ -17,12 +17,12 @@ public class ScenarioOutline extends ScenarioDefinition {
 
     @Override
     public void describeTo(Visitor visitor) {
-        visitor.visitScenarioOutline(this);
         for (Step step : getSteps()) {
            step.describeTo(visitor);
         }
         for (Examples examples : this.examples) {
             examples.describeTo(visitor);
         }
+        visitor.visitScenarioOutline(this);
     }
 }

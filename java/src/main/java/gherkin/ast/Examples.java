@@ -48,7 +48,7 @@ public class Examples extends Node implements DescribesItself, HasTags, HasDescr
 
     @Override
     public void describeTo(Visitor visitor) {
+        // TODO: iterate over rows
         visitor.visitExamples(this);
-        // TOTO: iterate over rows
     }
 }

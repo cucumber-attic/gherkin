@@ -1,29 +1,22 @@
 package gherkin.test;
 
-import gherkin.ast.BaseVisitor;
-import gherkin.ast.DescribesItself;
 import gherkin.ast.Step;
+import gherkin.compiler.TestCaseVisitor;
 
 public class TestStep {
-    private final Source step;
+    private final transient Step step;
+    private final String name;
 
-    public TestStep(Source step) {
+    public TestStep(Step step) {
         this.step = step;
-    }
-
-    public void describeTo(TestCaseReceiver receiver) {
-        receiver.visitTestStep(this);
+        this.name = step.getKeyword() + step.getName();
     }
 
     public String getName() {
-        final StringBuilder name = new StringBuilder();
-        DescribesItself node = step.getNode();
-        node.describeTo(new BaseVisitor() {
-            @Override
-            public void visitStep(Step step) {
-                name.append(step.getName());
-            }
-        });
-        return name.toString();
+        return step.getName();
+    }
+
+    public void accept(TestCaseVisitor visitor) {
+        visitor.visitTestStep(this);
     }
 }

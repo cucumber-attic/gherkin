@@ -66,12 +66,12 @@ public class Feature extends Node implements DescribesItself, HasDescription, Ha
 
     @Override
     public void describeTo(Visitor visitor) {
-        visitor.visitFeature(this);
         if (background != null) {
             background.describeTo(visitor);
         }
         for (ScenarioDefinition scenarioDefinition : scenarioDefinitions) {
             scenarioDefinition.describeTo(visitor);
         }
+        visitor.visitFeature(this);
     }
 }
