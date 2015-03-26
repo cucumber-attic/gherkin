@@ -1,6 +1,6 @@
 package gherkin.ast;
 
-public class Location {
+public class Location implements pickles.Location {
     private final int line;
     private final int column;
 
@@ -9,10 +9,12 @@ public class Location {
         this.column = column;
     }
 
+    @Override
     public int getLine() {
         return line;
     }
 
+    @Override
     public int getColumn() {
         return column;
     }

@@ -2,16 +2,16 @@ package gherkin.compiler;
 
 import gherkin.Parser;
 import gherkin.ast.Feature;
+import gherkin.deps.com.google.gson.Gson;
+import gherkin.deps.com.google.gson.GsonBuilder;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-
 public class CompilerTest {
     private final Parser<Feature> parser = new Parser<>();
     private final Compiler compiler = new Compiler();
-    private final TestCasePrinter printer = new TestCasePrinter();
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Test
     public void compiles_a_scenario() throws IOException {
@@ -19,8 +19,8 @@ public class CompilerTest {
                 "Feature: f\n" +
                 "  Scenario: s\n" +
                 "    Given passing\n"));
-        compiler.getTestCaseCollection().accept(printer);
-        assertEquals("[{\"testSteps\":[{\"name\":\"Given passing\"}]}]", printer.getResult());
+
+        System.out.println(gson.toJson(compiler.getTestCases()));
     }
 
     @Test
@@ -36,8 +36,7 @@ public class CompilerTest {
                 "  Scenario:\n" +
                 "    Given c\n"));
 
-        compiler.getTestCaseCollection().accept(printer);
-        assertEquals("[{\"testSteps\":[{\"name\":\"Given a\"},{\"name\":\"Given b\"}]},{\"testSteps\":[{\"name\":\"Given a\"},{\"name\":\"Given c\"}]}]", printer.getResult());
+        System.out.println(gson.toJson(compiler.getTestCases()));
     }
 
     @Test
@@ -51,8 +50,7 @@ public class CompilerTest {
                 "    Examples: \n" +
                 "      | what       |\n" +
                 "      | minimalism |\n"));
-        compiler.getTestCaseCollection().accept(printer);
-        assertEquals("[{\"testSteps\":[{\"name\":\"Given the minimalism\"}]}]", printer.getResult());
+        System.out.println(gson.toJson(compiler.getTestCases()));
     }
 
     @Test
@@ -68,7 +66,6 @@ public class CompilerTest {
                 "    Examples: \n" +
                 "      | what       |\n" +
                 "      | minimalism |\n"));
-        compiler.getTestCaseCollection().accept(printer);
-        assertEquals("[{\"testSteps\":[{\"name\":\"Given a\"},{\"name\":\"Given the minimalism\"}]}]", printer.getResult());
+        System.out.println(gson.toJson(compiler.getTestCases()));
     }
 }

@@ -18,7 +18,7 @@ public class ScenarioOutline extends ScenarioDefinition {
     @Override
     public void accept(Visitor visitor) {
         for (Step step : getSteps()) {
-           step.accept(visitor);
+            step.accept(visitor);
         }
         for (Examples examples : this.examples) {
             examples.accept(visitor);

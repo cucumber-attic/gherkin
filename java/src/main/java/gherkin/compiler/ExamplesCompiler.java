@@ -5,8 +5,6 @@ import gherkin.ast.Examples;
 import gherkin.ast.Step;
 import gherkin.ast.TableCell;
 import gherkin.ast.TableRow;
-import gherkin.test.TestCase;
-import gherkin.test.TestStep;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,19 +16,19 @@ class ExamplesCompiler {
         this.examples = examples;
     }
 
-    public void compile(TestCase testCase, List<Step> outlineSteps) {
-        ExamplesVisitor visitor = new ExamplesVisitor(testCase, outlineSteps);
+    public void compile(CompiledScenario compiledScenario, List<Step> outlineSteps) {
+        ExamplesVisitor visitor = new ExamplesVisitor(compiledScenario, outlineSteps);
         examples.accept(visitor);
     }
 
     public static class ExamplesVisitor extends DefaultVisitor {
-        private final TestCase testCase;
+        private final CompiledScenario compiledScenario;
         private final List<Step> outlineSteps;
         private final List<TableCell> tableCells = new ArrayList<>();
         private final List<TableCell> headerCells = new ArrayList<>();
 
-        public ExamplesVisitor(TestCase testCase, List<Step> outlineSteps) {
-            this.testCase = testCase;
+        public ExamplesVisitor(CompiledScenario compiledScenario, List<Step> outlineSteps) {
+            this.compiledScenario = compiledScenario;
             this.outlineSteps = outlineSteps;
         }
 
@@ -49,8 +47,8 @@ class ExamplesCompiler {
                         text = text.replace("<" + header + ">", value);
                     }
                     String name = outlineStep.getKeyword() + text;
-                    TestStep testStep = new TestStep(name, outlineStep, tableRow);
-                    testCase.addTestStep(testStep);
+                    CompiledStep compiledStep = new CompiledStep(name, outlineStep, tableRow);
+                    compiledScenario.addTestStep(compiledStep);
                 }
             }
             tableCells.clear();

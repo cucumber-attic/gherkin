@@ -1,8 +1,8 @@
 Feature: Minimal Scenario Outline
 
-  Scenario Outline: minimalistic
+Scenario Outline: minimalistic
     Given the <what>
 
-    Examples:
-      | what       |
-      | minimalism |
+Examples:
+  | what       |
+  | minimalism |
