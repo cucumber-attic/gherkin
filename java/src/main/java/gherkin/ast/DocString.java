@@ -14,4 +14,8 @@ public class DocString extends Node {
     public void accept(Visitor visitor) {
         visitor.visitDocString(this);
     }
+
+    public String getContent() {
+        return content;
+    }
 }

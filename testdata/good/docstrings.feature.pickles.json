@@ -1,0 +1,85 @@
+[
+  {
+    "name": "Scenario: minimalistic",
+    "pickledSteps": [
+      {
+        "argument": {
+          "content": "first line (no indent)\n  second line (indented with two spaces)\n\nthird line was empty"
+        },
+        "name": "a simple DocString",
+        "source": [
+          {
+            "column": 5,
+            "line": 4
+          }
+        ]
+      },
+      {
+        "argument": {
+          "content": "<foo>\n  <bar />\n</foo>"
+        },
+        "name": "a DocString with content type",
+        "source": [
+          {
+            "column": 5,
+            "line": 11
+          }
+        ]
+      },
+      {
+        "argument": {
+          "content": "wrongly indented line"
+        },
+        "name": "a DocString with wrong indentation",
+        "source": [
+          {
+            "column": 5,
+            "line": 17
+          }
+        ]
+      },
+      {
+        "argument": {
+          "content": "first line\nsecond line"
+        },
+        "name": "a DocString with alternative separator",
+        "source": [
+          {
+            "column": 5,
+            "line": 21
+          }
+        ]
+      },
+      {
+        "argument": {
+          "content": "first line\n\"\"\"\nthird line"
+        },
+        "name": "a DocString with normal separator inside",
+        "source": [
+          {
+            "column": 5,
+            "line": 26
+          }
+        ]
+      },
+      {
+        "argument": {
+          "content": "first line\n```\nthird line"
+        },
+        "name": "a DocString with alternative separator inside",
+        "source": [
+          {
+            "column": 5,
+            "line": 32
+          }
+        ]
+      }
+    ],
+    "source": [
+      {
+        "column": 3,
+        "line": 3
+      }
+    ]
+  }
+]

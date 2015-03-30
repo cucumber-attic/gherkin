@@ -8,7 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class GenerateCompiledScenarios {
+public class GeneratePickles {
     public static void main(String[] args) throws IOException {
         Gson gson = new Gson();
         Parser<Feature> parser = new Parser<>();

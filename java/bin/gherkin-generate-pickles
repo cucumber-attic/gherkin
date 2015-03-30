@@ -3,4 +3,4 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 java \
     -classpath ~/.m2/repository/info/cukes/gherkin-jvm-deps/1.0.3/gherkin-jvm-deps-1.0.3.jar:$DIR/../target/classes \
-    gherkin.GenerateCompiledScenarios $*
+    gherkin.GeneratePickles $*

@@ -6,4 +6,6 @@ public interface TestStep {
     String getName();
 
     List<? extends Location> getSource();
+
+    Argument getArgument();
 }

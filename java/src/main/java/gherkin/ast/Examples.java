@@ -33,9 +33,14 @@ public class Examples extends Node {
 
     @Override
     public void accept(Visitor visitor) {
-        for (TableRow tableRow : rows) {
-            tableRow.accept(visitor);
-        }
         visitor.visitExamples(this);
+    }
+
+    public List<TableRow> getRows() {
+        return rows.subList(1, rows.size());
+    }
+
+    public TableRow getHeader() {
+        return rows.get(0);
     }
 }

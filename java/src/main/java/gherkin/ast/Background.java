@@ -29,11 +29,12 @@ public class Background extends Node {
         return description;
     }
 
+    public List<Step> getSteps() {
+        return steps;
+    }
+
     @Override
     public void accept(Visitor visitor) {
-        for (Step step : steps) {
-            step.accept(visitor);
-        }
         visitor.visitBackground(this);
     }
 }

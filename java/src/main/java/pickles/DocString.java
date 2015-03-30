@@ -1,4 +1,4 @@
 package pickles;
 
-public interface DocString {
+public interface DocString extends Argument {
 }

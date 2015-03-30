@@ -24,6 +24,17 @@ public class CompilerTest {
     }
 
     @Test
+    public void compiles_step_with_data_table() throws IOException {
+        compiler.compile(parser.parse("" +
+                "Feature: f\n" +
+                "  Scenario: s\n" +
+                "    Given passing\n" +
+                "      |x|\n"));
+
+        System.out.println(gson.toJson(compiler.getTestCases()));
+    }
+
+    @Test
     public void compiles_in_a_background() throws IOException {
         compiler.compile(parser.parse("" +
                 "Feature: f\n" +
@@ -44,8 +55,27 @@ public class CompilerTest {
         compiler.compile(parser.parse("" +
                 "Feature: Minimal Scenario Outline\n" +
                 "\n" +
-                "  Scenario Outline: minimalistic\n" +
+                "  Scenario Outline: <what>\n" +
                 "    Given the <what>\n" +
+                "\n" +
+                "    Examples: \n" +
+                "      | what       |\n" +
+                "      | minimalism |\n"));
+        System.out.println(gson.toJson(compiler.getTestCases()));
+    }
+
+    @Test
+    public void compiles_a_scenario_outline_with_data_tables_and_docstrings() throws IOException {
+        compiler.compile(parser.parse("" +
+                "Feature: Minimal Scenario Outline\n" +
+                "\n" +
+                "  Scenario Outline: <what>\n" +
+                "    Given the table <what>\n" +
+                "      | <what> |\n" +
+                "    And the docstring <what>\n" +
+                "      ```\n" +
+                "      doc<what>\n" +
+                "      ```\n" +
                 "\n" +
                 "    Examples: \n" +
                 "      | what       |\n" +

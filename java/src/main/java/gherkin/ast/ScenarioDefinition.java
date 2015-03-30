@@ -31,7 +31,7 @@ public abstract class ScenarioDefinition extends Node {
         return description;
     }
 
-    protected List<Step> getSteps() {
+    public List<Step> getSteps() {
         return steps;
     }
 }

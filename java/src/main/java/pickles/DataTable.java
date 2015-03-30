@@ -1,4 +1,4 @@
 package pickles;
 
-public interface DataTable {
+public interface DataTable extends Argument {
 }

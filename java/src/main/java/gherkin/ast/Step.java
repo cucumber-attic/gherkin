@@ -20,11 +20,12 @@ public class Step extends Node {
         return keyword;
     }
 
+    public Node getArgument() {
+        return argument;
+    }
+
     @Override
     public void accept(Visitor visitor) {
-        if (argument != null) {
-            argument.accept(visitor);
-        }
         visitor.visitStep(this);
     }
 }

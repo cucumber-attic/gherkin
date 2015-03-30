@@ -36,6 +36,10 @@ public class Feature extends Node {
         return scenarioDefinitions;
     }
 
+    public Background getBackground() {
+        return background;
+    }
+
     public String getLanguage() {
         return language;
     }
@@ -54,12 +58,6 @@ public class Feature extends Node {
 
     @Override
     public void accept(Visitor visitor) {
-        if (background != null) {
-            background.accept(visitor);
-        }
-        for (ScenarioDefinition scenarioDefinition : scenarioDefinitions) {
-            scenarioDefinition.accept(visitor);
-        }
         visitor.visitFeature(this);
     }
 }

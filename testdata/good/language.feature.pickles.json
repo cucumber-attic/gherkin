@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Scenario: minimalistic",
+    "pickledSteps": [
+      {
+        "name": "the minimalism",
+        "source": [
+          {
+            "column": 5,
+            "line": 6
+          }
+        ]
+      }
+    ],
+    "source": [
+      {
+        "column": 3,
+        "line": 5
+      }
+    ]
+  }
+]

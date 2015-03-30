@@ -17,9 +17,6 @@ public class TableRow extends Node {
 
     @Override
     public void accept(Visitor visitor) {
-        for (TableCell cell : cells) {
-            cell.accept(visitor);
-        }
         visitor.visitTableRow(this);
     }
 }

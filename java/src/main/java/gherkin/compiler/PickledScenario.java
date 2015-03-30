@@ -8,19 +8,19 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class CompiledScenario implements TestCase {
-    private final List<CompiledStep> testSteps = new ArrayList<>();
+public class PickledScenario implements TestCase {
+    private final List<PickledStep> pickledSteps = new ArrayList<>();
 
     private final String name;
     private final List<Location> source;
 
-    public CompiledScenario(String name, Location... source) {
+    public PickledScenario(String name, Location... source) {
         this.name = name;
         this.source = asList(source);
     }
 
-    public void addTestStep(CompiledStep compiledStep) {
-        testSteps.add(compiledStep);
+    public void addTestStep(PickledStep pickledStep) {
+        pickledSteps.add(pickledStep);
     }
 
     @Override
@@ -29,8 +29,8 @@ public class CompiledScenario implements TestCase {
     }
 
     @Override
-    public List<CompiledStep> getTestSteps() {
-        return testSteps;
+    public List<PickledStep> getPickledSteps() {
+        return pickledSteps;
     }
 
     @Override

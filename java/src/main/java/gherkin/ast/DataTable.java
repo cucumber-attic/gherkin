@@ -13,9 +13,10 @@ public class DataTable extends Node {
 
     @Override
     public void accept(Visitor visitor) {
-        for (TableRow row : rows) {
-            row.accept(visitor);
-        }
         visitor.visitDataTable(this);
+    }
+
+    public List<TableRow> getRows() {
+        return rows;
     }
 }

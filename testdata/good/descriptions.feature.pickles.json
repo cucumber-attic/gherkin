@@ -1,0 +1,146 @@
+[
+  {
+    "name": "Scenario: two lines",
+    "pickledSteps": [
+      {
+        "name": "the minimalism",
+        "source": [
+          {
+            "column": 5,
+            "line": 7
+          }
+        ]
+      }
+    ],
+    "source": [
+      {
+        "column": 3,
+        "line": 4
+      }
+    ]
+  },
+  {
+    "name": "Scenario: without indentation",
+    "pickledSteps": [
+      {
+        "name": "the minimalism",
+        "source": [
+          {
+            "column": 3,
+            "line": 11
+          }
+        ]
+      }
+    ],
+    "source": [
+      {
+        "column": 1,
+        "line": 9
+      }
+    ]
+  },
+  {
+    "name": "Scenario: empty lines in the middle",
+    "pickledSteps": [
+      {
+        "name": "the minimalism",
+        "source": [
+          {
+            "column": 5,
+            "line": 17
+          }
+        ]
+      }
+    ],
+    "source": [
+      {
+        "column": 3,
+        "line": 13
+      }
+    ]
+  },
+  {
+    "name": "Scenario: empty lines around",
+    "pickledSteps": [
+      {
+        "name": "the minimalism",
+        "source": [
+          {
+            "column": 5,
+            "line": 24
+          }
+        ]
+      }
+    ],
+    "source": [
+      {
+        "column": 3,
+        "line": 19
+      }
+    ]
+  },
+  {
+    "name": "Scenario: comment after description",
+    "pickledSteps": [
+      {
+        "name": "the minimalism",
+        "source": [
+          {
+            "column": 5,
+            "line": 31
+          }
+        ]
+      }
+    ],
+    "source": [
+      {
+        "column": 3,
+        "line": 26
+      }
+    ]
+  },
+  {
+    "name": "Scenario: comment right after description",
+    "pickledSteps": [
+      {
+        "name": "the minimalism",
+        "source": [
+          {
+            "column": 5,
+            "line": 38
+          }
+        ]
+      }
+    ],
+    "source": [
+      {
+        "column": 3,
+        "line": 33
+      }
+    ]
+  },
+  {
+    "name": "Scenario: scenario outline with a description",
+    "pickledSteps": [
+      {
+        "name": "the minimalism",
+        "source": [
+          {
+            "column": 5,
+            "line": 42
+          },
+          {
+            "column": 5,
+            "line": 47
+          }
+        ]
+      }
+    ],
+    "source": [
+      {
+        "column": 3,
+        "line": 40
+      }
+    ]
+  }
+]
