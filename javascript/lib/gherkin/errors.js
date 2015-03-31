@@ -11,7 +11,9 @@ var Errors = {
 
 Errors.CompositeParserException.create = function(errors) {
   var message = "Parser errors:\n" + errors.map(function (e) { return e.message; }).join("\n");
-  return new Errors.CompositeParserException(message);
+  var err = new Errors.CompositeParserException(message);
+  err.errors = errors;
+  return err;
 };
 
 Errors.UnexpectedTokenException.create = function(token, expectedTokenTypes, stateComment) {
