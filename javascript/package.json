@@ -22,7 +22,10 @@
   "homepage": "https://github.com/cucumber/gherkin3",
   "devDependencies": {
     "browserify": "^9.0.3",
+    "gulp": "^3.8.11",
+    "gulp-wrap-amd": "^0.5.0",
     "mocha": "^2.1.0",
+    "through2": "^0.6.3",
     "uglify-js": "^2.4.19"
   },
   "dependencies": {
