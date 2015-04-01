@@ -7,7 +7,7 @@ ERRORS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.errors
 
 GO_SOURCE_FILES = $(shell find . -name "*.go")
 
-GOPATH = $(realpath ./)
+export GOPATH = $(realpath ./)
 
 all: .compared
 .PHONY: all test

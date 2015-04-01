@@ -2,58 +2,38 @@
 # https://github.com/exKAZUu/TravisTemplateForCSharpMono/blob/master/.travis.yml
 language: objective-c
 
-rvm:
-  - 2.0.0
-  - 2.1.0
-  - 2.2.0
-  - jruby-head
-
-jdk:
-  - oraclejdk8
-
-go:
-  - 1.3
-
-env:
-  - TARGET_LANG=csharp MONO_VERSION="3.2.7" DMG=0
-  - TARGET_LANG=csharp MONO_VERSION="3.0.12" DMG=1
-  - TARGET_LANG=golang MONO_VERSION="3.2.7" DMG=0
-  - TARGET_LANG=java MONO_VERSION="3.2.7" DMG=0
-  - TARGET_LANG=ruby MONO_VERSION="3.2.7" DMG=0
-  - TARGET_LANG=javascript MONO_VERSION="3.2.7" DMG=0
-
 matrix:
-  exclude:
+  include:
     - env: TARGET_LANG=csharp MONO_VERSION="3.2.7" DMG=0
-      rvm: 2.0.0
-    - env: TARGET_LANG=csharp MONO_VERSION="3.2.7" DMG=0
-      rvm: 2.1.0
-    - env: TARGET_LANG=csharp MONO_VERSION="3.2.7" DMG=0
-      rvm: jruby-head
+      rvm: 2.2.0
     - env: TARGET_LANG=csharp MONO_VERSION="3.0.12" DMG=1
-      rvm: 2.0.0
-    - env: TARGET_LANG=csharp MONO_VERSION="3.0.12" DMG=1
-      rvm: 2.1.0
-    - env: TARGET_LANG=csharp MONO_VERSION="3.0.12" DMG=1
-      rvm: jruby-head
-    - env: TARGET_LANG=golang MONO_VERSION="3.2.7" DMG=0
-      rvm: 2.0.0
-    - env: TARGET_LANG=golang MONO_VERSION="3.2.7" DMG=0
-      rvm: 2.1.0
-    - env: TARGET_LANG=golang MONO_VERSION="3.2.7" DMG=0
-      rvm: jruby-head
+      rvm: 2.2.0
+
     - env: TARGET_LANG=java MONO_VERSION="3.2.7" DMG=0
+      rvm: 2.2.0
+      jdk: oraclejdk8
+
+    - env: TARGET_LANG=ruby MONO_VERSION="3.2.7" DMG=0
       rvm: 2.0.0
-    - env: TARGET_LANG=java MONO_VERSION="3.2.7" DMG=0
+    - env: TARGET_LANG=ruby MONO_VERSION="3.2.7" DMG=0
       rvm: 2.1.0
-    - env: TARGET_LANG=java MONO_VERSION="3.2.7" DMG=0
+    - env: TARGET_LANG=ruby MONO_VERSION="3.2.7" DMG=0
+      rvm: 2.2.0
+    - env: TARGET_LANG=ruby MONO_VERSION="3.2.7" DMG=0
       rvm: jruby-head
+
     - env: TARGET_LANG=javascript MONO_VERSION="3.2.7" DMG=0
-      rvm: 2.0.0
-    - env: TARGET_LANG=javascript MONO_VERSION="3.2.7" DMG=0
-      rvm: 2.1.0
-    - env: TARGET_LANG=javascript MONO_VERSION="3.2.7" DMG=0
-      rvm: jruby-head
+      rvm: 2.2.0
+
+    - env: TARGET_LANG=golang MONO_VERSION="3.2.7" DMG=0
+      rvm: 2.2.0
+      go: 1.3
+    - env: TARGET_LANG=golang MONO_VERSION="3.2.7" DMG=0
+      rvm: 2.2.0
+      go: 1.4
+    - env: TARGET_LANG=golang MONO_VERSION="3.2.7" DMG=0
+      rvm: 2.2.0
+      go: tip
 
 before_install:
   - export EnableNuGetPackageRestore=true
