@@ -47,6 +47,17 @@ lib/gherkin/parser.js: ../gherkin.berp gherkin-javascript.razor ../bin/berp.exe
 lib/gherkin/dialects.json: ../dialects.json
 	cp $^ $@
 
+dist/gherkin.js: .compared node_modules/tea-error/lib-cov/error.js
+	mkdir -p dist
+	./node_modules/.bin/browserify index.js --outfile dist/gherkin.js --ignore-missing
+
+# node-modules/tea-error/index.js requires this file (for its own code coverage build)
+# this is a hack to make amdify work (browserify has an --ignore-missing flag, but amdify
+# does not)
+node_modules/tea-error/lib-cov/error.js:
+	mkdir -p `dirname $@`
+	touch $@
+
 clean:
-	rm -rf .compared .built acceptance lib/gherkin/parser.js lib/gherkin/dialects.json
+	rm -rf .compared .built acceptance lib/gherkin/parser.js lib/gherkin/dialects.json dist
 .PHONY: clean

@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/cucumber/gherkin3",
   "devDependencies": {
+    "browserify": "^9.0.3",
     "mocha": "^2.1.0"
   },
   "dependencies": {
