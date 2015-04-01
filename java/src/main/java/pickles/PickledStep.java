@@ -1,14 +1,10 @@
-package gherkin.compiler;
-
-import gherkin.ast.Location;
-import pickles.Argument;
-import pickles.TestStep;
+package pickles;
 
 import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class PickledStep implements TestStep {
+public class PickledStep {
     private final String name;
     private final Argument argument;
     private final List<Location> source;
@@ -19,17 +15,14 @@ public class PickledStep implements TestStep {
         this.source = asList(source);
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public List<Location> getSource() {
         return source;
     }
 
-    @Override
     public Argument getArgument() {
         return argument;
     }

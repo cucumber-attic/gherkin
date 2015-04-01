@@ -16,21 +16,24 @@ import gherkin.ast.Step;
 import gherkin.ast.TableCell;
 import gherkin.ast.TableRow;
 import pickles.Argument;
-import pickles.TestCase;
+import pickles.PickledTable;
+import pickles.PickledString;
+import pickles.PickledCase;
+import pickles.PickledStep;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Compiler {
-    private final List<TestCase> testCases = new ArrayList<>();
+    private final List<PickledCase> pickledCases = new ArrayList<>();
 
     public void compile(Feature feature) {
         CompilerVisitor compiler = new CompilerVisitor();
         feature.accept(compiler);
     }
 
-    public List<TestCase> getTestCases() {
-        return testCases;
+    public List<PickledCase> getPickledCases() {
+        return pickledCases;
     }
 
     private class CompilerVisitor extends DefaultVisitor {
@@ -59,13 +62,13 @@ public class Compiler {
         @Override
         public void visitScenario(Scenario scenario) {
             String testCaseName = scenario.getKeyword() + ": " + scenario.getName();
-            PickledScenario pickledScenario = createTestCaseWithBackgroundSteps(testCaseName, scenario.getLocation());
+            PickledCase pickledCase = createTestCaseWithBackgroundSteps(testCaseName, scenario.getLocation());
             for (Step step : scenario.getSteps()) {
                 Argument pickledArgument = getPickledArgument(step, null, null);
                 PickledStep pickledStep = new PickledStep(step.getName(), pickledArgument, step.getLocation());
-                pickledScenario.addTestStep(pickledStep);
+                pickledCase.addTestStep(pickledStep);
             }
-            testCases.add(pickledScenario);
+            pickledCases.add(pickledCase);
         }
 
         @Override
@@ -76,16 +79,16 @@ public class Compiler {
                     String scenarioName = interpolate(scenarioOutline.getName(), examples.getHeader(), values);
                     String testCaseName = dialect.getScenarioKeywords().get(0) + ": " + scenarioName;
 
-                    PickledScenario pickledScenario = createTestCaseWithBackgroundSteps(testCaseName, scenarioOutline.getLocation());
+                    PickledCase pickledCase = createTestCaseWithBackgroundSteps(testCaseName, scenarioOutline.getLocation());
                     for (Step step : scenarioOutline.getSteps()) {
                         Argument pickledArgument = getPickledArgument(step, header, values);
 
                         String stepName = interpolate(step.getName(), examples.getHeader(), values);
                         PickledStep pickledStep = new PickledStep(stepName, pickledArgument, step.getLocation(), values.getLocation());
-                        pickledScenario.addTestStep(pickledStep);
+                        pickledCase.addTestStep(pickledStep);
                     }
 
-                    testCases.add(pickledScenario);
+                    pickledCases.add(pickledCase);
                 }
             }
         }
@@ -101,11 +104,11 @@ public class Compiler {
                         row.add(cell);
                     }
                 }
-                return new PickledDataTable(table);
+                return new PickledTable(table);
             }
             if (step.getArgument() instanceof DocString) {
                 String value = ((DocString) step.getArgument()).getContent();
-                return new PickledDocString(interpolate(value, header, values));
+                return new PickledString(interpolate(value, header, values));
             }
 
             return null;
@@ -129,12 +132,12 @@ public class Compiler {
             return name;
         }
 
-        private PickledScenario createTestCaseWithBackgroundSteps(String name, Location... source) {
-            PickledScenario pickledScenario = new PickledScenario(name, source);
+        private PickledCase createTestCaseWithBackgroundSteps(String name, Location... source) {
+            PickledCase pickledCase = new PickledCase(name, source);
             for (PickledStep backgroundStep : backgroundSteps) {
-                pickledScenario.addTestStep(backgroundStep);
+                pickledCase.addTestStep(backgroundStep);
             }
-            return pickledScenario;
+            return pickledCase;
         }
 
     }

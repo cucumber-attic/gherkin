@@ -20,7 +20,7 @@ public class CompilerTest {
                 "  Scenario: s\n" +
                 "    Given passing\n"));
 
-        System.out.println(gson.toJson(compiler.getTestCases()));
+        System.out.println(gson.toJson(compiler.getPickledCases()));
     }
 
     @Test
@@ -31,7 +31,7 @@ public class CompilerTest {
                 "    Given passing\n" +
                 "      |x|\n"));
 
-        System.out.println(gson.toJson(compiler.getTestCases()));
+        System.out.println(gson.toJson(compiler.getPickledCases()));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class CompilerTest {
                 "  Scenario:\n" +
                 "    Given c\n"));
 
-        System.out.println(gson.toJson(compiler.getTestCases()));
+        System.out.println(gson.toJson(compiler.getPickledCases()));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class CompilerTest {
                 "    Examples: \n" +
                 "      | what       |\n" +
                 "      | minimalism |\n"));
-        System.out.println(gson.toJson(compiler.getTestCases()));
+        System.out.println(gson.toJson(compiler.getPickledCases()));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class CompilerTest {
                 "    Examples: \n" +
                 "      | what       |\n" +
                 "      | minimalism |\n"));
-        System.out.println(gson.toJson(compiler.getTestCases()));
+        System.out.println(gson.toJson(compiler.getPickledCases()));
     }
 
     @Test
@@ -96,6 +96,6 @@ public class CompilerTest {
                 "    Examples: \n" +
                 "      | what       |\n" +
                 "      | minimalism |\n"));
-        System.out.println(gson.toJson(compiler.getTestCases()));
+        System.out.println(gson.toJson(compiler.getPickledCases()));
     }
 }

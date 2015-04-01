@@ -25,6 +25,6 @@ public class GeneratePickles {
             }
         }
 
-        System.out.println(gson.toJson(compiler.getTestCases()));
+        System.out.println(gson.toJson(compiler.getPickledCases()));
     }
 }
