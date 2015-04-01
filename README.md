@@ -13,6 +13,7 @@ Gherkin 3 is currently implemented for the following platforms:
 * JVM (Java)
 * JavaScript (Browser or Node.js/IO.js)
 * Ruby (MRI, JRuby or any other Ruby implementation)
+* Go
 
 See `TODO.md` for what's remaining before we're ready to roll it out and refactor
 the Cucumber implementations to use it.
@@ -21,7 +22,6 @@ See `CONTRIBUTING.md` if you want to contribute a parser for a new language.
 Our wish-list is (in no particular order):
 
 * C
-* Go
 * PHP
 * Python
 * Rust
@@ -53,6 +53,13 @@ feature = parser.parse(gherkin_doc)
 var Gherkin = require('gherkin');
 var parser = new Gherkin.Parser();
 var feature = parser.parse(gherkinDoc);
+```
+
+```go
+import (
+	"github.com/cucumber/gherkin3"
+)
+err, feature := gherkin3.ParseFeature(readers[i])
 ```
 
 ## Why Gherkin 3?
