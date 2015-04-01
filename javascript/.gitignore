@@ -3,3 +3,4 @@ acceptance/
 .compared
 node_modules/
 lib/gherkin/dialects.json
+dist/

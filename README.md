@@ -43,13 +43,15 @@ var feature = parser.Parse(gherkinDoc);
 
 ```ruby
 # Ruby
+require 'gherkin'
 parser = Parser.new
 feature = parser.parse(gherkin_doc)
 ```
 
 ```javascript
 // JavaScript
-var parser = new Parser();
+var Gherkin = require('gherkin');
+var parser = new Gherkin.Parser();
 var feature = parser.parse(gherkinDoc);
 ```
 
