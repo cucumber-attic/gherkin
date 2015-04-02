@@ -1,10 +1,9 @@
 language: csharp
 mono: latest
+env: TARGET_LANG=csharp
 
 matrix:
   include:
-    - env: TARGET_LANG=csharp
-
     - env: TARGET_LANG=java
       jdk: oraclejdk8
 
