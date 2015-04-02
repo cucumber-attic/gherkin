@@ -48,14 +48,14 @@ lib/gherkin/parser.js: ../gherkin.berp gherkin-javascript.razor ../bin/berp.exe
 lib/gherkin/dialects.json: ../dialects.json
 	cp $^ $@
 
-dist/gherkin.js: lib/gherkin/parser.js ../LICENSE
+dist/gherkin.js: lib/gherkin/parser.js ../LICENSE node_modules/.fetched
 	mkdir -p `dirname $@`
 	echo '/*' > $@
 	cat ../LICENSE >> $@
 	echo '*/' >> $@
 	./node_modules/.bin/browserify index.js --ignore-missing >> $@
 
-dist/gherkin.min.js: dist/gherkin.js
+dist/gherkin.min.js: dist/gherkin.js node_modules/.fetched
 	mkdir -p `dirname $@`
 	echo '/*' > $@
 	cat ../LICENSE >> $@
