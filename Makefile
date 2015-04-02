@@ -13,12 +13,13 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: lib/gherkin/parser.js lib/gherkin/dialects.json $(JAVASCRIPT_FILES) dist/gherkin.js node_modules
+.built: lib/gherkin/parser.js lib/gherkin/dialects.json $(JAVASCRIPT_FILES) dist/gherkin.js dist/gherkin.min.js node_modules/.fetched
 	./node_modules/.bin/mocha
 	touch $@
 
-node_modules: package.json
+node_modules/.fetched: package.json
 	npm install
+	touch $@
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
@@ -53,6 +54,13 @@ dist/gherkin.js: lib/gherkin/parser.js ../LICENSE
 	cat ../LICENSE >> $@
 	echo '*/' >> $@
 	./node_modules/.bin/browserify index.js --ignore-missing >> $@
+
+dist/gherkin.min.js: dist/gherkin.js
+	mkdir -p `dirname $@`
+	echo '/*' > $@
+	cat ../LICENSE >> $@
+	echo '*/' >> $@
+	./node_modules/.bin/uglifyjs $^ >> $@
 
 clean:
 	rm -rf .compared .built acceptance lib/gherkin/parser.js lib/gherkin/dialects.json dist
