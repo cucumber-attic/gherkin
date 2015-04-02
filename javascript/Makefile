@@ -5,7 +5,7 @@ TOKENS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.tokens
 ASTS     = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.ast.json,$(GOOD_FEATURE_FILES))
 ERRORS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.errors,$(BAD_FEATURE_FILES))
 
-JAVASCRIPT_FILES = $(shell find . -name "*.js")
+JAVASCRIPT_FILES = $(shell find lib -name "*.js") index.js
 
 all: .compared
 .PHONY: all
@@ -13,7 +13,7 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: lib/gherkin/parser.js lib/gherkin/dialects.json $(JAVASCRIPT_FILES) node_modules
+.built: lib/gherkin/parser.js lib/gherkin/dialects.json $(JAVASCRIPT_FILES) dist/gherkin.js node_modules
 	./node_modules/.bin/mocha
 	touch $@
 
@@ -47,16 +47,12 @@ lib/gherkin/parser.js: ../gherkin.berp gherkin-javascript.razor ../bin/berp.exe
 lib/gherkin/dialects.json: ../dialects.json
 	cp $^ $@
 
-dist/gherkin.js: .compared node_modules/tea-error/lib-cov/error.js
-	mkdir -p dist
-	./node_modules/.bin/browserify index.js --outfile dist/gherkin.js --ignore-missing
-
-# node-modules/tea-error/index.js requires this file (for its own code coverage build)
-# this is a hack to make amdify work (browserify has an --ignore-missing flag, but amdify
-# does not)
-node_modules/tea-error/lib-cov/error.js:
+dist/gherkin.js: lib/gherkin/parser.js ../LICENSE
 	mkdir -p `dirname $@`
-	touch $@
+	echo '/*' > $@
+	cat ../LICENSE >> $@
+	echo '*/' >> $@
+	./node_modules/.bin/browserify index.js --ignore-missing >> $@
 
 clean:
 	rm -rf .compared .built acceptance lib/gherkin/parser.js lib/gherkin/dialects.json dist
