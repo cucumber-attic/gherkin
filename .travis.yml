@@ -32,7 +32,7 @@ before_install:
   # https://github.com/travis-ci/travis-ci/issues/2839
   - export JAVA_HOME="$(/usr/libexec/java_home)"
   # install jq
-  - brew install jq
+  - sudo apt-get install -y jq
 
 script: "cd $TARGET_LANG; make"
 
