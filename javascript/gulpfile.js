@@ -4,7 +4,9 @@ var through = require('through2');
 var path = require('path');
 var fs = require('fs');
 var insert = require('gulp-insert');
-var license = fs.readFileSync(path.join(__dirname, '../LICENSE'), 'utf8');
+var rename = require('gulp-rename');
+var licensePath = path.join(__dirname, '../LICENSE');
+var license = fs.readFileSync(licensePath, 'utf8');
 
 function replaceAll(str, find, replace) {
   return str.split(find).join(replace);
@@ -63,4 +65,13 @@ gulp.task('wrap:node_modules', function () {
     .pipe(gulp.dest('./dist/gherkin/tea'))
 });
 
-gulp.task('default', ['wrap:gherkin', 'wrap:node_modules']);
+gulp.task('stand-alone-license', function () {
+  gulp.src(licensePath)
+    .pipe(rename({
+      extname: ".gherkin"
+    }))
+    .pipe(insert.prepend('This license pertains to the file worker-gherkin.js.\n\n'))
+    .pipe(gulp.dest('./dist/gherkin'))
+});
+
+gulp.task('default', ['wrap:gherkin', 'wrap:node_modules', 'stand-alone-license']);

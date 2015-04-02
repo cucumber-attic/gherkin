@@ -55,6 +55,9 @@ dist/gherkin.js: lib/gherkin/parser.js ../LICENSE node_modules/.fetched
 	echo '*/' >> $@
 	./node_modules/.bin/browserify index.js --ignore-missing >> $@
 
+ace: lib/gherkin/parser.js ../LICENSE node_modules/.fetched
+	./node_modules/.bin/gulp
+
 dist/gherkin.min.js: dist/gherkin.js node_modules/.fetched
 	mkdir -p `dirname $@`
 	echo '/*' > $@
