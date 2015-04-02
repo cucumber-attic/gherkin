@@ -1,5 +1,5 @@
 language: csharp
-mono: 3.12.1
+mono: latest
 
 matrix:
   include:
