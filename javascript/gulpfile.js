@@ -3,6 +3,8 @@ var wrap = require('gulp-wrap-amd');
 var through = require('through2');
 var path = require('path');
 var fs = require('fs');
+var insert = require('gulp-insert');
+var license = fs.readFileSync(path.join(__dirname, '../LICENSE'), 'utf8');
 
 function replaceAll(str, find, replace) {
   return str.split(find).join(replace);
@@ -35,6 +37,7 @@ gulp.task('wrap:gherkin', function () {
     .pipe(wrap({
       exports: 'module.exports'
     }))
+    .pipe(insert.prepend('/*\n' + license + '*/\n'))
     .pipe(gulp.dest('./dist/'))
 });
 
