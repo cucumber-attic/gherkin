@@ -1,0 +1,62 @@
+GOOD_FEATURE_FILES = $(shell find ../testdata/good -name "*.feature")
+BAD_FEATURE_FILES  = $(shell find ../testdata/bad -name "*.feature")
+
+TOKENS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.tokens,$(GOOD_FEATURE_FILES))
+ASTS     = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.ast.json,$(GOOD_FEATURE_FILES))
+ERRORS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.errors,$(BAD_FEATURE_FILES))
+
+GO_SOURCE_FILES = $(shell find . -name "*.go")
+
+export GOPATH = $(realpath ./)
+
+all: .compared
+.PHONY: all test
+
+test: $(TOKENS) $(ASTS) $(ERRORS)
+
+.compared: .built $(TOKENS) $(ASTS) $(ERRORS)
+	touch $@
+
+.built: $(GO_SOURCE_FILES) src/github.com/cucumber/gherkin3/parser.go src/github.com/cucumber/gherkin3/dialects_builtin.go
+	go install gherkin-generate-tokens
+	go install gherkin-generate-ast
+	touch $@
+
+acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens
+	mkdir -p `dirname $@`
+	bin/gherkin-generate-tokens $< > $@
+	diff --unified $<.tokens $@
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
+
+acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json
+	mkdir -p `dirname $@`
+	bin/gherkin-generate-ast $< | jq --sort-keys "." > $@
+	diff --unified $<.ast.json $@
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
+
+acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors
+	mkdir -p `dirname $@`
+	! bin/gherkin-generate-ast $< 2> $@
+	diff --unified $<.errors $@
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
+
+src/github.com/cucumber/gherkin3/parser.go: ../gherkin.berp gherkin-golang.razor ../bin/berp.exe
+	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-golang.razor -o $@
+	# Remove BOM
+	tail -c +4 $@ > $@.nobom
+	mv $@.nobom $@
+
+src/github.com/cucumber/gherkin3/dialects_builtin.go: ../dialects.json
+	cat $^ | jq '[to_entries[] | [ \
+	  "\t",(.key|@json),": &GherkinDialect{\n", \
+	  "\t\t", (.key|@json),", ", (.value.name|@json),", ", (.value.native|@json), \
+	  ", map[string][]string{\n"] + ( \
+	    [.value|{"feature","background","scenario","scenarioOutline","examples","given","when","then","and","but"} \
+	    |to_entries[]| "\t\t\t"+(.key|@json), ": []string{\n", ([ .value[] | "\t\t\t\t", @json, ",\n"  ]|add),"\t\t\t},\n" ]\
+	    ) + ["\t\t},\n","\t},\n"] | add ] \
+	  | add | "package gherkin3\n\nvar BuildinDialects GherkinDialectProvider = GherkinDialectMap{\n" \
+	  + . + "}\n"' -r -c > $@
+
+clean:
+	rm -rf .compared .built acceptance src/github.com/cucumber/gherkin3/parser.go src/github.com/cucumber/gherkin3/dialects_builtin.go
+.PHONY: clean

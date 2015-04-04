@@ -21,7 +21,9 @@
   },
   "homepage": "https://github.com/cucumber/gherkin3",
   "devDependencies": {
-    "mocha": "^2.1.0"
+    "browserify": "^9.0.3",
+    "mocha": "^2.1.0",
+    "uglify-js": "^2.4.19"
   },
   "dependencies": {
     "tea-error": "^0.1.0"

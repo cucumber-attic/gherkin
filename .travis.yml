@@ -1,62 +1,37 @@
-# https://github.com/travis-ci/travis-ci/issues/649
-# https://github.com/exKAZUu/TravisTemplateForCSharpMono/blob/master/.travis.yml
-language: objective-c
-
-rvm:
-  - 2.0.0
-  - 2.1.0
-  - 2.2.0
-  - jruby-head
-
-jdk:
-  - oraclejdk8
-
-env:
-  - TARGET_LANG=csharp MONO_VERSION="3.2.7" DMG=0
-  - TARGET_LANG=csharp MONO_VERSION="3.0.12" DMG=1
-  - TARGET_LANG=java MONO_VERSION="3.2.7" DMG=0
-  - TARGET_LANG=ruby MONO_VERSION="3.2.7" DMG=0
-  - TARGET_LANG=javascript MONO_VERSION="3.2.7" DMG=0
+language: csharp
+mono: latest
+env: TARGET_LANG=csharp
 
 matrix:
-  exclude:
-    - env: TARGET_LANG=csharp MONO_VERSION="3.2.7" DMG=0
+  include:
+    - env: TARGET_LANG=java
+      jdk: oraclejdk8
+
+    - env: TARGET_LANG=ruby
       rvm: 2.0.0
-    - env: TARGET_LANG=csharp MONO_VERSION="3.2.7" DMG=0
+    - env: TARGET_LANG=ruby
       rvm: 2.1.0
-    - env: TARGET_LANG=csharp MONO_VERSION="3.2.7" DMG=0
+    - env: TARGET_LANG=ruby
+      rvm: 2.2.0
+    - env: TARGET_LANG=ruby
       rvm: jruby-head
-    - env: TARGET_LANG=csharp MONO_VERSION="3.0.12" DMG=1
-      rvm: 2.0.0
-    - env: TARGET_LANG=csharp MONO_VERSION="3.0.12" DMG=1
-      rvm: 2.1.0
-    - env: TARGET_LANG=csharp MONO_VERSION="3.0.12" DMG=1
-      rvm: jruby-head
-    - env: TARGET_LANG=java MONO_VERSION="3.2.7" DMG=0
-      rvm: 2.0.0
-    - env: TARGET_LANG=java MONO_VERSION="3.2.7" DMG=0
-      rvm: 2.1.0
-    - env: TARGET_LANG=java MONO_VERSION="3.2.7" DMG=0
-      rvm: jruby-head
-    - env: TARGET_LANG=javascript MONO_VERSION="3.2.7" DMG=0
-      rvm: 2.0.0
-    - env: TARGET_LANG=javascript MONO_VERSION="3.2.7" DMG=0
-      rvm: 2.1.0
-    - env: TARGET_LANG=javascript MONO_VERSION="3.2.7" DMG=0
-      rvm: jruby-head
+
+    - env: TARGET_LANG=javascript
+      node_js: 0.12
+
+    - env: TARGET_LANG=golang
+      go: 1.3
+    - env: TARGET_LANG=golang
+      go: 1.4
+    - env: TARGET_LANG=golang
+      go: tip
 
 before_install:
   - export EnableNuGetPackageRestore=true
-  - "if [ \"$TARGET_LANG\" = \"ruby\" ]; then gem update bundler; fi"
-  - "if [ \"$DMG\" = \"0\" ]; then wget \"http://download.xamarin.com/MonoFrameworkMDK/Macx86/MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.pkg\"; fi"
-  - "if [ \"$DMG\" = \"0\" ]; then sudo installer -pkg \"MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.pkg\" -target /; fi"
-  - "if [ \"$DMG\" = \"1\" ]; then wget \"http://download.mono-project.com/archive/${MONO_VERSION}/macos-10-x86/MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.dmg\"; fi"
-  - "if [ \"$DMG\" = \"1\" ]; then hdid \"MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.dmg\"; fi"
-  - "if [ \"$DMG\" = \"1\" ]; then sudo installer -pkg \"/Volumes/Mono Framework MDK ${MONO_VERSION}/MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.pkg\" -target /; fi"
   # https://github.com/travis-ci/travis-ci/issues/2839
   - export JAVA_HOME="$(/usr/libexec/java_home)"
   # install jq
-  - brew install jq
+  - sudo apt-get install -y jq
 
 script: "cd $TARGET_LANG; make"
 
