@@ -18,8 +18,8 @@ test: $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
 .built: $(GO_SOURCE_FILES) src/github.com/cucumber/go-gherkin3/parser.go src/github.com/cucumber/go-gherkin3/dialects_builtin.go
-	go install gherkin-generate-tokens
-	go install gherkin-generate-ast
+	go install github.com/cucumber/go-gherkin3/gherkin-generate-tokens
+	go install github.com/cucumber/go-gherkin3/gherkin-generate-ast
 	touch $@
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens
@@ -63,5 +63,12 @@ src/github.com/cucumber/go-gherkin3/dialects_builtin.go: ../dialects.json
 	  + . + "}\n"' -r -c > $@
 
 clean:
-	rm -rf .compared .built acceptance src/github.com/cucumber/go-gherkin3/parser.go src/github.com/cucumber/go-gherkin3/dialects_builtin.go
+	rm -rf .compared .built acceptance bin/ src/github.com/cucumber/go-gherkin3/parser.go src/github.com/cucumber/go-gherkin3/dialects_builtin.go
 .PHONY: clean
+
+
+push-release:
+	- git remote add go-split git@github.com:cucumber/go-gherkin3.git
+	cd ../ && git subtree push --prefix=golang/src/github.com/cucumber/go-gherkin3 --squash go-split master
+
+.PHONY: push-release
