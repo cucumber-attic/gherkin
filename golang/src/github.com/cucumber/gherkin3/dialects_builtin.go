@@ -1,6 +1,10 @@
 package gherkin3
 
-var BuildinDialects GherkinDialectProvider = GherkinDialectMap{
+func GherkinDialectsBuildin() GherkinDialectProvider {
+	return buildinDialects
+}
+
+var buildinDialects GherkinDialectProvider = gherkinDialectMap{
 	"af": &GherkinDialect{
 		"af", "Afrikaans", "Afrikaans", map[string][]string{
 			"and": []string{

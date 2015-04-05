@@ -1,59 +1,47 @@
 package gherkin3
 
 type GherkinDialect struct {
-	language string
-	name     string
-	native   string
-	keywords map[string][]string
+	Language string
+	Name     string
+	Native   string
+	Keywords map[string][]string
 }
 
 func (g *GherkinDialect) FeatureKeywords() []string {
-	return g.keywords["feature"]
+	return g.Keywords["feature"]
 }
 
 func (g *GherkinDialect) ScenarioKeywords() []string {
-	return g.keywords["scenario"]
+	return g.Keywords["scenario"]
 }
 
 func (g *GherkinDialect) StepKeywords() []string {
-	result := g.keywords["given"]
-	result = append(result, g.keywords["when"]...)
-	result = append(result, g.keywords["then"]...)
-	result = append(result, g.keywords["and"]...)
-	result = append(result, g.keywords["but"]...)
+	result := g.Keywords["given"]
+	result = append(result, g.Keywords["when"]...)
+	result = append(result, g.Keywords["then"]...)
+	result = append(result, g.Keywords["and"]...)
+	result = append(result, g.Keywords["but"]...)
 	return result
 }
 
 func (g *GherkinDialect) BackgroundKeywords() []string {
-	return g.keywords["background"]
+	return g.Keywords["background"]
 }
 
 func (g *GherkinDialect) ScenarioOutlineKeywords() []string {
-	return g.keywords["scenarioOutline"]
+	return g.Keywords["scenarioOutline"]
 }
 
 func (g *GherkinDialect) ExamplesKeywords() []string {
-	return g.keywords["examples"]
-}
-
-func (g *GherkinDialect) Language() string {
-	return g.language
-}
-
-func (g *GherkinDialect) Name() string {
-	return g.name
-}
-
-func (g *GherkinDialect) Native() string {
-	return g.native
+	return g.Keywords["examples"]
 }
 
 type GherkinDialectProvider interface {
 	GetDialect(language string) *GherkinDialect
 }
 
-type GherkinDialectMap map[string]*GherkinDialect
+type gherkinDialectMap map[string]*GherkinDialect
 
-func (g GherkinDialectMap) GetDialect(language string) *GherkinDialect {
+func (g gherkinDialectMap) GetDialect(language string) *GherkinDialect {
 	return g[language]
 }

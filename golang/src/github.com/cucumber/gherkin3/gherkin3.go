@@ -111,65 +111,16 @@ func (g *Line) StartsWith(prefix string) bool {
 	return strings.HasPrefix(g.trimmedLineText, prefix)
 }
 
-func NewTokenGenerator(out io.Writer) Builder {
-	return &tokenGenerator{out}
-}
-
-type tokenGenerator struct {
-	out io.Writer
-}
-
-func FormatToken(token *Token) string {
-	if token.IsEOF() {
-		return "EOF"
-	}
-	var items []string
-	for i := range token.Items {
-		items = append(items, token.Items[i].String())
-	}
-	return fmt.Sprintf("(%d:%d)%s:%s/%s/%s",
-		token.Location.Line,
-		token.Location.Column,
-		token.Type.Name(),
-		token.Keyword,
-		token.Text,
-		strings.Join(items, ","),
-	)
-}
-
-func (t *tokenGenerator) Build(tok *Token) (bool, error) {
-	fmt.Fprintln(t.out, FormatToken(tok))
-	return true, nil
-}
-func (t *tokenGenerator) StartRule(r RuleType) (bool, error) {
-	return true, nil
-}
-func (t *tokenGenerator) EndRule(r RuleType) (bool, error) {
-	return true, nil
-}
-
-func GenerateTokens(in io.Reader, out io.Writer) error {
-
-	parser := NewParser()
-	parser.StopAtFirstError(true)
-	matcher := NewMatcher(BuildinDialects)
-
-	scanner := NewScanner(in)
-	builder := NewTokenGenerator(out)
-
-	return parser.Parse(scanner, builder, matcher)
-}
-
 func ParseFeature(in io.Reader) (feature *Feature, err error) {
 
 	parser := NewParser()
 	parser.StopAtFirstError(false)
-	matcher := NewMatcher(BuildinDialects)
+	matcher := NewMatcher(GherkinDialectsBuildin())
 
 	scanner := NewScanner(in)
 	builder := NewAstBuilder()
 
 	err = parser.Parse(scanner, builder, matcher)
 
-	return builder.getResult(), err
+	return builder.GetFeature(), err
 }
