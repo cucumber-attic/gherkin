@@ -2,7 +2,7 @@
 
 # To Do List
 
-- [ ] keep everything in one `gherkin3` package without any dependencies
+- [x] keep everything in one `gherkin3` package without any dependencies
 - [ ] create a split tree repository of the src that can be used with `go get`
     - [ ] package: `github.com/cucumber/gherkin3-golang` ?
     - [ ] identify wether it is *go-get-able* or not
