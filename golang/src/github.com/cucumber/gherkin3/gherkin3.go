@@ -16,8 +16,6 @@ type Scanner interface {
 	Scan() (err error, line *Line, atEof bool)
 }
 
-/*type Matcher interface{}*/
-
 type Builder interface {
 	Build(*Token) (error, bool)
 	StartRule(RuleType) (error, bool)
@@ -61,20 +59,6 @@ func NewParser() Parser {
 func (p *parser) StopAtFirstError(b bool) {
 	p.stopAtFirstError = b
 }
-
-/* func (p *parser) Parse(s Scanner, b Builder, m Matcher) (err error) {
-	for {
-		err, gl, eof := s.Scan()
-		if err != nil || eof {
-			break
-		}
-		// TODO...
-		if gl == nil {
-			break
-		}
-	}
-	return
-} */
 
 func NewScanner(r io.Reader) Scanner {
 	return &scanner{
