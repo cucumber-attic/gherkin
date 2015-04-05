@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"io"
 	"strings"
-
-	"github.com/cucumber/gherkin3/ast"
 )
 
 type Parser interface {
@@ -26,10 +24,6 @@ type Builder interface {
 	EndRule(RuleType) (error, bool)
 }
 
-type Location struct {
-	Line   int
-	Column int
-}
 type Token struct {
 	Type           TokenType
 	Keyword        string
@@ -182,7 +176,7 @@ func GenerateTokens(in io.Reader, out io.Writer) error {
 	return parser.Parse(scanner, builder, matcher)
 }
 
-func ParseFeature(in io.Reader) (err error, feature *ast.Feature) {
+func ParseFeature(in io.Reader) (err error, feature *Feature) {
 
 	parser := NewParser()
 	parser.StopAtFirstError(false)
