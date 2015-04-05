@@ -13,13 +13,13 @@ type Parser interface {
 }
 
 type Scanner interface {
-	Scan() (err error, line *Line, atEof bool)
+	Scan() (line *Line, atEof bool, err error)
 }
 
 type Builder interface {
-	Build(*Token) (error, bool)
-	StartRule(RuleType) (error, bool)
-	EndRule(RuleType) (error, bool)
+	Build(*Token) (bool, error)
+	StartRule(RuleType) (bool, error)
+	EndRule(RuleType) (bool, error)
 }
 
 type Token struct {
@@ -72,7 +72,7 @@ type scanner struct {
 	line int
 }
 
-func (t *scanner) Scan() (err error, line *Line, atEof bool) {
+func (t *scanner) Scan() (line *Line, atEof bool, err error) {
 	scanning := t.s.Scan()
 	if !scanning {
 		err = t.s.Err()
@@ -137,15 +137,15 @@ func FormatToken(token *Token) string {
 	)
 }
 
-func (t *tokenGenerator) Build(tok *Token) (error, bool) {
+func (t *tokenGenerator) Build(tok *Token) (bool, error) {
 	fmt.Fprintln(t.out, FormatToken(tok))
-	return nil, true
+	return true, nil
 }
-func (t *tokenGenerator) StartRule(r RuleType) (error, bool) {
-	return nil, true
+func (t *tokenGenerator) StartRule(r RuleType) (bool, error) {
+	return true, nil
 }
-func (t *tokenGenerator) EndRule(r RuleType) (error, bool) {
-	return nil, true
+func (t *tokenGenerator) EndRule(r RuleType) (bool, error) {
+	return true, nil
 }
 
 func GenerateTokens(in io.Reader, out io.Writer) error {
@@ -160,7 +160,7 @@ func GenerateTokens(in io.Reader, out io.Writer) error {
 	return parser.Parse(scanner, builder, matcher)
 }
 
-func ParseFeature(in io.Reader) (err error, feature *Feature) {
+func ParseFeature(in io.Reader) (feature *Feature, err error) {
 
 	parser := NewParser()
 	parser.StopAtFirstError(false)
@@ -171,5 +171,5 @@ func ParseFeature(in io.Reader) (err error, feature *Feature) {
 
 	err = parser.Parse(scanner, builder, matcher)
 
-	return err, builder.getResult()
+	return builder.getResult(), err
 }
