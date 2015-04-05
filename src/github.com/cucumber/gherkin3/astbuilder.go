@@ -4,11 +4,16 @@ import (
 	"strings"
 )
 
+type AstBuilder interface {
+	Builder
+	GetFeature() *Feature
+}
+
 type astBuilder struct {
 	stack []*astNode
 }
 
-func (t *astBuilder) getResult() *Feature {
+func (t *astBuilder) GetFeature() *Feature {
 	res := t.currentNode().getSingle(RuleType_Feature)
 	if val, ok := res.(*Feature); ok {
 		return val
@@ -69,16 +74,16 @@ func (t *astBuilder) currentNode() *astNode {
 	return nil
 }
 
-func NewAstNode(rt RuleType) *astNode {
+func newAstNode(rt RuleType) *astNode {
 	return &astNode{
 		ruleType: rt,
 		subNodes: make(map[RuleType][]interface{}),
 	}
 }
 
-func NewAstBuilder() *astBuilder {
+func NewAstBuilder() AstBuilder {
 	builder := new(astBuilder)
-	builder.push(NewAstNode(RuleType_None))
+	builder.push(newAstNode(RuleType_None))
 	return builder
 }
 
@@ -97,7 +102,7 @@ func (t *astBuilder) Build(tok *Token) (bool, error) {
 	return true, nil
 }
 func (t *astBuilder) StartRule(r RuleType) (bool, error) {
-	t.push(NewAstNode(r))
+	t.push(newAstNode(r))
 	return true, nil
 }
 func (t *astBuilder) EndRule(r RuleType) (bool, error) {

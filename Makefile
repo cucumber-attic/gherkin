@@ -47,14 +47,18 @@ src/github.com/cucumber/gherkin3/parser.go: ../gherkin.berp gherkin-golang.razor
 	mv $@.nobom $@
 
 src/github.com/cucumber/gherkin3/dialects_builtin.go: ../dialects.json
-	cat $^ | jq '[to_entries[] | [ \
+	cat $^ | jq '([to_entries[] | [ \
 	  "\t",(.key|@json),": &GherkinDialect{\n", \
 	  "\t\t", (.key|@json),", ", (.value.name|@json),", ", (.value.native|@json), \
 	  ", map[string][]string{\n"] + ( \
 	    [.value|{"feature","background","scenario","scenarioOutline","examples","given","when","then","and","but"} \
 	    |to_entries[]| "\t\t\t"+(.key|@json), ": []string{\n", ([ .value[] | "\t\t\t\t", @json, ",\n"  ]|add),"\t\t\t},\n" ]\
 	    ) + ["\t\t},\n","\t},\n"] | add ] \
-	  | add | "package gherkin3\n\nvar BuildinDialects GherkinDialectProvider = GherkinDialectMap{\n" \
+	  | add) | "package gherkin3\n\n" \
+	  + "func GherkinDialectsBuildin() GherkinDialectProvider {\n" \
+	  + "\treturn buildinDialects\n" \
+	  + "}\n\n" \
+	  + "var buildinDialects GherkinDialectProvider = gherkinDialectMap{\n" \
 	  + . + "}\n"' -r -c > $@
 
 clean:
