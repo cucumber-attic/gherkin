@@ -92,19 +92,19 @@ func (t *astBuilder) pop() *astNode {
 	return x
 }
 
-func (t *astBuilder) Build(tok *Token) (error, bool) {
+func (t *astBuilder) Build(tok *Token) (bool, error) {
 	t.currentNode().add(tok.Type.RuleType(), tok)
-	return nil, true
+	return true, nil
 }
-func (t *astBuilder) StartRule(r RuleType) (error, bool) {
+func (t *astBuilder) StartRule(r RuleType) (bool, error) {
 	t.push(NewAstNode(r))
-	return nil, true
+	return true, nil
 }
-func (t *astBuilder) EndRule(r RuleType) (error, bool) {
+func (t *astBuilder) EndRule(r RuleType) (bool, error) {
 	node := t.pop()
 	transformedNode, err := t.transformNode(node)
 	t.currentNode().add(node.ruleType, transformedNode)
-	return err, true
+	return true, err
 }
 
 func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {

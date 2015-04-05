@@ -183,14 +183,14 @@ func (p *parser) Parse(s Scanner, b Builder, m Matcher) (err error) {
   var state int
   ctxt.startRule(RuleType_Feature)
   for {
-    err, gl, eof := ctxt.scan()
+    gl, eof, err := ctxt.scan()
     if err != nil {
       ctxt.addError(err)
       if p.stopAtFirstError {
         break
       }
     }
-    err, state = ctxt.match(state, gl)
+    state, err = ctxt.match(state, gl)
     if err != nil {
       ctxt.addError(err)
       if p.stopAtFirstError {
@@ -225,46 +225,46 @@ func (ctxt *parseContext) addError(e error) {
 }
 
 type scanResult struct {
-  err   error
   line  *Line
   atEof bool
+  err   error
 }
-func (ctxt *parseContext) scan() (error, *Line, bool) {
+func (ctxt *parseContext) scan() (*Line, bool, error) {
   l := len(ctxt.queue)
   if l > 0 {
     x := ctxt.queue[0]
     ctxt.queue = ctxt.queue[1:]
-    return x.err, x.line, x.atEof
+    return x.line, x.atEof, x.err
   }
   return ctxt.s.Scan()
 }
 
-func (ctxt *parseContext) startRule(r RuleType) (error, bool) {
-  err, ok := ctxt.b.StartRule(r)
+func (ctxt *parseContext) startRule(r RuleType) (bool, error) {
+  ok, err := ctxt.b.StartRule(r)
   if err != nil {
     ctxt.addError(err)
   }
-  return err, ok
+  return ok, err
 }
 
-func (ctxt *parseContext) endRule(r RuleType) (error, bool) {
-  err, ok := ctxt.b.EndRule(r)
+func (ctxt *parseContext) endRule(r RuleType) (bool, error) {
+  ok, err := ctxt.b.EndRule(r)
   if err != nil {
     ctxt.addError(err)
   }
-  return err, ok
+  return ok, err
 }
 
-func (ctxt *parseContext) build(t *Token) (error, bool) {
-  err, ok := ctxt.b.Build(t)
+func (ctxt *parseContext) build(t *Token) (bool, error) {
+  ok, err := ctxt.b.Build(t)
   if err != nil {
     ctxt.addError(err)
   }
-  return err, ok
+  return ok, err
 }
 
 
-func (ctxt *parseContext) match(state int, line *Line) (err error, newState int) {
+func (ctxt *parseContext) match(state int, line *Line) (newState int, err error) {
   switch(state) {
   case 0:
     return ctxt.matchAt_0(line);
@@ -335,37 +335,37 @@ func (ctxt *parseContext) match(state int, line *Line) (err error, newState int)
   case 34:
     return ctxt.matchAt_34(line);
   default:
-    return fmt.Errorf("Unknown state: %+v", state), state;
+    return state, fmt.Errorf("Unknown state: %+v", state);
   }
-  return nil, state
+  return state, nil
 }
 
 
   // Start
-func (ctxt *parseContext) matchAt_0(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_Language(line); ok {
+func (ctxt *parseContext) matchAt_0(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_Language(line); ok {
       ctxt.startRule(RuleType_Feature_Header);
       ctxt.build(token);
-    return err, 1;
+    return 1, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.startRule(RuleType_Feature_Header);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 2;
+    return 2, err;
   }
-  if err, ok, token := ctxt.match_FeatureLine(line); ok {
+  if ok, token, err := ctxt.match_FeatureLine(line); ok {
       ctxt.startRule(RuleType_Feature_Header);
       ctxt.build(token);
-    return err, 3;
+    return 3, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 0;
+    return 0, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 0;
+    return 0, err;
   }
   
     // var stateComment = "State: 0 - Start"
@@ -378,28 +378,28 @@ func (ctxt *parseContext) matchAt_0(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 0
+    return 0, err
 }
 
 
   // Feature:0>Feature_Header:0>#Language:0
-func (ctxt *parseContext) matchAt_1(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+func (ctxt *parseContext) matchAt_1(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 2;
+    return 2, err;
   }
-  if err, ok, token := ctxt.match_FeatureLine(line); ok {
+  if ok, token, err := ctxt.match_FeatureLine(line); ok {
       ctxt.build(token);
-    return err, 3;
+    return 3, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 1;
+    return 1, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 1;
+    return 1, err;
   }
   
     // var stateComment = "State: 1 - Feature:0>Feature_Header:0>#Language:0"
@@ -412,28 +412,28 @@ func (ctxt *parseContext) matchAt_1(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 1
+    return 1, err
 }
 
 
   // Feature:0>Feature_Header:1>Tags:0>#TagLine:0
-func (ctxt *parseContext) matchAt_2(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+func (ctxt *parseContext) matchAt_2(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.build(token);
-    return err, 2;
+    return 2, err;
   }
-  if err, ok, token := ctxt.match_FeatureLine(line); ok {
+  if ok, token, err := ctxt.match_FeatureLine(line); ok {
       ctxt.endRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 3;
+    return 3, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 2;
+    return 2, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 2;
+    return 2, err;
   }
   
     // var stateComment = "State: 2 - Feature:0>Feature_Header:1>Tags:0>#TagLine:0"
@@ -446,56 +446,56 @@ func (ctxt *parseContext) matchAt_2(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 2
+    return 2, err
 }
 
 
   // Feature:0>Feature_Header:2>#FeatureLine:0
-func (ctxt *parseContext) matchAt_3(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_3(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 3;
+    return 3, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 5;
+    return 5, err;
   }
-  if err, ok, token := ctxt.match_BackgroundLine(line); ok {
+  if ok, token, err := ctxt.match_BackgroundLine(line); ok {
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.startRule(RuleType_Background);
       ctxt.build(token);
-    return err, 6;
+    return 6, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Other(line); ok {
+  if ok, token, err := ctxt.match_Other(line); ok {
       ctxt.startRule(RuleType_Description);
       ctxt.build(token);
-    return err, 4;
+    return 4, err;
   }
   
     // var stateComment = "State: 3 - Feature:0>Feature_Header:2>#FeatureLine:0"
@@ -508,57 +508,57 @@ func (ctxt *parseContext) matchAt_3(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 3
+    return 3, err
 }
 
 
   // Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
-func (ctxt *parseContext) matchAt_4(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_4(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.build(token);
-    return err, 5;
+    return 5, err;
   }
-  if err, ok, token := ctxt.match_BackgroundLine(line); ok {
+  if ok, token, err := ctxt.match_BackgroundLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.startRule(RuleType_Background);
       ctxt.build(token);
-    return err, 6;
+    return 6, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Other(line); ok {
+  if ok, token, err := ctxt.match_Other(line); ok {
       ctxt.build(token);
-    return err, 4;
+    return 4, err;
   }
   
     // var stateComment = "State: 4 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0"
@@ -571,51 +571,51 @@ func (ctxt *parseContext) matchAt_4(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 4
+    return 4, err
 }
 
 
   // Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0
-func (ctxt *parseContext) matchAt_5(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_5(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 5;
+    return 5, err;
   }
-  if err, ok, token := ctxt.match_BackgroundLine(line); ok {
+  if ok, token, err := ctxt.match_BackgroundLine(line); ok {
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.startRule(RuleType_Background);
       ctxt.build(token);
-    return err, 6;
+    return 6, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_Feature_Header);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 5;
+    return 5, err;
   }
   
     // var stateComment = "State: 5 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0"
@@ -628,55 +628,55 @@ func (ctxt *parseContext) matchAt_5(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 5
+    return 5, err
 }
 
 
   // Feature:1>Background:0>#BackgroundLine:0
-func (ctxt *parseContext) matchAt_6(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_6(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_Background);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 6;
+    return 6, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 8;
+    return 8, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 9;
+    return 9, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Other(line); ok {
+  if ok, token, err := ctxt.match_Other(line); ok {
       ctxt.startRule(RuleType_Description);
       ctxt.build(token);
-    return err, 7;
+    return 7, err;
   }
   
     // var stateComment = "State: 6 - Feature:1>Background:0>#BackgroundLine:0"
@@ -689,56 +689,56 @@ func (ctxt *parseContext) matchAt_6(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 6
+    return 6, err
 }
 
 
   // Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
-func (ctxt *parseContext) matchAt_7(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_7(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.endRule(RuleType_Background);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.build(token);
-    return err, 8;
+    return 8, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 9;
+    return 9, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Other(line); ok {
+  if ok, token, err := ctxt.match_Other(line); ok {
       ctxt.build(token);
-    return err, 7;
+    return 7, err;
   }
   
     // var stateComment = "State: 7 - Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0"
@@ -751,50 +751,50 @@ func (ctxt *parseContext) matchAt_7(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 7
+    return 7, err
 }
 
 
   // Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
-func (ctxt *parseContext) matchAt_8(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_8(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_Background);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 8;
+    return 8, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 9;
+    return 9, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 8;
+    return 8, err;
   }
   
     // var stateComment = "State: 8 - Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0"
@@ -807,65 +807,65 @@ func (ctxt *parseContext) matchAt_8(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 8
+    return 8, err
 }
 
 
   // Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
-func (ctxt *parseContext) matchAt_9(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_9(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Background);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_TableRow(line); ok {
+  if ok, token, err := ctxt.match_TableRow(line); ok {
       ctxt.startRule(RuleType_DataTable);
       ctxt.build(token);
-    return err, 10;
+    return 10, err;
   }
-  if err, ok, token := ctxt.match_DocStringSeparator(line); ok {
+  if ok, token, err := ctxt.match_DocStringSeparator(line); ok {
       ctxt.startRule(RuleType_DocString);
       ctxt.build(token);
-    return err, 33;
+    return 33, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 9;
+    return 9, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 9;
+    return 9, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 9;
+    return 9, err;
   }
   
     // var stateComment = "State: 9 - Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0"
@@ -878,64 +878,64 @@ func (ctxt *parseContext) matchAt_9(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 9
+    return 9, err
 }
 
 
   // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
-func (ctxt *parseContext) matchAt_10(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_10(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Background);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_TableRow(line); ok {
+  if ok, token, err := ctxt.match_TableRow(line); ok {
       ctxt.build(token);
-    return err, 10;
+    return 10, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 9;
+    return 9, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 10;
+    return 10, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 10;
+    return 10, err;
   }
   
     // var stateComment = "State: 10 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0"
@@ -948,35 +948,35 @@ func (ctxt *parseContext) matchAt_10(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 10
+    return 10, err
 }
 
 
   // Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0
-func (ctxt *parseContext) matchAt_11(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+func (ctxt *parseContext) matchAt_11(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_Tags);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_Tags);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
   
     // var stateComment = "State: 11 - Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0"
@@ -989,59 +989,59 @@ func (ctxt *parseContext) matchAt_11(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 11
+    return 11, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0
-func (ctxt *parseContext) matchAt_12(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_12(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 14;
+    return 14, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 15;
+    return 15, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Other(line); ok {
+  if ok, token, err := ctxt.match_Other(line); ok {
       ctxt.startRule(RuleType_Description);
       ctxt.build(token);
-    return err, 13;
+    return 13, err;
   }
   
     // var stateComment = "State: 12 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0"
@@ -1054,60 +1054,60 @@ func (ctxt *parseContext) matchAt_12(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 12
+    return 12, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
-func (ctxt *parseContext) matchAt_13(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_13(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.build(token);
-    return err, 14;
+    return 14, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 15;
+    return 15, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Other(line); ok {
+  if ok, token, err := ctxt.match_Other(line); ok {
       ctxt.build(token);
-    return err, 13;
+    return 13, err;
   }
   
     // var stateComment = "State: 13 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0"
@@ -1120,54 +1120,54 @@ func (ctxt *parseContext) matchAt_13(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 13
+    return 13, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
-func (ctxt *parseContext) matchAt_14(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_14(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 14;
+    return 14, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 15;
+    return 15, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 14;
+    return 14, err;
   }
   
     // var stateComment = "State: 14 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0"
@@ -1180,69 +1180,69 @@ func (ctxt *parseContext) matchAt_14(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 14
+    return 14, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
-func (ctxt *parseContext) matchAt_15(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_15(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_TableRow(line); ok {
+  if ok, token, err := ctxt.match_TableRow(line); ok {
       ctxt.startRule(RuleType_DataTable);
       ctxt.build(token);
-    return err, 16;
+    return 16, err;
   }
-  if err, ok, token := ctxt.match_DocStringSeparator(line); ok {
+  if ok, token, err := ctxt.match_DocStringSeparator(line); ok {
       ctxt.startRule(RuleType_DocString);
       ctxt.build(token);
-    return err, 31;
+    return 31, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 15;
+    return 15, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 15;
+    return 15, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 15;
+    return 15, err;
   }
   
     // var stateComment = "State: 15 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0"
@@ -1255,32 +1255,32 @@ func (ctxt *parseContext) matchAt_15(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 15
+    return 15, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
-func (ctxt *parseContext) matchAt_16(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_16(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_TableRow(line); ok {
+  if ok, token, err := ctxt.match_TableRow(line); ok {
       ctxt.build(token);
-    return err, 16;
+    return 16, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 15;
+    return 15, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Scenario);
@@ -1288,9 +1288,9 @@ func (ctxt *parseContext) matchAt_16(line *Line) (err error, newState int) {
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Scenario);
@@ -1298,9 +1298,9 @@ func (ctxt *parseContext) matchAt_16(line *Line) (err error, newState int) {
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Scenario);
@@ -1308,15 +1308,15 @@ func (ctxt *parseContext) matchAt_16(line *Line) (err error, newState int) {
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 16;
+    return 16, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 16;
+    return 16, err;
   }
   
     // var stateComment = "State: 16 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0"
@@ -1329,40 +1329,40 @@ func (ctxt *parseContext) matchAt_16(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 16
+    return 16, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
-func (ctxt *parseContext) matchAt_17(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_Empty(line); ok {
+func (ctxt *parseContext) matchAt_17(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 19;
+    return 19, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 20;
+    return 20, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.startRule(RuleType_Examples);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 22;
+    return 22, err;
   }
-  if err, ok, token := ctxt.match_ExamplesLine(line); ok {
+  if ok, token, err := ctxt.match_ExamplesLine(line); ok {
       ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
-    return err, 23;
+    return 23, err;
   }
-  if err, ok, token := ctxt.match_Other(line); ok {
+  if ok, token, err := ctxt.match_Other(line); ok {
       ctxt.startRule(RuleType_Description);
       ctxt.build(token);
-    return err, 18;
+    return 18, err;
   }
   
     // var stateComment = "State: 17 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0"
@@ -1375,39 +1375,39 @@ func (ctxt *parseContext) matchAt_17(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 17
+    return 17, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
-func (ctxt *parseContext) matchAt_18(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_Comment(line); ok {
+func (ctxt *parseContext) matchAt_18(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.build(token);
-    return err, 19;
+    return 19, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 20;
+    return 20, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.startRule(RuleType_Examples);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 22;
+    return 22, err;
   }
-  if err, ok, token := ctxt.match_ExamplesLine(line); ok {
+  if ok, token, err := ctxt.match_ExamplesLine(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
-    return err, 23;
+    return 23, err;
   }
-  if err, ok, token := ctxt.match_Other(line); ok {
+  if ok, token, err := ctxt.match_Other(line); ok {
       ctxt.build(token);
-    return err, 18;
+    return 18, err;
   }
   
     // var stateComment = "State: 18 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0"
@@ -1420,35 +1420,35 @@ func (ctxt *parseContext) matchAt_18(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 18
+    return 18, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
-func (ctxt *parseContext) matchAt_19(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_Comment(line); ok {
+func (ctxt *parseContext) matchAt_19(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 19;
+    return 19, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 20;
+    return 20, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.startRule(RuleType_Examples);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 22;
+    return 22, err;
   }
-  if err, ok, token := ctxt.match_ExamplesLine(line); ok {
+  if ok, token, err := ctxt.match_ExamplesLine(line); ok {
       ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
-    return err, 23;
+    return 23, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 19;
+    return 19, err;
   }
   
     // var stateComment = "State: 19 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0"
@@ -1461,48 +1461,48 @@ func (ctxt *parseContext) matchAt_19(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 19
+    return 19, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
-func (ctxt *parseContext) matchAt_20(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_TableRow(line); ok {
+func (ctxt *parseContext) matchAt_20(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_TableRow(line); ok {
       ctxt.startRule(RuleType_DataTable);
       ctxt.build(token);
-    return err, 21;
+    return 21, err;
   }
-  if err, ok, token := ctxt.match_DocStringSeparator(line); ok {
+  if ok, token, err := ctxt.match_DocStringSeparator(line); ok {
       ctxt.startRule(RuleType_DocString);
       ctxt.build(token);
-    return err, 29;
+    return 29, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 20;
+    return 20, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Examples);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 22;
+    return 22, err;
   }
-  if err, ok, token := ctxt.match_ExamplesLine(line); ok {
+  if ok, token, err := ctxt.match_ExamplesLine(line); ok {
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
-    return err, 23;
+    return 23, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 20;
+    return 20, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 20;
+    return 20, err;
   }
   
     // var stateComment = "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0"
@@ -1515,45 +1515,45 @@ func (ctxt *parseContext) matchAt_20(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 20
+    return 20, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
-func (ctxt *parseContext) matchAt_21(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_TableRow(line); ok {
+func (ctxt *parseContext) matchAt_21(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_TableRow(line); ok {
       ctxt.build(token);
-    return err, 21;
+    return 21, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 20;
+    return 20, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Examples);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 22;
+    return 22, err;
   }
-  if err, ok, token := ctxt.match_ExamplesLine(line); ok {
+  if ok, token, err := ctxt.match_ExamplesLine(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
-    return err, 23;
+    return 23, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 21;
+    return 21, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 21;
+    return 21, err;
   }
   
     // var stateComment = "State: 21 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0"
@@ -1566,28 +1566,28 @@ func (ctxt *parseContext) matchAt_21(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 21
+    return 21, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
-func (ctxt *parseContext) matchAt_22(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+func (ctxt *parseContext) matchAt_22(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.build(token);
-    return err, 22;
+    return 22, err;
   }
-  if err, ok, token := ctxt.match_ExamplesLine(line); ok {
+  if ok, token, err := ctxt.match_ExamplesLine(line); ok {
       ctxt.endRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 23;
+    return 23, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 22;
+    return 22, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 22;
+    return 22, err;
   }
   
     // var stateComment = "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0"
@@ -1600,28 +1600,28 @@ func (ctxt *parseContext) matchAt_22(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 22
+    return 22, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0
-func (ctxt *parseContext) matchAt_23(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_Empty(line); ok {
+func (ctxt *parseContext) matchAt_23(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 23;
+    return 23, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 25;
+    return 25, err;
   }
-  if err, ok, token := ctxt.match_TableRow(line); ok {
+  if ok, token, err := ctxt.match_TableRow(line); ok {
       ctxt.build(token);
-    return err, 26;
+    return 26, err;
   }
-  if err, ok, token := ctxt.match_Other(line); ok {
+  if ok, token, err := ctxt.match_Other(line); ok {
       ctxt.startRule(RuleType_Description);
       ctxt.build(token);
-    return err, 24;
+    return 24, err;
   }
   
     // var stateComment = "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0"
@@ -1634,25 +1634,25 @@ func (ctxt *parseContext) matchAt_23(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 23
+    return 23, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
-func (ctxt *parseContext) matchAt_24(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_Comment(line); ok {
+func (ctxt *parseContext) matchAt_24(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.build(token);
-    return err, 25;
+    return 25, err;
   }
-  if err, ok, token := ctxt.match_TableRow(line); ok {
+  if ok, token, err := ctxt.match_TableRow(line); ok {
       ctxt.endRule(RuleType_Description);
       ctxt.build(token);
-    return err, 26;
+    return 26, err;
   }
-  if err, ok, token := ctxt.match_Other(line); ok {
+  if ok, token, err := ctxt.match_Other(line); ok {
       ctxt.build(token);
-    return err, 24;
+    return 24, err;
   }
   
     // var stateComment = "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0"
@@ -1665,23 +1665,23 @@ func (ctxt *parseContext) matchAt_24(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 24
+    return 24, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0
-func (ctxt *parseContext) matchAt_25(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_Comment(line); ok {
+func (ctxt *parseContext) matchAt_25(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 25;
+    return 25, err;
   }
-  if err, ok, token := ctxt.match_TableRow(line); ok {
+  if ok, token, err := ctxt.match_TableRow(line); ok {
       ctxt.build(token);
-    return err, 26;
+    return 26, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 25;
+    return 25, err;
   }
   
     // var stateComment = "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0"
@@ -1694,23 +1694,23 @@ func (ctxt *parseContext) matchAt_25(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 25
+    return 25, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>#TableRow:0
-func (ctxt *parseContext) matchAt_26(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_TableRow(line); ok {
+func (ctxt *parseContext) matchAt_26(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_TableRow(line); ok {
       ctxt.build(token);
-    return err, 27;
+    return 27, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 26;
+    return 26, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 26;
+    return 26, err;
   }
   
     // var stateComment = "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>#TableRow:0"
@@ -1723,72 +1723,72 @@ func (ctxt *parseContext) matchAt_26(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 26
+    return 26, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:4>#TableRow:0
-func (ctxt *parseContext) matchAt_27(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_27(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_Examples);
       ctxt.endRule(RuleType_ScenarioOutline);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_TableRow(line); ok {
+  if ok, token, err := ctxt.match_TableRow(line); ok {
       ctxt.build(token);
-    return err, 27;
+    return 27, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
     if ctxt.lookahead_0(line) {
       ctxt.endRule(RuleType_Examples);
       ctxt.startRule(RuleType_Examples);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 22;
+    return 22, err;
     }
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Examples);
       ctxt.endRule(RuleType_ScenarioOutline);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ExamplesLine(line); ok {
+  if ok, token, err := ctxt.match_ExamplesLine(line); ok {
       ctxt.endRule(RuleType_Examples);
       ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
-    return err, 23;
+    return 23, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_Examples);
       ctxt.endRule(RuleType_ScenarioOutline);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_Examples);
       ctxt.endRule(RuleType_ScenarioOutline);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 27;
+    return 27, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 27;
+    return 27, err;
   }
   
     // var stateComment = "State: 27 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:4>#TableRow:0"
@@ -1801,19 +1801,19 @@ func (ctxt *parseContext) matchAt_27(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 27
+    return 27, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-func (ctxt *parseContext) matchAt_29(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_DocStringSeparator(line); ok {
+func (ctxt *parseContext) matchAt_29(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_DocStringSeparator(line); ok {
       ctxt.build(token);
-    return err, 30;
+    return 30, err;
   }
-  if err, ok, token := ctxt.match_Other(line); ok {
+  if ok, token, err := ctxt.match_Other(line); ok {
       ctxt.build(token);
-    return err, 29;
+    return 29, err;
   }
   
     // var stateComment = "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
@@ -1826,41 +1826,41 @@ func (ctxt *parseContext) matchAt_29(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 29
+    return 29, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-func (ctxt *parseContext) matchAt_30(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+func (ctxt *parseContext) matchAt_30(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 20;
+    return 20, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Examples);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 22;
+    return 22, err;
   }
-  if err, ok, token := ctxt.match_ExamplesLine(line); ok {
+  if ok, token, err := ctxt.match_ExamplesLine(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
-    return err, 23;
+    return 23, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 30;
+    return 30, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 30;
+    return 30, err;
   }
   
     // var stateComment = "State: 30 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
@@ -1873,19 +1873,19 @@ func (ctxt *parseContext) matchAt_30(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 30
+    return 30, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-func (ctxt *parseContext) matchAt_31(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_DocStringSeparator(line); ok {
+func (ctxt *parseContext) matchAt_31(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_DocStringSeparator(line); ok {
       ctxt.build(token);
-    return err, 32;
+    return 32, err;
   }
-  if err, ok, token := ctxt.match_Other(line); ok {
+  if ok, token, err := ctxt.match_Other(line); ok {
       ctxt.build(token);
-    return err, 31;
+    return 31, err;
   }
   
     // var stateComment = "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
@@ -1898,28 +1898,28 @@ func (ctxt *parseContext) matchAt_31(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 31
+    return 31, err
 }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-func (ctxt *parseContext) matchAt_32(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_32(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Scenario);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 15;
+    return 15, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Scenario);
@@ -1927,9 +1927,9 @@ func (ctxt *parseContext) matchAt_32(line *Line) (err error, newState int) {
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Scenario);
@@ -1937,9 +1937,9 @@ func (ctxt *parseContext) matchAt_32(line *Line) (err error, newState int) {
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Scenario);
@@ -1947,15 +1947,15 @@ func (ctxt *parseContext) matchAt_32(line *Line) (err error, newState int) {
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 32;
+    return 32, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 32;
+    return 32, err;
   }
   
     // var stateComment = "State: 32 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
@@ -1968,19 +1968,19 @@ func (ctxt *parseContext) matchAt_32(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 32
+    return 32, err
 }
 
 
   // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-func (ctxt *parseContext) matchAt_33(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_DocStringSeparator(line); ok {
+func (ctxt *parseContext) matchAt_33(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_DocStringSeparator(line); ok {
       ctxt.build(token);
-    return err, 34;
+    return 34, err;
   }
-  if err, ok, token := ctxt.match_Other(line); ok {
+  if ok, token, err := ctxt.match_Other(line); ok {
       ctxt.build(token);
-    return err, 33;
+    return 33, err;
   }
   
     // var stateComment = "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
@@ -1993,60 +1993,60 @@ func (ctxt *parseContext) matchAt_33(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 33
+    return 33, err
 }
 
 
   // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-func (ctxt *parseContext) matchAt_34(line *Line) (err error, newState int) {
-  if err, ok, token := ctxt.match_EOF(line); ok {
+func (ctxt *parseContext) matchAt_34(line *Line) (newState int, err error) {
+  if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Background);
       ctxt.build(token);
-    return err, 28;
+    return 28, err;
   }
-  if err, ok, token := ctxt.match_StepLine(line); ok {
+  if ok, token, err := ctxt.match_StepLine(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
       ctxt.startRule(RuleType_Step);
       ctxt.build(token);
-    return err, 9;
+    return 9, err;
   }
-  if err, ok, token := ctxt.match_TagLine(line); ok {
+  if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
-    return err, 11;
+    return 11, err;
   }
-  if err, ok, token := ctxt.match_ScenarioLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario);
       ctxt.build(token);
-    return err, 12;
+    return 12, err;
   }
-  if err, ok, token := ctxt.match_ScenarioOutlineLine(line); ok {
+  if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
       ctxt.endRule(RuleType_Background);
       ctxt.startRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_ScenarioOutline);
       ctxt.build(token);
-    return err, 17;
+    return 17, err;
   }
-  if err, ok, token := ctxt.match_Comment(line); ok {
+  if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
-    return err, 34;
+    return 34, err;
   }
-  if err, ok, token := ctxt.match_Empty(line); ok {
+  if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
-    return err, 34;
+    return 34, err;
   }
   
     // var stateComment = "State: 34 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
@@ -2059,187 +2059,187 @@ func (ctxt *parseContext) matchAt_34(line *Line) (err error, newState int) {
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, 34
+    return 34, err
 }
 
 
 type Matcher interface {
-  MatchEOF(line *Line) (error,bool,*Token)
-  MatchEmpty(line *Line) (error,bool,*Token)
-  MatchComment(line *Line) (error,bool,*Token)
-  MatchTagLine(line *Line) (error,bool,*Token)
-  MatchFeatureLine(line *Line) (error,bool,*Token)
-  MatchBackgroundLine(line *Line) (error,bool,*Token)
-  MatchScenarioLine(line *Line) (error,bool,*Token)
-  MatchScenarioOutlineLine(line *Line) (error,bool,*Token)
-  MatchExamplesLine(line *Line) (error,bool,*Token)
-  MatchStepLine(line *Line) (error,bool,*Token)
-  MatchDocStringSeparator(line *Line) (error,bool,*Token)
-  MatchTableRow(line *Line) (error,bool,*Token)
-  MatchLanguage(line *Line) (error,bool,*Token)
-  MatchOther(line *Line) (error,bool,*Token)
+  MatchEOF(line *Line) (bool,*Token,error)
+  MatchEmpty(line *Line) (bool,*Token,error)
+  MatchComment(line *Line) (bool,*Token,error)
+  MatchTagLine(line *Line) (bool,*Token,error)
+  MatchFeatureLine(line *Line) (bool,*Token,error)
+  MatchBackgroundLine(line *Line) (bool,*Token,error)
+  MatchScenarioLine(line *Line) (bool,*Token,error)
+  MatchScenarioOutlineLine(line *Line) (bool,*Token,error)
+  MatchExamplesLine(line *Line) (bool,*Token,error)
+  MatchStepLine(line *Line) (bool,*Token,error)
+  MatchDocStringSeparator(line *Line) (bool,*Token,error)
+  MatchTableRow(line *Line) (bool,*Token,error)
+  MatchLanguage(line *Line) (bool,*Token,error)
+  MatchOther(line *Line) (bool,*Token,error)
 }
 
 func (ctxt *parseContext) isMatch_EOF(line *Line) bool {
-  _, ok, _ := ctxt.match_EOF(line)
+  ok, _, _ := ctxt.match_EOF(line)
   return ok
 }
-func (ctxt *parseContext) match_EOF(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_EOF(line *Line) (bool, *Token, error) {
     return ctxt.m.MatchEOF(line);
 }
 
 
 func (ctxt *parseContext) isMatch_Empty(line *Line) bool {
-  _, ok, _ := ctxt.match_Empty(line)
+  ok, _, _ := ctxt.match_Empty(line)
   return ok
 }
-func (ctxt *parseContext) match_Empty(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_Empty(line *Line) (bool, *Token, error) {
     if line.IsEof() {
-      return nil, false, nil
+      return false, nil, nil
     }
     return ctxt.m.MatchEmpty(line);
 }
 
 
 func (ctxt *parseContext) isMatch_Comment(line *Line) bool {
-  _, ok, _ := ctxt.match_Comment(line)
+  ok, _, _ := ctxt.match_Comment(line)
   return ok
 }
-func (ctxt *parseContext) match_Comment(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_Comment(line *Line) (bool, *Token, error) {
     if line.IsEof() {
-      return nil, false, nil
+      return false, nil, nil
     }
     return ctxt.m.MatchComment(line);
 }
 
 
 func (ctxt *parseContext) isMatch_TagLine(line *Line) bool {
-  _, ok, _ := ctxt.match_TagLine(line)
+  ok, _, _ := ctxt.match_TagLine(line)
   return ok
 }
-func (ctxt *parseContext) match_TagLine(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_TagLine(line *Line) (bool, *Token, error) {
     if line.IsEof() {
-      return nil, false, nil
+      return false, nil, nil
     }
     return ctxt.m.MatchTagLine(line);
 }
 
 
 func (ctxt *parseContext) isMatch_FeatureLine(line *Line) bool {
-  _, ok, _ := ctxt.match_FeatureLine(line)
+  ok, _, _ := ctxt.match_FeatureLine(line)
   return ok
 }
-func (ctxt *parseContext) match_FeatureLine(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_FeatureLine(line *Line) (bool, *Token, error) {
     if line.IsEof() {
-      return nil, false, nil
+      return false, nil, nil
     }
     return ctxt.m.MatchFeatureLine(line);
 }
 
 
 func (ctxt *parseContext) isMatch_BackgroundLine(line *Line) bool {
-  _, ok, _ := ctxt.match_BackgroundLine(line)
+  ok, _, _ := ctxt.match_BackgroundLine(line)
   return ok
 }
-func (ctxt *parseContext) match_BackgroundLine(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_BackgroundLine(line *Line) (bool, *Token, error) {
     if line.IsEof() {
-      return nil, false, nil
+      return false, nil, nil
     }
     return ctxt.m.MatchBackgroundLine(line);
 }
 
 
 func (ctxt *parseContext) isMatch_ScenarioLine(line *Line) bool {
-  _, ok, _ := ctxt.match_ScenarioLine(line)
+  ok, _, _ := ctxt.match_ScenarioLine(line)
   return ok
 }
-func (ctxt *parseContext) match_ScenarioLine(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_ScenarioLine(line *Line) (bool, *Token, error) {
     if line.IsEof() {
-      return nil, false, nil
+      return false, nil, nil
     }
     return ctxt.m.MatchScenarioLine(line);
 }
 
 
 func (ctxt *parseContext) isMatch_ScenarioOutlineLine(line *Line) bool {
-  _, ok, _ := ctxt.match_ScenarioOutlineLine(line)
+  ok, _, _ := ctxt.match_ScenarioOutlineLine(line)
   return ok
 }
-func (ctxt *parseContext) match_ScenarioOutlineLine(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_ScenarioOutlineLine(line *Line) (bool, *Token, error) {
     if line.IsEof() {
-      return nil, false, nil
+      return false, nil, nil
     }
     return ctxt.m.MatchScenarioOutlineLine(line);
 }
 
 
 func (ctxt *parseContext) isMatch_ExamplesLine(line *Line) bool {
-  _, ok, _ := ctxt.match_ExamplesLine(line)
+  ok, _, _ := ctxt.match_ExamplesLine(line)
   return ok
 }
-func (ctxt *parseContext) match_ExamplesLine(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_ExamplesLine(line *Line) (bool, *Token, error) {
     if line.IsEof() {
-      return nil, false, nil
+      return false, nil, nil
     }
     return ctxt.m.MatchExamplesLine(line);
 }
 
 
 func (ctxt *parseContext) isMatch_StepLine(line *Line) bool {
-  _, ok, _ := ctxt.match_StepLine(line)
+  ok, _, _ := ctxt.match_StepLine(line)
   return ok
 }
-func (ctxt *parseContext) match_StepLine(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_StepLine(line *Line) (bool, *Token, error) {
     if line.IsEof() {
-      return nil, false, nil
+      return false, nil, nil
     }
     return ctxt.m.MatchStepLine(line);
 }
 
 
 func (ctxt *parseContext) isMatch_DocStringSeparator(line *Line) bool {
-  _, ok, _ := ctxt.match_DocStringSeparator(line)
+  ok, _, _ := ctxt.match_DocStringSeparator(line)
   return ok
 }
-func (ctxt *parseContext) match_DocStringSeparator(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_DocStringSeparator(line *Line) (bool, *Token, error) {
     if line.IsEof() {
-      return nil, false, nil
+      return false, nil, nil
     }
     return ctxt.m.MatchDocStringSeparator(line);
 }
 
 
 func (ctxt *parseContext) isMatch_TableRow(line *Line) bool {
-  _, ok, _ := ctxt.match_TableRow(line)
+  ok, _, _ := ctxt.match_TableRow(line)
   return ok
 }
-func (ctxt *parseContext) match_TableRow(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_TableRow(line *Line) (bool, *Token, error) {
     if line.IsEof() {
-      return nil, false, nil
+      return false, nil, nil
     }
     return ctxt.m.MatchTableRow(line);
 }
 
 
 func (ctxt *parseContext) isMatch_Language(line *Line) bool {
-  _, ok, _ := ctxt.match_Language(line)
+  ok, _, _ := ctxt.match_Language(line)
   return ok
 }
-func (ctxt *parseContext) match_Language(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_Language(line *Line) (bool, *Token, error) {
     if line.IsEof() {
-      return nil, false, nil
+      return false, nil, nil
     }
     return ctxt.m.MatchLanguage(line);
 }
 
 
 func (ctxt *parseContext) isMatch_Other(line *Line) bool {
-  _, ok, _ := ctxt.match_Other(line)
+  ok, _, _ := ctxt.match_Other(line)
   return ok
 }
-func (ctxt *parseContext) match_Other(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_Other(line *Line) (bool, *Token, error) {
     if line.IsEof() {
-      return nil, false, nil
+      return false, nil, nil
     }
     return ctxt.m.MatchOther(line);
 }
@@ -2251,8 +2251,8 @@ func (ctxt *parseContext) lookahead_0(initialLine *Line) bool {
     var match bool
 
     for {
-      err, line, atEof := ctxt.scan();
-      queue = append(queue, &scanResult{err,line,atEof});
+      line, atEof, err := ctxt.scan();
+      queue = append(queue, &scanResult{line,atEof,err});
 
       if false  || ctxt.isMatch_ExamplesLine(line) {
         match = true;
