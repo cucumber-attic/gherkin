@@ -17,7 +17,7 @@ test: $(TOKENS) $(ASTS) $(ERRORS)
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: $(GO_SOURCE_FILES) src/github.com/cucumber/gherkin3/parser.go src/github.com/cucumber/gherkin3/dialects_builtin.go
+.built: $(GO_SOURCE_FILES) src/github.com/cucumber/go-gherkin3/parser.go src/github.com/cucumber/go-gherkin3/dialects_builtin.go
 	go install gherkin-generate-tokens
 	go install gherkin-generate-ast
 	touch $@
@@ -40,13 +40,13 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
-src/github.com/cucumber/gherkin3/parser.go: ../gherkin.berp gherkin-golang.razor ../bin/berp.exe
+src/github.com/cucumber/go-gherkin3/parser.go: ../gherkin.berp gherkin-golang.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-golang.razor -o $@
 	# Remove BOM
 	tail -c +4 $@ > $@.nobom
 	mv $@.nobom $@
 
-src/github.com/cucumber/gherkin3/dialects_builtin.go: ../dialects.json
+src/github.com/cucumber/go-gherkin3/dialects_builtin.go: ../dialects.json
 	cat $^ | jq '. as $$root | ([to_entries[] | [ \
 	  "\t",(.key|@json),": &GherkinDialect{\n", \
 	  "\t\t", (.key|@json),", ", (.value.name|@json),", ", (.value.native|@json), \
@@ -63,5 +63,5 @@ src/github.com/cucumber/gherkin3/dialects_builtin.go: ../dialects.json
 	  + . + "}\n"' -r -c > $@
 
 clean:
-	rm -rf .compared .built acceptance src/github.com/cucumber/gherkin3/parser.go src/github.com/cucumber/gherkin3/dialects_builtin.go
+	rm -rf .compared .built acceptance src/github.com/cucumber/go-gherkin3/parser.go src/github.com/cucumber/go-gherkin3/dialects_builtin.go
 .PHONY: clean
