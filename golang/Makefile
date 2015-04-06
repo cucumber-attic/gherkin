@@ -17,9 +17,9 @@ test: $(TOKENS) $(ASTS) $(ERRORS)
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: $(GO_SOURCE_FILES) src/github.com/cucumber/gherkin3/parser.go src/github.com/cucumber/gherkin3/dialects_builtin.go
-	go install gherkin-generate-tokens
-	go install gherkin-generate-ast
+.built: $(GO_SOURCE_FILES) src/github.com/cucumber/go-gherkin3/parser.go src/github.com/cucumber/go-gherkin3/dialects_builtin.go
+	go install github.com/cucumber/go-gherkin3/gherkin-generate-tokens
+	go install github.com/cucumber/go-gherkin3/gherkin-generate-ast
 	touch $@
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens
@@ -40,23 +40,35 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
-src/github.com/cucumber/gherkin3/parser.go: ../gherkin.berp gherkin-golang.razor ../bin/berp.exe
+src/github.com/cucumber/go-gherkin3/parser.go: ../gherkin.berp gherkin-golang.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-golang.razor -o $@
 	# Remove BOM
 	tail -c +4 $@ > $@.nobom
 	mv $@.nobom $@
 
-src/github.com/cucumber/gherkin3/dialects_builtin.go: ../dialects.json
-	cat $^ | jq '[to_entries[] | [ \
+src/github.com/cucumber/go-gherkin3/dialects_builtin.go: ../dialects.json
+	cat $^ | jq '. as $$root | ([to_entries[] | [ \
 	  "\t",(.key|@json),": &GherkinDialect{\n", \
 	  "\t\t", (.key|@json),", ", (.value.name|@json),", ", (.value.native|@json), \
 	  ", map[string][]string{\n"] + ( \
 	    [.value|{"feature","background","scenario","scenarioOutline","examples","given","when","then","and","but"} \
 	    |to_entries[]| "\t\t\t"+(.key|@json), ": []string{\n", ([ .value[] | "\t\t\t\t", @json, ",\n"  ]|add),"\t\t\t},\n" ]\
 	    ) + ["\t\t},\n","\t},\n"] | add ] \
-	  | add | "package gherkin3\n\nvar BuildinDialects GherkinDialectProvider = GherkinDialectMap{\n" \
+	  | add) | "package gherkin3\n\n" \
+	  + "// Builtin dialects for " + ([ $$root | to_entries[] | .key+" ("+.value.name+")" ] | join(", ")) + "\n" \
+	  + "func GherkinDialectsBuildin() GherkinDialectProvider {\n" \
+	  + "\treturn buildinDialects\n" \
+	  + "}\n\n" \
+	  + "var buildinDialects GherkinDialectProvider = gherkinDialectMap{\n" \
 	  + . + "}\n"' -r -c > $@
 
 clean:
-	rm -rf .compared .built acceptance src/github.com/cucumber/gherkin3/parser.go src/github.com/cucumber/gherkin3/dialects_builtin.go
+	rm -rf .compared .built acceptance bin/ src/github.com/cucumber/go-gherkin3/parser.go src/github.com/cucumber/go-gherkin3/dialects_builtin.go
 .PHONY: clean
+
+
+push-release:
+	- git remote add go-split git@github.com:cucumber/go-gherkin3.git
+	cd ../ && git subtree push --prefix=golang/src/github.com/cucumber/go-gherkin3 --squash go-split master
+
+.PHONY: push-release

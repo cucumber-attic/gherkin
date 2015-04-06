@@ -26,7 +26,7 @@
     }
     // if (ctxt.p.stopAtFirstError) throw error;
     //ctxt.addError(err)
-    return err, @state.Id</text>}
+    return @state.Id, err</text>}
 @helper MatchToken(TokenType tokenType)
 {<text>ctxt.match_@(tokenType)(line)</text>}
 @helper IsMatchToken(TokenType tokenType)
@@ -121,14 +121,14 @@ func (p *parser) Parse(s Scanner, b Builder, m Matcher) (err error) {
   var state int
   ctxt.startRule(RuleType_Feature)
   for {
-    err, gl, eof := ctxt.scan()
+    gl, eof, err := ctxt.scan()
     if err != nil {
       ctxt.addError(err)
       if p.stopAtFirstError {
         break
       }
     }
-    err, state = ctxt.match(state, gl)
+    state, err = ctxt.match(state, gl)
     if err != nil {
       ctxt.addError(err)
       if p.stopAtFirstError {
@@ -163,46 +163,46 @@ func (ctxt *parseContext) addError(e error) {
 }
 
 type scanResult struct {
-  err   error
   line  *Line
   atEof bool
+  err   error
 }
-func (ctxt *parseContext) scan() (error, *Line, bool) {
+func (ctxt *parseContext) scan() (*Line, bool, error) {
   l := len(ctxt.queue)
   if l > 0 {
     x := ctxt.queue[0]
     ctxt.queue = ctxt.queue[1:]
-    return x.err, x.line, x.atEof
+    return x.line, x.atEof, x.err
   }
   return ctxt.s.Scan()
 }
 
-func (ctxt *parseContext) startRule(r RuleType) (error, bool) {
-  err, ok := ctxt.b.StartRule(r)
+func (ctxt *parseContext) startRule(r RuleType) (bool, error) {
+  ok, err := ctxt.b.StartRule(r)
   if err != nil {
     ctxt.addError(err)
   }
-  return err, ok
+  return ok, err
 }
 
-func (ctxt *parseContext) endRule(r RuleType) (error, bool) {
-  err, ok := ctxt.b.EndRule(r)
+func (ctxt *parseContext) endRule(r RuleType) (bool, error) {
+  ok, err := ctxt.b.EndRule(r)
   if err != nil {
     ctxt.addError(err)
   }
-  return err, ok
+  return ok, err
 }
 
-func (ctxt *parseContext) build(t *Token) (error, bool) {
-  err, ok := ctxt.b.Build(t)
+func (ctxt *parseContext) build(t *Token) (bool, error) {
+  ok, err := ctxt.b.Build(t)
   if err != nil {
     ctxt.addError(err)
   }
-  return err, ok
+  return ok, err
 }
 
 
-func (ctxt *parseContext) match(state int, line *Line) (err error, newState int) {
+func (ctxt *parseContext) match(state int, line *Line) (newState int, err error) {
   switch(state) {
   @foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
   {
@@ -210,19 +210,19 @@ func (ctxt *parseContext) match(state int, line *Line) (err error, newState int)
     @:return ctxt.matchAt_@(state.Id)(line);
   }
   default:
-    return fmt.Errorf("Unknown state: %+v", state), state;
+    return state, fmt.Errorf("Unknown state: %+v", state);
   }
-  return nil, state
+  return state, nil
 }
 
 @foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
 {
 <text>
   // @Raw(state.Comment)
-func (ctxt *parseContext) matchAt_@(state.Id)(line *Line) (err error, newState int) {
+func (ctxt *parseContext) matchAt_@(state.Id)(line *Line) (newState int, err error) {
   @foreach(var transition in state.Transitions)
   {
-  @:if err, ok, token := @MatchToken(transition.TokenType); ok {
+  @:if ok, token, err := @MatchToken(transition.TokenType); ok {
     if (transition.LookAheadHint != null)
     {
     @:if ctxt.lookahead_@(transition.LookAheadHint.Id)(line) {
@@ -231,7 +231,7 @@ func (ctxt *parseContext) matchAt_@(state.Id)(line *Line) (err error, newState i
     {
       @CallProduction(production)
     }
-    @:return err, @transition.TargetState;
+    @:return @transition.TargetState, err;
     if (transition.LookAheadHint != null)
     {
     @:}
@@ -245,21 +245,21 @@ func (ctxt *parseContext) matchAt_@(state.Id)(line *Line) (err error, newState i
 
 type Matcher interface {
   @foreach(var rule in Model.RuleSet.TokenRules)
-  {<text>  Match@(rule.Name.Replace("#", ""))(line *Line) (error,bool,*Token)
+  {<text>  Match@(rule.Name.Replace("#", ""))(line *Line) (bool,*Token,error)
 </text>}  
 }
 @foreach(var rule in Model.RuleSet.TokenRules)
 {
 <text>
 func (ctxt *parseContext) isMatch_@(rule.Name.Replace("#", ""))(line *Line) bool {
-  _, ok, _ := ctxt.match_@(rule.Name.Replace("#", ""))(line)
+  ok, _, _ := ctxt.match_@(rule.Name.Replace("#", ""))(line)
   return ok
 }
-func (ctxt *parseContext) match_@(rule.Name.Replace("#", ""))(line *Line) (error, bool, *Token) {
+func (ctxt *parseContext) match_@(rule.Name.Replace("#", ""))(line *Line) (bool, *Token, error) {
     @if (rule.Name != "#EOF")
     {
     @:if line.IsEof() {
-    @:  return nil, false, nil
+    @:  return false, nil, nil
     @:}
     }
     return ctxt.m.Match@(rule.Name.Replace("#", ""))(line);
@@ -275,8 +275,8 @@ func (ctxt *parseContext) lookahead_@(lookAheadHint.Id)(initialLine *Line) bool 
     var match bool
 
     for {
-      err, line, atEof := ctxt.scan();
-      queue = append(queue, &scanResult{err,line,atEof});
+      line, atEof, err := ctxt.scan();
+      queue = append(queue, &scanResult{line,atEof,err});
 
       if false @foreach(var tokenType in lookAheadHint.ExpectedTokens) { <text>|| @IsMatchToken(tokenType)</text>} {
         match = true;
@@ -296,56 +296,3 @@ func (ctxt *parseContext) lookahead_@(lookAheadHint.Id)(initialLine *Line) bool 
   }
 </text>
 }
-
-/*
-  function handleExternalError(context, defaultValue, action) {
-    if(this.stopAtFirstError) return action();
-    try {
-      return action();
-    } catch (e) {
-      if(e instanceof Errors.CompositeParserException) {
-        e.errors.forEach(function (error) {
-          addError(context, error);
-        });
-      } else if(
-        e instanceof Errors.ParserException ||
-        e instanceof Errors.AstBuilderException ||
-        e instanceof Errors.UnexpectedTokenException ||
-        e instanceof Errors.NoSuchLanguageException
-      ) {
-        addError(context, e);
-      } else {
-        throw e;
-      }
-    }
-    return defaultValue;
-  }
-
-@foreach(var lookAheadHint in Model.RuleSet.LookAheadHints)
-{
-<text>
-  function lookahead_@(lookAheadHint.Id)(context, currentToken) {
-    currentToken.detach();
-    var token;
-    var queue = [];
-    var match = false;
-    do {
-      token = readToken(context);
-      token.detach();
-      queue.push(token);
-
-      if (false @foreach(var tokenType in lookAheadHint.ExpectedTokens) { <text>|| @IsMatchToken(tokenType)</text>}) {
-        match = true;
-        break;
-      }
-    } while(false @foreach(var tokenType in lookAheadHint.Skip) { <text>|| @IsMatchToken(tokenType)</text>});
-
-    context.tokenQueue = context.tokenQueue.concat(queue);
-
-    return match;
-  }
-</text>
-}
-
-}
-*/

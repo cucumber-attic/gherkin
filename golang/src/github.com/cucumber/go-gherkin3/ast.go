@@ -1,4 +1,4 @@
-package ast
+package gherkin3
 
 type Location struct {
 	Line   int `json:"line"`

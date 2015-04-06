@@ -1,6 +1,11 @@
 package gherkin3
 
-var BuildinDialects GherkinDialectProvider = GherkinDialectMap{
+// Builtin dialects for af (Afrikaans), ar (Arabic), bg (Bulgarian), bm (Malay), ca (Catalan), cs (Czech), cy-GB (Welsh), da (Danish), de (German), el (Greek), en (English), en-Scouse (Scouse), en-au (Australian), en-lol (LOLCAT), en-old (Old English), en-pirate (Pirate), en-tx (Texan), eo (Esperanto), es (Spanish), et (Estonian), fa (Persian), fi (Finnish), fr (French), gl (Galician), he (Hebrew), hi (Hindi), hr (Croatian), ht (Creole), hu (Hungarian), id (Indonesian), is (Icelandic), it (Italian), ja (Japanese), jv (Javanese), kn (Kannada), ko (Korean), lt (Lithuanian), lu (Luxemburgish), lv (Latvian), nl (Dutch), no (Norwegian), pa (Panjabi), pl (Polish), pt (Portuguese), ro (Romanian), ru (Russian), sk (Slovak), sl (Slovenian), sr-Cyrl (Serbian), sr-Latn (Serbian (Latin)), sv (Swedish), th (Thai), tl (Telugu), tlh (Klingon), tr (Turkish), tt (Tatar), uk (Ukrainian), ur (Urdu), uz (Uzbek), vi (Vietnamese), zh-CN (Chinese simplified), zh-TW (Chinese traditional)
+func GherkinDialectsBuildin() GherkinDialectProvider {
+	return buildinDialects
+}
+
+var buildinDialects GherkinDialectProvider = gherkinDialectMap{
 	"af": &GherkinDialect{
 		"af", "Afrikaans", "Afrikaans", map[string][]string{
 			"and": []string{

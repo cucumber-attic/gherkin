@@ -41,15 +41,7 @@ func (m *matcher) newTokenAtLocation(line, index int) (token *Token) {
 	return
 }
 
-// @Override
-// public boolean match_EOF(Token token) {
-//     if (token.isEOF()) {
-//         SetTokenMatched(token, TokenType.EOF);
-//         return true;
-//     }
-//     return false;
-// }
-func (m *matcher) MatchEOF(line *Line) (err error, ok bool, token *Token) {
+func (m *matcher) MatchEOF(line *Line) (ok bool, token *Token, err error) {
 	if line.IsEof() {
 		token, ok = m.newTokenAtLocation(line.lineNumber, line.Indent()), true
 		token.Type = TokenType_EOF
@@ -57,15 +49,7 @@ func (m *matcher) MatchEOF(line *Line) (err error, ok bool, token *Token) {
 	return
 }
 
-// @Override
-// public boolean match_Empty(Token token) {
-//     if (token.line.isEmpty()) {
-//         SetTokenMatched(token, TokenType.Empty);
-//         return true;
-//     }
-//     return false;
-// }
-func (m *matcher) MatchEmpty(line *Line) (err error, ok bool, token *Token) {
+func (m *matcher) MatchEmpty(line *Line) (ok bool, token *Token, err error) {
 	if line.IsEmpty() {
 		token, ok = m.newTokenAtLocation(line.lineNumber, line.Indent()), true
 		token.Type = TokenType_Empty
@@ -73,16 +57,7 @@ func (m *matcher) MatchEmpty(line *Line) (err error, ok bool, token *Token) {
 	return
 }
 
-// @Override
-// public boolean match_Comment(Token token) {
-//     if (token.line.startsWith(GherkinLanguageConstants.COMMENT_PREFIX)) {
-//         String text = token.line.getLineText(0); //take the entire line
-//         SetTokenMatched(token, TokenType.Comment, text, null, 0, null);
-//         return true;
-//     }
-//     return false;
-// }
-func (m *matcher) MatchComment(line *Line) (err error, ok bool, token *Token) {
+func (m *matcher) MatchComment(line *Line) (ok bool, token *Token, err error) {
 	if line.StartsWith(COMMENT_PREFIX) {
 		token, ok = m.newTokenAtLocation(line.lineNumber, 0), true
 		token.Type = TokenType_Comment
@@ -91,16 +66,7 @@ func (m *matcher) MatchComment(line *Line) (err error, ok bool, token *Token) {
 	return
 }
 
-// @Override
-// public boolean match_TagLine(Token token) {
-//     if (token.line.startsWith(GherkinLanguageConstants.TAG_PREFIX)) {
-//         SetTokenMatched(token, TokenType.TagLine, null, null, null, token.line.getTags());
-//         return true;
-//     }
-//     return false;
-// }
-//
-func (m *matcher) MatchTagLine(line *Line) (err error, ok bool, token *Token) {
+func (m *matcher) MatchTagLine(line *Line) (ok bool, token *Token, err error) {
 	if line.StartsWith(TAG_PREFIX) {
 		var tags []*LineSpan
 		var column = line.Indent()
@@ -120,17 +86,7 @@ func (m *matcher) MatchTagLine(line *Line) (err error, ok bool, token *Token) {
 	return
 }
 
-// private boolean matchTitleLine(Token token, TokenType tokenType, List<String> keywords) {
-//     for (String keyword : keywords) {
-//         if (token.line.startsWithTitleKeyword(keyword)) {
-//             String title = token.line.getRestTrimmed(keyword.length() + GherkinLanguageConstants.TITLE_KEYWORD_SEPARATOR.length());
-//             SetTokenMatched(token, tokenType, title, keyword, null, null);
-//             return true;
-//         }
-//     }
-//     return false;
-// }
-func (m *matcher) matchTitleLine(line *Line, tokenType TokenType, keywords []string) (err error, ok bool, token *Token) {
+func (m *matcher) matchTitleLine(line *Line, tokenType TokenType, keywords []string) (ok bool, token *Token, err error) {
 	for i := range keywords {
 		keyword := keywords[i]
 		if line.StartsWith(keyword + TITLE_KEYWORD_SEPARATOR) {
@@ -144,22 +100,22 @@ func (m *matcher) matchTitleLine(line *Line, tokenType TokenType, keywords []str
 	return
 }
 
-func (m *matcher) MatchFeatureLine(line *Line) (err error, ok bool, token *Token) {
+func (m *matcher) MatchFeatureLine(line *Line) (ok bool, token *Token, err error) {
 	return m.matchTitleLine(line, TokenType_FeatureLine, m.dialect.FeatureKeywords())
 }
-func (m *matcher) MatchBackgroundLine(line *Line) (err error, ok bool, token *Token) {
+func (m *matcher) MatchBackgroundLine(line *Line) (ok bool, token *Token, err error) {
 	return m.matchTitleLine(line, TokenType_BackgroundLine, m.dialect.BackgroundKeywords())
 }
-func (m *matcher) MatchScenarioLine(line *Line) (err error, ok bool, token *Token) {
+func (m *matcher) MatchScenarioLine(line *Line) (ok bool, token *Token, err error) {
 	return m.matchTitleLine(line, TokenType_ScenarioLine, m.dialect.ScenarioKeywords())
 }
-func (m *matcher) MatchScenarioOutlineLine(line *Line) (err error, ok bool, token *Token) {
+func (m *matcher) MatchScenarioOutlineLine(line *Line) (ok bool, token *Token, err error) {
 	return m.matchTitleLine(line, TokenType_ScenarioOutlineLine, m.dialect.ScenarioOutlineKeywords())
 }
-func (m *matcher) MatchExamplesLine(line *Line) (err error, ok bool, token *Token) {
+func (m *matcher) MatchExamplesLine(line *Line) (ok bool, token *Token, err error) {
 	return m.matchTitleLine(line, TokenType_ExamplesLine, m.dialect.ExamplesKeywords())
 }
-func (m *matcher) MatchStepLine(line *Line) (err error, ok bool, token *Token) {
+func (m *matcher) MatchStepLine(line *Line) (ok bool, token *Token, err error) {
 	keywords := m.dialect.StepKeywords()
 	for i := range keywords {
 		keyword := keywords[i]
@@ -174,17 +130,7 @@ func (m *matcher) MatchStepLine(line *Line) (err error, ok bool, token *Token) {
 	return
 }
 
-// @Override
-// public boolean match_DocStringSeparator(Token token) {
-//     return activeDocStringSeparator == null
-//             // open
-//             ? match_DocStringSeparator(token, GherkinLanguageConstants.DOCSTRING_SEPARATOR, true) ||
-//             match_DocStringSeparator(token, GherkinLanguageConstants.DOCSTRING_ALTERNATIVE_SEPARATOR, true)
-//             // close
-//             : match_DocStringSeparator(token, activeDocStringSeparator, false);
-// }
-//
-func (m *matcher) MatchDocStringSeparator(line *Line) (err error, ok bool, token *Token) {
+func (m *matcher) MatchDocStringSeparator(line *Line) (ok bool, token *Token, err error) {
 	if m.activeDocStringSeparator != "" {
 		if line.StartsWith(m.activeDocStringSeparator) {
 			// close
@@ -212,16 +158,7 @@ func (m *matcher) MatchDocStringSeparator(line *Line) (err error, ok bool, token
 	return
 }
 
-// @Override
-// public boolean match_TableRow(Token token) {
-//     if (token.line.startsWith(GherkinLanguageConstants.TABLE_CELL_SEPARATOR)) {
-//         SetTokenMatched(token, TokenType.TableRow, null, null, null, token.line.getTableCells());
-//         return true;
-//     }
-//     return false;
-// }
-
-func (m *matcher) MatchTableRow(line *Line) (err error, ok bool, token *Token) {
+func (m *matcher) MatchTableRow(line *Line) (ok bool, token *Token, err error) {
 	if line.StartsWith(TABLE_CELL_SEPARATOR) {
 		var cells []*LineSpan
 		var column = line.Indent() + 1
@@ -247,19 +184,7 @@ func (m *matcher) MatchTableRow(line *Line) (err error, ok bool, token *Token) {
 	return
 }
 
-// @Override
-// public boolean match_Language(Token token) {
-//     Matcher matcher = LANGUAGE_PATTERN.matcher(token.line.getLineText(0));
-//     if (matcher.matches()) {
-//         String language = matcher.group(1);
-//         SetTokenMatched(token, TokenType.Language, language, null, null, null);
-//
-//         currentDialect = dialectProvider.getDialect(language, token.location);
-//         return true;
-//     }
-//     return false;
-// }
-func (m *matcher) MatchLanguage(line *Line) (err error, ok bool, token *Token) {
+func (m *matcher) MatchLanguage(line *Line) (ok bool, token *Token, err error) {
 	matches := m.languagePattern.FindStringSubmatch(line.trimmedLineText)
 	if len(matches) > 0 {
 		lang := matches[1]
@@ -278,13 +203,7 @@ func (m *matcher) MatchLanguage(line *Line) (err error, ok bool, token *Token) {
 	return
 }
 
-// @Override
-// public boolean match_Other(Token token) {
-//     String text = token.line.getLineText(indentToRemove); //take the entire line, except removing DocString indents
-//     SetTokenMatched(token, TokenType.Other, text, null, 0, null);
-//     return true;
-// }
-func (m *matcher) MatchOther(line *Line) (err error, ok bool, token *Token) {
+func (m *matcher) MatchOther(line *Line) (ok bool, token *Token, err error) {
 	token, ok = m.newTokenAtLocation(line.lineNumber, 0), true
 	token.Type = TokenType_Other
 

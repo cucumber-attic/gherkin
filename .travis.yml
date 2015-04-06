@@ -30,8 +30,8 @@ before_install:
   - export EnableNuGetPackageRestore=true
   # https://github.com/travis-ci/travis-ci/issues/2839
   - export JAVA_HOME="$(/usr/libexec/java_home)"
-  # install jq
-  - sudo apt-get install -y jq
+  # install jq if its not already there
+  - which jq || sudo apt-get install -y jq
 
 script: "cd $TARGET_LANG; make"
 

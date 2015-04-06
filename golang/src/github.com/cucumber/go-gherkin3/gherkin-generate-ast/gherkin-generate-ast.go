@@ -1,11 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"os"
 
-	"github.com/cucumber/gherkin3"
+	gherkin3 "github.com/cucumber/go-gherkin3"
 )
 
 func main() {
@@ -26,11 +27,21 @@ func main() {
 	}
 
 	for i := range readers {
-		err := gherkin3.GenerateTokens(readers[i], os.Stdout)
+
+		feature, err := gherkin3.ParseFeature(readers[i])
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error: %s\n", err)
+			fmt.Fprintf(os.Stderr, "%s\n", err)
 			os.Exit(1)
 			return
 		}
+
+		b, err := json.Marshal(feature)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", err)
+			os.Exit(1)
+			return
+		}
+		os.Stdout.Write(b)
+		fmt.Fprint(os.Stdout, "\n")
 	}
 }
