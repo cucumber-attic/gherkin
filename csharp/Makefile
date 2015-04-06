@@ -14,7 +14,7 @@ all: .compared
 .compared: .built $(TOKENS) $(AST) $(ERRORS)
 	touch $@
 
-.built: .sln_built_debug $(NUNIT) Gherkin/dialects.json
+.built: .sln_built_debug $(NUNIT)
 	mono --runtime=v4.0 $(NUNIT) -noxml -nologo -stoponerror Gherkin/bin/Debug/Gherkin.dll
 	touch $@
 
@@ -46,18 +46,18 @@ clean:
 Gherkin/Parser.cs: ../gherkin.berp gherkin-csharp.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-csharp.razor -o $@
 
-.sln_built_debug: Gherkin/Parser.cs $(CS_FILES)
+.sln_built_debug: Gherkin/Parser.cs $(CS_FILES) Gherkin/dialects.json
 	rm -f $@
 	mono --runtime=v4.0 .nuget/NuGet.exe restore Gherkin.CSharp.sln
 	xbuild /p:Configuration=Debug
 	touch $@
 
-Gherkin/bin/Debug/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES)
+Gherkin/bin/Debug/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES) Gherkin/dialects.json
 	rm -f $@
 	xbuild /p:Configuration=Debug
 	touch $@
 
-Gherkin/bin/Release/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES)
+Gherkin/bin/Release/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES) Gherkin/dialects.json
 	rm -f $@
 	xbuild /p:Configuration=Release
 	touch $@
