@@ -29,7 +29,7 @@ public class GherkinLine implements IGherkinLine {
 
     @Override
     public String getLineText(int indentToRemove) {
-        if(indentToRemove < 0 || indentToRemove > indent())
+        if (indentToRemove < 0 || indentToRemove > indent())
             return trimmedLineText;
         return lineText.substring(indentToRemove);
     }

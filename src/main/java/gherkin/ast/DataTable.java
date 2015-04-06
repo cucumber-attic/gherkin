@@ -3,7 +3,7 @@ package gherkin.ast;
 import java.util.Collections;
 import java.util.List;
 
-public class DataTable extends Node implements StepArgument, HasRows {
+public class DataTable extends Node {
     private final List<TableRow> rows;
 
     public DataTable(List<TableRow> rows) {
@@ -11,7 +11,6 @@ public class DataTable extends Node implements StepArgument, HasRows {
         this.rows = Collections.unmodifiableList(rows);
     }
 
-    @Override
     public List<TableRow> getRows() {
         return rows;
     }

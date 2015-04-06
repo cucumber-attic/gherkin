@@ -14,15 +14,4 @@ public class ScenarioOutline extends ScenarioDefinition {
     public List<Examples> getExamples() {
         return examples;
     }
-
-    @Override
-    public void describeTo(Visitor visitor) {
-        visitor.visitScenarioOutline(this);
-        for (Step step : getSteps()) {
-           step.describeTo(visitor);
-        }
-        for (Examples examples : this.examples) {
-            examples.describeTo(visitor);
-        }
-    }
 }
