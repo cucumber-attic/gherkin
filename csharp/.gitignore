@@ -159,5 +159,4 @@ acceptance/
 .built
 .compared
 .sln_built_debug
-dialects.json
 *.userprefs
