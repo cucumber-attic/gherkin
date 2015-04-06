@@ -1,5 +1,37 @@
 # Contributing to Gherkin 3
 
+Gherkin3 is implemented in several different languages, and each language implementation
+lives in a separate git repository.
+
+The code in each of those git repositories can be built and used independently.
+This is useful for people who only want to *use* Gherkin without *contributing*
+to Gherkin.
+
+Gherkin *contributors* should clone *this* repository. This will automatically get
+you a copy of the files in the various `gherkin-*` repositories.
+
+When you're done, just create a pull request against *this* repository.
+
+## Gherkin team
+
+Before you do anything, make sure you set up remotes for the subtrees:
+
+    make add-remotes
+
+When you have made a change (or merged a PR from a contributor) you can sync them
+to the individual `gherkin-*` repos:
+
+    make push-subtrees
+
+Or if someone has made changes to a `gherkin-*` repo independently:
+
+    make pull-subtrees
+
+This should only be done on rare occasions - it's always better to make changes against
+this *master* repo.
+
+## Building
+
 Prerequisites:
 
 * .NET or Mono (needed to run `berp` to generate parsers)
@@ -10,6 +42,7 @@ Prerequisites:
 * `make`
 * `jq`
 * `diff`
+* `git`
 
 With all this installed, just run `make` from the root directory.
 
