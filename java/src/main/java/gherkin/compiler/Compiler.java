@@ -1,128 +1,129 @@
 package gherkin.compiler;
 
+import gherkin.GherkinDialect;
+import gherkin.GherkinDialectProvider;
 import gherkin.ast.Background;
-import gherkin.ast.BaseVisitor;
+import gherkin.ast.DataTable;
+import gherkin.ast.DocString;
+import gherkin.ast.Examples;
 import gherkin.ast.Feature;
+import gherkin.ast.Location;
 import gherkin.ast.Scenario;
+import gherkin.ast.ScenarioDefinition;
+import gherkin.ast.ScenarioOutline;
 import gherkin.ast.Step;
-import gherkin.test.Source;
-import gherkin.test.TestCase;
-import gherkin.test.TestCaseReceiver;
-import gherkin.test.TestStep;
+import gherkin.ast.TableCell;
+import gherkin.ast.TableRow;
+import pickles.Argument;
+import pickles.PickledCase;
+import pickles.PickledStep;
+import pickles.PickledString;
+import pickles.PickledTable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Compiler {
-    private final TestCaseReceiver receiver;
+    private final List<PickledCase> pickledCases = new ArrayList<>();
+    private final List<PickledStep> backgroundSteps = new ArrayList<>();
+    private GherkinDialect dialect;
 
-    public Compiler(TestCaseReceiver receiver) {
-        this.receiver = receiver;
+    public List<PickledCase> getPickledCases() {
+        return pickledCases;
     }
 
     public void compile(Feature feature) {
-        FeatureCompiler compiler = new FeatureCompiler(new TestCaseBuilder(receiver));
-        feature.describeTo(compiler);
-    }
-
-    private class TestCaseBuilder {
-        private final TestCaseReceiver receiver;
-        private final List<TestStep> backgroundTestSteps = new ArrayList<>();
-        private List<TestStep> testSteps;
-
-        public TestCaseBuilder(TestCaseReceiver receiver) {
-            this.receiver = receiver;
+        dialect = new GherkinDialectProvider().getDialect(feature.getLanguage(), null);
+        if (feature.getBackground() != null) {
+            visitBackground(feature.getBackground());
         }
-
-        public void buildBackgroundStep(Source step) {
-            backgroundTestSteps.add(new TestStep(step));
-        }
-
-        public void buildStep(Source step) {
-            getTestSteps().add(new TestStep(step));
-        }
-
-        public void buildTestCase(Source scenario) {
-            new TestCase(getTestSteps(), scenario).describeTo(receiver);
-            testSteps = null;
-        }
-
-        private List<TestStep> getTestSteps() {
-            if (testSteps == null) {
-                testSteps = new ArrayList<>(backgroundTestSteps);
+        for (ScenarioDefinition scenarioDefinition : feature.getScenarioDefinitions()) {
+            if (scenarioDefinition instanceof Scenario) {
+                visitScenario((Scenario) scenarioDefinition);
+            } else {
+                visitScenarioOutline((ScenarioOutline) scenarioDefinition);
             }
-            return testSteps;
         }
     }
 
-    private class FeatureCompiler extends BaseVisitor {
-        private final TestCaseBuilder testCaseBuilder;
-        private Source source;
-
-        public FeatureCompiler(TestCaseBuilder testCaseBuilder) {
-            this.testCaseBuilder = testCaseBuilder;
+    public void visitBackground(Background background) {
+        for (Step step : background.getSteps()) {
+            Argument pickledArgument = getPickledArgument(step, null, null);
+            backgroundSteps.add(new PickledStep(step.getName(), pickledArgument, step.getLocation()));
         }
+    }
 
-        @Override
-        public void visitFeature(Feature feature) {
-            source = new Source(feature);
+    public void visitScenario(Scenario scenario) {
+        String testCaseName = scenario.getKeyword() + ": " + scenario.getName();
+        PickledCase pickledCase = createTestCaseWithBackgroundSteps(testCaseName, scenario.getLocation());
+        for (Step step : scenario.getSteps()) {
+            Argument pickledArgument = getPickledArgument(step, null, null);
+            PickledStep pickledStep = new PickledStep(step.getName(), pickledArgument, step.getLocation());
+            pickledCase.addTestStep(pickledStep);
         }
+        pickledCases.add(pickledCase);
+    }
 
-        @Override
-        public void visitBackground(Background background) {
-            Source backgroundSource = source.concat(background);
-            BackgroundCompiler backgroundCompiler = new BackgroundCompiler(backgroundSource, testCaseBuilder);
-            background.describeTo(backgroundCompiler);
-        }
+    public void visitScenarioOutline(ScenarioOutline scenarioOutline) {
+        for (final Examples examples : scenarioOutline.getExamples()) {
+            final TableRow header = examples.getHeader();
+            for (final TableRow values : examples.getRows()) {
+                String scenarioName = interpolate(scenarioOutline.getName(), examples.getHeader(), values);
+                String testCaseName = dialect.getScenarioKeywords().get(0) + ": " + scenarioName;
 
-        @Override
-        public void visitScenario(Scenario scenario) {
-            Source scenarioSource = source.concat(scenario);
-            ScenarioCompiler scenarioCompiler = new ScenarioCompiler(scenarioSource, testCaseBuilder);
-            scenario.describeTo(scenarioCompiler);
-            testCaseBuilder.buildTestCase(scenarioSource);
-        }
+                PickledCase pickledCase = createTestCaseWithBackgroundSteps(testCaseName, scenarioOutline.getLocation());
+                for (Step step : scenarioOutline.getSteps()) {
+                    Argument pickledArgument = getPickledArgument(step, header, values);
 
-        @Override
-        public void visitStep(Step step) {
-        }
+                    String stepName = interpolate(step.getName(), examples.getHeader(), values);
+                    PickledStep pickledStep = new PickledStep(stepName, pickledArgument, step.getLocation(), values.getLocation());
+                    pickledCase.addTestStep(pickledStep);
+                }
 
-        private class BackgroundCompiler extends BaseVisitor {
-            private final Source source;
-            private final TestCaseBuilder testCaseBuilder;
-
-            public BackgroundCompiler(Source source, TestCaseBuilder testCaseBuilder) {
-                this.source = source;
-                this.testCaseBuilder = testCaseBuilder;
-            }
-
-            @Override
-            public void visitBackground(Background background) {
-            }
-
-            @Override
-            public void visitStep(Step step) {
-                testCaseBuilder.buildBackgroundStep(source.concat(step));
+                pickledCases.add(pickledCase);
             }
         }
+    }
 
-        private class ScenarioCompiler extends BaseVisitor {
-            private final Source source;
-            private final TestCaseBuilder testCaseBuilder;
-
-            public ScenarioCompiler(Source source, TestCaseBuilder testCaseBuilder) {
-                this.source = source;
-                this.testCaseBuilder = testCaseBuilder;
+    private Argument getPickledArgument(Step step, final TableRow header, final TableRow values) {
+        if (step.getArgument() instanceof DataTable) {
+            final List<List<String>> table = new ArrayList<>();
+            for (TableRow tableRow : ((DataTable) step.getArgument()).getRows()) {
+                List<String> row = new ArrayList<>();
+                table.add(row);
+                for (TableCell tableCell : tableRow.getCells()) {
+                    String cell = interpolate(tableCell.getValue(), header, values);
+                    row.add(cell);
+                }
             }
+            return new PickledTable(table);
+        }
+        if (step.getArgument() instanceof DocString) {
+            String value = ((DocString) step.getArgument()).getContent();
+            return new PickledString(interpolate(value, header, values));
+        }
 
-            @Override
-            public void visitScenario(Scenario scenario) {
-            }
+        return null;
+    }
 
-            @Override
-            public void visitStep(Step step) {
-                testCaseBuilder.buildStep(source.concat(step));
+    private String interpolate(String name, TableRow variables, TableRow values) {
+        int col = 0;
+        if (variables != null) {
+            for (TableCell headerCell : variables.getCells()) {
+                TableCell valueCell = values.getCells().get(col++);
+                String header = headerCell.getValue();
+                String value = valueCell.getValue();
+                name = name.replace("<" + header + ">", value);
             }
         }
+        return name;
+    }
+
+    private PickledCase createTestCaseWithBackgroundSteps(String name, Location... source) {
+        PickledCase pickledCase = new PickledCase(name, source);
+        for (PickledStep backgroundStep : backgroundSteps) {
+            pickledCase.addTestStep(backgroundStep);
+        }
+        return pickledCase;
     }
 }

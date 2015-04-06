@@ -56,23 +56,6 @@
     {
       "examples": [
         {
-          "header": {
-            "cells": [
-              {
-                "location": {
-                  "column": 5,
-                  "line": 18
-                },
-                "type": "TableCell",
-                "value": "what"
-              }
-            ],
-            "location": {
-              "column": 3,
-              "line": 18
-            },
-            "type": "TableRow"
-          },
           "keyword": "Examples",
           "location": {
             "column": 1,
@@ -80,6 +63,23 @@
           },
           "name": "",
           "rows": [
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 5,
+                    "line": 18
+                  },
+                  "type": "TableCell",
+                  "value": "what"
+                }
+              ],
+              "location": {
+                "column": 3,
+                "line": 18
+              },
+              "type": "TableRow"
+            },
             {
               "cells": [
                 {

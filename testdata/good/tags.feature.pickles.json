@@ -1,0 +1,46 @@
+[
+  {
+    "name": "Scenario: minimalistic",
+    "pickledSteps": [
+      {
+        "name": "the minimalism",
+        "source": [
+          {
+            "column": 5,
+            "line": 8
+          }
+        ]
+      }
+    ],
+    "source": [
+      {
+        "column": 1,
+        "line": 7
+      }
+    ]
+  },
+  {
+    "name": "Scenario: minimalistic outline",
+    "pickledSteps": [
+      {
+        "name": "the minimalism",
+        "source": [
+          {
+            "column": 5,
+            "line": 13
+          },
+          {
+            "column": 3,
+            "line": 19
+          }
+        ]
+      }
+    ],
+    "source": [
+      {
+        "column": 1,
+        "line": 12
+      }
+    ]
+  }
+]

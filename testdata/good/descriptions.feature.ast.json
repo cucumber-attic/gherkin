@@ -145,23 +145,6 @@
       "examples": [
         {
           "description": "This is an examples description",
-          "header": {
-            "cells": [
-              {
-                "location": {
-                  "column": 7,
-                  "line": 46
-                },
-                "type": "TableCell",
-                "value": "foo"
-              }
-            ],
-            "location": {
-              "column": 5,
-              "line": 46
-            },
-            "type": "TableRow"
-          },
           "keyword": "Examples",
           "location": {
             "column": 3,
@@ -169,6 +152,23 @@
           },
           "name": "examples with description",
           "rows": [
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 7,
+                    "line": 46
+                  },
+                  "type": "TableCell",
+                  "value": "foo"
+                }
+              ],
+              "location": {
+                "column": 5,
+                "line": 46
+              },
+              "type": "TableRow"
+            },
             {
               "cells": [
                 {

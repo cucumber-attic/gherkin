@@ -1,6 +1,6 @@
 package gherkin.ast;
 
-public class DocString extends Node implements StepArgument {
+public class DocString extends Node {
     private final String contentType;
     private final String content;
 
@@ -8,5 +8,9 @@ public class DocString extends Node implements StepArgument {
         super(location);
         this.contentType = contentType;
         this.content = content;
+    }
+
+    public String getContent() {
+        return content;
     }
 }

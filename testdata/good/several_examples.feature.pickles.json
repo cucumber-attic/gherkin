@@ -1,0 +1,60 @@
+[
+  {
+    "name": "Scenario: minimalistic",
+    "pickledSteps": [
+      {
+        "name": "the foo",
+        "source": [
+          {
+            "column": 5,
+            "line": 4
+          },
+          {
+            "column": 7,
+            "line": 9
+          }
+        ]
+      }
+    ],
+    "source": [
+      {
+        "column": 3,
+        "line": 3
+      }
+    ]
+  },
+  {
+    "name": "Scenario: minimalistic",
+    "pickledSteps": [
+      {
+        "name": "the bar",
+        "source": [
+          {
+            "column": 5,
+            "line": 4
+          },
+          {
+            "column": 7,
+            "line": 14
+          }
+        ]
+      }
+    ],
+    "source": [
+      {
+        "column": 3,
+        "line": 3
+      }
+    ]
+  },
+  {
+    "name": "Scenario: ha ok",
+    "pickledSteps": [],
+    "source": [
+      {
+        "column": 3,
+        "line": 17
+      }
+    ]
+  }
+]

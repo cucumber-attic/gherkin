@@ -7,11 +7,4 @@ public class Scenario extends ScenarioDefinition {
         super(tags, location, keyword, name, description, steps);
     }
 
-    @Override
-    public void describeTo(Visitor visitor) {
-        visitor.visitScenario(this);
-        for (Step step : getSteps()) {
-            step.describeTo(visitor);
-        }
-    }
 }

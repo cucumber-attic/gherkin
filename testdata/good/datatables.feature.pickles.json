@@ -1,0 +1,111 @@
+[
+  {
+    "name": "Scenario: minimalistic",
+    "pickledSteps": [
+      {
+        "argument": {
+          "rows": [
+            [
+              "foo",
+              "bar"
+            ],
+            [
+              "boz",
+              "boo"
+            ]
+          ]
+        },
+        "name": "a simple data table",
+        "source": [
+          {
+            "column": 5,
+            "line": 4
+          }
+        ]
+      },
+      {
+        "argument": {
+          "rows": [
+            [
+              "foo"
+            ]
+          ]
+        },
+        "name": "a data table with a single cell",
+        "source": [
+          {
+            "column": 5,
+            "line": 7
+          }
+        ]
+      },
+      {
+        "argument": {
+          "rows": [
+            [
+              "foo",
+              "bar",
+              "boz"
+            ]
+          ]
+        },
+        "name": "a data table with different fromatting",
+        "source": [
+          {
+            "column": 5,
+            "line": 9
+          }
+        ]
+      },
+      {
+        "argument": {
+          "rows": [
+            [
+              "foo",
+              "",
+              "boz"
+            ]
+          ]
+        },
+        "name": "a data table with an empty cell",
+        "source": [
+          {
+            "column": 5,
+            "line": 11
+          }
+        ]
+      },
+      {
+        "argument": {
+          "rows": [
+            [
+              "foo",
+              "bar"
+            ],
+            [
+              "boz",
+              "boo"
+            ],
+            [
+              "boz2",
+              "boo2"
+            ]
+          ]
+        },
+        "name": "a data table with comments and newlines inside",
+        "source": [
+          {
+            "column": 5,
+            "line": 13
+          }
+        ]
+      }
+    ],
+    "source": [
+      {
+        "column": 3,
+        "line": 3
+      }
+    ]
+  }
+]
