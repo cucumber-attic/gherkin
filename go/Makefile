@@ -9,18 +9,22 @@ GO_SOURCE_FILES = $(shell find . -name "*.go")
 
 export GOPATH = $(realpath ./)
 
-all: .compared
-.PHONY: all test
+all: bin/gherkin-generate-tokens bin/gherkin-generate-ast
 
 test: $(TOKENS) $(ASTS) $(ERRORS)
+.PHONY: test
 
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: $(GO_SOURCE_FILES) src/github.com/cucumber/go-gherkin3/parser.go src/github.com/cucumber/go-gherkin3/dialects_builtin.go
-	go install github.com/cucumber/go-gherkin3/gherkin-generate-tokens
-	go install github.com/cucumber/go-gherkin3/gherkin-generate-ast
+.built: $(GO_SOURCE_FILES) src/github.com/cucumber/go-gherkin3/parser.go src/github.com/cucumber/go-gherkin3/dialects_builtin.go bin/gherkin-generate-tokens bin/gherkin-generate-ast
 	touch $@
+
+bin/gherkin-generate-tokens:
+	go install github.com/cucumber/go-gherkin3/gherkin-generate-tokens
+
+bin/gherkin-generate-ast:
+	go install github.com/cucumber/go-gherkin3/gherkin-generate-ast
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens
 	mkdir -p `dirname $@`
