@@ -84,11 +84,6 @@
   <ItemGroup>
     <Compile Include="Parser.Extensions.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="..\..\dialects.json">
-      <Link>dialects.json</Link>
-    </EmbeddedResource>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent Condition=" '$(OS)' == 'Windows_NT'">$(SolutionDir)generate_parser.cmd</PreBuildEvent>
@@ -100,4 +95,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <EmbeddedResource Include="dialects.json" />
+  </ItemGroup>
 </Project>

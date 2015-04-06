@@ -14,7 +14,7 @@ all: .compared
 .compared: .built $(TOKENS) $(AST) $(ERRORS)
 	touch $@
 
-.built: .sln_built_debug $(NUNIT) dialects.json
+.built: .sln_built_debug $(NUNIT) Gherkin/dialects.json
 	mono --runtime=v4.0 $(NUNIT) -noxml -nologo -stoponerror Gherkin/bin/Debug/Gherkin.dll
 	touch $@
 
@@ -37,11 +37,10 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
 clean:
-	rm -rf .compared .built acceptance
+	rm -rf .compared .built acceptance Gherkin/Parser.cs Gherkin/dialects.json
 	rm -rf */bin
 	rm -rf */obj
 	rm -rf */packages
-	rm -f Gherkin/Parser.cs
 .PHONY: clean
 
 Gherkin/Parser.cs: ../gherkin.berp gherkin-csharp.razor ../bin/berp.exe
@@ -66,5 +65,5 @@ Gherkin/bin/Release/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES)
 $(NUNIT):
 	mono --runtime=v4.0 .nuget/NuGet.exe install NUnit.Runners -Version 2.6.3 -o packages
 
-dialects.json: ../dialects.json
+Gherkin/dialects.json: ../dialects.json
 	cp $< $@
