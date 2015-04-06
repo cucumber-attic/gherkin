@@ -64,7 +64,6 @@ type Examples struct {
 	Keyword     string      `json:"keyword"`
 	Name        string      `json:"name"`
 	Description string      `json:"description,omitempty"`
-	Header      *TableRow   `json:"header"`
 	Rows        []*TableRow `json:"rows"`
 }
 
