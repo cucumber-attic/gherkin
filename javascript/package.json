@@ -1,0 +1,31 @@
+{
+  "name": "gherkin",
+  "version": "3.0.0",
+  "description": "Gherkin parser",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cucumber/gherkin3"
+  },
+  "keywords": [
+    "gherkin",
+    "cucumber"
+  ],
+  "author": "Aslak Hellesøy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cucumber/gherkin3/issues"
+  },
+  "homepage": "https://github.com/cucumber/gherkin3",
+  "devDependencies": {
+    "browserify": "^9.0.3",
+    "mocha": "^2.1.0",
+    "uglify-js": "^2.4.19"
+  },
+  "dependencies": {
+    "tea-error": "^0.1.0"
+  }
+}
