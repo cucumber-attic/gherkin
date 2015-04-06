@@ -3,4 +3,3 @@ coverage/
 acceptance/
 .built
 .compared
-lib/gherkin/dialects.json
