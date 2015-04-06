@@ -1,9 +1,9 @@
-all: csharp/.compared golang/.compared java/.compared javascript/.compared ruby/.compared
+all: csharp/.compared go/.compared java/.compared javascript/.compared ruby/.compared
 .PHONY: all
 
 clean:
 	cd csharp && make clean
-	cd golang && make clean
+	cd go && make clean
 	cd java && make clean
 	cd javascript && make clean
 	cd ruby && make clean
@@ -12,8 +12,8 @@ clean:
 csharp/.compared:
 	cd csharp && make
 
-golang/.compared:
-	cd golang && make
+go/.compared:
+	cd go && make
 
 java/.compared:
 	cd java && make

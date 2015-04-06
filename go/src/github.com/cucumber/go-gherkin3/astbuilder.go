@@ -213,12 +213,7 @@ func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {
 		ex.Keyword = examplesLine.Keyword
 		ex.Name = examplesLine.Text
 		ex.Description = description
-		if len(allRows) >= 1 {
-			ex.Header = allRows[0]
-		}
-		if len(allRows) >= 2 {
-			ex.Rows = allRows[1:]
-		}
+		ex.Rows = allRows
 		return ex, err
 
 	case RuleType_Description:

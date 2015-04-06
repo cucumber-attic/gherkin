@@ -179,9 +179,6 @@ module Gherkin
         examples_line = node.get_token(:ExamplesLine)
         description = get_description(node)
 
-        all_rows = get_table_rows(node)
-        header, *rows = all_rows
-
         reject_nils(
           type: node.rule_type,
           tags: tags,
@@ -189,8 +186,7 @@ module Gherkin
           keyword: examples_line.matched_keyword,
           name: examples_line.matched_text,
           description: description,
-          header: header,
-          rows: rows
+          rows: get_table_rows(node)
         )
       when :Description
         line_tokens = node.get_tokens(:Other)
