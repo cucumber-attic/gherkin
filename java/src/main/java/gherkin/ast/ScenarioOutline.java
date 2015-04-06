@@ -14,9 +14,4 @@ public class ScenarioOutline extends ScenarioDefinition {
     public List<Examples> getExamples() {
         return examples;
     }
-
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitScenarioOutline(this);
-    }
 }

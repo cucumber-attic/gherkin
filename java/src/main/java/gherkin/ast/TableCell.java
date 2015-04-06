@@ -12,8 +12,4 @@ public class TableCell extends Node {
         return value;
     }
 
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitTableCell(this);
-    }
 }

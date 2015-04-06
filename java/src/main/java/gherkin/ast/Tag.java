@@ -12,8 +12,4 @@ public class Tag extends Node {
         return name;
     }
 
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitTag(this);
-    }
 }

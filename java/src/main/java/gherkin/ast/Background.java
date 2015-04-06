@@ -33,8 +33,4 @@ public class Background extends Node {
         return steps;
     }
 
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitBackground(this);
-    }
 }

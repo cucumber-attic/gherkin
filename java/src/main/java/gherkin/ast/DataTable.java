@@ -11,11 +11,6 @@ public class DataTable extends Node {
         this.rows = Collections.unmodifiableList(rows);
     }
 
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitDataTable(this);
-    }
-
     public List<TableRow> getRows() {
         return rows;
     }

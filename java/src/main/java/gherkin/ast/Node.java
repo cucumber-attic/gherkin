@@ -11,6 +11,4 @@ public abstract class Node {
     public Location getLocation() {
         return location;
     }
-
-    public abstract void accept(Visitor visitor);
 }

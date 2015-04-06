@@ -7,8 +7,4 @@ public class Scenario extends ScenarioDefinition {
         super(tags, location, keyword, name, description, steps);
     }
 
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitScenario(this);
-    }
 }

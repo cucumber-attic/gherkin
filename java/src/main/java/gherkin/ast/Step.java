@@ -24,8 +24,4 @@ public class Step extends Node {
         return argument;
     }
 
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitStep(this);
-    }
 }

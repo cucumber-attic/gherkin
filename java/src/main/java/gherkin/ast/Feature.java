@@ -56,8 +56,4 @@ public class Feature extends Node {
         return description;
     }
 
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitFeature(this);
-    }
 }

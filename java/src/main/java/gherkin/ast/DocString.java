@@ -10,11 +10,6 @@ public class DocString extends Node {
         this.content = content;
     }
 
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitDocString(this);
-    }
-
     public String getContent() {
         return content;
     }

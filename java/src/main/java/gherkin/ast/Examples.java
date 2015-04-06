@@ -31,11 +31,6 @@ public class Examples extends Node {
         return description;
     }
 
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visitExamples(this);
-    }
-
     public List<TableRow> getRows() {
         return rows.subList(1, rows.size());
     }
