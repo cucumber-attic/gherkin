@@ -44,8 +44,8 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
-parser.go: ../gherkin.berp gherkin-golang.razor ../bin/berp.exe
-	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-golang.razor -o $@
+parser.go: ../gherkin.berp parser.go.razor ../bin/berp.exe
+	mono ../bin/berp.exe -g ../gherkin.berp -t parser.go.razor -o $@
 	# Remove BOM
 	tail -c +4 $@ > $@.nobom
 	mv $@.nobom $@
