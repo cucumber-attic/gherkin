@@ -25,11 +25,11 @@ ruby/.compared:
 	cd ruby && make
 
 add-remotes:
-	git remote add csharp     git@github.com:cucumber/gherkin-csharp.git
-	git remote add go         git@github.com:cucumber/gherkin-go.git
-	git remote add java       git@github.com:cucumber/gherkin-java.git
-	git remote add javascript git@github.com:cucumber/gherkin-javascript.git
-	git remote add ruby       git@github.com:cucumber/gherkin-ruby.git
+	git remote add gherkin-csharp     git@github.com:cucumber/gherkin-csharp.git
+	git remote add gherkin-go         git@github.com:cucumber/gherkin-go.git
+	git remote add gherkin-java       git@github.com:cucumber/gherkin-java.git
+	git remote add gherkin-javascript git@github.com:cucumber/gherkin-javascript.git
+	git remote add gherkin-ruby       git@github.com:cucumber/gherkin-ruby.git
 .PHONY: add-remotes
 
 push-subtrees:
