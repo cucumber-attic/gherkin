@@ -9,7 +9,7 @@ GO_SOURCE_FILES = $(shell find . -name "*.go") parser.go dialects_builtin.go
 
 export GOPATH = $(realpath ./)
 
-all: bin/gherkin-generate-tokens bin/gherkin-generate-ast
+all: .compared
 
 test: $(TOKENS) $(ASTS) $(ERRORS)
 .PHONY: test
