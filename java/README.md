@@ -1,23 +1,3 @@
-# Gherkin 3 - Ruby Parser
+[![Build Status](https://secure.travis-ci.org/cucumber/gherkin-java.png)](http://travis-ci.org/cucumber/gherkin-java)
 
-## Using make
-
-Just run `make` from this directory.
-
-## Using just Maven
-
-Just run `mvn clean test` from this directory.
-
-Keep in mind that this will only run unit tests. The acceptance tests are only
-run when you build with `make`.
-
-## Code Coverage
-
-Generate coverage data:
-
-    make
-
-Now, generate the coverage report
-
-    mvn jacoco:report
-    open target/site/jacoco/index.html
+Gherkin parser/compiler for Java. Please see [Gherkin3](https://github.com/cucumber/gherkin3) for details.
