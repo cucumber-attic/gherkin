@@ -1,49 +1,28 @@
-all: csharp/.compared go/.compared java/.compared javascript/.compared ruby/.compared
+
+MAKEFILES=$(wildcard */Makefile)
+
+all: $(patsubst %/Makefile,%/.compared,$(MAKEFILES))
 .PHONY: all
+%/.compared: %
+	cd $< && make
 
-clean:
-	cd csharp && make clean
-	cd go && make clean
-	cd java && make clean
-	cd javascript && make clean
-	cd ruby && make clean
+clean: $(patsubst %/Makefile,clean-%,$(MAKEFILES))
 .PHONY: clean
+clean-%: %
+	cd $< && make clean
 
-csharp/.compared:
-	cd csharp && make
-
-go/.compared:
-	cd go && make
-
-java/.compared:
-	cd java && make
-
-javascript/.compared:
-	cd javascript && make
-
-ruby/.compared:
-	cd ruby && make
-
-add-remotes:
-	git remote add gherkin-csharp     git@github.com:cucumber/gherkin-csharp.git
-	git remote add gherkin-go         git@github.com:cucumber/gherkin-go.git
-	git remote add gherkin-java       git@github.com:cucumber/gherkin-java.git
-	git remote add gherkin-javascript git@github.com:cucumber/gherkin-javascript.git
-	git remote add gherkin-ruby       git@github.com:cucumber/gherkin-ruby.git
+add-remotes: $(patsubst %/Makefile,add-remote-%,$(MAKEFILES))
 .PHONY: add-remotes
+add-remote-%: %
+	git remote add gherkin-$< git@github.com:cucumber/gherkin-$<.git
 
-push-subtrees:
-	git subtree push --prefix=csharp     gherkin-csharp     master
-	git subtree push --prefix=go         gherkin-go         master
-	git subtree push --prefix=java       gherkin-java       master
-	git subtree push --prefix=javascript gherkin-javascript master
-	git subtree push --prefix=ruby       gherkin-ruby       master
+push-subtrees: $(patsubst %/Makefile,push-subtree-%,$(MAKEFILES))
 .PHONY: push-subtrees
+push-subtree-%: %
+	NAME=$(patsubst push-subtree-%,%,$@)
+	git subtree push --prefix=$< gherkin-$< master
 
-pull-subtrees:
-	git subtree pull --prefix=csharp     gherkin-csharp     master
-	git subtree pull --prefix=go         gherkin-go         master
-	git subtree pull --prefix=java       gherkin-java       master
-	git subtree pull --prefix=javascript gherkin-javascript master
-	git subtree pull --prefix=ruby       gherkin-ruby       master
+pull-subtrees: $(patsubst %/Makefile,pull-subtree-%,$(MAKEFILES))
 .PHONY: pull-subtrees
+pull-subtree-%: %
+	git subtree pull --prefix=$< gherkin-$< master
