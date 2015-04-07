@@ -1,4 +1,4 @@
-package gherkin3_test
+package gherkin_test
 
 import (
 	"os"

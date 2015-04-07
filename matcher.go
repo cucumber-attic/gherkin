@@ -1,4 +1,4 @@
-package gherkin3
+package gherkin
 
 import (
 	"regexp"
