@@ -1,26 +1,38 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Gherkin.Specs;
 
-namespace Gherkin.TokensTester
+namespace Gherkin.TokensGenerator
 {
     class Program
     {
         static int Main(string[] args)
         {
-            if (args.Length != 1)
+            if (args.Length < 1)
             {
-                Console.WriteLine("Usage: Gherkin.TokenTester.exe test-feature-file.feature");
+                Console.WriteLine("Usage: Gherkin.TokensGenerator.exe test-feature-file.feature");
                 return 100;
             }
 
-            string featureFilePath = args[0];
-
-            return TestTokens(featureFilePath);
+            foreach (var featureFilePath in args)
+            {
+                try
+                {
+                    var tokensText = TokensGenerator.GenerateTokens(featureFilePath);
+                    Console.WriteLine(tokensText);
+                }
+                catch (Exception ex)
+                {
+                    // Ideally we'd write to STDERR here, but 2> doesn't seem
+                    // to work on mono for some reason :-/
+                    Console.WriteLine(ex.Message);
+                    return 1;
+                }
+            }
+            return 0;
         }
 
-        private static int TestTokens(string featureFilePath)
+        /*private static int TestTokens(string featureFilePath)
         {
             try
             {
@@ -43,6 +55,6 @@ namespace Gherkin.TokensTester
             var tokensText = tokenFormatterBuilder.GetTokensText();
             Console.WriteLine(tokensText);
             return 0;
-        }
+        }*/
     }
 }

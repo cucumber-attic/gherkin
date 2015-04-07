@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 
-namespace Gherkin.Specs
+namespace Gherkin.TokensGenerator
 {
-    public class TestTokenFormatter
+    class TestTokenFormatter
     {
         public string FormatToken(Token token)
         {
