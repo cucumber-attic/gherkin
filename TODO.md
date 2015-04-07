@@ -6,6 +6,7 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
   - Base it on the compiler in cucumber-ruby-core
   - Need `/testdata/good/*.feature.tescase.json` files
   - [ ] C#
+    - [ ] remove AST interfaces
   - [ ] Ruby
   - [ ] JavaScript
   - [ ] Java
