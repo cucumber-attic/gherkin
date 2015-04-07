@@ -31,8 +31,8 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
   - [x] Java
   - [ ] Rename to `gherkin-languages.json`
   - [ ] Remove `i18n.json`
-- [ ] Rename `title` or `text` to `name` (check wiki, maybe discuss again)
-  - [ ] C#
+- [x] Rename scenario (and similar) `title` to `name` (check wiki, maybe discuss again)
+  - [x] C#
   - [x] Ruby
   - [x] JavaScript
   - [x] Java

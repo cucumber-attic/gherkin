@@ -8,16 +8,6 @@ namespace Gherkin.AstGenerator
 {
     class FeatureAstJSonContractResolver : CamelCasePropertyNamesContractResolver
     {
-        protected override string ResolvePropertyName(string propertyName)
-        {
-            //TODO: naming consolidation between languages
-
-            if (propertyName.Equals("title", StringComparison.InvariantCultureIgnoreCase))
-                return "name";
-
-            return base.ResolvePropertyName(propertyName);
-        }
-
         public override JsonContract ResolveContract(Type type)
         {
             var contract = base.ResolveContract(type);
