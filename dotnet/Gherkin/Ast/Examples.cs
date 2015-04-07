@@ -21,8 +21,9 @@ namespace Gherkin.Ast
             Keyword = keyword;
             Title = title;
             Description = description;
-            Header = header;
-            Rows = rows;
+            //TODO: fix Examples header/rows handling properly
+            Header = null;
+            Rows = new TableRow[] {header}.Concat(rows);
         }
     }
 }
