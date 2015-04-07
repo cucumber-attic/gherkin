@@ -46,7 +46,7 @@ namespace Gherkin.AstGenerator
         {
             public void SetValue(object target, object value)
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
 
             public object GetValue(object target)

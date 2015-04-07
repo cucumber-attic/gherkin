@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Gherkin.Ast;
 using Gherkin.AstGenerator;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -25,16 +21,10 @@ namespace Gherkin.Specs
 
             var astText = AstGenerator.AstGenerator.GenerateAst(testFeatureFile);
 
-            //var x = Newtonsoft.Json.JsonSerializer.Create();
-            //var y = (JObject)x.Deserialize(new JsonTextReader(new StringReader(astText)));
-
             astText = JsonUtility.NormalizeJsonString(astText);
 
             var expectedFileContent = LineEndingHelper.NormalizeLineEndings(File.ReadAllText(expectedAstFile));
             var expectedAstText = JsonUtility.NormalizeJsonString(expectedFileContent);
-
-            Console.WriteLine(expectedAstText);
-            Console.WriteLine(astText);
 
             Assert.AreEqual(expectedAstText, astText);
         }
@@ -42,6 +32,11 @@ namespace Gherkin.Specs
 
     public class JsonUtility
     {
+        /// <summary>
+        /// Normalizes the JSON string by ordering properties in alphabetical order and apply consistent string serialization
+        /// </summary>
+        /// <param name="json">JSON string</param>
+        /// <returns>Normalized JSON string</returns>
         public static string NormalizeJsonString(string json)
         {
             // Parse json string into JObject.
