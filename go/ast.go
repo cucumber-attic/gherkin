@@ -92,7 +92,7 @@ type ScenarioDefinition struct {
 type Step struct {
 	Node
 	Keyword  string      `json:"keyword"`
-	Name     string      `json:"name"`
+	Text     string      `json:"text"`
 	Argument interface{} `json:"argument,omitempty"`
 }
 

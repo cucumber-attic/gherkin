@@ -30,7 +30,7 @@
             "column": 5,
             "line": 4
           },
-          "name": "a simple DocString",
+          "text": "a simple DocString",
           "type": "Step"
         },
         {
@@ -48,7 +48,7 @@
             "column": 5,
             "line": 11
           },
-          "name": "a DocString with content type",
+          "text": "a DocString with content type",
           "type": "Step"
         },
         {
@@ -66,7 +66,7 @@
             "column": 5,
             "line": 17
           },
-          "name": "a DocString with wrong indentation",
+          "text": "a DocString with wrong indentation",
           "type": "Step"
         },
         {
@@ -84,7 +84,7 @@
             "column": 5,
             "line": 21
           },
-          "name": "a DocString with alternative separator",
+          "text": "a DocString with alternative separator",
           "type": "Step"
         },
         {
@@ -102,7 +102,7 @@
             "column": 5,
             "line": 26
           },
-          "name": "a DocString with normal separator inside",
+          "text": "a DocString with normal separator inside",
           "type": "Step"
         },
         {
@@ -120,7 +120,7 @@
             "column": 5,
             "line": 32
           },
-          "name": "a DocString with alternative separator inside",
+          "text": "a DocString with alternative separator inside",
           "type": "Step"
         }
       ],

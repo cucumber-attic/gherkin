@@ -21,7 +21,7 @@
             "column": 5,
             "line": 8
           },
-          "name": "the minimalism",
+          "text": "the minimalism",
           "type": "Step"
         }
       ],
@@ -140,7 +140,7 @@
             "column": 5,
             "line": 13
           },
-          "name": "the <what>",
+          "text": "the <what>",
           "type": "Step"
         }
       ],

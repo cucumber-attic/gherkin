@@ -21,7 +21,7 @@
             "column": 5,
             "line": 5
           },
-          "name": "Gherkin supports many languages",
+          "text": "Gherkin supports many languages",
           "type": "Step"
         },
         {
@@ -30,7 +30,7 @@
             "column": 5,
             "line": 6
           },
-          "name": "Norwegian keywords are parsed",
+          "text": "Norwegian keywords are parsed",
           "type": "Step"
         },
         {
@@ -39,7 +39,7 @@
             "column": 5,
             "line": 7
           },
-          "name": "they should be recognized",
+          "text": "they should be recognized",
           "type": "Step"
         }
       ],

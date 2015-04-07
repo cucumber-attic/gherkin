@@ -191,7 +191,7 @@
             "column": 5,
             "line": 4
           },
-          "name": "the <two>:",
+          "text": "the <two>:",
           "type": "Step"
         },
         {
@@ -226,7 +226,7 @@
             "column": 5,
             "line": 8
           },
-          "name": "the <four>:",
+          "text": "the <four>:",
           "type": "Step"
         }
       ],

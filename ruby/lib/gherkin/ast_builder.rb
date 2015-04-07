@@ -102,7 +102,7 @@ module Gherkin
           type: node.rule_type,
           location: get_location(step_line),
           keyword: step_line.matched_keyword,
-          name: step_line.matched_text,
+          text: step_line.matched_text,
           argument: step_argument
         )
       when :DocString

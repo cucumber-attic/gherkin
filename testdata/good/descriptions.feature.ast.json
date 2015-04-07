@@ -23,7 +23,7 @@
             "column": 5,
             "line": 7
           },
-          "name": "the minimalism",
+          "text": "the minimalism",
           "type": "Step"
         }
       ],
@@ -45,7 +45,7 @@
             "column": 3,
             "line": 11
           },
-          "name": "the minimalism",
+          "text": "the minimalism",
           "type": "Step"
         }
       ],
@@ -67,7 +67,7 @@
             "column": 5,
             "line": 17
           },
-          "name": "the minimalism",
+          "text": "the minimalism",
           "type": "Step"
         }
       ],
@@ -89,7 +89,7 @@
             "column": 5,
             "line": 24
           },
-          "name": "the minimalism",
+          "text": "the minimalism",
           "type": "Step"
         }
       ],
@@ -111,7 +111,7 @@
             "column": 5,
             "line": 31
           },
-          "name": "the minimalism",
+          "text": "the minimalism",
           "type": "Step"
         }
       ],
@@ -133,7 +133,7 @@
             "column": 5,
             "line": 38
           },
-          "name": "the minimalism",
+          "text": "the minimalism",
           "type": "Step"
         }
       ],
@@ -204,7 +204,7 @@
             "column": 5,
             "line": 42
           },
-          "name": "the minimalism",
+          "text": "the minimalism",
           "type": "Step"
         }
       ],

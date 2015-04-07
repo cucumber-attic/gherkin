@@ -49,7 +49,7 @@ public class Compiler {
     public void visitBackground(Background background) {
         for (Step step : background.getSteps()) {
             Argument pickledArgument = getPickledArgument(step, null, null);
-            backgroundSteps.add(new PickledStep(step.getName(), pickledArgument, step.getLocation()));
+            backgroundSteps.add(new PickledStep(step.getText(), pickledArgument, step.getLocation()));
         }
     }
 
@@ -58,7 +58,7 @@ public class Compiler {
         PickledCase pickledCase = createTestCaseWithBackgroundSteps(testCaseName, scenario.getLocation());
         for (Step step : scenario.getSteps()) {
             Argument pickledArgument = getPickledArgument(step, null, null);
-            PickledStep pickledStep = new PickledStep(step.getName(), pickledArgument, step.getLocation());
+            PickledStep pickledStep = new PickledStep(step.getText(), pickledArgument, step.getLocation());
             pickledCase.addTestStep(pickledStep);
         }
         pickledCases.add(pickledCase);
@@ -75,7 +75,7 @@ public class Compiler {
                 for (Step step : scenarioOutline.getSteps()) {
                     Argument pickledArgument = getPickledArgument(step, header, values);
 
-                    String stepName = interpolate(step.getName(), examples.getHeader(), values);
+                    String stepName = interpolate(step.getText(), examples.getHeader(), values);
                     PickledStep pickledStep = new PickledStep(stepName, pickledArgument, step.getLocation(), values.getLocation());
                     pickledCase.addTestStep(pickledStep);
                 }

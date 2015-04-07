@@ -133,7 +133,7 @@
             "column": 5,
             "line": 4
           },
-          "name": "the <what>",
+          "text": "the <what>",
           "type": "Step"
         }
       ],
