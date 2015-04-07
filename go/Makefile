@@ -17,7 +17,7 @@ test: $(TOKENS) $(ASTS) $(ERRORS)
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: $(GO_SOURCE_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast
+.built: $(GO_SOURCE_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast LICENSE
 	touch $@
 
 bin/gherkin-generate-tokens: $(GO_SOURCE_FILES)
@@ -65,6 +65,9 @@ dialects_builtin.go: ../dialects.json
 	  + "}\n\n" \
 	  + "var buildinDialects GherkinDialectProvider = gherkinDialectMap{\n" \
 	  + . + "}\n"' -r -c > $@
+
+LICENSE: ../LICENSE
+	cp $< $@
 
 clean:
 	rm -rf .compared .built acceptance bin/ parser.go dialects_builtin.go

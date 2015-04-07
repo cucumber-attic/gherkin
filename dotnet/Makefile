@@ -14,7 +14,7 @@ all: .compared
 .compared: .built $(TOKENS) $(AST) $(ERRORS)
 	touch $@
 
-.built: .sln_built_debug $(NUNIT)
+.built: .sln_built_debug $(NUNIT) LICENSE
 	mono --runtime=v4.0 $(NUNIT) -noxml -nologo -stoponerror Gherkin/bin/Debug/Gherkin.dll
 	touch $@
 
@@ -66,4 +66,7 @@ $(NUNIT):
 	mono --runtime=v4.0 .nuget/NuGet.exe install NUnit.Runners -Version 2.6.3 -o packages
 
 Gherkin/dialects.json: ../dialects.json
+	cp $< $@
+
+LICENSE: ../LICENSE
 	cp $< $@

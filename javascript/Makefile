@@ -13,7 +13,7 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: lib/gherkin/parser.js lib/gherkin/dialects.json $(JAVASCRIPT_FILES) dist/gherkin.js dist/gherkin.min.js node_modules/.fetched
+.built: lib/gherkin/parser.js lib/gherkin/dialects.json $(JAVASCRIPT_FILES) dist/gherkin.js dist/gherkin.min.js node_modules/.fetched LICENSE
 	./node_modules/.bin/mocha
 	touch $@
 
@@ -48,19 +48,22 @@ lib/gherkin/parser.js: ../gherkin.berp gherkin-javascript.razor ../bin/berp.exe
 lib/gherkin/dialects.json: ../dialects.json
 	cp $^ $@
 
-dist/gherkin.js: lib/gherkin/parser.js ../LICENSE node_modules/.fetched
+dist/gherkin.js: lib/gherkin/parser.js LICENSE node_modules/.fetched
 	mkdir -p `dirname $@`
 	echo '/*' > $@
-	cat ../LICENSE >> $@
+	cat LICENSE >> $@
 	echo '*/' >> $@
 	./node_modules/.bin/browserify index.js --ignore-missing >> $@
 
 dist/gherkin.min.js: dist/gherkin.js node_modules/.fetched
 	mkdir -p `dirname $@`
 	echo '/*' > $@
-	cat ../LICENSE >> $@
+	cat LICENSE >> $@
 	echo '*/' >> $@
 	./node_modules/.bin/uglifyjs $^ >> $@
+
+LICENSE: ../LICENSE
+	cp $< $@
 
 clean:
 	rm -rf .compared .built acceptance lib/gherkin/parser.js lib/gherkin/dialects.json dist
