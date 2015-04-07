@@ -1,4 +1,4 @@
-var dialects = require('./dialects.json');
+var dialects = require('./gherkin-languages.json');
 var Errors = require('./errors');
 
 module.exports = function TokenMatcher() {

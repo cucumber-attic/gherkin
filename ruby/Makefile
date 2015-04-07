@@ -13,7 +13,7 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: lib/gherkin/parser.rb lib/gherkin/dialects.json $(RUBY_FILES) Gemfile.lock LICENSE
+.built: lib/gherkin/parser.rb lib/gherkin/gherkin-languages.json $(RUBY_FILES) Gemfile.lock LICENSE
 	bundle exec rspec --color
 	touch $@
 
@@ -35,11 +35,11 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
-lib/gherkin/dialects.json: ../dialects.json
+lib/gherkin/gherkin-languages.json: ../gherkin-languages.json
 	cp $^ $@
 
 clean:
-	rm -rf .compared .built acceptance lib/gherkin/parser.rb lib/gherking/dialects.json coverage
+	rm -rf .compared .built acceptance lib/gherkin/parser.rb lib/gherking/gherkin-languages.json coverage
 .PHONY: clean
 
 lib/gherkin/parser.rb: ../gherkin.berp gherkin-ruby.razor ../bin/berp.exe

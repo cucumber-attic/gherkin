@@ -53,7 +53,7 @@ namespace Gherkin
 
         protected virtual Dictionary<string, GherkinLanguageSetting> LoadLanguageSettings()
         {
-            const string languageFileName = "dialects.json";
+            const string languageFileName = "gherkin-languages.json";
             var resourceStream = typeof(GherkinDialectProvider).Assembly.GetManifestResourceStream(typeof(GherkinDialectProvider), languageFileName);
             if (resourceStream == null)
                 throw new InvalidOperationException("Gherkin language resource not found: " + languageFileName);

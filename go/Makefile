@@ -50,7 +50,7 @@ parser.go: ../gherkin.berp parser.go.razor ../bin/berp.exe
 	tail -c +4 $@ > $@.nobom
 	mv $@.nobom $@
 
-dialects_builtin.go: ../dialects.json
+dialects_builtin.go: ../gherkin-languages.json
 	cat $^ | jq '. as $$root | ([to_entries[] | [ \
 	  "\t",(.key|@json),": &GherkinDialect{\n", \
 	  "\t\t", (.key|@json),", ", (.value.name|@json),", ", (.value.native|@json), \
