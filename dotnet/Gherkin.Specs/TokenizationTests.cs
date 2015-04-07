@@ -17,13 +17,7 @@ namespace Gherkin.Specs
             Debug.Assert(featureFileFolder != null);
             var expectedTokensFile = testFeatureFile + ".tokens";
 
-            var parser = new Parser<object>();
-            var tokenFormatterBuilder = new TokenFormatterBuilder();
-            using (var reader = new StreamReader(testFeatureFile))
-                parser.Parse(new TokenScanner(reader), new TokenMatcher(), tokenFormatterBuilder);
-
-            var tokensText = tokenFormatterBuilder.GetTokensText();
-
+            var tokensText = TokensGenerator.TokensGenerator.GenerateTokens(testFeatureFile);
             var expectedTokensText = LineEndingHelper.NormalizeLineEndings(File.ReadAllText(expectedTokensFile));
 
             Assert.AreEqual(expectedTokensText, tokensText);

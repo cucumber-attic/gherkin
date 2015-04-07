@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using Gherkin.AstGenerator;
 
-namespace Gherkin.Specs
+namespace Gherkin.TokensGenerator
 {
-    public class TokenFormatterBuilder : IAstBuilder<object>
+    class TokenFormatterBuilder : IAstBuilder<object>
     {
         private readonly TestTokenFormatter formatter = new TestTokenFormatter();
         private readonly StringBuilder tokensTextBuilder = new StringBuilder();
 
         public string GetTokensText()
         {
-            return LineEndingHelper.NormalizeLineEndings(tokensTextBuilder.ToString());
+            return tokensTextBuilder.ToString();
         }
 
         public void Build(Token token)

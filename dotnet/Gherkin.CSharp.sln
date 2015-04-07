@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.Specs", "Gherkin.Sp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.AstGenerator", "Gherkin.AstGenerator\Gherkin.AstGenerator.csproj", "{D8EAD6E5-CE46-49F8-A750-0523B9FB531E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.TokensTester", "Gherkin.TokensTester\Gherkin.TokensTester.csproj", "{B7311B05-D061-4A82-B8DF-1C1EE65EEA70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.TokensGenerator", "Gherkin.TokensGenerator\Gherkin.TokensGenerator.csproj", "{B7311B05-D061-4A82-B8DF-1C1EE65EEA70}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.NuGetPackages", "Gherkin.NuGetPackages\Gherkin.NuGetPackages.csproj", "{EC40ACB0-A6B9-4776-9078-B1D72D244787}"
 EndProject

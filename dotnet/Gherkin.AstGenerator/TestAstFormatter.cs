@@ -81,10 +81,10 @@ namespace Gherkin.AstGenerator
             result.Append(step.Text);
             result.AppendLine();
 
-            if (step.StepArgument is DocString)
-                FormatDocString((DocString)step.StepArgument, result);
-            else if (step.StepArgument is DataTable)
-                FormatDataTable((DataTable)step.StepArgument, result);
+            if (step.Argument is DocString)
+                FormatDocString((DocString)step.Argument, result);
+            else if (step.Argument is DataTable)
+                FormatDataTable((DataTable)step.Argument, result);
         }
 
         private void FormatDocString(DocString docString, StringBuilder result)

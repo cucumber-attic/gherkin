@@ -17,8 +17,8 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
 - [x] Make the Parser.parse() return a generic type
   - [x] C#
   - [x] Java
-- [ ] Use JSON as the primary representation of the AST for comparison
-  - [ ] C#
+- [x] Use JSON as the primary representation of the AST for comparison
+  - [x] C#
   - [x] Ruby
   - [x] JavaScript
   - [x] Java
