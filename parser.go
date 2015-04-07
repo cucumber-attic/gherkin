@@ -371,9 +371,9 @@ func (ctxt *parseContext) matchAt_0(line *Line) (newState int, err error) {
     // var stateComment = "State: 0 - Start"
     var expectedTokens = []string{"#Language", "#TagLine", "#FeatureLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -405,9 +405,9 @@ func (ctxt *parseContext) matchAt_1(line *Line) (newState int, err error) {
     // var stateComment = "State: 1 - Feature:0>Feature_Header:0>#Language:0"
     var expectedTokens = []string{"#TagLine", "#FeatureLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -439,9 +439,9 @@ func (ctxt *parseContext) matchAt_2(line *Line) (newState int, err error) {
     // var stateComment = "State: 2 - Feature:0>Feature_Header:1>Tags:0>#TagLine:0"
     var expectedTokens = []string{"#TagLine", "#FeatureLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -501,9 +501,9 @@ func (ctxt *parseContext) matchAt_3(line *Line) (newState int, err error) {
     // var stateComment = "State: 3 - Feature:0>Feature_Header:2>#FeatureLine:0"
     var expectedTokens = []string{"#EOF", "#Empty", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -564,9 +564,9 @@ func (ctxt *parseContext) matchAt_4(line *Line) (newState int, err error) {
     // var stateComment = "State: 4 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0"
     var expectedTokens = []string{"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -621,9 +621,9 @@ func (ctxt *parseContext) matchAt_5(line *Line) (newState int, err error) {
     // var stateComment = "State: 5 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0"
     var expectedTokens = []string{"#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -682,9 +682,9 @@ func (ctxt *parseContext) matchAt_6(line *Line) (newState int, err error) {
     // var stateComment = "State: 6 - Feature:1>Background:0>#BackgroundLine:0"
     var expectedTokens = []string{"#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -744,9 +744,9 @@ func (ctxt *parseContext) matchAt_7(line *Line) (newState int, err error) {
     // var stateComment = "State: 7 - Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0"
     var expectedTokens = []string{"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -800,9 +800,9 @@ func (ctxt *parseContext) matchAt_8(line *Line) (newState int, err error) {
     // var stateComment = "State: 8 - Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0"
     var expectedTokens = []string{"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -871,9 +871,9 @@ func (ctxt *parseContext) matchAt_9(line *Line) (newState int, err error) {
     // var stateComment = "State: 9 - Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0"
     var expectedTokens = []string{"#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -941,9 +941,9 @@ func (ctxt *parseContext) matchAt_10(line *Line) (newState int, err error) {
     // var stateComment = "State: 10 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0"
     var expectedTokens = []string{"#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -982,9 +982,9 @@ func (ctxt *parseContext) matchAt_11(line *Line) (newState int, err error) {
     // var stateComment = "State: 11 - Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0"
     var expectedTokens = []string{"#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1047,9 +1047,9 @@ func (ctxt *parseContext) matchAt_12(line *Line) (newState int, err error) {
     // var stateComment = "State: 12 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0"
     var expectedTokens = []string{"#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1113,9 +1113,9 @@ func (ctxt *parseContext) matchAt_13(line *Line) (newState int, err error) {
     // var stateComment = "State: 13 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0"
     var expectedTokens = []string{"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1173,9 +1173,9 @@ func (ctxt *parseContext) matchAt_14(line *Line) (newState int, err error) {
     // var stateComment = "State: 14 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0"
     var expectedTokens = []string{"#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1248,9 +1248,9 @@ func (ctxt *parseContext) matchAt_15(line *Line) (newState int, err error) {
     // var stateComment = "State: 15 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0"
     var expectedTokens = []string{"#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1322,9 +1322,9 @@ func (ctxt *parseContext) matchAt_16(line *Line) (newState int, err error) {
     // var stateComment = "State: 16 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0"
     var expectedTokens = []string{"#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1368,9 +1368,9 @@ func (ctxt *parseContext) matchAt_17(line *Line) (newState int, err error) {
     // var stateComment = "State: 17 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0"
     var expectedTokens = []string{"#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1413,9 +1413,9 @@ func (ctxt *parseContext) matchAt_18(line *Line) (newState int, err error) {
     // var stateComment = "State: 18 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0"
     var expectedTokens = []string{"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1454,9 +1454,9 @@ func (ctxt *parseContext) matchAt_19(line *Line) (newState int, err error) {
     // var stateComment = "State: 19 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0"
     var expectedTokens = []string{"#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1508,9 +1508,9 @@ func (ctxt *parseContext) matchAt_20(line *Line) (newState int, err error) {
     // var stateComment = "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0"
     var expectedTokens = []string{"#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1559,9 +1559,9 @@ func (ctxt *parseContext) matchAt_21(line *Line) (newState int, err error) {
     // var stateComment = "State: 21 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0"
     var expectedTokens = []string{"#TableRow", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1593,9 +1593,9 @@ func (ctxt *parseContext) matchAt_22(line *Line) (newState int, err error) {
     // var stateComment = "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0"
     var expectedTokens = []string{"#TagLine", "#ExamplesLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1627,9 +1627,9 @@ func (ctxt *parseContext) matchAt_23(line *Line) (newState int, err error) {
     // var stateComment = "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0"
     var expectedTokens = []string{"#Empty", "#Comment", "#TableRow", "#Other"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1658,9 +1658,9 @@ func (ctxt *parseContext) matchAt_24(line *Line) (newState int, err error) {
     // var stateComment = "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0"
     var expectedTokens = []string{"#Comment", "#TableRow", "#Other"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1687,9 +1687,9 @@ func (ctxt *parseContext) matchAt_25(line *Line) (newState int, err error) {
     // var stateComment = "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0"
     var expectedTokens = []string{"#Comment", "#TableRow", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1716,9 +1716,9 @@ func (ctxt *parseContext) matchAt_26(line *Line) (newState int, err error) {
     // var stateComment = "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>#TableRow:0"
     var expectedTokens = []string{"#TableRow", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1794,9 +1794,9 @@ func (ctxt *parseContext) matchAt_27(line *Line) (newState int, err error) {
     // var stateComment = "State: 27 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:4>#TableRow:0"
     var expectedTokens = []string{"#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1819,9 +1819,9 @@ func (ctxt *parseContext) matchAt_29(line *Line) (newState int, err error) {
     // var stateComment = "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
     var expectedTokens = []string{"#DocStringSeparator", "#Other"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1866,9 +1866,9 @@ func (ctxt *parseContext) matchAt_30(line *Line) (newState int, err error) {
     // var stateComment = "State: 30 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
     var expectedTokens = []string{"#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1891,9 +1891,9 @@ func (ctxt *parseContext) matchAt_31(line *Line) (newState int, err error) {
     // var stateComment = "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
     var expectedTokens = []string{"#DocStringSeparator", "#Other"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1961,9 +1961,9 @@ func (ctxt *parseContext) matchAt_32(line *Line) (newState int, err error) {
     // var stateComment = "State: 32 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
     var expectedTokens = []string{"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1986,9 +1986,9 @@ func (ctxt *parseContext) matchAt_33(line *Line) (newState int, err error) {
     // var stateComment = "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
     var expectedTokens = []string{"#DocStringSeparator", "#Other"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -2052,9 +2052,9 @@ func (ctxt *parseContext) matchAt_34(line *Line) (newState int, err error) {
     // var stateComment = "State: 34 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
     var expectedTokens = []string{"#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}
     if line.IsEof() {
-      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.lineNumber, strings.Join(expectedTokens,", "))
+      err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.lineNumber, strings.Join(expectedTokens,", "), line.lineText,
+      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
