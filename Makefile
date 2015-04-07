@@ -20,7 +20,6 @@ add-remote-%: %
 push-subtrees: $(patsubst %/Makefile,push-subtree-%,$(MAKEFILES))
 .PHONY: push-subtrees
 push-subtree-%: % add-remote-%
-	NAME=$(patsubst push-subtree-%,%,$@)
 	git subtree push --prefix=$< gherkin-$< master
 
 pull-subtrees: $(patsubst %/Makefile,pull-subtree-%,$(MAKEFILES))
