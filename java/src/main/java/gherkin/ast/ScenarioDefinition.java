@@ -34,4 +34,8 @@ public abstract class ScenarioDefinition extends Node {
     public List<Step> getSteps() {
         return steps;
     }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
 }

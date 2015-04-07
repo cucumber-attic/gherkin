@@ -1,10 +1,10 @@
-package gherkin.ast;
+package pickles;
 
-public class Location {
+public class PickleLocation {
     private final int line;
     private final int column;
 
-    public Location(int line, int column) {
+    public PickleLocation(int line, int column) {
         this.line = line;
         this.column = column;
     }

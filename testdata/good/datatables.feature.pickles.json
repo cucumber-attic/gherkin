@@ -1,7 +1,13 @@
 [
   {
     "name": "Scenario: minimalistic",
-    "pickledSteps": [
+    "source": [
+      {
+        "column": 3,
+        "line": 3
+      }
+    ],
+    "steps": [
       {
         "argument": {
           "rows": [
@@ -15,13 +21,13 @@
             ]
           ]
         },
-        "name": "a simple data table",
         "source": [
           {
             "column": 5,
             "line": 4
           }
-        ]
+        ],
+        "text": "a simple data table"
       },
       {
         "argument": {
@@ -31,13 +37,13 @@
             ]
           ]
         },
-        "name": "a data table with a single cell",
         "source": [
           {
             "column": 5,
             "line": 7
           }
-        ]
+        ],
+        "text": "a data table with a single cell"
       },
       {
         "argument": {
@@ -49,13 +55,13 @@
             ]
           ]
         },
-        "name": "a data table with different fromatting",
         "source": [
           {
             "column": 5,
             "line": 9
           }
-        ]
+        ],
+        "text": "a data table with different fromatting"
       },
       {
         "argument": {
@@ -67,13 +73,13 @@
             ]
           ]
         },
-        "name": "a data table with an empty cell",
         "source": [
           {
             "column": 5,
             "line": 11
           }
-        ]
+        ],
+        "text": "a data table with an empty cell"
       },
       {
         "argument": {
@@ -92,20 +98,15 @@
             ]
           ]
         },
-        "name": "a data table with comments and newlines inside",
         "source": [
           {
             "column": 5,
             "line": 13
           }
-        ]
+        ],
+        "text": "a data table with comments and newlines inside"
       }
     ],
-    "source": [
-      {
-        "column": 3,
-        "line": 3
-      }
-    ]
+    "tags": []
   }
 ]
