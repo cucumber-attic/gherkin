@@ -69,8 +69,6 @@
     <Compile Include="SuccessfulParsingTests.cs" />
     <Compile Include="TestFileProvider.cs" />
     <Compile Include="TestFolders.cs" />
-    <Compile Include="TestTokenFormatter.cs" />
-    <Compile Include="TokenFormatterBuilder.cs" />
     <Compile Include="TokenizationTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +78,10 @@
     <ProjectReference Include="..\Gherkin.AstGenerator\Gherkin.AstGenerator.csproj">
       <Project>{d8ead6e5-ce46-49f8-a750-0523b9fb531e}</Project>
       <Name>Gherkin.AstGenerator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gherkin.TokensGenerator\Gherkin.TokensGenerator.csproj">
+      <Project>{b7311b05-d061-4a82-b8df-1c1ee65eea70}</Project>
+      <Name>Gherkin.TokensGenerator</Name>
     </ProjectReference>
     <ProjectReference Include="..\Gherkin\Gherkin.csproj">
       <Project>{370982b4-9938-4533-8ea1-6f9044b84130}</Project>

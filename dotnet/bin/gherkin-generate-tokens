@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-mono --runtime=v4.0 $DIR/../Gherkin.TokensTester/bin/Debug/Gherkin.TokensTester.exe $*
+mono --runtime=v4.0 $DIR/../Gherkin.TokensGenerator/bin/Debug/Gherkin.TokensGenerator.exe $*
