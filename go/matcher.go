@@ -43,7 +43,7 @@ func (m *matcher) newTokenAtLocation(line, index int) (token *Token) {
 
 func (m *matcher) MatchEOF(line *Line) (ok bool, token *Token, err error) {
 	if line.IsEof() {
-		token, ok = m.newTokenAtLocation(line.lineNumber, line.Indent()), true
+		token, ok = m.newTokenAtLocation(line.LineNumber, line.Indent()), true
 		token.Type = TokenType_EOF
 	}
 	return
@@ -51,7 +51,7 @@ func (m *matcher) MatchEOF(line *Line) (ok bool, token *Token, err error) {
 
 func (m *matcher) MatchEmpty(line *Line) (ok bool, token *Token, err error) {
 	if line.IsEmpty() {
-		token, ok = m.newTokenAtLocation(line.lineNumber, line.Indent()), true
+		token, ok = m.newTokenAtLocation(line.LineNumber, line.Indent()), true
 		token.Type = TokenType_Empty
 	}
 	return
@@ -59,9 +59,9 @@ func (m *matcher) MatchEmpty(line *Line) (ok bool, token *Token, err error) {
 
 func (m *matcher) MatchComment(line *Line) (ok bool, token *Token, err error) {
 	if line.StartsWith(COMMENT_PREFIX) {
-		token, ok = m.newTokenAtLocation(line.lineNumber, 0), true
+		token, ok = m.newTokenAtLocation(line.LineNumber, 0), true
 		token.Type = TokenType_Comment
-		token.Text = line.lineText
+		token.Text = line.LineText
 	}
 	return
 }
@@ -70,7 +70,7 @@ func (m *matcher) MatchTagLine(line *Line) (ok bool, token *Token, err error) {
 	if line.StartsWith(TAG_PREFIX) {
 		var tags []*LineSpan
 		var column = line.Indent()
-		splits := strings.Split(line.trimmedLineText, TAG_PREFIX)
+		splits := strings.Split(line.TrimmedLineText, TAG_PREFIX)
 		for i := range splits {
 			txt := strings.Trim(splits[i], " ")
 			if txt != "" {
@@ -79,7 +79,7 @@ func (m *matcher) MatchTagLine(line *Line) (ok bool, token *Token, err error) {
 			column = column + len(splits[i]) + 1
 		}
 
-		token, ok = m.newTokenAtLocation(line.lineNumber, line.Indent()), true
+		token, ok = m.newTokenAtLocation(line.LineNumber, line.Indent()), true
 		token.Type = TokenType_TagLine
 		token.Items = tags
 	}
@@ -90,10 +90,10 @@ func (m *matcher) matchTitleLine(line *Line, tokenType TokenType, keywords []str
 	for i := range keywords {
 		keyword := keywords[i]
 		if line.StartsWith(keyword + TITLE_KEYWORD_SEPARATOR) {
-			token, ok = m.newTokenAtLocation(line.lineNumber, line.Indent()), true
+			token, ok = m.newTokenAtLocation(line.LineNumber, line.Indent()), true
 			token.Type = tokenType
 			token.Keyword = keyword
-			token.Text = strings.Trim(line.trimmedLineText[len(keyword)+1:], " ")
+			token.Text = strings.Trim(line.TrimmedLineText[len(keyword)+1:], " ")
 			return
 		}
 	}
@@ -120,10 +120,10 @@ func (m *matcher) MatchStepLine(line *Line) (ok bool, token *Token, err error) {
 	for i := range keywords {
 		keyword := keywords[i]
 		if line.StartsWith(keyword) {
-			token, ok = m.newTokenAtLocation(line.lineNumber, line.Indent()), true
+			token, ok = m.newTokenAtLocation(line.LineNumber, line.Indent()), true
 			token.Type = TokenType_StepLine
 			token.Keyword = keyword
-			token.Text = strings.Trim(line.trimmedLineText[len(keyword):], " ")
+			token.Text = strings.Trim(line.TrimmedLineText[len(keyword):], " ")
 			return
 		}
 	}
@@ -134,7 +134,7 @@ func (m *matcher) MatchDocStringSeparator(line *Line) (ok bool, token *Token, er
 	if m.activeDocStringSeparator != "" {
 		if line.StartsWith(m.activeDocStringSeparator) {
 			// close
-			token, ok = m.newTokenAtLocation(line.lineNumber, line.Indent()), true
+			token, ok = m.newTokenAtLocation(line.LineNumber, line.Indent()), true
 			token.Type = TokenType_DocStringSeparator
 
 			m.indentToRemove = 0
@@ -149,9 +149,9 @@ func (m *matcher) MatchDocStringSeparator(line *Line) (ok bool, token *Token, er
 	}
 	if m.activeDocStringSeparator != "" {
 		// open
-		contentType := line.trimmedLineText[len(m.activeDocStringSeparator):]
+		contentType := line.TrimmedLineText[len(m.activeDocStringSeparator):]
 		m.indentToRemove = line.Indent()
-		token, ok = m.newTokenAtLocation(line.lineNumber, line.Indent()), true
+		token, ok = m.newTokenAtLocation(line.LineNumber, line.Indent()), true
 		token.Type = TokenType_DocStringSeparator
 		token.Text = contentType
 	}
@@ -162,7 +162,7 @@ func (m *matcher) MatchTableRow(line *Line) (ok bool, token *Token, err error) {
 	if line.StartsWith(TABLE_CELL_SEPARATOR) {
 		var cells []*LineSpan
 		var column = line.Indent() + 1
-		ttxt := strings.Trim(line.trimmedLineText, " ")
+		ttxt := strings.Trim(line.TrimmedLineText, " ")
 		splits := strings.Split(ttxt[1:len(ttxt)-1], TABLE_CELL_SEPARATOR)
 		for i := range splits {
 			ind := 0
@@ -177,7 +177,7 @@ func (m *matcher) MatchTableRow(line *Line) (ok bool, token *Token, err error) {
 			column = column + len(txt) + 1
 		}
 
-		token, ok = m.newTokenAtLocation(line.lineNumber, line.Indent()), true
+		token, ok = m.newTokenAtLocation(line.LineNumber, line.Indent()), true
 		token.Type = TokenType_TableRow
 		token.Items = cells
 	}
@@ -185,10 +185,10 @@ func (m *matcher) MatchTableRow(line *Line) (ok bool, token *Token, err error) {
 }
 
 func (m *matcher) MatchLanguage(line *Line) (ok bool, token *Token, err error) {
-	matches := m.languagePattern.FindStringSubmatch(line.trimmedLineText)
+	matches := m.languagePattern.FindStringSubmatch(line.TrimmedLineText)
 	if len(matches) > 0 {
 		lang := matches[1]
-		token, ok = m.newTokenAtLocation(line.lineNumber, line.Indent()), true
+		token, ok = m.newTokenAtLocation(line.LineNumber, line.Indent()), true
 		token.Type = TokenType_Language
 		token.Text = lang
 
@@ -204,10 +204,10 @@ func (m *matcher) MatchLanguage(line *Line) (ok bool, token *Token, err error) {
 }
 
 func (m *matcher) MatchOther(line *Line) (ok bool, token *Token, err error) {
-	token, ok = m.newTokenAtLocation(line.lineNumber, 0), true
+	token, ok = m.newTokenAtLocation(line.LineNumber, 0), true
 	token.Type = TokenType_Other
 
-	txt := line.lineText
+	txt := line.LineText
 	var ind int
 	for k := range txt {
 		if txt[k:k+1] != " " {

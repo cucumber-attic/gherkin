@@ -89,26 +89,26 @@ func (t *scanner) Scan() (line *Line, atEof bool, err error) {
 }
 
 type Line struct {
-	lineText        string
-	lineNumber      int
-	trimmedLineText string
-	atEof           bool
+	LineText        string
+	LineNumber      int
+	TrimmedLineText string
+	AtEof           bool
 }
 
 func (g *Line) Indent() int {
-	return len(g.lineText) - len(g.trimmedLineText)
+	return len(g.LineText) - len(g.TrimmedLineText)
 }
 
 func (g *Line) IsEmpty() bool {
-	return len(g.trimmedLineText) == 0
+	return len(g.TrimmedLineText) == 0
 }
 
 func (g *Line) IsEof() bool {
-	return g.atEof
+	return g.AtEof
 }
 
 func (g *Line) StartsWith(prefix string) bool {
-	return strings.HasPrefix(g.trimmedLineText, prefix)
+	return strings.HasPrefix(g.TrimmedLineText, prefix)
 }
 
 func ParseFeature(in io.Reader) (feature *Feature, err error) {
