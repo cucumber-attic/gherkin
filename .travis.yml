@@ -1,0 +1,17 @@
+language: csharp
+mono: latest
+
+before_install:
+  - export EnableNuGetPackageRestore=true
+
+script: "xbuild /p:Configuration=Debug"
+
+branches:
+  only:
+    - master
+
+notifications:
+  email:
+    - cukes-devs@googlegroups.com
+  irc:
+    - "irc.freenode.org#cucumber"
