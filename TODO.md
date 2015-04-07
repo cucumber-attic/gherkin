@@ -41,3 +41,4 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
   - [x] Ruby
   - [x] JavaScript
   - [x] Java
+- [ ] Store comments in AST. Feature has a `comments` array of `{"type": "Comment", ...}`. Needed for pretty printing.
