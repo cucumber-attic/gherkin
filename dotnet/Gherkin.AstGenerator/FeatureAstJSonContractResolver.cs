@@ -15,9 +15,6 @@ namespace Gherkin.AstGenerator
             if (propertyName.Equals("title", StringComparison.InvariantCultureIgnoreCase))
                 return "name";
 
-            if (propertyName.Equals("text", StringComparison.InvariantCultureIgnoreCase))
-                return "name";
-
             return base.ResolvePropertyName(propertyName);
         }
 
