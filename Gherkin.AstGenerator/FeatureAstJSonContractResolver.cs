@@ -47,39 +47,5 @@ namespace Gherkin.AstGenerator
             var defaultConverter = base.ResolveContractConverter(objectType);
             return defaultConverter;
         }
-
-        class HandleEmptyStepArgumentValueProvider : IValueProvider
-        {
-            private readonly IValueProvider baseValueProvider;
-
-            public HandleEmptyStepArgumentValueProvider(IValueProvider baseValueProvider)
-            {
-                this.baseValueProvider = baseValueProvider;
-            }
-
-            public void SetValue(object target, object value)
-            {
-                baseValueProvider.SetValue(target, value);
-            }
-
-            public object GetValue(object target)
-            {
-                var step = (Step)target;
-                if (step.Argument is EmptyStepArgument)
-                    return null;
-
-                return baseValueProvider.GetValue(target);
-            }
-        }
-
-        protected override IValueProvider CreateMemberValueProvider(MemberInfo member)
-        {
-            if (member.Name == "Argument")
-            {
-                return new HandleEmptyStepArgumentValueProvider(base.CreateMemberValueProvider(member));
-            }
-
-            return base.CreateMemberValueProvider(member);
-        }
     }
 }

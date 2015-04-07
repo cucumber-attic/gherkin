@@ -46,7 +46,7 @@ namespace Gherkin
                     var stepLine = node.GetToken(TokenType.StepLine);
                     var stepArg = node.GetSingle<StepArgument>(RuleType.DataTable) ??
                                   node.GetSingle<StepArgument>(RuleType.DocString) ??
-                                  new EmptyStepArgument();
+                                  null; // empty arg
                     return new Step(GetLocation(stepLine), stepLine.MatchedKeyword, stepLine.MatchedText, stepArg);
                 }
                 case RuleType.DocString:
