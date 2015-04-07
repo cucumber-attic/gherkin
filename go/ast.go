@@ -21,10 +21,6 @@ type Feature struct {
 	ScenarioDefinitions []interface{} `json:"scenarioDefinitions"`
 }
 
-func (f *Feature) DescribeTo(v Visitor) {
-	v.VisitFeature(f)
-}
-
 type Tag struct {
 	Node
 	Location *Location `json:"location,omitempty"`
@@ -35,27 +31,15 @@ type Background struct {
 	ScenarioDefinition
 }
 
-func (b *Background) DescribeTo(v Visitor) {
-	v.VisitBackground(b)
-}
-
 type Scenario struct {
 	ScenarioDefinition
 	Tags []*Tag `json:"tags"`
-}
-
-func (s *Scenario) DescribeTo(v Visitor) {
-	v.VisitScenario(s)
 }
 
 type ScenarioOutline struct {
 	ScenarioDefinition
 	Tags     []*Tag      `json:"tags"`
 	Examples []*Examples `json:"examples,omitempty"`
-}
-
-func (s *ScenarioOutline) DescribeTo(v Visitor) {
-	v.VisitScenarioOutline(s)
 }
 
 type Examples struct {
@@ -65,10 +49,6 @@ type Examples struct {
 	Name        string      `json:"name"`
 	Description string      `json:"description,omitempty"`
 	Rows        []*TableRow `json:"rows"`
-}
-
-func (e *Examples) DescribeTo(v Visitor) {
-	v.VisitExamples(e)
 }
 
 type TableRow struct {
@@ -96,10 +76,6 @@ type Step struct {
 	Argument interface{} `json:"argument,omitempty"`
 }
 
-func (s *Step) DescribeTo(v Visitor) {
-	v.VisitStep(s)
-}
-
 type DocString struct {
 	Node
 	ContentType string `json:"contentType"`
@@ -110,25 +86,4 @@ type DocString struct {
 type DataTable struct {
 	Node
 	Rows []*TableRow `json:"rows"`
-}
-
-type HasTags interface {
-	Tags() []*Tag
-}
-
-type HasSteps interface {
-	Steps() []*Step
-}
-
-type DescribesItself interface {
-	DescribeTo(Visitor)
-}
-
-type Visitor interface {
-	VisitFeature(*Feature)
-	VisitBackground(*Background)
-	VisitScenario(*Scenario)
-	VisitScenarioOutline(*ScenarioOutline)
-	VisitExamples(*Examples)
-	VisitStep(*Step)
 }
