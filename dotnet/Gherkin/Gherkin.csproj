@@ -51,7 +51,6 @@
     <Compile Include="Ast\Background.cs" />
     <Compile Include="Ast\DataTable.cs" />
     <Compile Include="Ast\DocString.cs" />
-    <Compile Include="Ast\EmptyStepArgument.cs" />
     <Compile Include="Ast\Examples.cs" />
     <Compile Include="Ast\Feature.cs" />
     <Compile Include="Ast\IHasDescription.cs" />
