@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	gherkin3 "github.com/cucumber/go-gherkin3"
+	gherkin3 "../"
 )
 
 func main() {
