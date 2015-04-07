@@ -2,7 +2,7 @@
 // This file is generated. Do not edit! Edit gherkin-golang.razor instead.
 
 // 
-package gherkin3;
+package gherkin;
 
 import (
   "fmt"
