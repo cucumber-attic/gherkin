@@ -14,7 +14,7 @@ all: .compared
 .compared: .built $(PICKLES) $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: src/main/java/gherkin/Parser.java src/main/resources/gherkin/dialects.json $(JAVA_FILES) LICENSE
+.built: src/main/java/gherkin/Parser.java src/main/resources/gherkin/gherkin-languages.json $(JAVA_FILES) LICENSE
 	mvn test
 	touch $@
 
@@ -49,7 +49,7 @@ src/main/java/gherkin/Parser.java: ../gherkin.berp gherkin-java.razor ../bin/ber
 	tail -c +4 $@ > $@.nobom
 	mv $@.nobom $@
 
-src/main/resources/gherkin/dialects.json: ../dialects.json
+src/main/resources/gherkin/gherkin-languages.json: ../gherkin-languages.json
 	mkdir -p `dirname $@`
 	cp $^ $@
 
@@ -57,5 +57,5 @@ LICENSE: ../LICENSE
 	cp $< $@
 
 clean:
-	rm -rf .compared .built acceptance target src/main/resources/gherkin/dialects.json
+	rm -rf .compared .built acceptance target src/main/resources/gherkin/gherkin-languages.json
 .PHONY: clean

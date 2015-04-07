@@ -15,7 +15,7 @@ public class GherkinDialectProvider implements IGherkinDialectProvider {
     static {
         Gson gson = new Gson();
         try {
-            Reader dialects = new InputStreamReader(GherkinDialectProvider.class.getResourceAsStream("dialects.json"), "UTF-8");
+            Reader dialects = new InputStreamReader(GherkinDialectProvider.class.getResourceAsStream("gherkin-languages.json"), "UTF-8");
             DIALECTS = gson.fromJson(dialects, Map.class);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
