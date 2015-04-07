@@ -26,13 +26,13 @@ acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.featur
 
 acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json .built
 	mkdir -p `dirname $@`
-	bin/gherkin-generate-ast-text $< > $@
+	bin/gherkin-generate-ast $< | jq --sort-keys "." > $@
 	diff --unified $<.ast.json $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
 
 acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors .built
 	mkdir -p `dirname $@`
-	! bin/gherkin-generate-ast-text $< > $@
+	! bin/gherkin-generate-ast $< > $@
 	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
