@@ -121,7 +121,7 @@ func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {
 		step.Type = "Step"
 		step.Location = astLocation(stepLine)
 		step.Keyword = stepLine.Keyword
-		step.Name = stepLine.Text
+		step.Text = stepLine.Text
 		step.Argument = node.getSingle(RuleType_DataTable)
 		if step.Argument == nil {
 			step.Argument = node.getSingle(RuleType_DocString)
