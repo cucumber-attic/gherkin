@@ -15,6 +15,7 @@ namespace Gherkin.AstGenerator
                 throw new InvalidOperationException("parser returned null");
 
             var jsonSerializerSettings = new JsonSerializerSettings();
+            jsonSerializerSettings.Formatting = Formatting.Indented;
             jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             jsonSerializerSettings.ContractResolver = new FeatureAstJSonContractResolver();
             var astText = JsonConvert.SerializeObject(parsingResult, jsonSerializerSettings);
