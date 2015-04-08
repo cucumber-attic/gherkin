@@ -49,8 +49,23 @@ namespace Gherkin
         {
         }
     }
-    
-    public class UnexpectedTokenException : ParserException
+
+    public abstract class TokenParserException : ParserException
+    {
+        protected TokenParserException(string message, Token receivedToken)
+            : base(message, GetLocation(receivedToken))
+        {
+        }
+
+        private static Location GetLocation(Token receivedToken)
+        {
+            return receivedToken.IsEOF || receivedToken.Location.Column > 1
+                ? receivedToken.Location
+                : new Location(receivedToken.Location.Line, receivedToken.Line.Indent + 1);
+        }
+    }
+
+    public class UnexpectedTokenException : TokenParserException
     {
         public string StateComment { get; private set; }
 
@@ -58,7 +73,7 @@ namespace Gherkin
         public string[] ExpectedTokenTypes { get; private set; }
 
         public UnexpectedTokenException(Token receivedToken, string[] expectedTokenTypes, string stateComment)
-            : base(GetMessage(receivedToken, expectedTokenTypes), receivedToken.Location)
+            : base(GetMessage(receivedToken, expectedTokenTypes), receivedToken)
         {
             if (receivedToken == null) throw new ArgumentNullException("receivedToken");
             if (expectedTokenTypes == null) throw new ArgumentNullException("expectedTokenTypes");
@@ -79,12 +94,12 @@ namespace Gherkin
         }
     }
 
-    public class UnexpectedEOFException : ParserException
+    public class UnexpectedEOFException : TokenParserException
     {
         public string StateComment { get; private set; }
         public string[] ExpectedTokenTypes { get; private set; }
         public UnexpectedEOFException(Token receivedToken, string[] expectedTokenTypes, string stateComment)
-            : base(GetMessage(expectedTokenTypes), receivedToken.Location)
+            : base(GetMessage(expectedTokenTypes), receivedToken)
         {
             if (expectedTokenTypes == null) throw new ArgumentNullException("expectedTokenTypes");
 
