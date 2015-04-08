@@ -3,7 +3,8 @@ MAKEFILES=$(wildcard */Makefile)
 
 all: $(patsubst %/Makefile,%/.compared,$(MAKEFILES))
 .PHONY: all
-%/.compared: %
+
+%/.compared: % gherkin-languages.json gherkin.berp
 	cd $< && make
 
 clean: $(patsubst %/Makefile,clean-%,$(MAKEFILES))
