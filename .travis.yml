@@ -1,3 +1,4 @@
 language: go
 
-script: "go build -o bin/gherkin-generate-ast ./gherkin-generate-ast && echo 'Feature: test' | bin/gherkin-generate-ast"
+script:
+  - "go test -v ./..."
