@@ -19,6 +19,13 @@ type Feature struct {
 	Description         string        `json:"description,omitempty"`
 	Background          *Background   `json:"background,omitempty"`
 	ScenarioDefinitions []interface{} `json:"scenarioDefinitions"`
+	Comments            []*Comment    `json:"comments"`
+}
+
+type Comment struct {
+	Node
+	Location *Location `json:"location,omitempty"`
+	Text     string    `json:"text"`
 }
 
 type Tag struct {
