@@ -84,6 +84,7 @@ func newAstNode(rt RuleType) *astNode {
 
 func NewAstBuilder() AstBuilder {
 	builder := new(astBuilder)
+	builder.comments = []*Comment{}
 	builder.push(newAstNode(RuleType_None))
 	return builder
 }
@@ -267,7 +268,6 @@ func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {
 		feat.Description = description
 		feat.Background = background
 		feat.ScenarioDefinitions = scenarioDefinitions
-
 		feat.Comments = t.comments
 		return feat, nil
 	}
