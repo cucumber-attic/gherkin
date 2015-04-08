@@ -11,6 +11,7 @@ public class Feature extends Node {
     private final String description;
     private final Background background;
     private final List<ScenarioDefinition> scenarioDefinitions;
+    private final List<Comment> comments;
 
     public Feature(
             List<Tag> tags,
@@ -20,8 +21,8 @@ public class Feature extends Node {
             String name,
             String description,
             Background background,
-            List<ScenarioDefinition> scenarioDefinitions
-    ) {
+            List<ScenarioDefinition> scenarioDefinitions,
+            List<Comment> comments) {
         super(location);
         this.tags = Collections.unmodifiableList(tags);
         this.language = language;
@@ -30,6 +31,7 @@ public class Feature extends Node {
         this.description = description;
         this.background = background;
         this.scenarioDefinitions = Collections.unmodifiableList(scenarioDefinitions);
+        this.comments = Collections.unmodifiableList(comments);
     }
 
     public List<ScenarioDefinition> getScenarioDefinitions() {
@@ -58,5 +60,9 @@ public class Feature extends Node {
 
     public List<Tag> getTags() {
         return tags;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 }
