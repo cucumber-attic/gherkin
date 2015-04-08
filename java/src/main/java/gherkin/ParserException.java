@@ -41,7 +41,7 @@ public class ParserException extends RuntimeException {
         public final List<String> expectedTokenTypes;
 
         public UnexpectedTokenException(Token receivedToken, List<String> expectedTokenTypes, String stateComment) {
-            super(getMessage(receivedToken, expectedTokenTypes), receivedToken.location);
+            super(getMessage(receivedToken, expectedTokenTypes), getLocation(receivedToken));
             this.receivedToken = receivedToken;
             this.expectedTokenTypes = expectedTokenTypes;
             this.stateComment = stateComment;
@@ -51,6 +51,12 @@ public class ParserException extends RuntimeException {
             return String.format("expected: %s, got '%s'",
                     StringUtils.join(", ", expectedTokenTypes),
                     receivedToken.getTokenValue().trim());
+        }
+
+        private static Location getLocation(Token receivedToken) {
+            return receivedToken.location.getColumn() > 1 
+                ? receivedToken.location
+                : new Location(receivedToken.location.getLine(), receivedToken.line.indent() + 1);
         }
     }
 
