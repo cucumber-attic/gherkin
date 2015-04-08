@@ -25,8 +25,9 @@ module Gherkin
     :Background, # Background! := #BackgroundLine Background_Description Scenario_Step*
     :Scenario_Definition, # Scenario_Definition! := Tags? (Scenario | ScenarioOutline)
     :Scenario, # Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
-    :ScenarioOutline, # ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples+
-    :Examples, # Examples! [#Empty|#Comment|#TagLine-&gt;#ExamplesLine] := Tags? #ExamplesLine Examples_Description #TableRow #TableRow+
+    :ScenarioOutline, # ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples_Definition+
+    :Examples_Definition, # Examples_Definition! [#Empty|#Comment|#TagLine-&gt;#ExamplesLine] := Tags? Examples
+    :Examples, # Examples! := #ExamplesLine Examples_Description #TableRow #TableRow+
     :Scenario_Step, # Scenario_Step := Step
     :ScenarioOutline_Step, # ScenarioOutline_Step := Step
     :Step, # Step! := #StepLine Step_Arg?
@@ -1210,12 +1211,13 @@ module Gherkin
         return 20
       end
       if match_TagLine(context, token)
-        start_rule(context, :Examples);
+        start_rule(context, :Examples_Definition);
         start_rule(context, :Tags);
         build(context, token);
         return 22
       end
       if match_ExamplesLine(context, token)
+        start_rule(context, :Examples_Definition);
         start_rule(context, :Examples);
         build(context, token);
         return 23
@@ -1250,13 +1252,14 @@ module Gherkin
       end
       if match_TagLine(context, token)
         end_rule(context, :Description);
-        start_rule(context, :Examples);
+        start_rule(context, :Examples_Definition);
         start_rule(context, :Tags);
         build(context, token);
         return 22
       end
       if match_ExamplesLine(context, token)
         end_rule(context, :Description);
+        start_rule(context, :Examples_Definition);
         start_rule(context, :Examples);
         build(context, token);
         return 23
@@ -1287,12 +1290,13 @@ module Gherkin
         return 20
       end
       if match_TagLine(context, token)
-        start_rule(context, :Examples);
+        start_rule(context, :Examples_Definition);
         start_rule(context, :Tags);
         build(context, token);
         return 22
       end
       if match_ExamplesLine(context, token)
+        start_rule(context, :Examples_Definition);
         start_rule(context, :Examples);
         build(context, token);
         return 23
@@ -1331,13 +1335,14 @@ module Gherkin
       end
       if match_TagLine(context, token)
         end_rule(context, :Step);
-        start_rule(context, :Examples);
+        start_rule(context, :Examples_Definition);
         start_rule(context, :Tags);
         build(context, token);
         return 22
       end
       if match_ExamplesLine(context, token)
         end_rule(context, :Step);
+        start_rule(context, :Examples_Definition);
         start_rule(context, :Examples);
         build(context, token);
         return 23
@@ -1376,7 +1381,7 @@ module Gherkin
       if match_TagLine(context, token)
         end_rule(context, :DataTable);
         end_rule(context, :Step);
-        start_rule(context, :Examples);
+        start_rule(context, :Examples_Definition);
         start_rule(context, :Tags);
         build(context, token);
         return 22
@@ -1384,6 +1389,7 @@ module Gherkin
       if match_ExamplesLine(context, token)
         end_rule(context, :DataTable);
         end_rule(context, :Step);
+        start_rule(context, :Examples_Definition);
         start_rule(context, :Examples);
         build(context, token);
         return 23
@@ -1406,7 +1412,7 @@ module Gherkin
       return 21
     end
 
-    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:0>Tags:0>#TagLine:0
     def match_token_at_22(token, context)
       if match_TagLine(context, token)
         build(context, token);
@@ -1414,6 +1420,7 @@ module Gherkin
       end
       if match_ExamplesLine(context, token)
         end_rule(context, :Tags);
+        start_rule(context, :Examples);
         build(context, token);
         return 23
       end
@@ -1426,7 +1433,7 @@ module Gherkin
         return 22
       end
       
-      state_comment = "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0"
+      state_comment = "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:0>Tags:0>#TagLine:0"
       token.detach
       expected_tokens = ["#TagLine", "#ExamplesLine", "#Comment", "#Empty"]
       error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
@@ -1435,7 +1442,7 @@ module Gherkin
       return 22
     end
 
-    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0
     def match_token_at_23(token, context)
       if match_Empty(context, token)
         build(context, token);
@@ -1455,7 +1462,7 @@ module Gherkin
         return 24
       end
       
-      state_comment = "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0"
+      state_comment = "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0"
       token.detach
       expected_tokens = ["#Empty", "#Comment", "#TableRow", "#Other"]
       error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
@@ -1464,7 +1471,7 @@ module Gherkin
       return 23
     end
 
-    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_24(token, context)
       if match_Comment(context, token)
         end_rule(context, :Description);
@@ -1481,7 +1488,7 @@ module Gherkin
         return 24
       end
       
-      state_comment = "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0"
+      state_comment = "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0"
       token.detach
       expected_tokens = ["#Comment", "#TableRow", "#Other"]
       error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
@@ -1490,7 +1497,7 @@ module Gherkin
       return 24
     end
 
-    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_25(token, context)
       if match_Comment(context, token)
         build(context, token);
@@ -1505,7 +1512,7 @@ module Gherkin
         return 25
       end
       
-      state_comment = "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0"
+      state_comment = "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0"
       token.detach
       expected_tokens = ["#Comment", "#TableRow", "#Empty"]
       error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
@@ -1514,7 +1521,7 @@ module Gherkin
       return 25
     end
 
-    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>#TableRow:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>#TableRow:0
     def match_token_at_26(token, context)
       if match_TableRow(context, token)
         build(context, token);
@@ -1529,7 +1536,7 @@ module Gherkin
         return 26
       end
       
-      state_comment = "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>#TableRow:0"
+      state_comment = "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>#TableRow:0"
       token.detach
       expected_tokens = ["#TableRow", "#Comment", "#Empty"]
       error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
@@ -1538,10 +1545,11 @@ module Gherkin
       return 26
     end
 
-    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:4>#TableRow:0
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:3>#TableRow:0
     def match_token_at_27(token, context)
       if match_EOF(context, token)
         end_rule(context, :Examples);
+        end_rule(context, :Examples_Definition);
         end_rule(context, :ScenarioOutline);
         end_rule(context, :Scenario_Definition);
         build(context, token);
@@ -1554,7 +1562,8 @@ module Gherkin
       if match_TagLine(context, token)
         if lookahead_0(context, token)
         end_rule(context, :Examples);
-        start_rule(context, :Examples);
+        end_rule(context, :Examples_Definition);
+        start_rule(context, :Examples_Definition);
         start_rule(context, :Tags);
         build(context, token);
         return 22
@@ -1562,6 +1571,7 @@ module Gherkin
       end
       if match_TagLine(context, token)
         end_rule(context, :Examples);
+        end_rule(context, :Examples_Definition);
         end_rule(context, :ScenarioOutline);
         end_rule(context, :Scenario_Definition);
         start_rule(context, :Scenario_Definition);
@@ -1571,12 +1581,15 @@ module Gherkin
       end
       if match_ExamplesLine(context, token)
         end_rule(context, :Examples);
+        end_rule(context, :Examples_Definition);
+        start_rule(context, :Examples_Definition);
         start_rule(context, :Examples);
         build(context, token);
         return 23
       end
       if match_ScenarioLine(context, token)
         end_rule(context, :Examples);
+        end_rule(context, :Examples_Definition);
         end_rule(context, :ScenarioOutline);
         end_rule(context, :Scenario_Definition);
         start_rule(context, :Scenario_Definition);
@@ -1586,6 +1599,7 @@ module Gherkin
       end
       if match_ScenarioOutlineLine(context, token)
         end_rule(context, :Examples);
+        end_rule(context, :Examples_Definition);
         end_rule(context, :ScenarioOutline);
         end_rule(context, :Scenario_Definition);
         start_rule(context, :Scenario_Definition);
@@ -1602,7 +1616,7 @@ module Gherkin
         return 27
       end
       
-      state_comment = "State: 27 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:4>#TableRow:0"
+      state_comment = "State: 27 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:3>#TableRow:0"
       token.detach
       expected_tokens = ["#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
       error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
@@ -1643,7 +1657,7 @@ module Gherkin
       if match_TagLine(context, token)
         end_rule(context, :DocString);
         end_rule(context, :Step);
-        start_rule(context, :Examples);
+        start_rule(context, :Examples_Definition);
         start_rule(context, :Tags);
         build(context, token);
         return 22
@@ -1651,6 +1665,7 @@ module Gherkin
       if match_ExamplesLine(context, token)
         end_rule(context, :DocString);
         end_rule(context, :Step);
+        start_rule(context, :Examples_Definition);
         start_rule(context, :Examples);
         build(context, token);
         return 23
