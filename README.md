@@ -56,11 +56,15 @@ var feature = parser.parse(gherkinDoc);
 ```
 
 ```go
+// Go
 import (
-	"github.com/cucumber/gherkin3"
+  "strings"
+  "github.com/cucumber/gherkin-go"
 )
-err, feature := gherkin3.ParseFeature(readers[i])
+reader := strings.NewReader(`Feature: ...`)
+feature, err := gherkin.ParseFeature(reader)
 ```
+*Download the package via: `go get github.com/cucumber/gherkin-go`*
 
 ## Why Gherkin 3?
 
