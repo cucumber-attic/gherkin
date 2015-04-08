@@ -1,6 +1,6 @@
 package gherkin
 
-// Builtin dialects for af (Afrikaans), ar (Arabic), bg (Bulgarian), bm (Malay), ca (Catalan), cs (Czech), cy-GB (Welsh), da (Danish), de (German), el (Greek), en (English), en-Scouse (Scouse), en-au (Australian), en-lol (LOLCAT), en-old (Old English), en-pirate (Pirate), en-tx (Texan), eo (Esperanto), es (Spanish), et (Estonian), fa (Persian), fi (Finnish), fr (French), gl (Galician), he (Hebrew), hi (Hindi), hr (Croatian), ht (Creole), hu (Hungarian), id (Indonesian), is (Icelandic), it (Italian), ja (Japanese), jv (Javanese), kn (Kannada), ko (Korean), lt (Lithuanian), lu (Luxemburgish), lv (Latvian), nl (Dutch), no (Norwegian), pa (Panjabi), pl (Polish), pt (Portuguese), ro (Romanian), ru (Russian), sk (Slovak), sl (Slovenian), sr-Cyrl (Serbian), sr-Latn (Serbian (Latin)), sv (Swedish), th (Thai), tl (Telugu), tlh (Klingon), tr (Turkish), tt (Tatar), uk (Ukrainian), ur (Urdu), uz (Uzbek), vi (Vietnamese), zh-CN (Chinese simplified), zh-TW (Chinese traditional)
+// Builtin dialects for af (Afrikaans), am (Armenian), ar (Arabic), bg (Bulgarian), bm (Malay), ca (Catalan), cs (Czech), cy-GB (Welsh), da (Danish), de (German), el (Greek), en (English), en-Scouse (Scouse), en-au (Australian), en-lol (LOLCAT), en-old (Old English), en-pirate (Pirate), eo (Esperanto), es (Spanish), et (Estonian), fa (Persian), fi (Finnish), fr (French), gj (Gujarati), gl (Galician), he (Hebrew), hi (Hindi), hr (Croatian), ht (Creole), hu (Hungarian), id (Indonesian), is (Icelandic), it (Italian), ja (Japanese), jv (Javanese), kn (Kannada), ko (Korean), lt (Lithuanian), lu (Luxemburgish), lv (Latvian), nl (Dutch), no (Norwegian), pa (Panjabi), pl (Polish), pt (Portuguese), ro (Romanian), ru (Russian), sk (Slovak), sl (Slovenian), sr-Cyrl (Serbian), sr-Latn (Serbian (Latin)), sv (Swedish), ta (Tamil), th (Thai), tl (Telugu), tlh (Klingon), tr (Turkish), tt (Tatar), uk (Ukrainian), ur (Urdu), uz (Uzbek), vi (Vietnamese), zh-CN (Chinese simplified), zh-TW (Chinese traditional)
 func GherkinDialectsBuildin() GherkinDialectProvider {
 	return buildinDialects
 }
@@ -44,6 +44,47 @@ var buildinDialects GherkinDialectProvider = gherkinDialectMap{
 			"when": []string{
 				"* ",
 				"Wanneer ",
+			},
+		},
+	},
+	"am": &GherkinDialect{
+		"am", "Armenian", "հայերեն", map[string][]string{
+			"and": []string{
+				"* ",
+				"Եվ ",
+			},
+			"background": []string{
+				"Կոնտեքստ",
+			},
+			"but": []string{
+				"* ",
+				"Բայց ",
+			},
+			"examples": []string{
+				"Օրինակներ",
+			},
+			"feature": []string{
+				"Ֆունկցիոնալություն",
+				"Հատկություն",
+			},
+			"given": []string{
+				"* ",
+				"Դիցուք ",
+			},
+			"scenario": []string{
+				"Սցենար",
+			},
+			"scenarioOutline": []string{
+				"Սցենարի կառուցվացքը",
+			},
+			"then": []string{
+				"* ",
+				"Ապա ",
+			},
+			"when": []string{
+				"* ",
+				"Եթե ",
+				"Երբ ",
 			},
 		},
 	},
@@ -678,45 +719,6 @@ var buildinDialects GherkinDialectProvider = gherkinDialectMap{
 			},
 		},
 	},
-	"en-tx": &GherkinDialect{
-		"en-tx", "Texan", "Texan", map[string][]string{
-			"and": []string{
-				"* ",
-				"And y'all ",
-			},
-			"background": []string{
-				"Background",
-			},
-			"but": []string{
-				"* ",
-				"But y'all ",
-			},
-			"examples": []string{
-				"Examples",
-			},
-			"feature": []string{
-				"Feature",
-			},
-			"given": []string{
-				"* ",
-				"Given y'all ",
-			},
-			"scenario": []string{
-				"Scenario",
-			},
-			"scenarioOutline": []string{
-				"All y'all",
-			},
-			"then": []string{
-				"* ",
-				"Then y'all ",
-			},
-			"when": []string{
-				"* ",
-				"When y'all ",
-			},
-		},
-	},
 	"eo": &GherkinDialect{
 		"eo", "Esperanto", "Esperanto", map[string][]string{
 			"and": []string{
@@ -739,12 +741,16 @@ var buildinDialects GherkinDialectProvider = gherkinDialectMap{
 			"given": []string{
 				"* ",
 				"Donitaĵo ",
+				"Komence ",
 			},
 			"scenario": []string{
 				"Scenaro",
+				"Kazo",
 			},
 			"scenarioOutline": []string{
 				"Konturo de la scenaro",
+				"Skizo",
+				"Kazo-skizo",
 			},
 			"then": []string{
 				"* ",
@@ -761,6 +767,7 @@ var buildinDialects GherkinDialectProvider = gherkinDialectMap{
 			"and": []string{
 				"* ",
 				"Y ",
+				"E ",
 			},
 			"background": []string{
 				"Antecedentes",
@@ -962,6 +969,48 @@ var buildinDialects GherkinDialectProvider = gherkinDialectMap{
 				"Quand ",
 				"Lorsque ",
 				"Lorsqu'",
+			},
+		},
+	},
+	"gj": &GherkinDialect{
+		"gj", "Gujarati", "ગુજરાતી", map[string][]string{
+			"and": []string{
+				"* ",
+				"અને ",
+			},
+			"background": []string{
+				"બેકગ્રાઉન્ડ",
+			},
+			"but": []string{
+				"* ",
+				"પણ ",
+			},
+			"examples": []string{
+				"ઉદાહરણો ",
+			},
+			"feature": []string{
+				"લક્ષણ ",
+				" વ્યાપાર જરૂર ",
+				" ક્ષમતા",
+			},
+			"given": []string{
+				"* ",
+				"આપેલ છે ",
+			},
+			"scenario": []string{
+				"સ્થિતિ",
+			},
+			"scenarioOutline": []string{
+				"પરિદ્દશ્ય રૂપરેખા",
+				"પરિદ્દશ્ય ઢાંચો",
+			},
+			"then": []string{
+				"* ",
+				"પછી ",
+			},
+			"when": []string{
+				"* ",
+				"ક્યારે ",
 			},
 		},
 	},
@@ -1804,6 +1853,7 @@ var buildinDialects GherkinDialectProvider = gherkinDialectMap{
 				"* ",
 				"Zakładając ",
 				"Mając ",
+				"Zakładając, że ",
 			},
 			"scenario": []string{
 				"Scenariusz",
@@ -2221,6 +2271,51 @@ var buildinDialects GherkinDialectProvider = gherkinDialectMap{
 			"when": []string{
 				"* ",
 				"När ",
+			},
+		},
+	},
+	"ta": &GherkinDialect{
+		"ta", "Tamil", "தமிழ்", map[string][]string{
+			"and": []string{
+				"* ",
+				"மேலும்  ",
+				"மற்றும் ",
+			},
+			"background": []string{
+				"பின்னணி",
+			},
+			"but": []string{
+				"* ",
+				"ஆனால்  ",
+			},
+			"examples": []string{
+				"எடுத்துக்காட்டுகள்",
+				"காட்சிகள்",
+				" நிலைமைகளில்",
+			},
+			"feature": []string{
+				"அம்சம்",
+				"வணிக தேவை",
+				"திறன்",
+			},
+			"given": []string{
+				"* ",
+				"கொடுக்கப்பட்ட ",
+			},
+			"scenario": []string{
+				"காட்சி",
+			},
+			"scenarioOutline": []string{
+				"காட்சி சுருக்கம்",
+				"காட்சி வார்ப்புரு",
+			},
+			"then": []string{
+				"* ",
+				"அப்பொழுது ",
+			},
+			"when": []string{
+				"* ",
+				"எப்போது ",
 			},
 		},
 	},
