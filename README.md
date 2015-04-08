@@ -74,12 +74,12 @@ I wrote up a summary [here](https://groups.google.com/d/msg/cukes/YLKsqbBMBoI/DY
 
 The following diagram outlines the architecture:
 
-    +-----------+   +-------+   +------+   +---+
-    |Gherkin doc|-->|Scanner|-->|Parser|-->|AST|
-    +-----------+   +-------+   +------+   +---+
+    ╔════════════╗   ┌───────┐   ╔══════╗   ┌──────┐   ╔═══╗
+    ║Feature file║──▶│Scanner│──▶║Tokens║──▶│Parser│──▶║AST║
+    ╚════════════╝   └───────┘   ╚══════╝   └──────┘   ╚═══╝
 
-The scanner reads a gherkin doc (typically read from a `.feature` file) and creates
-a *token* for each line. The tokens are passed to the parser, which outputs an AST
+The *scanner* reads a gherkin doc (typically read from a `.feature` file) and creates
+a *token* for each line. The tokens are passed to the *parser*, which outputs an *AST*
 (Abstract Syntax Tree).
 
 If the scanner sees a `# language` header, it will reconfigure itself dynamically
@@ -92,14 +92,14 @@ parser generator as part of the build process.
 Berp takes a grammar file (`gherkin.berp`) and a template file (`gherkin-X.razor`) as input
 and outputs a parser in language *X*:
 
-    +------------+   +-----+   +---------------+
-    |gherkin.berp|-->| berp|<--|gherkin-X.razor|
-    +------------+   +--+--+   +---------------+
-                        |
-                        V
-                    +--------+
-                    |Parser.x|
-                    +--------+
+    ╔════════════╗   ┌────────┐   ╔═══════════════╗
+    ║gherkin.berp║──▶│berp.exe│◀──║gherkin-X.razor║
+    ╚════════════╝   └────────┘   ╚═══════════════╝
+                          │
+                          ▼
+                     ╔════════╗
+                     ║Parser.x║
+                     ╚════════╝
 
 Also see the [wiki](https://github.com/cucumber/gherkin3/wiki) for some early
 design docs (which might be a little outdated, but mostly OK).
@@ -131,20 +131,31 @@ directory.
 (Work in progress)
 
 The compiler compiles the AST produced by the parser
-into a simpler form - *Test cases*. The rationale is to provide a simpler
-data structure to Cucumber, which simplifies the internals of Cucumber.
+into a simpler form - *Pickles*.
 
-    +------------+   +-------+   +------+   +--------+   +----------+
-    |Feature file|-->|Scanner|-->|Parser|-->|Compiler|-->|Test cases|
-    +------------+   +-------+   +------+   +--------+   +----------+
+    ╔═══╗   ┌────────┐   ╔═══════╗
+    ║AST║──▶│Compiler│──▶║Pickles║
+    ╚═══╝   └────────┘   ╚═══════╝
 
-Each `Scenario` will be compiled into a `TestCase`, as will `Examples` rows under
-a `Scenario Outline`. Any `Background` steps will also be compiled into each
-`TestCase`. Tags will be compiled into the `TestCase` as well.
+The rationale is to decouple Gherkin from Cucumber so that Cucumber is open to
+support alternative formats to Gherkin (for example Markdown).
+
+The simpler *Pickles* data structure also simplifies the internals of Cucumber.
+
+Each `Scenario` will be compiled into a `Pickle`. A `Pickle` has a list of
+`PickleStep`, derived from steps in a `Scenario`.
+
+Each `Examples` row under `Scenario Outline` will also be compiled into a `Pickle`.
+
+Any `Background` steps will also be compiled into each `Pickle`.
+
+Tags will be compiled into the `Pickle` as well (inheriting tags from parent elements
+in the Gherkin AST).
 
 Example:
 
 ```gherkin
+@foo
 Feature:
   Background:
     Given a
@@ -152,38 +163,76 @@ Feature:
   Scenario: b
     Given c
 
+  @bar
   Scenario Outline: c
     Given <x>
     When y
 
+    @zap
     Examples:
       | x |
       | d |
       | e |
 ```
 
-This will be compiled into several `TestCase` objects (here represented as YAML
+This will be compiled into several `Pickle` objects (here represented as YAML
 for simplicity):
 
 ```
-- steps:
-  - name: a
-  - name: c
-- steps:
-  - name: a
-  - name: d
-  - name: y
-- steps:
-  - name: a
-  - name: e
-  - name: y
+- tags:
+  - @foo
+  steps:
+  - text: Given a
+  - text: Given c
+- tags:
+  - @foo
+  - @bar
+  - @zap
+  steps:
+  - text: Given a
+  - text: Given d
+  - text: When y
+- tags:
+  - @foo
+  - @bar
+  - @zap
+  steps:
+  - text: Given a
+  - text: Given e
+  - text: When y
 ```
 
-Each `TestCase` will also keep a reference back to the original AST nodes for
+Each `Pickle` will also keep a reference back to the original AST nodes for
 rendering and error reporting (stack traces).
 
-Cucumber will further transform this list of `TestCase` to add various hooks and
-link Step Definitions.
+Cucumber will further transform this list of `Pickle` to a list of `TestCase`.
+This structure will link runtime information such as Hooks and Step Definitions.
+
+In the short term, the pickle struct definitions will live alongside the Gherkin3
+codebase until it settles:
+
+                                   ┌─────────┐
+            ┌─────────────┬────────│Cucumber │──────────────┐
+            │             │        └─────────┘              │
+            │             │             │                   │
+            │             │             │                   │
+            │             │             │                   │
+            │             │             │                   │
+    ┌───────┼─────────────┼─────────────┼───────┐           │
+    │       │             │             │       │           │
+    │       ▼             ▼             ▼       │           ▼
+    │  ┌─────────┐   ┌─────────┐   ┌─────────┐  │      ┌─────────┐
+    │  │Gherkin3 │   │Gherkin3 │   │ Pickles │  │      │Markdown │
+    │  │ Parser  │   │Compiler │──▶│         │◀─┼──────│Parser / │
+    │  └─────────┘   └─────────┘   └─────────┘  │      │Compiler │
+    └───────────────────────────────────────────┘      └─────────┘
+                     Gherkin3 lib
+
+The long term plan is to implement more compilers that can produce `Pickles`, for
+example from Markdown.
+
+When the Pickles/Cucumber seam stabilises we might move Pickles to a separate project.
+The various compilers producing pickles might move to a separate project too.
 
 ## Building Gherkin 3
 
