@@ -11,30 +11,7 @@
     {
       "examples": [
         {
-          "keyword": "Examples",
-          "location": {
-            "column": 5,
-            "line": 7
-          },
-          "name": "",
-          "rows": [
-            {
-              "cells": [
-                {
-                  "location": {
-                    "column": 9,
-                    "line": 8
-                  },
-                  "type": "TableCell",
-                  "value": "what"
-                }
-              ],
-              "location": {
-                "column": 7,
-                "line": 8
-              },
-              "type": "TableRow"
-            },
+          "body": [
             {
               "cells": [
                 {
@@ -53,6 +30,29 @@
               "type": "TableRow"
             }
           ],
+          "header": {
+            "cells": [
+              {
+                "location": {
+                  "column": 9,
+                  "line": 8
+                },
+                "type": "TableCell",
+                "value": "what"
+              }
+            ],
+            "location": {
+              "column": 7,
+              "line": 8
+            },
+            "type": "TableRow"
+          },
+          "keyword": "Examples",
+          "location": {
+            "column": 5,
+            "line": 7
+          },
+          "name": "",
           "tags": [
             {
               "location": {
@@ -66,30 +66,7 @@
           "type": "Examples"
         },
         {
-          "keyword": "Examples",
-          "location": {
-            "column": 5,
-            "line": 12
-          },
-          "name": "",
-          "rows": [
-            {
-              "cells": [
-                {
-                  "location": {
-                    "column": 9,
-                    "line": 13
-                  },
-                  "type": "TableCell",
-                  "value": "what"
-                }
-              ],
-              "location": {
-                "column": 7,
-                "line": 13
-              },
-              "type": "TableRow"
-            },
+          "body": [
             {
               "cells": [
                 {
@@ -108,6 +85,29 @@
               "type": "TableRow"
             }
           ],
+          "header": {
+            "cells": [
+              {
+                "location": {
+                  "column": 9,
+                  "line": 13
+                },
+                "type": "TableCell",
+                "value": "what"
+              }
+            ],
+            "location": {
+              "column": 7,
+              "line": 13
+            },
+            "type": "TableRow"
+          },
+          "keyword": "Examples",
+          "location": {
+            "column": 5,
+            "line": 12
+          },
+          "name": "",
           "tags": [
             {
               "location": {
