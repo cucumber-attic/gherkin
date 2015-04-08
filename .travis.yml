@@ -4,7 +4,7 @@ mono: latest
 before_install:
   - export EnableNuGetPackageRestore=true
 
-script: "xbuild /p:Configuration=Debug"
+script: "mono --runtime=v4.0 .nuget/NuGet.exe restore Gherkin.CSharp.sln;xbuild /p:Configuration=Debug"
 
 branches:
   only:
