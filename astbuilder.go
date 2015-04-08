@@ -11,6 +11,7 @@ type AstBuilder interface {
 
 type astBuilder struct {
 	stack []*astNode
+	comments []*Comment
 }
 
 func (t *astBuilder) GetFeature() *Feature {
@@ -83,6 +84,7 @@ func newAstNode(rt RuleType) *astNode {
 
 func NewAstBuilder() AstBuilder {
 	builder := new(astBuilder)
+	builder.comments = []*Comment{}
 	builder.push(newAstNode(RuleType_None))
 	return builder
 }
@@ -98,7 +100,15 @@ func (t *astBuilder) pop() *astNode {
 }
 
 func (t *astBuilder) Build(tok *Token) (bool, error) {
-	t.currentNode().add(tok.Type.RuleType(), tok)
+	if(tok.Type == TokenType_Comment) {
+		comment := new(Comment)
+		comment.Type = "Comment"
+		comment.Location = astLocation(tok)
+		comment.Text = tok.Text
+		t.comments = append(t.comments, comment)
+	} else {
+		t.currentNode().add(tok.Type.RuleType(), tok)
+	}
 	return true, nil
 }
 func (t *astBuilder) StartRule(r RuleType) (bool, error) {
@@ -259,6 +269,7 @@ func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {
 		feat.Description = description
 		feat.Background = background
 		feat.ScenarioDefinitions = scenarioDefinitions
+		feat.Comments = t.comments
 		return feat, nil
 	}
 	return node, nil
