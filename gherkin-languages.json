@@ -40,6 +40,47 @@
       "Wanneer "
     ]
   },
+  "am": {
+    "and": [
+      "* ",
+      "Եվ "
+    ],
+    "background": [
+      "Կոնտեքստ"
+    ],
+    "but": [
+      "* ",
+      "Բայց "
+    ],
+    "examples": [
+      "Օրինակներ"
+    ],
+    "feature": [
+      "Ֆունկցիոնալություն",
+      "Հատկություն"
+    ],
+    "given": [
+      "* ",
+      "Դիցուք "
+    ],
+    "name": "Armenian",
+    "native": "հայերեն",
+    "scenario": [
+      "Սցենար"
+    ],
+    "scenarioOutline": [
+      "Սցենարի կառուցվացքը"
+    ],
+    "then": [
+      "* ",
+      "Ապա "
+    ],
+    "when": [
+      "* ",
+      "Եթե ",
+      "Երբ "
+    ]
+  },
   "ar": {
     "and": [
       "* ",
@@ -669,45 +710,6 @@
     "when": [
       "* ",
       "Blimey! "
-    ]
-  },
-  "en-tx": {
-    "and": [
-      "* ",
-      "And y'all "
-    ],
-    "background": [
-      "Background"
-    ],
-    "but": [
-      "* ",
-      "But y'all "
-    ],
-    "examples": [
-      "Examples"
-    ],
-    "feature": [
-      "Feature"
-    ],
-    "given": [
-      "* ",
-      "Given y'all "
-    ],
-    "name": "Texan",
-    "native": "Texan",
-    "scenario": [
-      "Scenario"
-    ],
-    "scenarioOutline": [
-      "All y'all"
-    ],
-    "then": [
-      "* ",
-      "Then y'all "
-    ],
-    "when": [
-      "* ",
-      "When y'all "
     ]
   },
   "eo": {
@@ -1797,7 +1799,7 @@
       "* ",
       "Zakładając ",
       "Mając ",
-      "Zakładając, że"
+      "Zakładając, że "
     ],
     "name": "Polish",
     "native": "polski",
