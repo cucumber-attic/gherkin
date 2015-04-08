@@ -33,7 +33,7 @@ This is a description without indentation
   Scenario: comment right after description
   This description
   has a comment right after
-# this is a comment
+    #  this is another comment
 
     Given the minimalism
 
