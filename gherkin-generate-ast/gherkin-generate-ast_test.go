@@ -8,7 +8,7 @@ import (
 func ExampleGenerateAst() {
 
 	input := `Feature: Minimal
- 
+
   Scenario: minimalistic
     Given the minimalism
 `
@@ -51,7 +51,8 @@ func ExampleGenerateAst() {
 	//       ],
 	//       "tags": []
 	//     }
-	//   ]
+	//   ],
+	//   "comments": []
 	// }
 	//
 }
