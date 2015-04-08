@@ -3,7 +3,7 @@
 // This script translates i18n.json (Gherkin 2) to gherkin-languages.json (Gherkin 3).
 //
 
-var i18n = require('./i18n');
+var i18n = require(process.argv[2]);
 var dialects = {};
 
 Object.keys(i18n).forEach(function (iso) {
