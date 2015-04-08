@@ -9,6 +9,7 @@ namespace Gherkin
     {
         private readonly Stack<AstNode> stack = new Stack<AstNode>();
         private AstNode CurrentNode { get { return stack.Peek(); } }
+        private List<Comment> comments = new List<Comment>();
 
         public AstBuilder()
         {
@@ -17,7 +18,14 @@ namespace Gherkin
 
         public void Build(Token token)
         {
-            CurrentNode.Add((RuleType)token.MatchedType, token);
+            if (token.MatchedType == TokenType.Comment)
+            {
+                comments.Add(new Comment(GetLocation(token), token.MatchedText));
+            }
+            else
+            {
+                CurrentNode.Add((RuleType) token.MatchedType, token);
+            }
         }
 
         public void StartRule(RuleType ruleType)
@@ -129,7 +137,7 @@ namespace Gherkin
                     var description = GetDescription(header);
                     var language = featureLine.MatchedGherkinDialect.Language;
 
-                    return new Feature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.MatchedText, description, background, scenariodefinitions);
+                    return new Feature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.MatchedText, description, background, scenariodefinitions, comments.ToArray());
                 }
             }
 
