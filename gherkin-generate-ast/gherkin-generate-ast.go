@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	gherkin3 "../"
+	gherkin "../"
 )
 
 func main() {
@@ -28,7 +28,7 @@ func main() {
 
 	for i := range readers {
 
-		feature, err := gherkin3.ParseFeature(readers[i])
+		feature, err := gherkin.ParseFeature(readers[i])
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
 			os.Exit(1)
