@@ -2,23 +2,30 @@ require 'gherkin/ast_node'
 
 module Gherkin
   class AstBuilder
-    attr_reader :stack
-
     def initialize
       @stack = [AstNode.new(:None)]
+      @comments = []
     end
 
     def start_rule(rule_type)
-      stack.push AstNode.new(rule_type)
+      @stack.push AstNode.new(rule_type)
     end
 
     def end_rule(rule_type)
-      node = stack.pop
+      node = @stack.pop
       current_node.add(node.rule_type, transform_node(node))
     end
 
     def build(token)
-      current_node.add(token.matched_type, token)
+      if token.matched_type == :Comment
+        @comments.push({
+          type: 'Comment',
+          location: get_location(token),
+          text: token.matched_text
+        })
+      else
+        current_node.add(token.matched_type, token)
+      end
     end
 
     def get_result
@@ -26,7 +33,7 @@ module Gherkin
     end
 
     def current_node
-      stack.last
+      @stack.last
     end
 
     def get_location(token, column=nil)
@@ -212,7 +219,8 @@ module Gherkin
           name: feature_line.matched_text,
           description: description,
           background: background,
-          scenarioDefinitions: scenario_definitions
+          scenarioDefinitions: scenario_definitions,
+          comments: @comments
         )
       else
         return node
