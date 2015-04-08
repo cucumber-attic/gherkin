@@ -1,2 +1,2 @@
 Parser errors:
-(2:0): expected: #Language, #TagLine, #FeatureLine, #Comment, #Empty, got 'invalid line here'
+(2:1): expected: #Language, #TagLine, #FeatureLine, #Comment, #Empty, got 'invalid line here'
