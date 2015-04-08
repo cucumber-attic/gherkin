@@ -986,12 +986,12 @@ var buildinDialects GherkinDialectProvider = gherkinDialectMap{
 				"પણ ",
 			},
 			"examples": []string{
-				"ઉદાહરણો ",
+				"ઉદાહરણો",
 			},
 			"feature": []string{
-				"લક્ષણ ",
-				" વ્યાપાર જરૂર ",
-				" ક્ષમતા",
+				"લક્ષણ",
+				"વ્યાપાર જરૂર",
+				"ક્ષમતા",
 			},
 			"given": []string{
 				"* ",
@@ -2159,9 +2159,9 @@ var buildinDialects GherkinDialectProvider = gherkinDialectMap{
 			},
 			"given": []string{
 				"* ",
-				"Задато ",
-				"Задате ",
-				"Задати ",
+				"За дато ",
+				"За дате ",
+				"За дати ",
 			},
 			"scenario": []string{
 				"Сценарио",
@@ -2210,9 +2210,9 @@ var buildinDialects GherkinDialectProvider = gherkinDialectMap{
 			},
 			"given": []string{
 				"* ",
-				"Zadato ",
-				"Zadate ",
-				"Zatati ",
+				"Za dato ",
+				"Za date ",
+				"Za dati ",
 			},
 			"scenario": []string{
 				"Scenario",
