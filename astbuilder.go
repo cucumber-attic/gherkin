@@ -201,11 +201,12 @@ func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {
 			return sc, nil
 		}
 
-	case RuleType_Examples:
+	case RuleType_Examples_Definition:
 		tags := astTags(node)
-		examplesLine := node.getToken(TokenType_ExamplesLine)
-		description, _ := node.getSingle(RuleType_Description).(string)
-		allRows, err := astTableRows(node)
+		examplesNode, _ := node.getSingle(RuleType_Examples).(*astNode)
+		examplesLine := examplesNode.getToken(TokenType_ExamplesLine)
+		description, _ := examplesNode.getSingle(RuleType_Description).(string)
+		allRows, err := astTableRows(examplesNode)
 		ex := new(Examples)
 		ex.Type = "Examples"
 		ex.Tags = tags
@@ -328,7 +329,7 @@ func astSteps(t *astNode) (steps []*Step) {
 
 func astExamples(t *astNode) (examples []*Examples) {
 	examples = []*Examples{}
-	tokens := t.getItems(RuleType_Examples)
+	tokens := t.getItems(RuleType_Examples_Definition)
 	for i := range tokens {
 		example, _ := tokens[i].(*Examples)
 		examples = append(examples, example)
