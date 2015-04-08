@@ -1,4 +1,14 @@
 {
+  "comments": [
+    {
+      "location": {
+        "column": 1,
+        "line": 17
+      },
+      "text": "      # this is a comment",
+      "type": "Comment"
+    }
+  ],
   "keyword": "Feature",
   "language": "en",
   "location": {

@@ -49,6 +49,7 @@
     <Compile Include="AstBuilder.cs" />
     <Compile Include="AstNode.cs" />
     <Compile Include="Ast\Background.cs" />
+    <Compile Include="Ast\Comment.cs" />
     <Compile Include="Ast\DataTable.cs" />
     <Compile Include="Ast\DocString.cs" />
     <Compile Include="Ast\Examples.cs" />
