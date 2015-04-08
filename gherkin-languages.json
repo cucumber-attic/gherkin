@@ -732,15 +732,19 @@
     ],
     "given": [
       "* ",
-      "Donitaĵo "
+      "Donitaĵo ",
+      "Komence "
     ],
     "name": "Esperanto",
     "native": "Esperanto",
     "scenario": [
-      "Scenaro"
+      "Scenaro",
+      "Kazo"
     ],
     "scenarioOutline": [
-      "Konturo de la scenaro"
+      "Konturo de la scenaro",
+      "Skizo",
+      "Kazo-skizo"
     ],
     "then": [
       "* ",
