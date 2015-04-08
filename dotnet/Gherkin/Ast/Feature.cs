@@ -26,7 +26,7 @@ namespace Gherkin.Ast
             Description = description;
             Background = background;
             ScenarioDefinitions = scenarioDefinitions;
-            Comments = comments.Length == 0 ? null : comments;
+            Comments = comments;
         }
     }
 }
