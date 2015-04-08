@@ -106,17 +106,18 @@ public class AstBuilder<T> implements IAstBuilder<T> {
                     String description = getDescription(scenarioOutlineNode);
                     List<Step> steps = getSteps(scenarioOutlineNode);
 
-                    List<Examples> examplesList = scenarioOutlineNode.getItems(RuleType.Examples);
+                    List<Examples> examplesList = scenarioOutlineNode.getItems(RuleType.Examples_Definition);
 
                     return new ScenarioOutline(tags, getLocation(scenarioOutlineLine, 0), scenarioOutlineLine.matchedKeyword, scenarioOutlineLine.matchedText, description, steps, examplesList);
 
                 }
             }
-            case Examples: {
+            case Examples_Definition: {
                 List<Tag> tags = getTags(node);
-                Token examplesLine = node.getToken(TokenType.ExamplesLine);
-                String description = getDescription(node);
-                List<TableRow> rows = getTableRows(node);
+                AstNode examplesNode = node.getSingle(RuleType.Examples, null);
+                Token examplesLine = examplesNode.getToken(TokenType.ExamplesLine);
+                String description = getDescription(examplesNode);
+                List<TableRow> rows = getTableRows(examplesNode);
                 return new Examples(getLocation(examplesLine, 0), tags, examplesLine.matchedKeyword, examplesLine.matchedText, description, rows);
             }
             case Description: {
