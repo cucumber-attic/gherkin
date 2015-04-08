@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	gherkin3 "../"
+	gherkin "../"
 )
 
 func main() {
@@ -40,7 +40,7 @@ type tokenGenerator struct {
 	out io.Writer
 }
 
-func FormatToken(token *gherkin3.Token) string {
+func FormatToken(token *gherkin.Token) string {
 	if token.IsEOF() {
 		return "EOF"
 	}
@@ -58,24 +58,24 @@ func FormatToken(token *gherkin3.Token) string {
 	)
 }
 
-func (t *tokenGenerator) Build(tok *gherkin3.Token) (bool, error) {
+func (t *tokenGenerator) Build(tok *gherkin.Token) (bool, error) {
 	fmt.Fprintln(t.out, FormatToken(tok))
 	return true, nil
 }
-func (t *tokenGenerator) StartRule(r gherkin3.RuleType) (bool, error) {
+func (t *tokenGenerator) StartRule(r gherkin.RuleType) (bool, error) {
 	return true, nil
 }
-func (t *tokenGenerator) EndRule(r gherkin3.RuleType) (bool, error) {
+func (t *tokenGenerator) EndRule(r gherkin.RuleType) (bool, error) {
 	return true, nil
 }
 
 func GenerateTokens(in io.Reader, out io.Writer) error {
 
-	parser := gherkin3.NewParser()
+	parser := gherkin.NewParser()
 	parser.StopAtFirstError(true)
-	matcher := gherkin3.NewMatcher(gherkin3.GherkinDialectsBuildin())
+	matcher := gherkin.NewMatcher(gherkin.GherkinDialectsBuildin())
 
-	scanner := gherkin3.NewScanner(in)
+	scanner := gherkin.NewScanner(in)
 	builder := &tokenGenerator{out}
 
 	return parser.Parse(scanner, builder, matcher)
