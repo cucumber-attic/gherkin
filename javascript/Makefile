@@ -13,7 +13,7 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: lib/gherkin/parser.js lib/gherkin/dialects.json $(JAVASCRIPT_FILES) dist/gherkin.js dist/gherkin.min.js node_modules/.fetched LICENSE
+.built: lib/gherkin/parser.js lib/gherkin/gherkin-languages.json $(JAVASCRIPT_FILES) dist/gherkin.js dist/gherkin.min.js node_modules/.fetched LICENSE
 	./node_modules/.bin/mocha
 	touch $@
 
@@ -45,7 +45,7 @@ lib/gherkin/parser.js: ../gherkin.berp gherkin-javascript.razor ../bin/berp.exe
 	tail -c +4 $@ > $@.nobom
 	mv $@.nobom $@
 
-lib/gherkin/dialects.json: ../dialects.json
+lib/gherkin/gherkin-languages.json: ../gherkin-languages.json
 	cp $^ $@
 
 dist/gherkin.js: lib/gherkin/parser.js LICENSE node_modules/.fetched
@@ -66,5 +66,5 @@ LICENSE: ../LICENSE
 	cp $< $@
 
 clean:
-	rm -rf .compared .built acceptance lib/gherkin/parser.js lib/gherkin/dialects.json dist
+	rm -rf .compared .built acceptance lib/gherkin/parser.js lib/gherkin/gherkin-languages.json dist
 .PHONY: clean

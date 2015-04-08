@@ -95,6 +95,6 @@
   </Target>
   -->
   <ItemGroup>
-    <EmbeddedResource Include="dialects.json" />
+    <EmbeddedResource Include="gherkin-languages.json" />
   </ItemGroup>
 </Project>

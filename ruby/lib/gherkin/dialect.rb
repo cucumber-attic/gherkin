@@ -1,7 +1,7 @@
 require 'json'
 
 module Gherkin
-  DIALECT_FILE_PATH = File.expand_path("dialects.json", File.dirname(__FILE__))
+  DIALECT_FILE_PATH = File.expand_path("gherkin-languages.json", File.dirname(__FILE__))
   DIALECTS = JSON.parse File.read(DIALECT_FILE_PATH)
 
   class Dialect

@@ -50,7 +50,7 @@ parser.go: ../gherkin.berp parser.go.razor ../bin/berp.exe
 	tail -c +4 $@ > $@.nobom
 	mv $@.nobom $@
 
-dialects_builtin.go: ../dialects.json dialects_builtin.go.jq
+dialects_builtin.go: ../gherkin-languages.json dialects_builtin.go.jq
 	cat $< | jq -f dialects_builtin.go.jq -r -c > $@
 
 LICENSE: ../LICENSE

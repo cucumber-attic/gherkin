@@ -24,14 +24,14 @@ We should close all these issues before rolling Gherkin 3 into Cucumber/SpecFlow
   - [x] JavaScript
   - [x] Java
 - [x] Remove the `testdata/good/*.ast` files
-- [ ] Use the new `dialects.json` file
+- [x] Use the new `dialects.json` file
   - [x] C#
     - [x] Don't load JSON file from the file system, but from a resource embedded in the dll.
   - [x] Ruby
   - [x] JavaScript
   - [x] Java
-  - [ ] Rename to `gherkin-languages.json`
-  - [ ] Remove `i18n.json`
+  - [x] Rename to `gherkin-languages.json`
+  - [x] Remove `i18n.json`
 - [x] Rename scenario (and similar) `title` to `name` (check wiki, maybe discuss again)
   - [x] C#
   - [x] Ruby

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 //
-// This script translates i18n.json (Gherkin 2) to dialects.json (Gherkin 3).
+// This script translates i18n.json (Gherkin 2) to gherkin-languages.json (Gherkin 3).
 //
 
 var i18n = require('./i18n');
