@@ -1,129 +1,140 @@
 [
   {
     "name": "Scenario: two lines",
-    "pickledSteps": [
-      {
-        "name": "the minimalism",
-        "source": [
-          {
-            "column": 5,
-            "line": 7
-          }
-        ]
-      }
-    ],
     "source": [
       {
         "column": 3,
         "line": 4
       }
-    ]
+    ],
+    "steps": [
+      {
+        "source": [
+          {
+            "column": 5,
+            "line": 7
+          }
+        ],
+        "text": "the minimalism"
+      }
+    ],
+    "tags": []
   },
   {
     "name": "Scenario: without indentation",
-    "pickledSteps": [
-      {
-        "name": "the minimalism",
-        "source": [
-          {
-            "column": 3,
-            "line": 11
-          }
-        ]
-      }
-    ],
     "source": [
       {
         "column": 1,
         "line": 9
       }
-    ]
+    ],
+    "steps": [
+      {
+        "source": [
+          {
+            "column": 3,
+            "line": 11
+          }
+        ],
+        "text": "the minimalism"
+      }
+    ],
+    "tags": []
   },
   {
     "name": "Scenario: empty lines in the middle",
-    "pickledSteps": [
-      {
-        "name": "the minimalism",
-        "source": [
-          {
-            "column": 5,
-            "line": 17
-          }
-        ]
-      }
-    ],
     "source": [
       {
         "column": 3,
         "line": 13
       }
-    ]
-  },
-  {
-    "name": "Scenario: empty lines around",
-    "pickledSteps": [
+    ],
+    "steps": [
       {
-        "name": "the minimalism",
         "source": [
           {
             "column": 5,
-            "line": 24
+            "line": 17
           }
-        ]
+        ],
+        "text": "the minimalism"
       }
     ],
+    "tags": []
+  },
+  {
+    "name": "Scenario: empty lines around",
     "source": [
       {
         "column": 3,
         "line": 19
       }
-    ]
-  },
-  {
-    "name": "Scenario: comment after description",
-    "pickledSteps": [
+    ],
+    "steps": [
       {
-        "name": "the minimalism",
         "source": [
           {
             "column": 5,
-            "line": 31
+            "line": 24
           }
-        ]
+        ],
+        "text": "the minimalism"
       }
     ],
+    "tags": []
+  },
+  {
+    "name": "Scenario: comment after description",
     "source": [
       {
         "column": 3,
         "line": 26
       }
-    ]
-  },
-  {
-    "name": "Scenario: comment right after description",
-    "pickledSteps": [
+    ],
+    "steps": [
       {
-        "name": "the minimalism",
         "source": [
           {
             "column": 5,
-            "line": 38
+            "line": 31
           }
-        ]
+        ],
+        "text": "the minimalism"
       }
     ],
+    "tags": []
+  },
+  {
+    "name": "Scenario: comment right after description",
     "source": [
       {
         "column": 3,
         "line": 33
       }
-    ]
+    ],
+    "steps": [
+      {
+        "source": [
+          {
+            "column": 5,
+            "line": 38
+          }
+        ],
+        "text": "the minimalism"
+      }
+    ],
+    "tags": []
   },
   {
     "name": "Scenario: scenario outline with a description",
-    "pickledSteps": [
+    "source": [
       {
-        "name": "the minimalism",
+        "column": 3,
+        "line": 40
+      }
+    ],
+    "steps": [
+      {
         "source": [
           {
             "column": 5,
@@ -133,14 +144,10 @@
             "column": 5,
             "line": 47
           }
-        ]
+        ],
+        "text": "the minimalism"
       }
     ],
-    "source": [
-      {
-        "column": 3,
-        "line": 40
-      }
-    ]
+    "tags": []
   }
 ]

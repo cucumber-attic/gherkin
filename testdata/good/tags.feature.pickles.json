@@ -1,29 +1,78 @@
 [
   {
     "name": "Scenario: minimalistic",
-    "pickledSteps": [
-      {
-        "name": "the minimalism",
-        "source": [
-          {
-            "column": 5,
-            "line": 8
-          }
-        ]
-      }
-    ],
     "source": [
       {
         "column": 1,
         "line": 7
       }
+    ],
+    "steps": [
+      {
+        "source": [
+          {
+            "column": 5,
+            "line": 8
+          }
+        ],
+        "text": "the minimalism"
+      }
+    ],
+    "tags": [
+      {
+        "name": "@feature_tag1",
+        "source": {
+          "column": 1,
+          "line": 1
+        }
+      },
+      {
+        "name": "@feature_tag2",
+        "source": {
+          "column": 15,
+          "line": 1
+        }
+      },
+      {
+        "name": "@feature_tag3",
+        "source": {
+          "column": 3,
+          "line": 2
+        }
+      },
+      {
+        "name": "@scenario_tag1",
+        "source": {
+          "column": 1,
+          "line": 5
+        }
+      },
+      {
+        "name": "@scenario_tag2",
+        "source": {
+          "column": 16,
+          "line": 5
+        }
+      },
+      {
+        "name": "@scenario_tag3",
+        "source": {
+          "column": 3,
+          "line": 6
+        }
+      }
     ]
   },
   {
     "name": "Scenario: minimalistic outline",
-    "pickledSteps": [
+    "source": [
       {
-        "name": "the minimalism",
+        "column": 1,
+        "line": 12
+      }
+    ],
+    "steps": [
+      {
         "source": [
           {
             "column": 5,
@@ -33,13 +82,73 @@
             "column": 3,
             "line": 19
           }
-        ]
+        ],
+        "text": "the minimalism"
       }
     ],
-    "source": [
+    "tags": [
       {
-        "column": 1,
-        "line": 12
+        "name": "@feature_tag1",
+        "source": {
+          "column": 1,
+          "line": 1
+        }
+      },
+      {
+        "name": "@feature_tag2",
+        "source": {
+          "column": 15,
+          "line": 1
+        }
+      },
+      {
+        "name": "@feature_tag3",
+        "source": {
+          "column": 3,
+          "line": 2
+        }
+      },
+      {
+        "name": "@so_tag1",
+        "source": {
+          "column": 1,
+          "line": 10
+        }
+      },
+      {
+        "name": "@so_tag2",
+        "source": {
+          "column": 11,
+          "line": 10
+        }
+      },
+      {
+        "name": "@so_tag3",
+        "source": {
+          "column": 3,
+          "line": 11
+        }
+      },
+      {
+        "name": "@ex_tag1",
+        "source": {
+          "column": 1,
+          "line": 15
+        }
+      },
+      {
+        "name": "@ex_tag2",
+        "source": {
+          "column": 10,
+          "line": 15
+        }
+      },
+      {
+        "name": "@ex_tag3",
+        "source": {
+          "column": 3,
+          "line": 16
+        }
       }
     ]
   }

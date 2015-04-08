@@ -1,9 +1,14 @@
 [
   {
     "name": "Scenario: minimalistic",
-    "pickledSteps": [
+    "source": [
       {
-        "name": "the minimalism",
+        "column": 1,
+        "line": 3
+      }
+    ],
+    "steps": [
+      {
         "source": [
           {
             "column": 5,
@@ -13,14 +18,10 @@
             "column": 3,
             "line": 8
           }
-        ]
+        ],
+        "text": "the minimalism"
       }
     ],
-    "source": [
-      {
-        "column": 1,
-        "line": 3
-      }
-    ]
+    "tags": []
   }
 ]

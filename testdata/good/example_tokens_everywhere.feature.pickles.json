@@ -1,12 +1,17 @@
 [
   {
     "name": "Scenario: the un",
-    "pickledSteps": [
+    "source": [
+      {
+        "column": 3,
+        "line": 3
+      }
+    ],
+    "steps": [
       {
         "argument": {
           "content": "trois"
         },
-        "name": "the deux:",
         "source": [
           {
             "column": 5,
@@ -16,7 +21,8 @@
             "column": 7,
             "line": 13
           }
-        ]
+        ],
+        "text": "the deux:"
       },
       {
         "argument": {
@@ -26,7 +32,6 @@
             ]
           ]
         },
-        "name": "the quatre:",
         "source": [
           {
             "column": 5,
@@ -36,24 +41,25 @@
             "column": 7,
             "line": 13
           }
-        ]
+        ],
+        "text": "the quatre:"
       }
     ],
+    "tags": []
+  },
+  {
+    "name": "Scenario: the uno",
     "source": [
       {
         "column": 3,
         "line": 3
       }
-    ]
-  },
-  {
-    "name": "Scenario: the uno",
-    "pickledSteps": [
+    ],
+    "steps": [
       {
         "argument": {
           "content": "tres"
         },
-        "name": "the dos:",
         "source": [
           {
             "column": 5,
@@ -63,7 +69,8 @@
             "column": 7,
             "line": 14
           }
-        ]
+        ],
+        "text": "the dos:"
       },
       {
         "argument": {
@@ -73,7 +80,6 @@
             ]
           ]
         },
-        "name": "the quatro:",
         "source": [
           {
             "column": 5,
@@ -83,14 +89,10 @@
             "column": 7,
             "line": 14
           }
-        ]
+        ],
+        "text": "the quatro:"
       }
     ],
-    "source": [
-      {
-        "column": 3,
-        "line": 3
-      }
-    ]
+    "tags": []
   }
 ]

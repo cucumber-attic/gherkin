@@ -1,9 +1,14 @@
 [
   {
     "name": "Scenario: minimalistic",
-    "pickledSteps": [
+    "source": [
       {
-        "name": "the foo",
+        "column": 3,
+        "line": 3
+      }
+    ],
+    "steps": [
+      {
         "source": [
           {
             "column": 5,
@@ -13,21 +18,30 @@
             "column": 7,
             "line": 9
           }
-        ]
+        ],
+        "text": "the foo"
       }
     ],
-    "source": [
+    "tags": [
       {
-        "column": 3,
-        "line": 3
+        "name": "@foo",
+        "source": {
+          "column": 5,
+          "line": 6
+        }
       }
     ]
   },
   {
     "name": "Scenario: minimalistic",
-    "pickledSteps": [
+    "source": [
       {
-        "name": "the bar",
+        "column": 3,
+        "line": 3
+      }
+    ],
+    "steps": [
+      {
         "source": [
           {
             "column": 5,
@@ -37,23 +51,36 @@
             "column": 7,
             "line": 14
           }
-        ]
+        ],
+        "text": "the bar"
       }
     ],
-    "source": [
+    "tags": [
       {
-        "column": 3,
-        "line": 3
+        "name": "@bar",
+        "source": {
+          "column": 5,
+          "line": 11
+        }
       }
     ]
   },
   {
     "name": "Scenario: ha ok",
-    "pickledSteps": [],
     "source": [
       {
         "column": 3,
         "line": 17
+      }
+    ],
+    "steps": [],
+    "tags": [
+      {
+        "name": "@zap",
+        "source": {
+          "column": 3,
+          "line": 16
+        }
       }
     ]
   }

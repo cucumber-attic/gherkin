@@ -1,40 +1,41 @@
 [
   {
     "name": "Scenario: Parsing many languages",
-    "pickledSteps": [
-      {
-        "name": "Gherkin supports many languages",
-        "source": [
-          {
-            "column": 5,
-            "line": 5
-          }
-        ]
-      },
-      {
-        "name": "Norwegian keywords are parsed",
-        "source": [
-          {
-            "column": 5,
-            "line": 6
-          }
-        ]
-      },
-      {
-        "name": "they should be recognized",
-        "source": [
-          {
-            "column": 5,
-            "line": 7
-          }
-        ]
-      }
-    ],
     "source": [
       {
         "column": 3,
         "line": 4
       }
-    ]
+    ],
+    "steps": [
+      {
+        "source": [
+          {
+            "column": 5,
+            "line": 5
+          }
+        ],
+        "text": "Gherkin supports many languages"
+      },
+      {
+        "source": [
+          {
+            "column": 5,
+            "line": 6
+          }
+        ],
+        "text": "Norwegian keywords are parsed"
+      },
+      {
+        "source": [
+          {
+            "column": 5,
+            "line": 7
+          }
+        ],
+        "text": "they should be recognized"
+      }
+    ],
+    "tags": []
   }
 ]

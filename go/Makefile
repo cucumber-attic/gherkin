@@ -50,21 +50,8 @@ parser.go: ../gherkin.berp parser.go.razor ../bin/berp.exe
 	tail -c +4 $@ > $@.nobom
 	mv $@.nobom $@
 
-dialects_builtin.go: ../gherkin-languages.json
-	cat $^ | jq '. as $$root | ([to_entries[] | [ \
-	  "\t",(.key|@json),": &GherkinDialect{\n", \
-	  "\t\t", (.key|@json),", ", (.value.name|@json),", ", (.value.native|@json), \
-	  ", map[string][]string{\n"] + ( \
-	    [.value|{"feature","background","scenario","scenarioOutline","examples","given","when","then","and","but"} \
-	    |to_entries[]| "\t\t\t"+(.key|@json), ": []string{\n", ([ .value[] | "\t\t\t\t", @json, ",\n"  ]|add),"\t\t\t},\n" ]\
-	    ) + ["\t\t},\n","\t},\n"] | add ] \
-	  | add) | "package gherkin\n\n" \
-	  + "// Builtin dialects for " + ([ $$root | to_entries[] | .key+" ("+.value.name+")" ] | join(", ")) + "\n" \
-	  + "func GherkinDialectsBuildin() GherkinDialectProvider {\n" \
-	  + "\treturn buildinDialects\n" \
-	  + "}\n\n" \
-	  + "var buildinDialects GherkinDialectProvider = gherkinDialectMap{\n" \
-	  + . + "}\n"' -r -c > $@
+dialects_builtin.go: ../gherkin-languages.json dialects_builtin.go.jq
+	cat $< | jq -f dialects_builtin.go.jq -r -c > $@
 
 LICENSE: ../LICENSE
 	cp $< $@
