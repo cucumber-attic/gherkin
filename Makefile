@@ -14,7 +14,7 @@ clean-%: %
 add-remotes: $(patsubst %/Makefile,add-remote-%,$(MAKEFILES))
 .PHONY: add-remotes
 add-remote-%: %
-	git remote -v | grep -E 'gherkin-$<\t' 2>/dev/null >/dev/null || \
+	git remote -v | grep -E 'gherkin-$<\s' 2>/dev/null >/dev/null || \
 	git remote add gherkin-$< git@github.com:cucumber/gherkin-$<.git
 
 push-subtrees: $(patsubst %/Makefile,push-subtree-%,$(MAKEFILES))
