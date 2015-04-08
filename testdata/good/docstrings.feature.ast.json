@@ -1,4 +1,5 @@
 {
+  "comments": [],
   "keyword": "Feature",
   "language": "en",
   "location": {
@@ -129,6 +130,5 @@
     }
   ],
   "tags": [],
-  "comments":[],
   "type": "Feature"
 }

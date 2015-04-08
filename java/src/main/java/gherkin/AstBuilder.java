@@ -1,6 +1,7 @@
 package gherkin;
 
 import gherkin.ast.Background;
+import gherkin.ast.Comment;
 import gherkin.ast.DataTable;
 import gherkin.ast.DocString;
 import gherkin.ast.Examples;
@@ -27,6 +28,7 @@ import static gherkin.StringUtils.join;
 
 public class AstBuilder<T> implements IAstBuilder<T> {
     private final Deque<AstNode> stack = new ArrayDeque<>();
+    private final List<Comment> comments = new ArrayList<>();
 
     public AstBuilder() {
         stack.push(new AstNode(RuleType.None));
@@ -39,7 +41,11 @@ public class AstBuilder<T> implements IAstBuilder<T> {
     @Override
     public void build(Token token) {
         RuleType ruleType = RuleType.cast(token.matchedType);
-        currentNode().add(ruleType, token);
+        if (token.matchedType == TokenType.Comment) {
+            comments.add(new Comment(getLocation(token, 0), token.matchedText));
+        } else {
+            currentNode().add(ruleType, token);
+        }
     }
 
     @Override
@@ -144,7 +150,7 @@ public class AstBuilder<T> implements IAstBuilder<T> {
                 String description = getDescription(header);
                 String language = featureLine.matchedGherkinDialect.getLanguage();
 
-                return new Feature(tags, getLocation(featureLine, 0), language, featureLine.matchedKeyword, featureLine.matchedText, description, background, scenarioDefinitions);
+                return new Feature(tags, getLocation(featureLine, 0), language, featureLine.matchedKeyword, featureLine.matchedText, description, background, scenarioDefinitions, comments);
             }
 
         }

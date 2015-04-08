@@ -1,4 +1,5 @@
 {
+  "comments": [],
   "keyword": "Egenskap",
   "language": "no",
   "location": {
@@ -48,6 +49,5 @@
     }
   ],
   "tags": [],
-  "comments":[],
   "type": "Feature"
 }
