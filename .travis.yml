@@ -1,4 +1,5 @@
 language: go
 
 script:
+  - "export GOPATH=" # fixes 'local import "../" in non-local package' error
   - "go test -v ./..."
