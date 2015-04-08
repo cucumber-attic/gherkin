@@ -56,4 +56,7 @@ public class Feature extends Node {
         return description;
     }
 
+    public List<Tag> getTags() {
+        return tags;
+    }
 }

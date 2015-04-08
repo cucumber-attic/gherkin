@@ -38,4 +38,8 @@ public class Examples extends Node {
     public TableRow getHeader() {
         return rows.get(0);
     }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
 }
