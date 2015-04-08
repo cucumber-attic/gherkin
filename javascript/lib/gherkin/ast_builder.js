@@ -4,6 +4,7 @@ var Errors = require('./errors');
 module.exports = function AstBuilder () {
 
   var stack = [new AstNode('None')];
+  var comments = [];
 
   this.startRule = function (ruleType) {
     stack.push(new AstNode(ruleType));
@@ -16,7 +17,15 @@ module.exports = function AstBuilder () {
   };
 
   this.build = function (token) {
-    currentNode().add(token.matchedType, token);
+    if(token.matchedType === 'Comment') {
+      comments.push({
+        type: 'Comment',
+        location: getLocation(token),
+        text: token.matchedText
+      });
+    } else {
+      currentNode().add(token.matchedType, token);
+    }
   };
 
   this.getResult = function () {
@@ -215,7 +224,8 @@ module.exports = function AstBuilder () {
           name: featureLine.matchedText,
           description: description,
           background: background,
-          scenarioDefinitions: scenariodefinitions
+          scenarioDefinitions: scenariodefinitions,
+          comments: comments
         };
       default:
         return node;

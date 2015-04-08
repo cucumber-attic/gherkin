@@ -16,7 +16,8 @@ describe('Parser', function () {
       name: 'hello',
       description: undefined,
       background: undefined,
-      scenarioDefinitions: []
+      scenarioDefinitions: [],
+      comments: []
     });
   });
 });
