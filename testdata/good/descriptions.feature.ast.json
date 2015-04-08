@@ -212,6 +212,24 @@
       "type": "ScenarioOutline"
     }
   ],
-  "tags": [],
+  "tags": [ ],
+  "comments": [
+    {
+      "location": {
+        "column":1,
+        "line":30
+      },
+      "text": "# this is a comment",
+      "type": "Comment"
+    },
+    {
+      "location": {
+        "column":1,
+        "line":36
+      },
+      "text": "    #  this is another comment",
+      "type": "Comment"
+    }
+  ],
   "type": "Feature"
 }
