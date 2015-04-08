@@ -13,13 +13,14 @@ module Gherkin
       builder = Gherkin::AstBuilder.new
       ast = parser.parse(scanner, builder, Gherkin::TokenMatcher.new)
       expect(ast).to eq({
-        :type=>:Feature,
-        :tags=>[],
-        :location=>{:line=>1, :column=>1},
-        :language=>"en",
-        :keyword=>"Feature",
-        :name=>"test",
-        :scenarioDefinitions=>[]
+        type: :Feature,
+        tags: [],
+        location: {line: 1, column: 1},
+        language: "en",
+        keyword: "Feature",
+        name: "test",
+        scenarioDefinitions: [],
+        comments: []
       })
     end
   end
