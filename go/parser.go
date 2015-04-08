@@ -99,6 +99,7 @@ const (
   RuleType_Scenario_Definition
   RuleType_Scenario
   RuleType_ScenarioOutline
+  RuleType_Examples_Definition
   RuleType_Examples
   RuleType_Scenario_Step
   RuleType_ScenarioOutline_Step
@@ -141,6 +142,7 @@ func (t RuleType) Name() string {
     case RuleType_Scenario_Definition: return "Scenario_Definition"
     case RuleType_Scenario: return "Scenario"
     case RuleType_ScenarioOutline: return "ScenarioOutline"
+    case RuleType_Examples_Definition: return "Examples_Definition"
     case RuleType_Examples: return "Examples"
     case RuleType_Scenario_Step: return "Scenario_Step"
     case RuleType_ScenarioOutline_Step: return "ScenarioOutline_Step"
@@ -1349,12 +1351,13 @@ func (ctxt *parseContext) matchAt_17(line *Line) (newState int, err error) {
     return 20, err;
   }
   if ok, token, err := ctxt.match_TagLine(line); ok {
-      ctxt.startRule(RuleType_Examples);
+      ctxt.startRule(RuleType_Examples_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
     return 22, err;
   }
   if ok, token, err := ctxt.match_ExamplesLine(line); ok {
+      ctxt.startRule(RuleType_Examples_Definition);
       ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
     return 23, err;
@@ -1394,13 +1397,14 @@ func (ctxt *parseContext) matchAt_18(line *Line) (newState int, err error) {
   }
   if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Description);
-      ctxt.startRule(RuleType_Examples);
+      ctxt.startRule(RuleType_Examples_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
     return 22, err;
   }
   if ok, token, err := ctxt.match_ExamplesLine(line); ok {
       ctxt.endRule(RuleType_Description);
+      ctxt.startRule(RuleType_Examples_Definition);
       ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
     return 23, err;
@@ -1436,12 +1440,13 @@ func (ctxt *parseContext) matchAt_19(line *Line) (newState int, err error) {
     return 20, err;
   }
   if ok, token, err := ctxt.match_TagLine(line); ok {
-      ctxt.startRule(RuleType_Examples);
+      ctxt.startRule(RuleType_Examples_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
     return 22, err;
   }
   if ok, token, err := ctxt.match_ExamplesLine(line); ok {
+      ctxt.startRule(RuleType_Examples_Definition);
       ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
     return 23, err;
@@ -1485,13 +1490,14 @@ func (ctxt *parseContext) matchAt_20(line *Line) (newState int, err error) {
   }
   if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Step);
-      ctxt.startRule(RuleType_Examples);
+      ctxt.startRule(RuleType_Examples_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
     return 22, err;
   }
   if ok, token, err := ctxt.match_ExamplesLine(line); ok {
       ctxt.endRule(RuleType_Step);
+      ctxt.startRule(RuleType_Examples_Definition);
       ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
     return 23, err;
@@ -1535,7 +1541,7 @@ func (ctxt *parseContext) matchAt_21(line *Line) (newState int, err error) {
   if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
-      ctxt.startRule(RuleType_Examples);
+      ctxt.startRule(RuleType_Examples_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
     return 22, err;
@@ -1543,6 +1549,7 @@ func (ctxt *parseContext) matchAt_21(line *Line) (newState int, err error) {
   if ok, token, err := ctxt.match_ExamplesLine(line); ok {
       ctxt.endRule(RuleType_DataTable);
       ctxt.endRule(RuleType_Step);
+      ctxt.startRule(RuleType_Examples_Definition);
       ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
     return 23, err;
@@ -1570,7 +1577,7 @@ func (ctxt *parseContext) matchAt_21(line *Line) (newState int, err error) {
 }
 
 
-  // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0
+  // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:0>Tags:0>#TagLine:0
 func (ctxt *parseContext) matchAt_22(line *Line) (newState int, err error) {
   if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.build(token);
@@ -1578,6 +1585,7 @@ func (ctxt *parseContext) matchAt_22(line *Line) (newState int, err error) {
   }
   if ok, token, err := ctxt.match_ExamplesLine(line); ok {
       ctxt.endRule(RuleType_Tags);
+      ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
     return 23, err;
   }
@@ -1590,7 +1598,7 @@ func (ctxt *parseContext) matchAt_22(line *Line) (newState int, err error) {
     return 22, err;
   }
   
-    // var stateComment = "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:0>Tags:0>#TagLine:0"
+    // var stateComment = "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:0>Tags:0>#TagLine:0"
     var expectedTokens = []string{"#TagLine", "#ExamplesLine", "#Comment", "#Empty"}
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
@@ -1604,7 +1612,7 @@ func (ctxt *parseContext) matchAt_22(line *Line) (newState int, err error) {
 }
 
 
-  // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0
+  // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0
 func (ctxt *parseContext) matchAt_23(line *Line) (newState int, err error) {
   if ok, token, err := ctxt.match_Empty(line); ok {
       ctxt.build(token);
@@ -1624,7 +1632,7 @@ func (ctxt *parseContext) matchAt_23(line *Line) (newState int, err error) {
     return 24, err;
   }
   
-    // var stateComment = "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:1>#ExamplesLine:0"
+    // var stateComment = "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0"
     var expectedTokens = []string{"#Empty", "#Comment", "#TableRow", "#Other"}
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
@@ -1638,7 +1646,7 @@ func (ctxt *parseContext) matchAt_23(line *Line) (newState int, err error) {
 }
 
 
-  // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
+  // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
 func (ctxt *parseContext) matchAt_24(line *Line) (newState int, err error) {
   if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.endRule(RuleType_Description);
@@ -1655,7 +1663,7 @@ func (ctxt *parseContext) matchAt_24(line *Line) (newState int, err error) {
     return 24, err;
   }
   
-    // var stateComment = "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:1>Description:0>#Other:0"
+    // var stateComment = "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0"
     var expectedTokens = []string{"#Comment", "#TableRow", "#Other"}
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
@@ -1669,7 +1677,7 @@ func (ctxt *parseContext) matchAt_24(line *Line) (newState int, err error) {
 }
 
 
-  // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0
+  // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0
 func (ctxt *parseContext) matchAt_25(line *Line) (newState int, err error) {
   if ok, token, err := ctxt.match_Comment(line); ok {
       ctxt.build(token);
@@ -1684,7 +1692,7 @@ func (ctxt *parseContext) matchAt_25(line *Line) (newState int, err error) {
     return 25, err;
   }
   
-    // var stateComment = "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:2>Examples_Description:0>Description_Helper:2>#Comment:0"
+    // var stateComment = "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0"
     var expectedTokens = []string{"#Comment", "#TableRow", "#Empty"}
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
@@ -1698,7 +1706,7 @@ func (ctxt *parseContext) matchAt_25(line *Line) (newState int, err error) {
 }
 
 
-  // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>#TableRow:0
+  // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>#TableRow:0
 func (ctxt *parseContext) matchAt_26(line *Line) (newState int, err error) {
   if ok, token, err := ctxt.match_TableRow(line); ok {
       ctxt.build(token);
@@ -1713,7 +1721,7 @@ func (ctxt *parseContext) matchAt_26(line *Line) (newState int, err error) {
     return 26, err;
   }
   
-    // var stateComment = "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:3>#TableRow:0"
+    // var stateComment = "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>#TableRow:0"
     var expectedTokens = []string{"#TableRow", "#Comment", "#Empty"}
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
@@ -1727,10 +1735,11 @@ func (ctxt *parseContext) matchAt_26(line *Line) (newState int, err error) {
 }
 
 
-  // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:4>#TableRow:0
+  // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:3>#TableRow:0
 func (ctxt *parseContext) matchAt_27(line *Line) (newState int, err error) {
   if ok, token, err := ctxt.match_EOF(line); ok {
       ctxt.endRule(RuleType_Examples);
+      ctxt.endRule(RuleType_Examples_Definition);
       ctxt.endRule(RuleType_ScenarioOutline);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.build(token);
@@ -1743,7 +1752,8 @@ func (ctxt *parseContext) matchAt_27(line *Line) (newState int, err error) {
   if ok, token, err := ctxt.match_TagLine(line); ok {
     if ctxt.lookahead_0(line) {
       ctxt.endRule(RuleType_Examples);
-      ctxt.startRule(RuleType_Examples);
+      ctxt.endRule(RuleType_Examples_Definition);
+      ctxt.startRule(RuleType_Examples_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
     return 22, err;
@@ -1751,6 +1761,7 @@ func (ctxt *parseContext) matchAt_27(line *Line) (newState int, err error) {
   }
   if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_Examples);
+      ctxt.endRule(RuleType_Examples_Definition);
       ctxt.endRule(RuleType_ScenarioOutline);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
@@ -1760,12 +1771,15 @@ func (ctxt *parseContext) matchAt_27(line *Line) (newState int, err error) {
   }
   if ok, token, err := ctxt.match_ExamplesLine(line); ok {
       ctxt.endRule(RuleType_Examples);
+      ctxt.endRule(RuleType_Examples_Definition);
+      ctxt.startRule(RuleType_Examples_Definition);
       ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
     return 23, err;
   }
   if ok, token, err := ctxt.match_ScenarioLine(line); ok {
       ctxt.endRule(RuleType_Examples);
+      ctxt.endRule(RuleType_Examples_Definition);
       ctxt.endRule(RuleType_ScenarioOutline);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
@@ -1775,6 +1789,7 @@ func (ctxt *parseContext) matchAt_27(line *Line) (newState int, err error) {
   }
   if ok, token, err := ctxt.match_ScenarioOutlineLine(line); ok {
       ctxt.endRule(RuleType_Examples);
+      ctxt.endRule(RuleType_Examples_Definition);
       ctxt.endRule(RuleType_ScenarioOutline);
       ctxt.endRule(RuleType_Scenario_Definition);
       ctxt.startRule(RuleType_Scenario_Definition);
@@ -1791,7 +1806,7 @@ func (ctxt *parseContext) matchAt_27(line *Line) (newState int, err error) {
     return 27, err;
   }
   
-    // var stateComment = "State: 27 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples:4>#TableRow:0"
+    // var stateComment = "State: 27 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:3>#TableRow:0"
     var expectedTokens = []string{"#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"}
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
@@ -1842,7 +1857,7 @@ func (ctxt *parseContext) matchAt_30(line *Line) (newState int, err error) {
   if ok, token, err := ctxt.match_TagLine(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
-      ctxt.startRule(RuleType_Examples);
+      ctxt.startRule(RuleType_Examples_Definition);
       ctxt.startRule(RuleType_Tags);
       ctxt.build(token);
     return 22, err;
@@ -1850,6 +1865,7 @@ func (ctxt *parseContext) matchAt_30(line *Line) (newState int, err error) {
   if ok, token, err := ctxt.match_ExamplesLine(line); ok {
       ctxt.endRule(RuleType_DocString);
       ctxt.endRule(RuleType_Step);
+      ctxt.startRule(RuleType_Examples_Definition);
       ctxt.startRule(RuleType_Examples);
       ctxt.build(token);
     return 23, err;

@@ -161,7 +161,7 @@ module Gherkin
           scenario_outline_line = scenario_outline_node.get_token(:ScenarioOutlineLine)
           description = get_description(scenario_outline_node)
           steps = get_steps(scenario_outline_node)
-          examples = scenario_outline_node.get_items(:Examples)
+          examples = scenario_outline_node.get_items(:Examples_Definition)
 
           reject_nils(
             type: scenario_outline_node.rule_type,
@@ -174,19 +174,20 @@ module Gherkin
             examples: examples
           )
         end
-      when :Examples
+      when :Examples_Definition
         tags = get_tags(node)
-        examples_line = node.get_token(:ExamplesLine)
-        description = get_description(node)
+        examples_node = node.get_single(:Examples)
+        examples_line = examples_node.get_token(:ExamplesLine)
+        description = get_description(examples_node)
 
         reject_nils(
-          type: node.rule_type,
+          type: examples_node.rule_type,
           tags: tags,
           location: get_location(examples_line),
           keyword: examples_line.matched_keyword,
           name: examples_line.matched_text,
           description: description,
-          rows: get_table_rows(node)
+          rows: get_table_rows(examples_node)
         )
       when :Description
         line_tokens = node.get_tokens(:Other)

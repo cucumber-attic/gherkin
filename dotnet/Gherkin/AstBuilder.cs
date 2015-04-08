@@ -93,18 +93,19 @@ namespace Gherkin
 
                         var description = GetDescription(scenarioOutlineNode);
                         var steps = GetSteps(scenarioOutlineNode);
-                        var examples = scenarioOutlineNode.GetItems<Examples>(RuleType.Examples).ToArray();
+                        var examples = scenarioOutlineNode.GetItems<Examples>(RuleType.Examples_Definition).ToArray();
 
                         return new ScenarioOutline(tags, GetLocation(scenarioOutlineLine), scenarioOutlineLine.MatchedKeyword, scenarioOutlineLine.MatchedText, description, steps, examples);
                     }
                 }
-                case RuleType.Examples:
+                case RuleType.Examples_Definition:
                 {
                     var tags = GetTags(node);
-                    var examplesLine = node.GetToken(TokenType.ExamplesLine);
-                    var description = GetDescription(node);
-
-                    var allRows = GetTableRows(node);
+                    var examplesNode = node.GetSingle<AstNode>(RuleType.Examples);
+                    var examplesLine = examplesNode.GetToken(TokenType.ExamplesLine);
+                    var description = GetDescription(examplesNode);
+ 
+                    var allRows = GetTableRows(examplesNode);
                     var header = allRows.First();
                     var rows = allRows.Skip(1).ToArray();
                     return new Examples(tags, GetLocation(examplesLine), examplesLine.MatchedKeyword, examplesLine.MatchedText, description, header, rows);
