@@ -1,31 +1,14 @@
 package gherkin_test
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
-	"github.com/cucumber/gherkin3"
+	gherkin "."
 )
 
-func ExampleGenerateTokens() {
-
-	input := `Feature: Minimal
-
-  Scenario: minimalistic
-    Given the minimalism`
-	r := strings.NewReader(input)
-
-	gherkin3.GenerateTokens(r, os.Stdout)
-
-	// Output:
-	// (1:1)FeatureLine:Feature/Minimal/
-	// (2:1)Empty://
-	// (3:3)ScenarioLine:Scenario/minimalistic/
-	// (4:5)StepLine:Given /the minimalism/
-	// EOF
-}
-
-func ExampleGenerateTokens2() {
+func ExampleParseFeature() {
 
 	input := `Feature: Tagged Examples
 
@@ -47,26 +30,41 @@ func ExampleGenerateTokens2() {
 `
 	r := strings.NewReader(input)
 
-	gherkin3.GenerateTokens(r, os.Stdout)
+	feature, err := gherkin.ParseFeature(r)
+	if err != nil {
+		fmt.Fprintf(os.Stdout, "%s\n", err)
+		return
+	}
+	fmt.Fprintf(os.Stdout, "Location: %+v\n", feature.Location)
+	fmt.Fprintf(os.Stdout, "Keyword: %+v\n", feature.Keyword)
+	fmt.Fprintf(os.Stdout, "Name: %+v\n", feature.Name)
+	fmt.Fprintf(os.Stdout, "ScenarioDefinitions: length: %+v\n", len(feature.ScenarioDefinitions))
+
+	scenario1, _ := feature.ScenarioDefinitions[0].(*gherkin.ScenarioOutline)
+	fmt.Fprintf(os.Stdout, " 1: Location: %+v\n", scenario1.Location)
+	fmt.Fprintf(os.Stdout, "    Keyword: %+v\n", scenario1.Keyword)
+	fmt.Fprintf(os.Stdout, "    Name: %+v\n", scenario1.Name)
+	fmt.Fprintf(os.Stdout, "    Steps: length: %+v\n", len(scenario1.Steps))
+
+	scenario2, _ := feature.ScenarioDefinitions[1].(*gherkin.Scenario)
+	fmt.Fprintf(os.Stdout, " 2: Location: %+v\n", scenario2.Location)
+	fmt.Fprintf(os.Stdout, "    Keyword: %+v\n", scenario2.Keyword)
+	fmt.Fprintf(os.Stdout, "    Name: %+v\n", scenario2.Name)
+	fmt.Fprintf(os.Stdout, "    Steps: length: %+v\n", len(scenario2.Steps))
 
 	// Output:
-	// (1:1)FeatureLine:Feature/Tagged Examples/
-	// (2:1)Empty://
-	// (3:3)ScenarioOutlineLine:Scenario Outline/minimalistic/
-	// (4:5)StepLine:Given /the <what>/
-	// (5:1)Empty://
-	// (6:5)TagLine://5:@foo
-	// (7:5)ExamplesLine:Examples//
-	// (8:7)TableRow://9:what
-	// (9:7)TableRow://9:foo
-	// (10:1)Empty://
-	// (11:5)TagLine://5:@bar
-	// (12:5)ExamplesLine:Examples//
-	// (13:7)TableRow://9:what
-	// (14:7)TableRow://9:bar
-	// (15:1)Empty://
-	// (16:3)TagLine://3:@zap
-	// (17:3)ScenarioLine:Scenario/ha ok/
-	// EOF
+	//
+	// Location: &{Line:1 Column:1}
+	// Keyword: Feature
+	// Name: Tagged Examples
+	// ScenarioDefinitions: length: 2
+	//  1: Location: &{Line:3 Column:3}
+	//     Keyword: Scenario Outline
+	//     Name: minimalistic
+	//     Steps: length: 1
+	//  2: Location: &{Line:17 Column:3}
+	//     Keyword: Scenario
+	//     Name: ha ok
+	//     Steps: length: 0
 	//
 }
