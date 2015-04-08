@@ -1,6 +1,6 @@
 language: csharp
 mono: latest
-env: TARGET_LANG=csharp
+env: TARGET_LANG=dotnet
 
 matrix:
   include:
