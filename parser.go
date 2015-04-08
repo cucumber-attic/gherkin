@@ -375,7 +375,7 @@ func (ctxt *parseContext) matchAt_0(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -409,7 +409,7 @@ func (ctxt *parseContext) matchAt_1(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -443,7 +443,7 @@ func (ctxt *parseContext) matchAt_2(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -505,7 +505,7 @@ func (ctxt *parseContext) matchAt_3(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -568,7 +568,7 @@ func (ctxt *parseContext) matchAt_4(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -625,7 +625,7 @@ func (ctxt *parseContext) matchAt_5(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -686,7 +686,7 @@ func (ctxt *parseContext) matchAt_6(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -748,7 +748,7 @@ func (ctxt *parseContext) matchAt_7(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -804,7 +804,7 @@ func (ctxt *parseContext) matchAt_8(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -875,7 +875,7 @@ func (ctxt *parseContext) matchAt_9(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -945,7 +945,7 @@ func (ctxt *parseContext) matchAt_10(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -986,7 +986,7 @@ func (ctxt *parseContext) matchAt_11(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1051,7 +1051,7 @@ func (ctxt *parseContext) matchAt_12(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1117,7 +1117,7 @@ func (ctxt *parseContext) matchAt_13(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1177,7 +1177,7 @@ func (ctxt *parseContext) matchAt_14(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1252,7 +1252,7 @@ func (ctxt *parseContext) matchAt_15(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1326,7 +1326,7 @@ func (ctxt *parseContext) matchAt_16(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1373,7 +1373,7 @@ func (ctxt *parseContext) matchAt_17(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1419,7 +1419,7 @@ func (ctxt *parseContext) matchAt_18(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1461,7 +1461,7 @@ func (ctxt *parseContext) matchAt_19(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1516,7 +1516,7 @@ func (ctxt *parseContext) matchAt_20(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1568,7 +1568,7 @@ func (ctxt *parseContext) matchAt_21(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1603,7 +1603,7 @@ func (ctxt *parseContext) matchAt_22(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1637,7 +1637,7 @@ func (ctxt *parseContext) matchAt_23(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1668,7 +1668,7 @@ func (ctxt *parseContext) matchAt_24(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1697,7 +1697,7 @@ func (ctxt *parseContext) matchAt_25(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1726,7 +1726,7 @@ func (ctxt *parseContext) matchAt_26(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1811,7 +1811,7 @@ func (ctxt *parseContext) matchAt_27(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1836,7 +1836,7 @@ func (ctxt *parseContext) matchAt_29(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1884,7 +1884,7 @@ func (ctxt *parseContext) matchAt_30(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1909,7 +1909,7 @@ func (ctxt *parseContext) matchAt_31(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -1979,7 +1979,7 @@ func (ctxt *parseContext) matchAt_32(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -2004,7 +2004,7 @@ func (ctxt *parseContext) matchAt_33(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
@@ -2070,7 +2070,7 @@ func (ctxt *parseContext) matchAt_34(line *Line) (newState int, err error) {
     if line.IsEof() {
       err = fmt.Errorf("(%d:0): unexpected end of file, expected: %s", line.LineNumber, strings.Join(expectedTokens,", "))
     } else {
-      err = fmt.Errorf("(%d:0): expected: %s, got '%s'",line.LineNumber, strings.Join(expectedTokens,", "), line.LineText,
+      err = fmt.Errorf("(%d:%d): expected: %s, got '%s'",line.LineNumber, line.Indent() + 1, strings.Join(expectedTokens,", "), line.LineText,
       )
     }
     // if (ctxt.p.stopAtFirstError) throw error;
