@@ -22,6 +22,7 @@ See `CONTRIBUTING.md` if you want to contribute a parser for a new language.
 Our wish-list is (in no particular order):
 
 * C
+* Perl
 * PHP
 * Python
 * Rust
