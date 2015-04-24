@@ -165,16 +165,11 @@ func (m *matcher) MatchTableRow(line *Line) (ok bool, token *Token, err error) {
 		ttxt := strings.Trim(line.TrimmedLineText, " ")
 		splits := strings.Split(ttxt[1:len(ttxt)-1], TABLE_CELL_SEPARATOR)
 		for i := range splits {
-			ind := 0
-			txt := splits[i]
-			for k := range txt {
-				if txt[k:k+1] != " " {
-					break
-				}
-				ind++
-			}
-			cells = append(cells, &LineSpan{column + ind + 1, strings.Trim(splits[i], " ")})
-			column = column + len(txt) + 1
+			element := splits[i]
+			txt := strings.TrimLeft(element, " ")
+			ind := len(element) - len(txt)
+			cells = append(cells, &LineSpan{column + ind + 1, strings.TrimRight(txt, " ")})
+			column = column + len(element) + 1
 		}
 
 		token, ok = m.newTokenAtLocation(line.LineNumber, line.Indent()), true
@@ -207,17 +202,13 @@ func (m *matcher) MatchOther(line *Line) (ok bool, token *Token, err error) {
 	token, ok = m.newTokenAtLocation(line.LineNumber, 0), true
 	token.Type = TokenType_Other
 
-	txt := line.LineText
-	var ind int
-	for k := range txt {
-		if txt[k:k+1] != " " {
-			break
-		}
-		if ind >= m.indentToRemove {
-			break
-		}
-		ind++
+	element := line.LineText
+	txt := strings.TrimLeft(element, " ")
+
+	if len(element)-len(txt) > m.indentToRemove {
+		token.Text = element[m.indentToRemove:]
+	} else {
+		token.Text = txt
 	}
-	token.Text = txt[ind:]
 	return
 }
