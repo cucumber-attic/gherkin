@@ -22,6 +22,7 @@ func main() {
 				os.Exit(1)
 				return
 			}
+			defer file.Close()
 			readers = append(readers, file)
 		}
 	}
