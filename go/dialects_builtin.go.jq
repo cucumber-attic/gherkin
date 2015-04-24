@@ -8,7 +8,7 @@
           [ .value
             | {"feature","background","scenario","scenarioOutline","examples","given","when","then","and","but"}
             | to_entries[]
-            | "\t\t\t"+(.key|@json), ": []string{\n",
+            | "\t\t\t"+(.key), ": []string{\n",
                 ([ .value[] | "\t\t\t\t", @json, ",\n"  ]|add),
               "\t\t\t},\n"
           ]
@@ -22,6 +22,12 @@
 + "func GherkinDialectsBuildin() GherkinDialectProvider {\n"
 + "\treturn buildinDialects\n"
 + "}\n\n"
-+ "var buildinDialects GherkinDialectProvider = gherkinDialectMap{\n"
++ "const (\n"
++ (
+  ["feature","background","scenario","scenarioOutline","examples","given","when","then","and","but"]
+  | [ .[] | "\t" + . + " = " + (.|@json) + "\n" ]
+  | add )
++ ")\n\n"
++ "var buildinDialects = gherkinDialectMap{\n"
 + .
 + "}\n"
