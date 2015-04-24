@@ -17,8 +17,11 @@ test: $(TOKENS) $(ASTS) $(ERRORS)
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: $(GO_SOURCE_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast LICENSE
+.built: show-version-info $(GO_SOURCE_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast LICENSE
 	touch $@
+
+show-version-info:
+	go version
 
 bin/gherkin-generate-tokens: $(GO_SOURCE_FILES)
 	go build -o $@ ./gherkin-generate-tokens
@@ -58,4 +61,4 @@ LICENSE: ../LICENSE
 
 clean:
 	rm -rf .compared .built acceptance bin/ parser.go dialects_builtin.go
-.PHONY: clean
+.PHONY: clean show-version-info
