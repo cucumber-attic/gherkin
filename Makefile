@@ -29,19 +29,19 @@ bin/gherkin-generate-tokens: $(GO_SOURCE_FILES)
 bin/gherkin-generate-ast: $(GO_SOURCE_FILES)
 	go build -o $@ ./gherkin-generate-ast
 
-acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens
+acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens bin/gherkin-generate-tokens
 	mkdir -p `dirname $@`
 	bin/gherkin-generate-tokens $< > $@
 	diff --unified $<.tokens $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
-acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json
+acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json bin/gherkin-generate-ast
 	mkdir -p `dirname $@`
 	bin/gherkin-generate-ast $< | jq --sort-keys "." > $@
 	diff --unified $<.ast.json $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
 
-acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors
+acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors bin/gherkin-generate-ast
 	mkdir -p `dirname $@`
 	! bin/gherkin-generate-ast $< 2> $@
 	diff --unified $<.errors $@
