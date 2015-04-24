@@ -20,11 +20,7 @@ matrix:
       node_js: 0.12
 
     - env: TARGET_LANG=go
-      go: 1.3
-    - env: TARGET_LANG=go
-      go: 1.4
-    - env: TARGET_LANG=go
-      go: tip
+      go: latest
 
 before_install:
   - export EnableNuGetPackageRestore=true
