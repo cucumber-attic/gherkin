@@ -68,7 +68,7 @@ public class Compiler {
             examplesTags.addAll(pickle(examples.getTags()));
 
             final TableRow header = examples.getHeader();
-            for (final TableRow values : examples.getRows()) {
+            for (final TableRow values : examples.getBody()) {
                 String scenarioName = interpolate(scenarioOutline.getName(), examples.getHeader(), values);
                 String testCaseName = dialect.getScenarioKeywords().get(0) + ": " + scenarioName;
 
