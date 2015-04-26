@@ -224,7 +224,8 @@ func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {
 		ex.Keyword = examplesLine.Keyword
 		ex.Name = examplesLine.Text
 		ex.Description = description
-		ex.Rows = allRows
+		ex.Header = allRows[0]
+		ex.Body = allRows[1:]
 		return ex, err
 
 	case RuleType_Description:
