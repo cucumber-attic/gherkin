@@ -195,8 +195,8 @@ module Gherkin
           keyword: examples_line.matched_keyword,
           name: examples_line.matched_text,
           description: description,
-          header: rows.first,
-          body: rows[1..-1]
+          tableHeader: rows.first,
+          tableBody: rows[1..-1]
         )
       when :Description
         line_tokens = node.get_tokens(:Other)
