@@ -1,26 +1,24 @@
 language: csharp
 mono: 3.12.0
+
 env: TARGET_LANG=dotnet
 
 matrix:
   include:
     - env: TARGET_LANG=java
-      jdk: oraclejdk8
 
     - env: TARGET_LANG=ruby
-      rvm: 2.0.0
+      script: "rvm use ruby-2.0.0"
     - env: TARGET_LANG=ruby
-      rvm: 2.1.0
+      script: "rvm use ruby-2.1.2"
     - env: TARGET_LANG=ruby
-      rvm: 2.2.0
+      script: "rvm use ruby-2.2.0"
     - env: TARGET_LANG=ruby
-      rvm: jruby-head
+      script: "rvm use jruby-9.0.0.0.pre1"
 
     - env: TARGET_LANG=javascript
-      node_js: 0.12
-
+    
     - env: TARGET_LANG=go
-      go: latest
 
 before_install:
   - export EnableNuGetPackageRestore=true
