@@ -14,9 +14,13 @@ all: .compared
 .compared: .built $(PICKLES) $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: src/main/java/gherkin/Parser.java src/main/resources/gherkin/gherkin-languages.json $(JAVA_FILES) LICENSE
+.built: show-version-info src/main/java/gherkin/Parser.java src/main/resources/gherkin/gherkin-languages.json $(JAVA_FILES) LICENSE
 	mvn test
 	touch $@
+
+show-version-info:
+	java -version
+.PHONY: show-version-info
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
