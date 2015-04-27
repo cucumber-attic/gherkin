@@ -10,7 +10,7 @@ type AstBuilder interface {
 }
 
 type astBuilder struct {
-	stack []*astNode
+	stack    []*astNode
 	comments []*Comment
 }
 
@@ -100,7 +100,7 @@ func (t *astBuilder) pop() *astNode {
 }
 
 func (t *astBuilder) Build(tok *Token) (bool, error) {
-	if(tok.Type == TokenType_Comment) {
+	if tok.Type == TokenType_Comment {
 		comment := new(Comment)
 		comment.Type = "Comment"
 		comment.Location = astLocation(tok)
@@ -224,8 +224,8 @@ func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {
 		ex.Keyword = examplesLine.Keyword
 		ex.Name = examplesLine.Text
 		ex.Description = description
-		ex.Header = allRows[0]
-		ex.Body = allRows[1:]
+		ex.TableHeader = allRows[0]
+		ex.TableBody = allRows[1:]
 		return ex, err
 
 	case RuleType_Description:
