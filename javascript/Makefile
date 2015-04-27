@@ -13,9 +13,13 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: lib/gherkin/parser.js lib/gherkin/gherkin-languages.json $(JAVASCRIPT_FILES) dist/gherkin.js dist/gherkin.min.js node_modules/.fetched LICENSE
+.built: show-version-info lib/gherkin/parser.js lib/gherkin/gherkin-languages.json $(JAVASCRIPT_FILES) dist/gherkin.js dist/gherkin.min.js node_modules/.fetched LICENSE
 	./node_modules/.bin/mocha
 	touch $@
+
+show-version-info:
+	node --version
+.PHONY: show-version-info
 
 node_modules/.fetched: package.json
 	npm install

@@ -13,9 +13,13 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: lib/gherkin/parser.rb lib/gherkin/gherkin-languages.json $(RUBY_FILES) Gemfile.lock LICENSE
+.built: show-version-info lib/gherkin/parser.rb lib/gherkin/gherkin-languages.json $(RUBY_FILES) Gemfile.lock LICENSE
 	bundle exec rspec --color
 	touch $@
+
+show-version-info:
+	ruby --version
+.PHONY: show-version-info
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
