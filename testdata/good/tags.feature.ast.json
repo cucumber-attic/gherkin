@@ -57,7 +57,13 @@
     {
       "examples": [
         {
-          "body": [
+          "keyword": "Examples",
+          "location": {
+            "column": 1,
+            "line": 17
+          },
+          "name": "",
+          "tableBody": [
             {
               "cells": [
                 {
@@ -76,7 +82,7 @@
               "type": "TableRow"
             }
           ],
-          "header": {
+          "tableHeader": {
             "cells": [
               {
                 "location": {
@@ -93,12 +99,6 @@
             },
             "type": "TableRow"
           },
-          "keyword": "Examples",
-          "location": {
-            "column": 1,
-            "line": 17
-          },
-          "name": "",
           "tags": [
             {
               "location": {

@@ -55,8 +55,8 @@ type Examples struct {
 	Keyword     string      `json:"keyword"`
 	Name        string      `json:"name"`
 	Description string      `json:"description,omitempty"`
-	Header      *TableRow   `json:"header"`
-	Body        []*TableRow `json:"body"`
+	TableHeader *TableRow   `json:"tableHeader"`
+	TableBody   []*TableRow `json:"tableBody"`
 }
 
 type TableRow struct {

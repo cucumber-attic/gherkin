@@ -162,7 +162,14 @@
       "description": "This is a scenario outline description",
       "examples": [
         {
-          "body": [
+          "description": "This is an examples description",
+          "keyword": "Examples",
+          "location": {
+            "column": 3,
+            "line": 44
+          },
+          "name": "examples with description",
+          "tableBody": [
             {
               "cells": [
                 {
@@ -181,8 +188,7 @@
               "type": "TableRow"
             }
           ],
-          "description": "This is an examples description",
-          "header": {
+          "tableHeader": {
             "cells": [
               {
                 "location": {
@@ -199,12 +205,6 @@
             },
             "type": "TableRow"
           },
-          "keyword": "Examples",
-          "location": {
-            "column": 3,
-            "line": 44
-          },
-          "name": "examples with description",
           "tags": [],
           "type": "Examples"
         }

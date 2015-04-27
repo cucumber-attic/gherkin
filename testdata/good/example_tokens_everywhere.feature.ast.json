@@ -11,7 +11,13 @@
     {
       "examples": [
         {
-          "body": [
+          "keyword": "Examples",
+          "location": {
+            "column": 5,
+            "line": 11
+          },
+          "name": "",
+          "tableBody": [
             {
               "cells": [
                 {
@@ -111,7 +117,7 @@
               "type": "TableRow"
             }
           ],
-          "header": {
+          "tableHeader": {
             "cells": [
               {
                 "location": {
@@ -160,12 +166,6 @@
             },
             "type": "TableRow"
           },
-          "keyword": "Examples",
-          "location": {
-            "column": 5,
-            "line": 11
-          },
-          "name": "",
           "tags": [],
           "type": "Examples"
         }
