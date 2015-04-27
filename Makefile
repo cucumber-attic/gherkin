@@ -14,9 +14,13 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: .sln_built_debug $(NUNIT) LICENSE
+.built: show-version-info .sln_built_debug $(NUNIT) LICENSE
 	mono --runtime=v4.0 $(NUNIT) -noxml -nologo -stoponerror Gherkin/bin/Debug/Gherkin.dll
 	touch $@
+
+show-version-info:
+	mono --version
+.PHONY: show-version-info
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
