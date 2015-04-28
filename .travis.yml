@@ -24,7 +24,7 @@ before_install:
   - which jq || sudo apt-get install -y jq
 
 script:
-  - if [ -n "$USE_RVM" ]; then rvm use $USE_RVM || (rvm install $USE_RVM && rvm use $USE_RVM); fi
+  - '[ -z "$USE_RVM" ] || (rvm use $USE_RVM || (rvm install $USE_RVM && rvm use $USE_RVM))'
   - "cd $TARGET_LANG; make"
 
 branches:
