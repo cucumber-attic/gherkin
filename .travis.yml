@@ -10,7 +10,7 @@ matrix:
     - env: TARGET_LANG=ruby USE_RVM=ruby-2.0.0
     - env: TARGET_LANG=ruby USE_RVM=ruby-2.1.2
     - env: TARGET_LANG=ruby USE_RVM=ruby-2.2.0
-    - env: TARGET_LANG=ruby USE_RVM=jruby-head
+    - env: TARGET_LANG=ruby USE_RVM=jruby-1.7
 
     - env: TARGET_LANG=javascript
     
