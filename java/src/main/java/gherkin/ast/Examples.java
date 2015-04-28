@@ -8,15 +8,17 @@ public class Examples extends Node {
     private final String keyword;
     private final String name;
     private final String description;
-    private final List<TableRow> rows;
+    private final TableRow tableHeader;
+    private final List<TableRow> tableBody;
 
-    public Examples(Location location, List<Tag> tags, String keyword, String name, String description, List<TableRow> rows) {
+    public Examples(Location location, List<Tag> tags, String keyword, String name, String description, TableRow tableHeader, List<TableRow> tableBody) {
         super(location);
         this.tags = Collections.unmodifiableList(tags);
         this.keyword = keyword;
         this.name = name;
         this.description = description;
-        this.rows = Collections.unmodifiableList(rows);
+        this.tableHeader = tableHeader;
+        this.tableBody = Collections.unmodifiableList(tableBody);
     }
 
     public String getKeyword() {
@@ -31,12 +33,12 @@ public class Examples extends Node {
         return description;
     }
 
-    public List<TableRow> getRows() {
-        return rows.subList(1, rows.size());
+    public List<TableRow> getTableBody() {
+        return tableBody;
     }
 
-    public TableRow getHeader() {
-        return rows.get(0);
+    public TableRow getTableHeader() {
+        return tableHeader;
     }
 
     public List<Tag> getTags() {

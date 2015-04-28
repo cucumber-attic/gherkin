@@ -17,24 +17,7 @@
             "line": 7
           },
           "name": "",
-          "rows": [
-            {
-              "cells": [
-                {
-                  "location": {
-                    "column": 9,
-                    "line": 8
-                  },
-                  "type": "TableCell",
-                  "value": "what"
-                }
-              ],
-              "location": {
-                "column": 7,
-                "line": 8
-              },
-              "type": "TableRow"
-            },
+          "tableBody": [
             {
               "cells": [
                 {
@@ -53,6 +36,23 @@
               "type": "TableRow"
             }
           ],
+          "tableHeader": {
+            "cells": [
+              {
+                "location": {
+                  "column": 9,
+                  "line": 8
+                },
+                "type": "TableCell",
+                "value": "what"
+              }
+            ],
+            "location": {
+              "column": 7,
+              "line": 8
+            },
+            "type": "TableRow"
+          },
           "tags": [
             {
               "location": {
@@ -72,24 +72,7 @@
             "line": 12
           },
           "name": "",
-          "rows": [
-            {
-              "cells": [
-                {
-                  "location": {
-                    "column": 9,
-                    "line": 13
-                  },
-                  "type": "TableCell",
-                  "value": "what"
-                }
-              ],
-              "location": {
-                "column": 7,
-                "line": 13
-              },
-              "type": "TableRow"
-            },
+          "tableBody": [
             {
               "cells": [
                 {
@@ -108,6 +91,23 @@
               "type": "TableRow"
             }
           ],
+          "tableHeader": {
+            "cells": [
+              {
+                "location": {
+                  "column": 9,
+                  "line": 13
+                },
+                "type": "TableCell",
+                "value": "what"
+              }
+            ],
+            "location": {
+              "column": 7,
+              "line": 13
+            },
+            "type": "TableRow"
+          },
           "tags": [
             {
               "location": {

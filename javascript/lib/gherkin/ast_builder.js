@@ -185,6 +185,7 @@ module.exports = function AstBuilder () {
         var examplesNode = node.getSingle('Examples');
         var examplesLine = examplesNode.getToken('ExamplesLine');
         var description = getDescription(examplesNode);
+        var rows = getTableRows(examplesNode)
 
         return {
           type: examplesNode.ruleType,
@@ -193,7 +194,8 @@ module.exports = function AstBuilder () {
           keyword: examplesLine.matchedKeyword,
           name: examplesLine.matchedText,
           description: description,
-          rows: getTableRows(examplesNode)
+          tableHeader: rows[0],
+          tableBody: rows.slice(1)
         };
       case 'Description':
         var lineTokens = node.getTokens('Other');

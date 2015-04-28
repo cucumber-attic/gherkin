@@ -169,24 +169,7 @@
             "line": 44
           },
           "name": "examples with description",
-          "rows": [
-            {
-              "cells": [
-                {
-                  "location": {
-                    "column": 7,
-                    "line": 46
-                  },
-                  "type": "TableCell",
-                  "value": "foo"
-                }
-              ],
-              "location": {
-                "column": 5,
-                "line": 46
-              },
-              "type": "TableRow"
-            },
+          "tableBody": [
             {
               "cells": [
                 {
@@ -205,6 +188,23 @@
               "type": "TableRow"
             }
           ],
+          "tableHeader": {
+            "cells": [
+              {
+                "location": {
+                  "column": 7,
+                  "line": 46
+                },
+                "type": "TableCell",
+                "value": "foo"
+              }
+            ],
+            "location": {
+              "column": 5,
+              "line": 46
+            },
+            "type": "TableRow"
+          },
           "tags": [],
           "type": "Examples"
         }
