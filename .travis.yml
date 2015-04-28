@@ -1,20 +1,15 @@
 language: csharp
 mono: 3.12.0
 
-env: TARGET_LANG=dotnet
-
-matrix:
-  include:
-    - env: TARGET_LANG=java
-
-    - env: TARGET_LANG=ruby USE_RVM=ruby-2.0.0
-    - env: TARGET_LANG=ruby USE_RVM=ruby-2.1.2
-    - env: TARGET_LANG=ruby USE_RVM=ruby-2.2.0
-    - env: TARGET_LANG=ruby USE_RVM=jruby-1.7
-
-    - env: TARGET_LANG=javascript
-    
-    - env: TARGET_LANG=go
+env:
+  - TARGET_LANG=dotnet
+  - TARGET_LANG=java
+  - TARGET_LANG=ruby USE_RVM=ruby-2.0
+  - TARGET_LANG=ruby USE_RVM=ruby-2.1
+  - TARGET_LANG=ruby USE_RVM=ruby-2.2
+  - TARGET_LANG=ruby USE_RVM=jruby
+  - TARGET_LANG=javascript
+  - TARGET_LANG=go
 
 before_install:
   - export EnableNuGetPackageRestore=true
@@ -22,9 +17,11 @@ before_install:
   - export JAVA_HOME="$(dirname $(dirname $(readlink -e $(which javac))))"
   # install jq if its not already there
   - which jq || sudo apt-get install -y jq
+  # configure RVM if needed
+  - '[ -z "$USE_RVM" ] || (rvm use --default $USE_RVM || (rvm install $USE_RVM && rvm use --default $USE_RVM))'
 
 script:
-  - '[ -z "$USE_RVM" ] || (rvm --default use $USE_RVM || (rvm install $USE_RVM && rvm --default use $USE_RVM)) && cd $TARGET_LANG && make'
+  - "cd $TARGET_LANG && make"
 
 branches:
   only:
