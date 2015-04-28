@@ -124,7 +124,7 @@ public class AstBuilder<T> implements IAstBuilder<T> {
                 Token examplesLine = examplesNode.getToken(TokenType.ExamplesLine);
                 String description = getDescription(examplesNode);
                 List<TableRow> rows = getTableRows(examplesNode);
-                return new Examples(getLocation(examplesLine, 0), tags, examplesLine.matchedKeyword, examplesLine.matchedText, description, rows);
+                return new Examples(getLocation(examplesLine, 0), tags, examplesLine.matchedKeyword, examplesLine.matchedText, description, rows.get(0), rows.subList(1, rows.size()));
             }
             case Description: {
                 List<Token> lineTokens = node.getTokens(TokenType.Other);

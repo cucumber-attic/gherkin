@@ -67,16 +67,16 @@ public class Compiler {
             List<PickleTag> examplesTags = new ArrayList<>(scenarioOutlineTags);
             examplesTags.addAll(pickle(examples.getTags()));
 
-            final TableRow header = examples.getHeader();
-            for (final TableRow values : examples.getRows()) {
-                String scenarioName = interpolate(scenarioOutline.getName(), examples.getHeader(), values);
+            final TableRow header = examples.getTableHeader();
+            for (final TableRow values : examples.getTableBody()) {
+                String scenarioName = interpolate(scenarioOutline.getName(), examples.getTableHeader(), values);
                 String testCaseName = dialect.getScenarioKeywords().get(0) + ": " + scenarioName;
 
                 Pickle pickle = new Pickle(testCaseName, backgroundSteps, examplesTags, pickle(scenarioOutline.getLocation()));
                 for (Step step : scenarioOutline.getSteps()) {
                     PickleArgument pickledArgument = getPickledArgument(step, header, values);
 
-                    String stepName = interpolate(step.getText(), examples.getHeader(), values);
+                    String stepName = interpolate(step.getText(), examples.getTableHeader(), values);
                     PickleStep pickleStep = new PickleStep(stepName, pickledArgument, pickle(step.getLocation()), pickle(values.getLocation()));
                     pickle.addTestStep(pickleStep);
                 }
