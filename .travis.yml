@@ -19,6 +19,12 @@ before_install:
   - which jq || sudo apt-get install -y jq
   # configure RVM if needed
   - '[ -z "$USE_RVM" ] || (rvm use --default $USE_RVM || (rvm install $USE_RVM && rvm use --default $USE_RVM))'
+  # show some version info
+  - 'if [ "$TARGET_LANG" == "dotnet" ]; then mono --version; fi'
+  - 'if [ "$TARGET_LANG" == "java" -o "$USE_RVM" == "jruby" ]; then java --version; fi'
+  - 'if [ "$TARGET_LANG" == "ruby" ]; then ruby --version; fi'
+  - 'if [ "$TARGET_LANG" == "javascript" ]; then node --version; fi'
+  - 'if [ "$TARGET_LANG" == "go" ]; then go version; fi'
 
 script:
   - "cd $TARGET_LANG && make"
