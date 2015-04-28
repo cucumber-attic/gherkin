@@ -19,7 +19,7 @@ matrix:
 before_install:
   - export EnableNuGetPackageRestore=true
   # https://github.com/travis-ci/travis-ci/issues/2839
-  - export JAVA_HOME="$(/usr/libexec/java_home)"
+  - export JAVA_HOME="$(dirname $(dirname $(readlink -e $(which javac))))"
   # install jq if its not already there
   - which jq || sudo apt-get install -y jq
 
