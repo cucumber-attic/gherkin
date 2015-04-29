@@ -206,20 +206,20 @@ module Gherkin
         return description
       when :Feature
         header = node.get_single(:Feature_Header)
-        tags = get_tags(header)
-        feature_line = header.get_token(:FeatureLine)
+        tags = header && get_tags(header)
+        feature_line = header && header.get_token(:FeatureLine)
         background = node.get_single(:Background)
         scenario_definitions = node.get_items(:Scenario_Definition)
-        description = get_description(header)
-        language = feature_line.matched_gherkin_dialect
+        description = header && get_description(header)
+        language = feature_line && feature_line.matched_gherkin_dialect
 
         reject_nils(
           type: node.rule_type,
           tags: tags,
-          location: get_location(feature_line),
+          location: feature_line && get_location(feature_line),
           language: language,
-          keyword: feature_line.matched_keyword,
-          name: feature_line.matched_text,
+          keyword: feature_line && feature_line.matched_keyword,
+          name: feature_line && feature_line.matched_text,
           description: description,
           background: background,
           scenarioDefinitions: scenario_definitions,
