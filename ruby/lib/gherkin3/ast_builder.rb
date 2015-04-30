@@ -105,7 +105,7 @@ module Gherkin3
         step_line = node.get_token(:StepLine)
         step_argument = node.get_single(:DataTable) || node.get_single(:DocString) || nil
 
-        reject_nils(
+        create_ast_value(
           type: node.rule_type,
           location: get_location(step_line),
           keyword: step_line.matched_keyword,
@@ -118,7 +118,7 @@ module Gherkin3
         line_tokens = node.get_tokens(:Other)
         content = line_tokens.map { |t| t.matched_text }.join("\n")
 
-        reject_nils(
+        create_ast_value(
           type: node.rule_type,
           location: get_location(separator_token),
           contentType: content_type,
@@ -126,7 +126,7 @@ module Gherkin3
         )
       when :DataTable
         rows = get_table_rows(node)
-        reject_nils(
+        create_ast_value(
           type: node.rule_type,
           location: rows[0][:location],
           rows: rows,
@@ -136,7 +136,7 @@ module Gherkin3
         description = get_description(node)
         steps = get_steps(node)
 
-        reject_nils(
+        create_ast_value(
           type: node.rule_type,
           location: get_location(background_line),
           keyword: background_line.matched_keyword,
@@ -152,7 +152,7 @@ module Gherkin3
           description = get_description(scenario_node)
           steps = get_steps(scenario_node)
 
-          reject_nils(
+          create_ast_value(
             type: scenario_node.rule_type,
             tags: tags,
             location: get_location(scenario_line),
@@ -170,7 +170,7 @@ module Gherkin3
           steps = get_steps(scenario_outline_node)
           examples = scenario_outline_node.get_items(:Examples_Definition)
 
-          reject_nils(
+          create_ast_value(
             type: scenario_outline_node.rule_type,
             tags: tags,
             location: get_location(scenario_outline_line),
@@ -188,7 +188,7 @@ module Gherkin3
         description = get_description(examples_node)
         rows = get_table_rows(examples_node)
 
-        reject_nils(
+        create_ast_value(
           type: examples_node.rule_type,
           tags: tags,
           location: get_location(examples_line),
@@ -215,7 +215,7 @@ module Gherkin3
         description = get_description(header)
         language = feature_line.matched_gherkin_dialect
 
-        reject_nils(
+        create_ast_value(
           type: node.rule_type,
           tags: tags,
           location: get_location(feature_line),
@@ -230,6 +230,10 @@ module Gherkin3
       else
         return node
       end
+    end
+
+    def create_ast_value(values)
+      reject_nils(values)
     end
 
     def reject_nils(values)
