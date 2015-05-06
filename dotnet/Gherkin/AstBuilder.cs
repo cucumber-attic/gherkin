@@ -112,7 +112,7 @@ namespace Gherkin
                     var examplesNode = node.GetSingle<AstNode>(RuleType.Examples);
                     var examplesLine = examplesNode.GetToken(TokenType.ExamplesLine);
                     var description = GetDescription(examplesNode);
- 
+
                     var allRows = GetTableRows(examplesNode);
                     var header = allRows.First();
                     var rows = allRows.Skip(1).ToArray();
@@ -130,11 +130,14 @@ namespace Gherkin
                 case RuleType.Feature:
                 {
                     var header = node.GetSingle<AstNode>(RuleType.Feature_Header);
+                    if(header == null) return null;
                     var tags = GetTags(header);
                     var featureLine = header.GetToken(TokenType.FeatureLine);
+                    if(featureLine == null) return null;
                     var background = node.GetSingle<Background>(RuleType.Background);
                     var scenariodefinitions = node.GetItems<ScenarioDefinition>(RuleType.Scenario_Definition).ToArray();
                     var description = GetDescription(header);
+                    if(featureLine.MatchedGherkinDialect == null) return null;
                     var language = featureLine.MatchedGherkinDialect.Language;
 
                     return new Feature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.MatchedText, description, background, scenariodefinitions, comments.ToArray());

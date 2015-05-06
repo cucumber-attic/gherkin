@@ -244,14 +244,12 @@ func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {
 	case RuleType_Feature:
 		header, ok := node.getSingle(RuleType_Feature_Header).(*astNode)
 		if !ok {
-			header = &astNode{ruleType: RuleType_Feature_Header}
+			return nil, nil
 		}
 		tags := astTags(header)
 		featureLine := header.getToken(TokenType_FeatureLine)
 		if featureLine == nil {
-			featureLine = new(Token)
-			featureLine.Location = &Location{Line: 1, Column: 1}
-			featureLine.Type = TokenType_FeatureLine
+			return nil, nil
 		}
 		background, _ := node.getSingle(RuleType_Background).(*Background)
 		scenarioDefinitions := node.getItems(RuleType_Scenario_Definition)

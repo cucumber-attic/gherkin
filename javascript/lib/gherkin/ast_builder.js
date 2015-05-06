@@ -211,20 +211,22 @@ module.exports = function AstBuilder () {
 
       case 'Feature':
         var header = node.getSingle('Feature_Header');
-        var tags = header && getTags(header);
-        var featureLine = header && header.getToken('FeatureLine');
+        if(!header) return null;
+        var tags = getTags(header);
+        var featureLine = header.getToken('FeatureLine');
+        if(!featureLine) return null;
         var background = node.getSingle('Background');
         var scenariodefinitions = node.getItems('Scenario_Definition');
-        var description = header && getDescription(header);
-        var language = featureLine && featureLine.matchedGherkinDialect;
+        var description = getDescription(header);
+        var language = featureLine.matchedGherkinDialect;
 
         return {
           type: node.ruleType,
           tags: tags,
-          location: featureLine && getLocation(featureLine),
+          location: getLocation(featureLine),
           language: language,
-          keyword: featureLine && featureLine.matchedKeyword,
-          name: featureLine && featureLine.matchedText,
+          keyword: featureLine.matchedKeyword,
+          name: featureLine.matchedText,
           description: description,
           background: background,
           scenarioDefinitions: scenariodefinitions,
