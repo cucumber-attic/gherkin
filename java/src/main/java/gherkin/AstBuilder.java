@@ -144,11 +144,14 @@ public class AstBuilder<T> implements IAstBuilder<T> {
             }
             case Feature: {
                 AstNode header = node.getSingle(RuleType.Feature_Header, new AstNode(RuleType.Feature_Header));
+                if (header == null) return null;
                 List<Tag> tags = getTags(header);
                 Token featureLine = header.getToken(TokenType.FeatureLine);
+                if (featureLine == null) return null;
                 Background background = node.getSingle(RuleType.Background, null);
                 List<ScenarioDefinition> scenarioDefinitions = node.getItems(RuleType.Scenario_Definition);
                 String description = getDescription(header);
+                if (featureLine.matchedGherkinDialect == null) return null;
                 String language = featureLine.matchedGherkinDialect.getLanguage();
 
                 return new Feature(tags, getLocation(featureLine, 0), language, featureLine.matchedKeyword, featureLine.matchedText, description, background, scenarioDefinitions, comments);
