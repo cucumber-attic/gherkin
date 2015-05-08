@@ -1,29 +1,13 @@
 package gherkin;
 
-import gherkin.ast.Background;
-import gherkin.ast.Comment;
-import gherkin.ast.DataTable;
-import gherkin.ast.DocString;
-import gherkin.ast.Examples;
-import gherkin.ast.Feature;
-import gherkin.ast.Location;
-import gherkin.ast.Node;
-import gherkin.ast.Scenario;
-import gherkin.ast.ScenarioDefinition;
-import gherkin.ast.ScenarioOutline;
-import gherkin.ast.Step;
-import gherkin.ast.TableCell;
-import gherkin.ast.TableRow;
-import gherkin.ast.Tag;
+import gherkin.ast.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-import static gherkin.Parser.IAstBuilder;
-import static gherkin.Parser.RuleType;
-import static gherkin.Parser.TokenType;
+import static gherkin.Parser.*;
 import static gherkin.StringUtils.join;
 
 public class AstBuilder<T> implements IAstBuilder<T> {
