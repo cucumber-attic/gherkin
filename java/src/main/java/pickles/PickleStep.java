@@ -29,15 +29,11 @@ public class PickleStep {
         return argument;
     }
 
-    public Uri getUri() {
-        return uri;
-    }
-
     public StackTraceElement[] getStackTrace() {
         StackTraceElement[] frames = new StackTraceElement[getSource().size()];
         int i = 0;
         for (PickleLocation pickleLocation : source) {
-            frames[i++] = new StackTraceElement(uri.getDeclaringClassForStackTrace(), uri.getMethodNameForStackTrace(), uri.getFileName(), pickleLocation.getLine());
+            frames[i++] = uri.createStackTraceElement(pickleLocation);
         }
         return frames;
     }

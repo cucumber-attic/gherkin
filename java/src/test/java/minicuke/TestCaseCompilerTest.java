@@ -3,7 +3,6 @@ package minicuke;
 import gherkin.Parser;
 import gherkin.ast.Feature;
 import gherkin.compiler.Compiler;
-import gherkin.compiler.LineNumber;
 import org.junit.Test;
 import pickles.Pickle;
 import pickles.PickleStep;
@@ -20,7 +19,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 public class TestCaseCompilerTest {
-    private int offset = LineNumber.get() + 1;
+    Uri URI = Uri.fromThisMethod(2);
     public static final String SOURCE = "" +
             "Feature: test\n" +
             "  @pie\n" +
@@ -29,15 +28,15 @@ public class TestCaseCompilerTest {
             "    When b\n" +
             "    Then c\n";
 
-    private List<Pickle> compile(String source, Uri uri) {
+    private List<Pickle> compile(String source) {
         Feature feature = new Parser<Feature>().parse(source);
-        return new Compiler().compile(feature, uri, offset);
+        return new Compiler().compile(feature, URI);
     }
 
     @Test
     public void creates_test_case_for_each_pickle() {
         TestCaseCompiler testCaseCompiler = new TestCaseCompiler(Collections.<StepDefinition>emptyList(), Collections.<Hook>emptyList(), Collections.<Hook>emptyList());
-        List<Pickle> pickles = compile(SOURCE, Uri.fromThisMethod());
+        List<Pickle> pickles = compile(SOURCE);
         List<TestCase> testCases = testCaseCompiler.compile(pickles);
         assertEquals(1, testCases.size());
     }
@@ -45,7 +44,7 @@ public class TestCaseCompilerTest {
     @Test
     public void creates_test_step_for_each_pickle_step() {
         TestCaseCompiler testCaseCompiler = new TestCaseCompiler(Collections.<StepDefinition>emptyList(), Collections.<Hook>emptyList(), Collections.<Hook>emptyList());
-        List<Pickle> pickles = compile(SOURCE, Uri.fromThisMethod());
+        List<Pickle> pickles = compile(SOURCE);
         List<TestCase> testCases = testCaseCompiler.compile(pickles);
         assertEquals(3, testCases.get(0).getSteps().size());
     }
@@ -57,7 +56,7 @@ public class TestCaseCompilerTest {
         when(stepDefinition.matchedArguments("a")).thenReturn(singletonList("the arg"));
 
         TestCaseCompiler testCaseCompiler = new TestCaseCompiler(singletonList(stepDefinition), Collections.<Hook>emptyList(), Collections.<Hook>emptyList());
-        List<Pickle> pickles = compile(SOURCE, Uri.fromThisMethod());
+        List<Pickle> pickles = compile(SOURCE);
         List<TestCase> testCases = testCaseCompiler.compile(pickles);
         TestStep testStep = testCases.get(0).getSteps().get(0);
         testStep.run();
@@ -70,7 +69,7 @@ public class TestCaseCompilerTest {
         when(stepDefinition.matches(any(PickleStep.class))).thenReturn(false);
 
         TestCaseCompiler testCaseCompiler = new TestCaseCompiler(singletonList(stepDefinition), Collections.<Hook>emptyList(), Collections.<Hook>emptyList());
-        List<Pickle> pickles = compile(SOURCE, Uri.fromThisMethod());
+        List<Pickle> pickles = compile(SOURCE);
         List<TestCase> testCases = testCaseCompiler.compile(pickles);
         TestStep testStep = testCases.get(0).getSteps().get(0);
         try {
@@ -81,7 +80,7 @@ public class TestCaseCompilerTest {
             expected.printStackTrace(writer);
             assertEquals("" +
                             "minicuke.UndefinedStepException: Undefined step: a\n" +
-                            "\tat minicuke.TestCaseCompilerTest.creates_undefined_test_step_when_there_are_no_matching_step_definitions(TestCaseCompilerTest.java:28)\n",
+                            "\tat minicuke.TestCaseCompilerTest.<init>(TestCaseCompilerTest.java:28)\n",
                     stackTrace.getBuffer().toString());
             // uncomment below to see trace in IDE and go straight to line
             // throw expected;
@@ -93,7 +92,7 @@ public class TestCaseCompilerTest {
         PickleMatcher everything = new EverythingPickleMatcher();
         List<Hook> hooks = singletonList(new Hook(everything));
         TestCaseCompiler testCaseCompiler = new TestCaseCompiler(Collections.<StepDefinition>emptyList(), hooks, Collections.<Hook>emptyList());
-        List<Pickle> pickles = compile(SOURCE, Uri.fromThisMethod());
+        List<Pickle> pickles = compile(SOURCE);
         List<TestCase> testCases = testCaseCompiler.compile(pickles);
         assertEquals(4, testCases.get(0).getSteps().size());
     }
@@ -103,7 +102,7 @@ public class TestCaseCompilerTest {
         PickleMatcher nothing = new NothingPickleMatcher();
         List<Hook> hooks = singletonList(new Hook(nothing));
         TestCaseCompiler testCaseCompiler = new TestCaseCompiler(Collections.<StepDefinition>emptyList(), hooks, Collections.<Hook>emptyList());
-        List<Pickle> pickles = compile(SOURCE, Uri.fromThisMethod());
+        List<Pickle> pickles = compile(SOURCE);
         List<TestCase> testCases = testCaseCompiler.compile(pickles);
         assertEquals(3, testCases.get(0).getSteps().size());
     }

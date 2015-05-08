@@ -23,7 +23,7 @@ public class GeneratePickles {
             InputStreamReader in = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
             try {
                 Feature feature = parser.parse(in);
-                pickles.addAll(compiler.compile(feature, Uri.fromFile(fileName), 0));
+                pickles.addAll(compiler.compile(feature, Uri.fromFileName(fileName)));
             } catch (ParserException e) {
                 System.err.println(e.getMessage());
                 System.exit(1);

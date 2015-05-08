@@ -18,31 +18,32 @@ public class CompilerTest {
 
     @Test
     public void compiles_a_scenario() throws IOException {
-        int offset = LineNumber.get() + 1;
+        Uri uri = Uri.fromThisMethod(2);
         List<Pickle> pickles = compiler.compile(parser.parse("" +
                         "Feature: f\n" +
                         "  Scenario: s\n" +
                         "    Given passing\n"),
-                Uri.fromThisMethod(), offset);
+                uri);
 
         System.out.println(gson.toJson(pickles));
     }
 
     @Test
     public void compiles_step_with_data_table() throws IOException {
-        int offset = LineNumber.get() + 1;
+        Uri uri = Uri.fromThisMethod(2);
         List<Pickle> pickles = compiler.compile(parser.parse("" +
                 "Feature: f\n" +
                 "  Scenario: s\n" +
                 "    Given passing\n" +
-                "      |x|\n"), Uri.fromThisMethod(), offset);
+                "      |x|\n"),
+                uri);
 
         System.out.println(gson.toJson(pickles));
     }
 
     @Test
     public void compiles_in_a_background() throws IOException {
-        int offset = LineNumber.get() + 1;
+        Uri uri = Uri.fromThisMethod(2);
         List<Pickle> pickles = compiler.compile(parser.parse("" +
                         "Feature: f\n" +
                         "  Background:\n" +
@@ -53,14 +54,14 @@ public class CompilerTest {
                         "    \n" +
                         "  Scenario:\n" +
                         "    Given c\n"),
-                Uri.fromThisMethod(), offset);
+                uri);
 
         System.out.println(gson.toJson(pickles));
     }
 
     @Test
     public void compiles_a_scenario_outline() throws IOException {
-        int offset = LineNumber.get() + 1;
+        Uri uri = Uri.fromThisMethod(2);
         List<Pickle> pickles = compiler.compile(parser.parse("" +
                         "Feature: Minimal Scenario Outline\n" +
                         "\n" +
@@ -70,14 +71,14 @@ public class CompilerTest {
                         "    Examples: \n" +
                         "      | what       |\n" +
                         "      | minimalism |\n"),
-                Uri.fromThisMethod(), offset);
+                uri);
 
         System.out.println(gson.toJson(pickles));
     }
 
     @Test
     public void compiles_a_scenario_outline_with_data_tables_and_docstrings() throws IOException {
-        int offset = LineNumber.get() + 1;
+        Uri uri = Uri.fromThisMethod(2);
         List<Pickle> pickles = compiler.compile(parser.parse("" +
                         "Feature: Minimal Scenario Outline\n" +
                         "\n" +
@@ -92,14 +93,14 @@ public class CompilerTest {
                         "    Examples: \n" +
                         "      | what       |\n" +
                         "      | minimalism |\n"),
-                Uri.fromThisMethod(), offset);
+                uri);
 
         System.out.println(gson.toJson(pickles));
     }
 
     @Test
     public void compiles_a_scenario_outline_with_background() throws IOException {
-        int offset = LineNumber.get() + 1;
+        Uri uri = Uri.fromThisMethod(2);
         List<Pickle> pickles = compiler.compile(parser.parse("" +
                         "Feature: Minimal Scenario Outline\n" +
                         "  Background:\n" +
@@ -111,7 +112,7 @@ public class CompilerTest {
                         "    Examples: \n" +
                         "      | what       |\n" +
                         "      | minimalism |\n"),
-                Uri.fromThisMethod(), offset);
+                uri);
 
         System.out.println(gson.toJson(pickles));
     }
