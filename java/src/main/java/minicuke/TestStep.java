@@ -1,5 +1,7 @@
 package minicuke;
 
 public interface TestStep {
-    void run();
+    void run(TestListener testListener);
+
+    StackTraceElement[] getStackTrace();
 }

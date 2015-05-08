@@ -1,6 +1,5 @@
 package pickles;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -16,7 +15,7 @@ public class Pickle {
         this.Uri = Uri;
         this.name = name;
         this.tags = tags;
-        this.steps = new ArrayList<>(steps);
+        this.steps = steps;
         this.source = asList(source);
     }
 

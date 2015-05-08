@@ -59,7 +59,7 @@ public class TestCaseCompilerTest {
         List<Pickle> pickles = compile(SOURCE);
         List<TestCase> testCases = testCaseCompiler.compile(pickles);
         TestStep testStep = testCases.get(0).getSteps().get(0);
-        testStep.run();
+        testStep.run(mock(TestListener.class));
         verify(stepDefinition).run(singletonList("the arg"));
     }
 
@@ -73,7 +73,7 @@ public class TestCaseCompilerTest {
         List<TestCase> testCases = testCaseCompiler.compile(pickles);
         TestStep testStep = testCases.get(0).getSteps().get(0);
         try {
-            testStep.run();
+            testStep.run(mock(TestListener.class));
         } catch (UndefinedStepException expected) {
             StringWriter stackTrace = new StringWriter();
             PrintWriter writer = new PrintWriter(stackTrace);

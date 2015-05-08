@@ -12,4 +12,12 @@ public class TestCase {
     public List<TestStep> getSteps() {
         return testSteps;
     }
+
+    public void run(TestListener testListener) {
+        testListener.testCaseStarted(this);
+        for (TestStep testStep : testSteps) {
+            testStep.run(testListener);
+        }
+        testListener.testCaseFinished(this);
+    }
 }

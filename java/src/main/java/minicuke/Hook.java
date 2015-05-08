@@ -14,7 +14,12 @@ public class Hook implements TestStep {
     }
 
     @Override
-    public void run() {
+    public void run(TestListener testListener) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public StackTraceElement[] getStackTrace() {
         throw new UnsupportedOperationException();
     }
 }

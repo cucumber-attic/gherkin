@@ -14,7 +14,22 @@ public class PickleTestStep implements TestStep {
     }
 
     @Override
-    public void run() {
+    public void run(TestListener testListener) {
+        testListener.testStepStarted(this);
+        try {
+            run0();
+            testListener.testStepFinished(this, Status.SUCCESS);
+        } catch(Throwable t) {
+            testListener.testStepFinished(this, Status.FAILED);
+        }
+    }
+
+    @Override
+    public StackTraceElement[] getStackTrace() {
+        return pickleStep.getStackTrace();
+    }
+
+    private void run0() {
         if (matchingStepDefinitions.isEmpty()) {
             throw new UndefinedStepException(pickleStep);
         }
@@ -22,6 +37,7 @@ public class PickleTestStep implements TestStep {
             StepDefinition stepDefinition = matchingStepDefinitions.get(0);
             run(stepDefinition);
         }
+        // TODO: Handle ambiguous
     }
 
     private void run(StepDefinition stepDefinition) {
