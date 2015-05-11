@@ -1,11 +1,15 @@
 package minicuke;
 
+import pickles.Pickle;
+
 import java.util.List;
 
 public class TestCase {
     private final List<TestStep> testSteps;
+    private final Pickle pickle;
 
-    public TestCase(List<TestStep> testSteps) {
+    public TestCase(Pickle pickle, List<TestStep> testSteps) {
+        this.pickle = pickle;
         this.testSteps = testSteps;
     }
 
@@ -19,5 +23,13 @@ public class TestCase {
             testStep.run(testListener);
         }
         testListener.testCaseFinished(this);
+    }
+
+    public String getName() {
+        return pickle.getName();
+    }
+
+    public StackTraceElement[] getStackTrace() {
+        return pickle.getStackTrace();
     }
 }

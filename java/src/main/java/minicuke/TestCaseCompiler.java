@@ -32,7 +32,7 @@ public class TestCaseCompiler {
             testSteps.add(compile(pickleStep));
         }
         addMatchingHooks(pickle, testSteps, afterHooks);
-        return new TestCase(testSteps);
+        return new TestCase(pickle, testSteps);
     }
 
     private PickleTestStep compile(PickleStep pickleStep) {

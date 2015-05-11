@@ -8,7 +8,11 @@ package gherkin;
 
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 import static java.util.Arrays.asList;
 

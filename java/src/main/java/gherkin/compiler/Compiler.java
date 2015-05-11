@@ -2,8 +2,26 @@ package gherkin.compiler;
 
 import gherkin.GherkinDialect;
 import gherkin.GherkinDialectProvider;
-import gherkin.ast.*;
-import pickles.*;
+import gherkin.ast.DataTable;
+import gherkin.ast.DocString;
+import gherkin.ast.Examples;
+import gherkin.ast.Feature;
+import gherkin.ast.Location;
+import gherkin.ast.Scenario;
+import gherkin.ast.ScenarioDefinition;
+import gherkin.ast.ScenarioOutline;
+import gherkin.ast.Step;
+import gherkin.ast.TableCell;
+import gherkin.ast.TableRow;
+import gherkin.ast.Tag;
+import pickles.Pickle;
+import pickles.PickleArgument;
+import pickles.PickleLocation;
+import pickles.PickleStep;
+import pickles.PickleString;
+import pickles.PickleTable;
+import pickles.PickleTag;
+import pickles.Uri;
 
 import java.util.ArrayList;
 import java.util.List;

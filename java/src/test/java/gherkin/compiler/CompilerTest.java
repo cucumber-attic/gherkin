@@ -32,10 +32,10 @@ public class CompilerTest {
     public void compiles_step_with_data_table() throws IOException {
         Uri uri = Uri.fromThisMethod(2);
         List<Pickle> pickles = compiler.compile(parser.parse("" +
-                "Feature: f\n" +
-                "  Scenario: s\n" +
-                "    Given passing\n" +
-                "      |x|\n"),
+                        "Feature: f\n" +
+                        "  Scenario: s\n" +
+                        "    Given passing\n" +
+                        "      |x|\n"),
                 uri);
 
         System.out.println(gson.toJson(pickles));

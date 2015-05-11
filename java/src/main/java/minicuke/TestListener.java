@@ -7,7 +7,7 @@ public interface TestListener {
 
     void testStepStarted(TestStep testStep);
 
-    void testStepFinished(TestStep testStep, Status status);
+    void testStepFinished(TestStep testStep, Throwable error);
 
     void testCaseFinished(TestCase testCase);
 

@@ -21,20 +21,11 @@ public class PickleStep {
         return text;
     }
 
-    public List<PickleLocation> getSource() {
-        return source;
-    }
-
     public PickleArgument getArgument() {
         return argument;
     }
 
     public StackTraceElement[] getStackTrace() {
-        StackTraceElement[] frames = new StackTraceElement[getSource().size()];
-        int i = 0;
-        for (PickleLocation pickleLocation : source) {
-            frames[i++] = uri.createStackTraceElement(pickleLocation);
-        }
-        return frames;
+        return StackTrace.create(source, uri);
     }
 }

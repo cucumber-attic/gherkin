@@ -18,9 +18,9 @@ public class PickleTestStep implements TestStep {
         testListener.testStepStarted(this);
         try {
             run0();
-            testListener.testStepFinished(this, Status.SUCCESS);
-        } catch(Throwable t) {
-            testListener.testStepFinished(this, Status.FAILED);
+            testListener.testStepFinished(this, null);
+        } catch (Throwable t) {
+            testListener.testStepFinished(this, t);
         }
     }
 
