@@ -2,6 +2,8 @@ package minicuke;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import minicuke.plugins.testresult.TestResultBuilder;
+import minicuke.plugins.testresult.TestCaseResult;
 import org.junit.Test;
 import pickles.Pickle;
 import pickles.PickleLocation;

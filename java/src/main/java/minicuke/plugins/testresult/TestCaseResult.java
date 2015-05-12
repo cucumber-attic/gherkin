@@ -1,4 +1,7 @@
-package minicuke;
+package minicuke.plugins.testresult;
+
+import minicuke.Status;
+import minicuke.TestCase;
 
 import java.util.ArrayList;
 import java.util.List;

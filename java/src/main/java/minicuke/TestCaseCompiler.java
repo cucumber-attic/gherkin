@@ -6,6 +6,10 @@ import pickles.PickleStep;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Compiles {@link List<Pickle>} into {@link List<TestCase>} by linking {@link StepDefinition}s
+ * and {@link Hook}s.
+ */
 public class TestCaseCompiler {
     private final List<StepDefinition> stepDefinitions;
     private final List<Hook> beforeHooks;

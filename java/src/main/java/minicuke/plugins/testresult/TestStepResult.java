@@ -1,4 +1,6 @@
-package minicuke;
+package minicuke.plugins.testresult;
+
+import minicuke.Status;
 
 public class TestStepResult {
     private final StackTraceElement[] stackTrace;
