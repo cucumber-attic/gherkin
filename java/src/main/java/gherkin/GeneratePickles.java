@@ -4,6 +4,7 @@ import gherkin.ast.Feature;
 import gherkin.compiler.Compiler;
 import gherkin.deps.com.google.gson.Gson;
 import pickles.Pickle;
+import pickles.Uri;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class GeneratePickles {
             InputStreamReader in = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
             try {
                 Feature feature = parser.parse(in);
-                pickles.addAll(compiler.compile(feature));
+                pickles.addAll(compiler.compile(feature, Uri.fromFileName(fileName)));
             } catch (ParserException e) {
                 System.err.println(e.getMessage());
                 System.exit(1);

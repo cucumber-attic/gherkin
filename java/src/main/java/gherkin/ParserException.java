@@ -54,9 +54,9 @@ public class ParserException extends RuntimeException {
         }
 
         private static Location getLocation(Token receivedToken) {
-            return receivedToken.location.getColumn() > 1 
-                ? receivedToken.location
-                : new Location(receivedToken.location.getLine(), receivedToken.line.indent() + 1);
+            return receivedToken.location.getColumn() > 1
+                    ? receivedToken.location
+                    : new Location(receivedToken.location.getLine(), receivedToken.line.indent() + 1);
         }
     }
 
