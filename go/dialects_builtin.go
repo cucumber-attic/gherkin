@@ -1,6 +1,6 @@
 package gherkin
 
-// Builtin dialects for af (Afrikaans), am (Armenian), ar (Arabic), bg (Bulgarian), bm (Malay), ca (Catalan), cs (Czech), cy-GB (Welsh), da (Danish), de (German), el (Greek), en (English), en-Scouse (Scouse), en-au (Australian), en-lol (LOLCAT), en-old (Old English), en-pirate (Pirate), eo (Esperanto), es (Spanish), et (Estonian), fa (Persian), fi (Finnish), fr (French), gj (Gujarati), gl (Galician), he (Hebrew), hi (Hindi), hr (Croatian), ht (Creole), hu (Hungarian), id (Indonesian), is (Icelandic), it (Italian), ja (Japanese), jv (Javanese), kn (Kannada), ko (Korean), lt (Lithuanian), lu (Luxemburgish), lv (Latvian), nl (Dutch), no (Norwegian), pa (Panjabi), pl (Polish), pt (Portuguese), ro (Romanian), ru (Russian), sk (Slovak), sl (Slovenian), sr-Cyrl (Serbian), sr-Latn (Serbian (Latin)), sv (Swedish), ta (Tamil), th (Thai), tl (Telugu), tlh (Klingon), tr (Turkish), tt (Tatar), uk (Ukrainian), ur (Urdu), uz (Uzbek), vi (Vietnamese), zh-CN (Chinese simplified), zh-TW (Chinese traditional)
+// Builtin dialects for af (Afrikaans), am (Armenian), ar (Arabic), bg (Bulgarian), bm (Malay), ca (Catalan), cs (Czech), cy-GB (Welsh), da (Danish), de (German), el (Greek), en (English), en-Scouse (Scouse), en-au (Australian), en-lol (LOLCAT), en-old (Old English), en-pirate (Pirate), eo (Esperanto), es (Spanish), et (Estonian), fa (Persian), fi (Finnish), fr (French), ga (Irish), gj (Gujarati), gl (Galician), he (Hebrew), hi (Hindi), hr (Croatian), ht (Creole), hu (Hungarian), id (Indonesian), is (Icelandic), it (Italian), ja (Japanese), jv (Javanese), kn (Kannada), ko (Korean), lt (Lithuanian), lu (Luxemburgish), lv (Latvian), nl (Dutch), no (Norwegian), pa (Panjabi), pl (Polish), pt (Portuguese), ro (Romanian), ru (Russian), sk (Slovak), sl (Slovenian), sr-Cyrl (Serbian), sr-Latn (Serbian (Latin)), sv (Swedish), ta (Tamil), th (Thai), tl (Telugu), tlh (Klingon), tr (Turkish), tt (Tatar), uk (Ukrainian), ur (Urdu), uz (Uzbek), vi (Vietnamese), zh-CN (Chinese simplified), zh-TW (Chinese traditional)
 func GherkinDialectsBuildin() GherkinDialectProvider {
 	return buildinDialects
 }
@@ -982,6 +982,51 @@ var buildinDialects = gherkinDialectMap{
 				"Quand ",
 				"Lorsque ",
 				"Lorsqu'",
+			},
+		},
+	},
+	"ga": &GherkinDialect{
+		"ga", "Irish", "Gaeilge", map[string][]string{
+			and: []string{
+				"* ",
+				"Agus",
+			},
+			background: []string{
+				"Cúlra",
+			},
+			but: []string{
+				"* ",
+				"Ach",
+			},
+			examples: []string{
+				"Samplaí",
+			},
+			feature: []string{
+				"Gné",
+			},
+			given: []string{
+				"* ",
+				"Cuir i gcás go",
+				"Cuir i gcás nach",
+				"Cuir i gcás gur",
+				"Cuir i gcás nár",
+			},
+			scenario: []string{
+				"Cás",
+			},
+			scenarioOutline: []string{
+				"Cás Achomair",
+			},
+			then: []string{
+				"* ",
+				"Ansin",
+			},
+			when: []string{
+				"* ",
+				"Nuair a",
+				"Nuair nach",
+				"Nuair ba",
+				"Nuair nár",
 			},
 		},
 	},
