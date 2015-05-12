@@ -206,8 +206,10 @@ module Gherkin
         return description
       when :Feature
         header = node.get_single(:Feature_Header)
+        return unless header
         tags = get_tags(header)
         feature_line = header.get_token(:FeatureLine)
+        return unless feature_line
         background = node.get_single(:Background)
         scenario_definitions = node.get_items(:Scenario_Definition)
         description = get_description(header)
