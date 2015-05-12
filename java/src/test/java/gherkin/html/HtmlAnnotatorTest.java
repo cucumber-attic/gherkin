@@ -5,7 +5,6 @@ import gherkin.MarkdownTokenMatcher;
 import gherkin.Parser;
 import gherkin.ast.Feature;
 import gherkin.compiler.Compiler;
-import gherkin.html.HtmlAnnotator;
 import org.junit.Test;
 import pickles.Pickle;
 
@@ -18,7 +17,7 @@ public class HtmlAnnotatorTest {
     private final gherkin.compiler.Compiler compiler = new Compiler();
 
     @Test
-    public void inserts_data_attributes_from_ast() {
+    public void inserts_data_attributes_from_pickles() {
         String markdown = "" +
                 "# Minimal\n" +
                 "\n" +
