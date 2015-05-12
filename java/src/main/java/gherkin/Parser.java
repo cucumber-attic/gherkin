@@ -34,10 +34,6 @@ public class Parser<T> {
         Language,
         Other,
         ;
-
-        public static TokenType cast(RuleType ruleType) {
-            return TokenType.values()[ruleType.ordinal()];
-        }
     }
 
     public enum RuleType {
@@ -104,19 +100,19 @@ public class Parser<T> {
         }
     }
 
-    public T parse(String source) {
-        return parse(new StringReader(source));
+    public T parse(String source, ITokenMatcher tokenMatcher) {
+        return parse(new StringReader(source), tokenMatcher);
     }
 
-    public T parse(Reader source) {
+    public T parse(Reader source, ITokenMatcher tokenMatcher) {
         AstBuilder<T> builder = new AstBuilder();
-        return parse(source, builder);
+        return parse(source, builder, tokenMatcher);
     }
 
-    public T parse(Reader source, IAstBuilder<T> builder) {
+    public T parse(Reader source, IAstBuilder<T> builder, ITokenMatcher tokenMatcher) {
         ParserContext context = new ParserContext(
                 new TokenScanner(source),
-                new TokenMatcher(),
+                tokenMatcher,
                 builder,
                 new LinkedList<Token>(),
                 new ArrayList<ParserException>()
@@ -125,16 +121,14 @@ public class Parser<T> {
         startRule(context, RuleType.Feature);
         int state = 0;
         Token token;
-        do
-        {
+        do {
             token = readToken(context);
             state = matchToken(state, token, context);
-        } while(!token.isEOF());
+        } while (!token.isEOF());
 
         endRule(context, RuleType.Feature);
 
-        if (context.errors.size() > 0)
-        {
+        if (context.errors.size() > 0) {
             throw new ParserException.CompositeParserException(context.errors);
         }
 

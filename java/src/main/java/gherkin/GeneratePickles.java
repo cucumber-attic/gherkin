@@ -20,8 +20,9 @@ public class GeneratePickles {
 
         for (String fileName : args) {
             InputStreamReader in = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
+            Parser.ITokenMatcher tokenMatcher = TokenMatcherFactory.getTokenMatcher(fileName);
             try {
-                Feature feature = parser.parse(in);
+                Feature feature = parser.parse(in, tokenMatcher);
                 pickles.addAll(compiler.compile(feature));
             } catch (ParserException e) {
                 System.err.println(e.getMessage());

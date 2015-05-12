@@ -9,9 +9,10 @@ public class GenerateTokens {
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
         Parser<String> parser = new Parser<>();
         for (String fileName : args) {
+            Parser.ITokenMatcher tokenMatcher = TokenMatcherFactory.getTokenMatcher(fileName);
             InputStreamReader in = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
             TokenFormatterBuilder builder = new TokenFormatterBuilder();
-            String result = parser.parse(in, builder);
+            String result = parser.parse(in, builder, tokenMatcher);
             System.out.print(result);
         }
     }

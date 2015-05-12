@@ -1,5 +1,6 @@
 package gherkin.compiler;
 
+import gherkin.GherkinTokenMatcher;
 import gherkin.Parser;
 import gherkin.ast.Feature;
 import gherkin.deps.com.google.gson.Gson;
@@ -20,7 +21,7 @@ public class CompilerTest {
         List<Pickle> pickles = compiler.compile(parser.parse("" +
                 "Feature: f\n" +
                 "  Scenario: s\n" +
-                "    Given passing\n"));
+                "    Given passing\n", new GherkinTokenMatcher()));
 
         System.out.println(gson.toJson(pickles));
     }
@@ -31,7 +32,7 @@ public class CompilerTest {
                 "Feature: f\n" +
                 "  Scenario: s\n" +
                 "    Given passing\n" +
-                "      |x|\n"));
+                "      |x|\n", new GherkinTokenMatcher()));
 
         System.out.println(gson.toJson(pickles));
     }
@@ -47,7 +48,7 @@ public class CompilerTest {
                 "    Given b\n" +
                 "    \n" +
                 "  Scenario:\n" +
-                "    Given c\n"));
+                "    Given c\n", new GherkinTokenMatcher()));
 
         System.out.println(gson.toJson(pickles));
     }
@@ -62,7 +63,7 @@ public class CompilerTest {
                 "\n" +
                 "    Examples: \n" +
                 "      | what       |\n" +
-                "      | minimalism |\n"));
+                "      | minimalism |\n", new GherkinTokenMatcher()));
 
         System.out.println(gson.toJson(pickles));
     }
@@ -82,7 +83,7 @@ public class CompilerTest {
                 "\n" +
                 "    Examples: \n" +
                 "      | what       |\n" +
-                "      | minimalism |\n"));
+                "      | minimalism |\n", new GherkinTokenMatcher()));
 
         System.out.println(gson.toJson(pickles));
     }
@@ -99,7 +100,7 @@ public class CompilerTest {
                 "\n" +
                 "    Examples: \n" +
                 "      | what       |\n" +
-                "      | minimalism |\n"));
+                "      | minimalism |\n", new GherkinTokenMatcher()));
 
         System.out.println(gson.toJson(pickles));
     }

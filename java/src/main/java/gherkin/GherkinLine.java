@@ -8,12 +8,10 @@ import static gherkin.StringUtils.ltrim;
 
 public class GherkinLine implements IGherkinLine {
     private final String lineText;
-    private final int lineNumber;
     private final String trimmedLineText;
 
-    public GherkinLine(String lineText, int lineNumber) {
+    public GherkinLine(String lineText) {
         this.lineText = lineText;
-        this.lineNumber = lineNumber;
         this.trimmedLineText = ltrim(lineText);
     }
 
@@ -51,7 +49,7 @@ public class GherkinLine implements IGherkinLine {
 
     @Override
     public List<GherkinLineSpan> getTags() {
-        return getSpans("\\s+");
+        return getSpans(trimmedLineText, "\\s+", indent());
     }
 
     @Override
@@ -66,15 +64,15 @@ public class GherkinLine implements IGherkinLine {
 
     @Override
     public List<GherkinLineSpan> getTableCells() {
-        return getSpans("\\s*\\|\\s*");
+        return getSpans(trimmedLineText, "\\s*\\|\\s*", indent());
     }
 
-    private List<GherkinLineSpan> getSpans(String delimiter) {
-        List<GherkinLineSpan> lineSpans = new ArrayList<GherkinLineSpan>();
-        Scanner scanner = new Scanner(trimmedLineText).useDelimiter(delimiter);
+    public static List<GherkinLineSpan> getSpans(String text, String delimiter, int indent) {
+        List<GherkinLineSpan> lineSpans = new ArrayList<>();
+        Scanner scanner = new Scanner(text).useDelimiter(delimiter);
         while (scanner.hasNext()) {
             String cell = scanner.next();
-            int column = scanner.match().start() + indent() + 1;
+            int column = scanner.match().start() + indent + 1;
             lineSpans.add(new GherkinLineSpan(column, cell));
         }
         return lineSpans;
