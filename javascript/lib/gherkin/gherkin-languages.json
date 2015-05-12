@@ -965,6 +965,51 @@
       "Lorsqu'"
     ]
   },
+  "ga": {
+    "and": [
+      "* ",
+      "Agus"
+    ],
+    "background": [
+      "Cúlra"
+    ],
+    "but": [
+      "* ",
+      "Ach"
+    ],
+    "examples": [
+      "Samplaí"
+    ],
+    "feature": [
+      "Gné"
+    ],
+    "given": [
+      "* ",
+      "Cuir i gcás go",
+      "Cuir i gcás nach",
+      "Cuir i gcás gur",
+      "Cuir i gcás nár"
+    ],
+    "name": "Irish",
+    "native": "Gaeilge",
+    "scenario": [
+      "Cás"
+    ],
+    "scenarioOutline": [
+      "Cás Achomair"
+    ],
+    "then": [
+      "* ",
+      "Ansin"
+    ],
+    "when": [
+      "* ",
+      "Nuair a",
+      "Nuair nach",
+      "Nuair ba",
+      "Nuair nár"
+    ]
+  },
   "gj": {
     "and": [
       "* ",
