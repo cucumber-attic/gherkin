@@ -36,4 +36,10 @@ public class Token {
     public String toString() {
         return String.format("%s: %s/%s", matchedType, matchedKeyword, matchedText);
     }
+
+    public Location getLocation() {
+        return location.getColumn() > 1
+                ? location
+                : new Location(location.getLine(), line.indent() + 1);
+    }
 }

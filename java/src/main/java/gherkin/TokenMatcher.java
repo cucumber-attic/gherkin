@@ -12,13 +12,13 @@ import static gherkin.Parser.TokenType;
 public class TokenMatcher implements ITokenMatcher {
     private static final Pattern LANGUAGE_PATTERN = Pattern.compile("^\\s*#\\s*language\\s*:\\s*([a-zA-Z\\-_]+)\\s*$");
     private final IGherkinDialectProvider dialectProvider;
-    private GherkinDialect currentDialect;
     private String activeDocStringSeparator = null;
     private int indentToRemove = 0;
+    private GherkinDialect currentDialect;
 
     public TokenMatcher(IGherkinDialectProvider dialectProvider) {
         this.dialectProvider = dialectProvider;
-        currentDialect = dialectProvider.getDefaultDialect();
+        this.currentDialect = dialectProvider.getDefaultDialect();
     }
 
     public TokenMatcher() {

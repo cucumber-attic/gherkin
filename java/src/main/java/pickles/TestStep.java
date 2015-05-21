@@ -4,12 +4,12 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class PickleStep {
+public class TestStep {
     private final String text;
     private final PickleArgument argument;
-    private final List<PickleLocation> source;
+    private final List<SourcePointer> source;
 
-    public PickleStep(String text, PickleArgument argument, PickleLocation... source) {
+    public TestStep(String text, PickleArgument argument, SourcePointer... source) {
         this.text = text;
         this.argument = argument;
         this.source = asList(source);
@@ -19,7 +19,7 @@ public class PickleStep {
         return text;
     }
 
-    public List<PickleLocation> getSource() {
+    public List<SourcePointer> getSource() {
         return source;
     }
 

@@ -13,58 +13,57 @@ import gherkin.ast.ScenarioOutline;
 import gherkin.ast.Step;
 import gherkin.ast.TableCell;
 import gherkin.ast.TableRow;
-import gherkin.ast.Tag;
-import pickles.Pickle;
+import pickles.TestCase;
 import pickles.PickleArgument;
-import pickles.PickleLocation;
-import pickles.PickleStep;
+import pickles.SourcePointer;
+import pickles.TestStep;
 import pickles.PickleString;
 import pickles.PickleTable;
-import pickles.PickleTag;
+import pickles.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Compiler {
 
-    public List<Pickle> compile(Feature feature) {
-        List<Pickle> pickles = new ArrayList<>();
-        List<PickleStep> backgroundSteps = new ArrayList<>();
+    public List<TestCase> compile(Feature feature) {
+        List<TestCase> testCases = new ArrayList<>();
+        List<TestStep> backgroundSteps = new ArrayList<>();
         GherkinDialect dialect = new GherkinDialectProvider().getDialect(feature.getLanguage(), null);
         addBackgroundSteps(feature, backgroundSteps);
 
-        List<PickleTag> featureTags = pickle(feature.getTags());
+        List<Tag> featureTags = pickle(feature.getTags());
 
         for (ScenarioDefinition scenarioDefinition : feature.getScenarioDefinitions()) {
             if (scenarioDefinition instanceof Scenario) {
-                addScenarioPickles(pickles, backgroundSteps, (Scenario) scenarioDefinition, featureTags);
+                addScenarioPickles(testCases, backgroundSteps, (Scenario) scenarioDefinition, featureTags);
             } else {
-                addScenarioOutlinePickles(pickles, backgroundSteps, dialect, (ScenarioOutline) scenarioDefinition, featureTags);
+                addScenarioOutlinePickles(testCases, backgroundSteps, dialect, (ScenarioOutline) scenarioDefinition, featureTags);
             }
         }
-        return pickles;
+        return testCases;
     }
 
-    private void addScenarioPickles(List<Pickle> pickles, List<PickleStep> backgroundSteps, Scenario scenario, List<PickleTag> featureTags) {
-        List<PickleTag> scenarioTags = new ArrayList<>(featureTags);
+    private void addScenarioPickles(List<TestCase> testCases, List<TestStep> backgroundSteps, Scenario scenario, List<Tag> featureTags) {
+        List<Tag> scenarioTags = new ArrayList<>(featureTags);
         scenarioTags.addAll(pickle(scenario.getTags()));
 
         String testCaseName = scenario.getKeyword() + ": " + scenario.getName();
-        Pickle pickle = new Pickle(testCaseName, backgroundSteps, scenarioTags, pickle(scenario.getLocation()));
+        TestCase testCase = new TestCase(testCaseName, backgroundSteps, scenarioTags, pickle(scenario.getLocation()));
         for (Step step : scenario.getSteps()) {
             PickleArgument pickledArgument = getPickledArgument(step, null, null);
-            PickleStep pickleStep = new PickleStep(step.getText(), pickledArgument, pickle(step.getLocation()));
-            pickle.addTestStep(pickleStep);
+            TestStep testStep = new TestStep(step.getText(), pickledArgument, pickle(step.getLocation()));
+            testCase.addTestStep(testStep);
         }
-        pickles.add(pickle);
+        testCases.add(testCase);
     }
 
-    private void addScenarioOutlinePickles(List<Pickle> pickles, List<PickleStep> backgroundSteps, GherkinDialect dialect, ScenarioOutline scenarioOutline, List<PickleTag> featureTags) {
-        List<PickleTag> scenarioOutlineTags = new ArrayList<>(featureTags);
+    private void addScenarioOutlinePickles(List<TestCase> testCases, List<TestStep> backgroundSteps, GherkinDialect dialect, ScenarioOutline scenarioOutline, List<Tag> featureTags) {
+        List<Tag> scenarioOutlineTags = new ArrayList<>(featureTags);
         scenarioOutlineTags.addAll(pickle(scenarioOutline.getTags()));
 
         for (final Examples examples : scenarioOutline.getExamples()) {
-            List<PickleTag> examplesTags = new ArrayList<>(scenarioOutlineTags);
+            List<Tag> examplesTags = new ArrayList<>(scenarioOutlineTags);
             examplesTags.addAll(pickle(examples.getTags()));
 
             final TableRow header = examples.getTableHeader();
@@ -72,25 +71,25 @@ public class Compiler {
                 String scenarioName = interpolate(scenarioOutline.getName(), examples.getTableHeader(), values);
                 String testCaseName = dialect.getScenarioKeywords().get(0) + ": " + scenarioName;
 
-                Pickle pickle = new Pickle(testCaseName, backgroundSteps, examplesTags, pickle(scenarioOutline.getLocation()));
+                TestCase testCase = new TestCase(testCaseName, backgroundSteps, examplesTags, pickle(scenarioOutline.getLocation()));
                 for (Step step : scenarioOutline.getSteps()) {
                     PickleArgument pickledArgument = getPickledArgument(step, header, values);
 
                     String stepName = interpolate(step.getText(), examples.getTableHeader(), values);
-                    PickleStep pickleStep = new PickleStep(stepName, pickledArgument, pickle(step.getLocation()), pickle(values.getLocation()));
-                    pickle.addTestStep(pickleStep);
+                    TestStep testStep = new TestStep(stepName, pickledArgument, pickle(step.getLocation()), pickle(values.getLocation()));
+                    testCase.addTestStep(testStep);
                 }
 
-                pickles.add(pickle);
+                testCases.add(testCase);
             }
         }
     }
 
-    private void addBackgroundSteps(Feature feature, List<PickleStep> backgroundSteps) {
+    private void addBackgroundSteps(Feature feature, List<TestStep> backgroundSteps) {
         if (feature.getBackground() != null) {
             for (Step step : feature.getBackground().getSteps()) {
                 PickleArgument pickledArgument = getPickledArgument(step, null, null);
-                backgroundSteps.add(new PickleStep(step.getText(), pickledArgument, pickle(step.getLocation())));
+                backgroundSteps.add(new TestStep(step.getText(), pickledArgument, pickle(step.getLocation())));
             }
         }
     }
@@ -129,19 +128,19 @@ public class Compiler {
         return name;
     }
 
-    private List<PickleTag> pickle(List<Tag> tags) {
-        List<PickleTag> pickleTags = new ArrayList<>(tags.size());
-        for (Tag tag : tags) {
+    private List<Tag> pickle(List<gherkin.ast.Tag> tags) {
+        List<Tag> pickleTags = new ArrayList<>(tags.size());
+        for (gherkin.ast.Tag tag : tags) {
             pickleTags.add(pickle(tag));
         }
         return pickleTags;
     }
 
-    private PickleTag pickle(Tag tag) {
-        return new PickleTag(tag.getName(), pickle(tag.getLocation()));
+    private Tag pickle(gherkin.ast.Tag tag) {
+        return new Tag(tag.getName(), pickle(tag.getLocation()));
     }
 
-    private PickleLocation pickle(Location location) {
-        return new PickleLocation(location.getLine(), location.getColumn());
+    private SourcePointer pickle(Location location) {
+        return new SourcePointer(location.getLine(), location.getColumn());
     }
 }

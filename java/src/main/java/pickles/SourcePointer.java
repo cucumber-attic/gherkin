@@ -1,10 +1,10 @@
 package pickles;
 
-public class PickleLocation {
+public class SourcePointer {
     private final int line;
     private final int column;
 
-    public PickleLocation(int line, int column) {
+    public SourcePointer(int line, int column) {
         this.line = line;
         this.column = column;
     }
