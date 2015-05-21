@@ -66,11 +66,17 @@ public class CompilerTest {
                 "  Scenario Outline: <what>\n" +
                 "    Given the <what>\n" +
                 "\n" +
-                "    Examples: \n" +
+                "    Examples: thingy \n" +
                 "      | what       |\n" +
                 "      | minimalism |\n"));
 
-        System.out.println(gson.toJson(testCases));
+        assertEquals(1, testCases.size());
+        assertEquals(1, testCases.get(0).getSteps().size());
+        // TODO
+        // assertEquals("Scenario Outline: minimalism, thingy (#1)", testCases.get(0).getName());
+        assertEquals("Scenario: minimalism", testCases.get(0).getName());
+        assertEquals("the minimalism", testCases.get(0).getSteps().get(0).getText());
+//        System.out.println(gson.toJson(testCases));
     }
 
     @Test

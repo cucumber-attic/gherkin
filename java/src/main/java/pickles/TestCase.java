@@ -18,10 +18,6 @@ public class TestCase {
         this.source = asList(source);
     }
 
-    public void addTestStep(TestStep testStep) {
-        steps.add(testStep);
-    }
-
     public String getName() {
         return name;
     }
