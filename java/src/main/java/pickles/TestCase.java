@@ -9,13 +9,13 @@ public class TestCase {
     private final String name;
     private final List<TestStep> steps;
     private final List<Tag> tags;
-    private final List<SourcePointer> source;
+    private final SourcePointer[] source;
 
     public TestCase(String name, List<TestStep> steps, List<Tag> tags, SourcePointer... source) {
         this.name = name;
         this.tags = tags;
         this.steps = new ArrayList<>(steps);
-        this.source = asList(source);
+        this.source = source;
     }
 
     public String getName() {
@@ -27,6 +27,10 @@ public class TestCase {
     }
 
     public List<SourcePointer> getSource() {
-        return source;
+        return asList(source);
+    }
+
+    public TestCase withTestSteps(List<TestStep> newSteps) {
+        return new TestCase(name, newSteps, tags, source);
     }
 }
