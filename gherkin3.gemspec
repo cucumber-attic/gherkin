@@ -1,6 +1,6 @@
 # encoding: utf-8
 Gem::Specification.new do |s|
-  s.name        = 'gherkin'
+  s.name        = 'gherkin3'
   s.version     = '3.0.0.alpha.1'
   s.authors     = ["Gáspár Nagy", "Aslak Hellesøy", "Steve Tooke"]
   s.description = 'Gherkin parser'
@@ -11,12 +11,12 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
   s.required_ruby_version = ">= 1.9.3"
 
-  s.add_development_dependency 'bundler',   '>= 1.7.6'
+  s.add_development_dependency 'bundler',   '>= 1.10.3'
   s.add_development_dependency 'rake',      '>= 10.4.2'
   s.add_development_dependency 'rspec',     '>= 3.2.0'
 
   # For coverage reports
-  s.add_development_dependency 'coveralls', '>= 0.7.0'
+  s.add_development_dependency 'coveralls', '>= 0.8.1'
 
   s.rubygems_version = ">= 1.6.1"
   s.files            = `git ls-files`.split("\n").reject {|path| path =~ /\.gitignore$/ }
