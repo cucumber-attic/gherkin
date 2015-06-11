@@ -1,4 +1,4 @@
-module Gherkin
+module Gherkin3
   class Token < Struct.new(:line, :location)
     attr_accessor :matched_type, :matched_text, :matched_keyword, :matched_indent,
                   :matched_items, :matched_gherkin_dialect

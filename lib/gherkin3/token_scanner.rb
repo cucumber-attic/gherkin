@@ -1,7 +1,7 @@
-require 'gherkin/token'
-require 'gherkin/gherkin_line'
+require_relative 'token'
+require_relative 'gherkin_line'
 
-module Gherkin
+module Gherkin3
   class TokenScanner
 
     def initialize(source_or_path_or_io)

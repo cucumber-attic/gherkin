@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__),"../lib"))
-require 'gherkin/parser'
-require 'gherkin/token_scanner'
-require 'gherkin/token_formatter_builder'
-require 'gherkin/token_matcher'
+require 'gherkin3/parser'
+require 'gherkin3/token_scanner'
+require 'gherkin3/token_formatter_builder'
+require 'gherkin3/token_matcher'
 
-parser = Gherkin::Parser.new
+parser = Gherkin3::Parser.new
 files = ARGV + (STDIN.tty? ? [] : [STDIN])
 files.each do |file|
-  scanner = Gherkin::TokenScanner.new(file)
-  builder = Gherkin::TokenFormatterBuilder.new
-  print parser.parse(scanner, builder, Gherkin::TokenMatcher.new)
+  scanner = Gherkin3::TokenScanner.new(file)
+  builder = Gherkin3::TokenFormatterBuilder.new
+  print parser.parse(scanner, builder, Gherkin3::TokenMatcher.new)
 end
