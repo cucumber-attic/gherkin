@@ -1,4 +1,4 @@
-module Gherkin
+module Gherkin3
   class ParserError < StandardError; end
 
   class ParserException < ParserError

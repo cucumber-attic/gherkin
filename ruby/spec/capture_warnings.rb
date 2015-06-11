@@ -17,7 +17,7 @@ module CaptureWarnings
     end
 
     if project_warnings.any?
-      puts "#{ project_warnings.count } cucumber-core warnings detected" 
+      puts "#{ project_warnings.count } cucumber-core warnings detected"
       print_warnings('cucumber-core', project_warnings)
       fail "Please remove all cucumber-core warnings."
     end

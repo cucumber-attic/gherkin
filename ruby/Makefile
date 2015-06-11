@@ -13,7 +13,7 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: show-version-info lib/gherkin/parser.rb lib/gherkin/gherkin-languages.json $(RUBY_FILES) Gemfile.lock LICENSE
+.built: show-version-info lib/gherkin3/parser.rb lib/gherkin3/gherkin-languages.json $(RUBY_FILES) Gemfile.lock LICENSE
 	bundle exec rspec --color
 	touch $@
 
@@ -39,14 +39,14 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
-lib/gherkin/gherkin-languages.json: ../gherkin-languages.json
+lib/gherkin3/gherkin-languages.json: ../gherkin-languages.json
 	cp $^ $@
 
 clean:
-	rm -rf .compared .built acceptance lib/gherkin/parser.rb lib/gherking/gherkin-languages.json coverage
+	rm -rf .compared .built acceptance lib/gherkin3/parser.rb lib/gherkin3/gherkin-languages.json coverage
 .PHONY: clean
 
-lib/gherkin/parser.rb: ../gherkin.berp gherkin-ruby.razor ../bin/berp.exe
+lib/gherkin3/parser.rb: ../gherkin.berp gherkin-ruby.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-ruby.razor -o $@
 	# Remove BOM
 	tail -c +4 $@ > $@.nobom

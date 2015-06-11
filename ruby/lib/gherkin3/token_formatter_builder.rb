@@ -1,4 +1,4 @@
-module Gherkin
+module Gherkin3
   class TokenFormatterBuilder
     def initialize
       @tokens_text = ""

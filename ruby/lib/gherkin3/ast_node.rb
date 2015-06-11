@@ -1,4 +1,4 @@
-module Gherkin
+module Gherkin3
   class AstNode
     attr_reader :rule_type
 
