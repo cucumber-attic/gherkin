@@ -6,4 +6,8 @@ public class PickleString implements PickleArgument {
     public PickleString(String content) {
         this.content = content;
     }
+
+    public String getContent() {
+        return content;
+    }
 }

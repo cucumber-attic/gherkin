@@ -8,4 +8,8 @@ public class PickleTable implements PickleArgument {
     public PickleTable(List<List<String>> rows) {
         this.rows = rows;
     }
+
+    public List<List<String>> getRows() {
+        return rows;
+    }
 }
