@@ -33,4 +33,8 @@ public class Pickle {
     public List<PickleLocation> getSource() {
         return source;
     }
+
+    public List<PickleTag> getTags() {
+        return tags;
+    }
 }

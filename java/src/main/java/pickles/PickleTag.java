@@ -8,4 +8,12 @@ public class PickleTag {
         this.name = name;
         this.source = source;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public PickleLocation getSource() {
+        return source;
+    }
 }
