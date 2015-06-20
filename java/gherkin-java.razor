@@ -53,10 +53,6 @@ public class @Model.ParserClassName<T> {
         @foreach(var rule in Model.RuleSet.TokenRules)
         {<text>        @rule.Name.Replace("#", ""),
 </text>}        ;
-
-        public static TokenType cast(RuleType ruleType) {
-            return TokenType.values()[ruleType.ordinal()];
-        }
     }
 
     public enum RuleType {

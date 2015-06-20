@@ -18,7 +18,7 @@ import static java.util.Arrays.asList;
 
 public class Parser<T> {
     public enum TokenType {
-        None,
+        None ,
         EOF,
         Empty,
         Comment,
@@ -32,12 +32,7 @@ public class Parser<T> {
         DocStringSeparator,
         TableRow,
         Language,
-        Other,
-        ;
-
-        public static TokenType cast(RuleType ruleType) {
-            return TokenType.values()[ruleType.ordinal()];
-        }
+        Other;
     }
 
     public enum RuleType {
