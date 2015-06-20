@@ -1,5 +1,6 @@
 # This file is generated. Do not edit! Edit gherkin-ruby.razor instead.
 require_relative 'ast_builder'
+require_relative 'token_matcher'
 require_relative 'errors'
 
 module Gherkin3
@@ -59,7 +60,7 @@ module Gherkin3
   class Parser
     attr_accessor :stop_at_first_error
 
-    def parse(token_scanner, ast_builder, token_matcher)
+    def parse(token_scanner, ast_builder=AstBuilder.new, token_matcher=TokenMatcher.new)
       context = ParserContext.new(
         token_scanner,
         ast_builder,
