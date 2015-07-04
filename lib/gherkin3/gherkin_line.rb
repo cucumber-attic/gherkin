@@ -36,7 +36,11 @@ module Gherkin3
     def table_cells
       column = @indent + 1
       items = @trimmed_line_text.split('|')
-      items = items[1..-2] # Skip space before and after outer |
+      if @trimmed_line_text[-1] == '|'
+        items = items[1..-1] # There is no space after last |, only skip space before first |
+      else
+        items = items[1..-2] # Skip space before and after outer |
+      end
       items.map do |item|
         cell_indent = item.length - item.lstrip.length + 1
         span = Span.new(column + cell_indent, item.strip)
