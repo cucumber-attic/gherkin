@@ -231,17 +231,13 @@
        "* ",
        "Dato "
     ],
-    "name": [
-       "Bosnian"
-    ],
-    "native": [
-       "Bosanski" 
-    ],
+    "name": "Bosnian",
+    "native": "Bosanski",
     "scenario": [
        "Scenariju",
        "Scenario"
     ],
-    "scenario_outline": [
+    "scenarioOutline": [
        "Scenariju-obris",
        "Scenario-outline"
     ], 
