@@ -206,9 +206,13 @@ func (m *matcher) MatchOther(line *Line) (ok bool, token *Token, err error) {
 	txt := strings.TrimLeft(element, " ")
 
 	if len(element)-len(txt) > m.indentToRemove {
-		token.Text = element[m.indentToRemove:]
+		token.Text = unescapeDocString(element[m.indentToRemove:])
 	} else {
-		token.Text = txt
+		token.Text = unescapeDocString(txt)
 	}
 	return
+}
+
+func unescapeDocString(text string) string {
+	return strings.Replace(text, "\\\"\\\"\\\"", "\"\"\"", -1)
 }
