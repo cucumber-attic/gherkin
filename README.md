@@ -1,5 +1,7 @@
 # Gherkin 3
 
+[![Join the chat at https://gitter.im/cucumber/gherkin3](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cucumber/gherkin3?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/cucumber/gherkin3.png)](https://travis-ci.org/cucumber/gherkin3)
 
 Gherkin 3 is a parser and compiler for the Gherkin language.
