@@ -144,7 +144,7 @@ module.exports = function TokenMatcher() {
 
   this.match_Other = function match_Other(token) {
     var text = token.line.getLineText(indentToRemove); //take the entire line, except removing DocString indents
-    setTokenMatched(token, 'Other', text, null, 0);
+    setTokenMatched(token, 'Other', unescapeDocString(text), null, 0);
     return true;
   };
 
@@ -171,5 +171,9 @@ module.exports = function TokenMatcher() {
 
     token.location.column = token.matchedIndent + 1;
     token.matchedGherkinDialect = dialectName;
+  }
+
+  function unescapeDocString(text) {
+    return text.replace("\\\"\\\"\\\"", "\"\"\"");
   }
 };

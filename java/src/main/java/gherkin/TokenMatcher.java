@@ -51,7 +51,7 @@ public class TokenMatcher implements ITokenMatcher {
     @Override
     public boolean match_Other(Token token) {
         String text = token.line.getLineText(indentToRemove); //take the entire line, except removing DocString indents
-        setTokenMatched(token, TokenType.Other, text, null, 0, null);
+        setTokenMatched(token, TokenType.Other, unescapeDocString(text), null, 0, null);
         return true;
     }
 
@@ -180,5 +180,9 @@ public class TokenMatcher implements ITokenMatcher {
             return true;
         }
         return false;
+    }
+
+    private String unescapeDocString(String text) {
+        return text.replace("\\\"\\\"\\\"", "\"\"\"");
     }
 }

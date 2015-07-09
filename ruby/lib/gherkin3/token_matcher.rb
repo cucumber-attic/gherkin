@@ -106,7 +106,7 @@ module Gherkin3
 
     def match_Other(token)
       text = token.line.get_line_text(@indent_to_remove) # take the entire line, except removing DocString indents
-      set_token_matched(token, :Other, text, nil, 0)
+      set_token_matched(token, :Other, unescape_docstring(text), nil, 0)
       true
     end
 
@@ -154,6 +154,10 @@ module Gherkin3
       token.matched_items = items
       token.location[:column] = token.matched_indent + 1
       token.matched_gherkin_dialect = @dialect_name
+    end
+
+    def unescape_docstring(text)
+      text.gsub("\\\"\\\"\\\"", "\"\"\"")
     end
   end
 end

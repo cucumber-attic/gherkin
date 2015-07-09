@@ -79,6 +79,18 @@
           }
         ],
         "text": "a DocString with alternative separator inside"
+      },
+      {
+        "argument": {
+          "content": "first line\n\"\"\"\nthird line"
+        },
+        "source": [
+          {
+            "column": 5,
+            "line": 38
+          }
+        ],
+        "text": "a DocString with escaped separator inside"
       }
     ],
     "tags": []

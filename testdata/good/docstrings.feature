@@ -35,3 +35,9 @@ Feature: DocString variations
       ```
       third line
       """
+    And a DocString with escaped separator inside
+      """
+      first line
+      \"\"\"
+      third line
+      """
