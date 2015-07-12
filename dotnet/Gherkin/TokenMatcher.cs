@@ -52,7 +52,7 @@ namespace Gherkin
         public bool Match_Other(Token token)
         {
             var text = token.Line.GetLineText(indentToRemove); //take the entire line, except removing DocString indents
-            SetTokenMatched(token, TokenType.Other, text, indent: 0);
+            SetTokenMatched(token, TokenType.Other, UnescapeDocString(text), indent: 0);
             return true;
         }
 
@@ -156,7 +156,7 @@ namespace Gherkin
 
         public bool Match_DocStringSeparator(Token token)
         {
-            return activeDocStringSeparator == null 
+            return activeDocStringSeparator == null
                 // open
                 ? Match_DocStringSeparator(token, GherkinLanguageConstants.DOCSTRING_SEPARATOR, true) ||
                   Match_DocStringSeparator(token, GherkinLanguageConstants.DOCSTRING_ALTERNATIVE_SEPARATOR, true)
@@ -211,6 +211,11 @@ namespace Gherkin
                 return true;
             }
             return false;
+        }
+
+        private string UnescapeDocString(string text)
+        {
+            return text.Replace("\\\"\\\"\\\"", "\"\"\"");
         }
     }
 }
