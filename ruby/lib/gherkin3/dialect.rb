@@ -15,21 +15,44 @@ module Gherkin3
       @spec = spec
     end
 
-    def method_missing(name, *args, &block)
-      @spec.fetch(normalise_method_name name.to_s)
-    rescue KeyError
-      super
+    def feature_keywords
+      @spec.fetch('feature')
     end
 
-    def respond_to_missing?(name, *args, &block)
-      @spec.keys.include?(normalise_method_name name.to_s) || super
+    def scenario_keywords
+      @spec.fetch('scenario')
     end
 
-    private
+    def scenario_outline_keywords
+      @spec.fetch('scenarioOutline')
+    end
 
-    def normalise_method_name(original)
-      first, *rest = original.split("_")
-      first + rest.map(&:capitalize).join
+    def examples_keywords
+      @spec.fetch('examples')
+    end
+
+    def background_keywords
+      @spec.fetch('background')
+    end
+
+    def given_keywords
+      @spec.fetch('given')
+    end
+
+    def when_keywords
+      @spec.fetch('when')
+    end
+
+    def then_keywords
+      @spec.fetch('then')
+    end
+
+    def and_keywords
+      @spec.fetch('and')
+    end
+
+    def but_keywords
+      @spec.fetch('but')
     end
   end
 end
