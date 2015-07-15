@@ -57,3 +57,7 @@ Gemfile.lock: Gemfile
 
 LICENSE: ../LICENSE
 	cp $< $@
+
+release: .compared
+	bundle exec rake build release:guard_clean release:rubygem_push
+.PHONY: release
