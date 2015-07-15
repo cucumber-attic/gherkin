@@ -8,7 +8,8 @@ require 'json'
 
 parser = Gherkin3::Parser.new
 parser.stop_at_first_error = false
-files = ARGV + (STDIN.tty? ? [] : [STDIN])
+files = ARGV.any? ? ARGV : (STDIN.tty? ? [] : [STDIN])
+start_time = Time.now
 files.each do |file|
   scanner = Gherkin3::TokenScanner.new(file)
   builder = Gherkin3::AstBuilder.new
@@ -19,3 +20,5 @@ files.each do |file|
     exit 1
   end
 end
+end_time = Time.now
+STDERR.puts (end_time - start_time)*1000 if ENV['GHERKIN_PERF']
