@@ -23,7 +23,7 @@ namespace Gherkin.AstGenerator
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine(ex.Message);
+                    Console.WriteLine(ex.Message);
                     return 1;
                 }
             }
