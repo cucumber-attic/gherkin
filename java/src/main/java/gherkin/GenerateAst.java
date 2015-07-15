@@ -12,6 +12,7 @@ public class GenerateAst {
         Gson gson = new Gson();
         Parser<Feature> parser = new Parser<>();
 
+        long startTime = System.currentTimeMillis();
         for (String fileName : args) {
             InputStreamReader in = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
             try {
@@ -21,6 +22,10 @@ public class GenerateAst {
                 System.err.println(e.getMessage());
                 System.exit(1);
             }
+        }
+        long endTime = System.currentTimeMillis();
+        if(System.getenv("GHERKIN_PERF") != null) {
+            System.err.println(endTime - startTime);
         }
     }
 

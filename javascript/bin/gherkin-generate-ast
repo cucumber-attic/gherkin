@@ -5,6 +5,7 @@ var Gherkin = require('..');
 var parser = new Gherkin.Parser();
 parser.stopAtFirstError = false;
 var files = process.argv.slice(2);
+var startTime = Date.now();
 files.forEach(function (file) {
   var scanner = new Gherkin.TokenScanner(fs.readFileSync(file, 'UTF-8'));
   var builder = new Gherkin.AstBuilder();
@@ -16,3 +17,7 @@ files.forEach(function (file) {
     process.exit(1);
   }
 });
+var endTime = Date.now();
+if(process.env['GHERKIN_PERF']) {
+  console.error(endTime - startTime);
+}
