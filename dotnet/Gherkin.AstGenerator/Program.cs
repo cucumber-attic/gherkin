@@ -23,6 +23,8 @@ namespace Gherkin.AstGenerator
                 }
                 catch (Exception ex)
                 {
+                    // Ideally we'd use Console.Error here, but we can't because
+                    // 2> doesn't seem to work properly - at least not on Mono on OS X.
                     Console.WriteLine(ex.Message);
                     return 1;
                 }
