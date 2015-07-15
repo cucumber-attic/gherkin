@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"time"
 
 	gherkin "../"
 )
@@ -27,6 +28,7 @@ func main() {
 		}
 	}
 
+	startTime := time.Now().UnixNano() / 1e6
 	for i := range readers {
 		err := GenerateAst(readers[i], os.Stdout, false)
 		if err != nil {
@@ -34,6 +36,10 @@ func main() {
 			os.Exit(1)
 			return
 		}
+	}
+	endTime := time.Now().UnixNano() / 1e6
+	if os.Getenv("GHERKIN_PERF") != "" {
+		fmt.Fprintf(os.Stderr, "%d\n", endTime - startTime)
 	}
 }
 
