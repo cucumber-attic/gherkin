@@ -4,7 +4,7 @@
 
     <groupId>info.cukes</groupId>
     <artifactId>gherkin3</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.0</version>
     <packaging>jar</packaging>
     <name>Gherkin</name>
     <description>Gherkin parser</description>
