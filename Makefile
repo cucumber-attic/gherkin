@@ -63,3 +63,7 @@ LICENSE: ../LICENSE
 clean:
 	rm -rf .compared .built acceptance target src/main/resources/gherkin/gherkin-languages.json
 .PHONY: clean
+
+release: .compared
+	mvn -Psign clean source:jar javadoc:jar deploy
+.PHONY: release
