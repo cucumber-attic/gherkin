@@ -116,7 +116,16 @@ or find us on the *#cucumber* IRC channel on freenode.net.
 
 ## Make a release
 
-TODO
+Releases are made from the various subtrees. Before you release, update the subtrees:
+
+    make push-subtrees
+
+Next, `git pull` in your working copy of each subtree, then follow the release guidelines
+for each component in the respective `CONTRIBUTING.md` file.
+
+Finally, when all components are released, update the master repo:
+
+    make pull-subtrees
 
 ## Benchmarking
 

@@ -14,3 +14,8 @@ Just run `rake` from this directory.
 
 Keep in mind that this will only run unit tests. The acceptance tests are only
 run when you build with `make`.
+
+## Make a release
+
+    # Change version in `gherkin3.gemspec`
+    bundle exec rake build release

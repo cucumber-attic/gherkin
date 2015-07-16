@@ -1,0 +1,29 @@
+{
+  "name": "gherkin",
+  "main": "dist/gherkin.js",
+  "version": "3.0.0",
+  "homepage": "https://github.com/cucumber/gherkin3",
+  "authors": [
+    "Aslak Hellesøy <aslak@cucumber.io>"
+  ],
+  "description": "Gherkin parser",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "gherkin",
+    "cucumber"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "examples",
+    "bin",
+    "acceptance"
+  ]
+}
