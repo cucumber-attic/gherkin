@@ -24,6 +24,7 @@
     "bower": "^1.4.1",
     "browserify": "^10.2.6",
     "mocha": "^2.2.5",
+    "mversion": "^1.10.0",
     "uglify-js": "^2.4.23"
   },
   "dependencies": {
