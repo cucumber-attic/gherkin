@@ -123,9 +123,13 @@ Releases are made from the various subtrees. Before you release, update the subt
 Next, `git pull` in your working copy of each subtree, then follow the release guidelines
 for each component in the respective `CONTRIBUTING.md` file.
 
-Finally, when all components are released, update the master repo:
+When all components are released, update the master repo:
 
     make pull-subtrees
+
+Then finally create a tag there:
+
+    git tag v3.0.0
 
 ## Benchmarking
 
