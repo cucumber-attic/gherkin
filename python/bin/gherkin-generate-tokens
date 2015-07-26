@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+import codecs
+import os
+import sys
+try:
+    import cStringIO
+    import codecs
+    python2 = True
+except:
+    python2 = False
+sys.path.insert(0, os.getcwd())
+from gherkin.token_scanner import TokenScanner
+from gherkin.token_matcher import TokenMatcher
+from gherkin.token_formatter_builder import TokenFormatterBuilder
+from gherkin.parser import Parser
+
+files = sys.argv[1:]
+if python2:
+    UTF8Writer = codecs.getwriter('utf8')
+    sys.stdout = UTF8Writer(sys.stdout)
+for file in files:
+    scanner = TokenScanner(file)
+    parser = Parser()
+    print(parser.parse(scanner, TokenFormatterBuilder(), TokenMatcher()))

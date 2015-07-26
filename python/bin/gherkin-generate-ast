@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+from __future__ import print_function
+import os
+import sys
+import json
+try:
+    import cStringIO
+    import codecs
+    python2 = True
+except:
+    python2 = False
+sys.path.insert(0, os.getcwd())
+from gherkin.token_scanner import TokenScanner
+from gherkin.token_matcher import TokenMatcher
+from gherkin.ast_builder import AstBuilder
+from gherkin.parser import Parser
+from gherkin.errors import ParserError
+
+files = sys.argv[1:]
+if python2:
+    UTF8Writer = codecs.getwriter('utf8')
+    sys.stdout = UTF8Writer(sys.stdout)
+for file in files:
+    scanner = TokenScanner(file)
+    parser = Parser()
+    try:
+        print(json.dumps(parser.parse(scanner, AstBuilder(), TokenMatcher()), sort_keys=True, indent=2, separators=(',', ': '), ensure_ascii=False))
+    except ParserError as e:
+        print(e.args[0], file=sys.stderr)
+        sys.exit(1)
