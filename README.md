@@ -126,7 +126,7 @@ Each node in the JSON representation also has a `type` property with the name
 of the node type.
 
 You can see some examples in the
-[tesdata/good](https://github.com/cucumber/gherkin3/tree/master/testdata/good)
+[testdata/good](https://github.com/cucumber/gherkin3/tree/master/testdata/good)
 directory.
 
 ### Compiler
