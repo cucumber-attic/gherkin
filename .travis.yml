@@ -1,35 +1,33 @@
 language: csharp
 mono: 3.12.0
-env: TARGET_LANG=dotnet
 
-matrix:
-  include:
-    - env: TARGET_LANG=java
-      jdk: oraclejdk8
-
-    - env: TARGET_LANG=ruby
-      rvm: 2.0.0
-    - env: TARGET_LANG=ruby
-      rvm: 2.1.0
-    - env: TARGET_LANG=ruby
-      rvm: 2.2.0
-    - env: TARGET_LANG=ruby
-      rvm: jruby-head
-
-    - env: TARGET_LANG=javascript
-      node_js: 0.12
-
-    - env: TARGET_LANG=go
-      go: latest
+env:
+  - TARGET_LANG=dotnet
+  - TARGET_LANG=java
+  - TARGET_LANG=ruby USE_RVM=ruby-2.0
+  - TARGET_LANG=ruby USE_RVM=ruby-2.1
+  - TARGET_LANG=ruby USE_RVM=ruby-2.2
+  - TARGET_LANG=ruby USE_RVM=jruby
+  - TARGET_LANG=javascript
+  - TARGET_LANG=go
 
 before_install:
   - export EnableNuGetPackageRestore=true
   # https://github.com/travis-ci/travis-ci/issues/2839
-  - export JAVA_HOME="$(/usr/libexec/java_home)"
+  - export JAVA_HOME="$(dirname $(dirname $(readlink -e $(which javac))))"
   # install jq if its not already there
   - which jq || sudo apt-get install -y jq
+  # configure RVM if needed
+  - '[ -z "$USE_RVM" ] || (rvm use --default $USE_RVM || (rvm install $USE_RVM && rvm use --default $USE_RVM))'
+  # show some version info
+  - 'if [ "$TARGET_LANG" == "dotnet" ]; then mono --version; fi'
+  - 'if [ "$TARGET_LANG" == "java" -o "$USE_RVM" == "jruby" ]; then java --version; fi'
+  - 'if [ "$TARGET_LANG" == "ruby" ]; then ruby --version; fi'
+  - 'if [ "$TARGET_LANG" == "javascript" ]; then node --version; fi'
+  - 'if [ "$TARGET_LANG" == "go" ]; then go version; fi'
 
-script: "cd $TARGET_LANG; make"
+script:
+  - "cd $TARGET_LANG && make"
 
 branches:
   only:
