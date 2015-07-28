@@ -39,9 +39,4 @@ script: "cd $TARGET_LANG; make"
 branches:
   only:
     - master
-
-notifications:
-  email:
-    - cukes-devs@googlegroups.com
-  irc:
-    - "irc.freenode.org#cucumber"
+    - add-python-language
