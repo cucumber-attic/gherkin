@@ -22,6 +22,11 @@ matrix:
     - env: TARGET_LANG=go
       go: latest
 
+    - env: TARGET_LANG=python
+      python: "2.7"
+    - env: TARGET_LANG=python
+      python: "3.4"
+
 before_install:
   - export EnableNuGetPackageRestore=true
   # https://github.com/travis-ci/travis-ci/issues/2839
@@ -34,9 +39,4 @@ script: "cd $TARGET_LANG; make"
 branches:
   only:
     - master
-
-notifications:
-  email:
-    - cukes-devs@googlegroups.com
-  irc:
-    - "irc.freenode.org#cucumber"
+    - add-python-language

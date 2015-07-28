@@ -16,6 +16,7 @@ Gherkin 3 is currently implemented for the following platforms:
 * JavaScript (Browser or Node.js/IO.js)
 * Ruby (MRI, JRuby or any other Ruby implementation)
 * Go
+* Python
 
 See `TODO.md` for what's remaining before we're ready to roll it out and refactor
 the Cucumber implementations to use it.
@@ -26,7 +27,6 @@ Our wish-list is (in no particular order):
 * C
 * Perl
 * PHP
-* Python
 * Rust
 * Swift
 
@@ -68,6 +68,14 @@ reader := strings.NewReader(`Feature: ...`)
 feature, err := gherkin.ParseFeature(reader)
 ```
 *Download the package via: `go get github.com/cucumber/gherkin-go`*
+
+```python
+from gherkin.token_scanner import TokenScanner
+from gherkin.parser import Parser
+
+parser = Parser()
+feature = parser.parse(TokenScanner("Feature: Foo"))
+```
 
 ## Why Gherkin 3?
 
