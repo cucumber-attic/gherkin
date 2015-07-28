@@ -31,5 +31,5 @@ for file in files:
         print(e.args[0], file=sys.stderr)
         sys.exit(1)
 end_time = time.clock()
-if os.environ['GHERKIN_PERF']:
+if os.getenv('GHERKIN_PERF'):
     print((end_time - start_time) * 1000, file=sys.stderr)
