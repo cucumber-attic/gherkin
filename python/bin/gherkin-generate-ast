@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from __future__ import print_function
+import time
 import os
 import sys
 import json
@@ -20,6 +21,7 @@ files = sys.argv[1:]
 if python2:
     UTF8Writer = codecs.getwriter('utf8')
     sys.stdout = UTF8Writer(sys.stdout)
+start_time = time.clock()
 for file in files:
     scanner = TokenScanner(file)
     parser = Parser()
@@ -28,3 +30,6 @@ for file in files:
     except ParserError as e:
         print(e.args[0], file=sys.stderr)
         sys.exit(1)
+end_time = time.clock()
+if os.environ['GHERKIN_PERF']:
+    print((end_time - start_time) * 1000, file=sys.stderr)
