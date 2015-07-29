@@ -2,3 +2,4 @@ acceptance/
 .built
 .compared
 *.pyc
+dist/
