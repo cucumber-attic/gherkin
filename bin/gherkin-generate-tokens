@@ -9,10 +9,10 @@ try:
 except:
     python2 = False
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-from gherkin.token_scanner import TokenScanner
-from gherkin.token_matcher import TokenMatcher
-from gherkin.token_formatter_builder import TokenFormatterBuilder
-from gherkin.parser import Parser
+from gherkin3.token_scanner import TokenScanner
+from gherkin3.token_matcher import TokenMatcher
+from gherkin3.token_formatter_builder import TokenFormatterBuilder
+from gherkin3.parser import Parser
 
 files = sys.argv[1:]
 if python2:

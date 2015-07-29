@@ -1,5 +1,5 @@
-from gherkin.token_scanner import TokenScanner
-from gherkin.parser import Parser
+from gherkin3.token_scanner import TokenScanner
+from gherkin3.parser import Parser
 from nose.tools import assert_equals
 
 def test_parser():
