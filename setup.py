@@ -9,7 +9,7 @@ setup(
   author_email = 'cukes@googlegroups.com',
   url = 'https://github.com/cucumber/gherkin-python',
   license = 'MIT',
-  download_url = 'https://github.com/cucumber/gherkin-ruby/archive/v3.0.0.tar.gz',
+  download_url = 'https://github.com/cucumber/gherkin-python/archive/v3.0.0.tar.gz',
   keywords = ['gherkin', 'cucumber', 'bdd'],
   classifiers = [],
 )
