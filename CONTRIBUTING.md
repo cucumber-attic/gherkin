@@ -26,4 +26,4 @@ This is based on [How to submit a package to PyPI](http://peterdowns.com/posts/f
     git tag -a -m "Version X.Y.Z" vX.Y.Z
     git push
     git push --tags
-    python setup.py sdist upload -r pypitest
+    python setup.py sdist upload -r pypi
