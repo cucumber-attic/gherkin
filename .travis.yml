@@ -40,4 +40,3 @@ script: "cd $TARGET_LANG; make"
 branches:
   only:
     - master
-    - add-python-language
