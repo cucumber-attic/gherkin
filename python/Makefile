@@ -13,7 +13,7 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: show-version-info gherkin/parser.py gherkin/gherkin-languages.json $(PYTHON_FILES) LICENSE
+.built: show-version-info gherkin/parser.py gherkin/gherkin-languages.json $(PYTHON_FILES) LICENSE.txt
 	touch $@
 
 show-version-info:
@@ -42,7 +42,7 @@ gherkin/gherkin-languages.json: ../gherkin-languages.json
 	cp $^ $@
 
 clean:
-	rm -rf .compared .built acceptance gherkin/parser.py gherkin/gherkin-languages.json coverage
+	rm -rf .compared .built acceptance gherkin/parser.py gherkin/gherkin-languages.json
 .PHONY: clean
 
 gherkin/parser.py: ../gherkin.berp gherkin-python.razor ../bin/berp.exe
@@ -51,5 +51,5 @@ gherkin/parser.py: ../gherkin.berp gherkin-python.razor ../bin/berp.exe
 	tail -c +4 $@ > $@.nobom
 	mv $@.nobom $@
 
-LICENSE: ../LICENSE
+LICENSE.txt: ../LICENSE
 	cp $< $@
