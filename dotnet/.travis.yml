@@ -1,5 +1,6 @@
 language: csharp
 mono: latest
+sudo: false
 
 before_install:
   - export EnableNuGetPackageRestore=true

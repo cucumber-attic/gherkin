@@ -1,6 +1,7 @@
 language: csharp
 mono: 3.12.0
 env: TARGET_LANG=dotnet
+sudo: false
 
 matrix:
   include:
