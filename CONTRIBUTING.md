@@ -30,6 +30,15 @@ Or if someone has made changes to a `gherkin-*` repo independently:
 This should only be done on rare occasions - it's always better to make changes against
 this *master* repo.
 
+### Troubleshooting
+
+Occasionally, `make push-subtrees` might fail if you have merged changes from a subtree.
+In that case, you can force push a particular subtree. Example:
+
+    git push gherkin-python `git subtree split --prefix=python master`:master --force
+
+See [SO](http://stackoverflow.com/questions/13756055/git-subtree-subtree-up-to-date-but-cant-push) for details.
+
 ## Building
 
 Prerequisites:
