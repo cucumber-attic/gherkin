@@ -56,7 +56,7 @@ With all this installed, just run `make` from the root directory.
 ## Building individual parsers
 
 It's possible to build the parser for a single language too. Please refer to
-`README.md` files in each language directory for details.
+`CONTRIBUTING.md` files in each language directory for details.
 
 ## Running tests
 
@@ -112,7 +112,7 @@ pass!
 Then send us a pull-request :-)
 
 And if you're stuck - please shoot an email to the *cukes-devs* Google Group
-or find us on the *#cucumber* IRC channel on freenode.net.
+or find us on [Gitter](https://gitter.im/cucumber/gherkin3).
 
 ## Make a release
 
@@ -120,7 +120,8 @@ Releases are made from the various subtrees. Before you release, update the subt
 
     make push-subtrees
 
-Next, `git pull` in your working copy of each subtree, then follow the release guidelines
+Next, clone each individual subtree repo (or `git pull` if you've already done so)
+in your working copy of each subtree, then follow the release guidelines
 for each component in the respective `CONTRIBUTING.md` file.
 
 When all components are released, update the master repo:
@@ -133,13 +134,21 @@ Then finally create a tag there:
 
 ## Benchmarking
 
-A simple way to benchmark the scanner:
+Just run `./perf` to get a rough idea of performance. This script will print
+how many milliseconds it takes to parse all the files under `testdata/good`
 
-    [LANGUAGE]/bin/gherkin-generate-tokens `find ../cucumber/examples -name "*.feature"`
+## Verify all of Cucumber's i18n examples
 
-or parser:
+If you have [cucumber-ruby](https://github.com/cucumber/cucumber-ruby) cloned
+next to the gherkin3 directory, try processing all of the files.
 
-    [LANGUAGE]/bin/gherkin-generate-ast `find ../cucumber/examples -name "*.feature"`
+With just the scanner:
+
+    [LANGUAGE]/bin/gherkin-generate-tokens `find ../cucumber-ruby/examples -name "*.feature"`
+
+With the parser:
+
+    [LANGUAGE]/bin/gherkin-generate-ast `find ../cucumber-ruby/examples -name "*.feature"`
 
 ## Adding new good testdata
 
