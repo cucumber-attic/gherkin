@@ -13,7 +13,7 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: show-version-info gherkin/parser.py gherkin/gherkin-languages.json $(PYTHON_FILES) LICENSE.txt
+.built: show-version-info gherkin3/parser.py gherkin3/gherkin-languages.json $(PYTHON_FILES) LICENSE.txt
 	touch $@
 
 show-version-info:
@@ -38,14 +38,14 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
-gherkin/gherkin-languages.json: ../gherkin-languages.json
+gherkin3/gherkin-languages.json: ../gherkin-languages.json
 	cp $^ $@
 
 clean:
-	rm -rf .compared .built acceptance gherkin/parser.py gherkin/gherkin-languages.json
+	rm -rf .compared .built acceptance gherkin3/parser.py gherkin3/gherkin-languages.json
 .PHONY: clean
 
-gherkin/parser.py: ../gherkin.berp gherkin-python.razor ../bin/berp.exe
+gherkin3/parser.py: ../gherkin.berp gherkin-python.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-python.razor -o $@
 	# Remove BOM
 	tail -c +4 $@ > $@.nobom
