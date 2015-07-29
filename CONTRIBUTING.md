@@ -129,7 +129,7 @@ Releases are made from the various subtrees. Before you release, update the subt
 
     make push-subtrees
 
-Next, clone each individual subtree repo (or `git pull` if you've already done so)
+Next, clone each individual subtree repo (or `git pull -r origin master` if you've already done so)
 in your working copy of each subtree, then follow the release guidelines
 for each component in the respective `CONTRIBUTING.md` file.
 
