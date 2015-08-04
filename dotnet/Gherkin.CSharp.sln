@@ -26,8 +26,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.AstGenerator", "Ghe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.TokensGenerator", "Gherkin.TokensGenerator\Gherkin.TokensGenerator.csproj", "{B7311B05-D061-4A82-B8DF-1C1EE65EEA70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.NuGetPackages", "Gherkin.NuGetPackages\Gherkin.NuGetPackages.csproj", "{EC40ACB0-A6B9-4776-9078-B1D72D244787}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,9 +48,6 @@ Global
 		{B7311B05-D061-4A82-B8DF-1C1EE65EEA70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7311B05-D061-4A82-B8DF-1C1EE65EEA70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7311B05-D061-4A82-B8DF-1C1EE65EEA70}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC40ACB0-A6B9-4776-9078-B1D72D244787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC40ACB0-A6B9-4776-9078-B1D72D244787}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC40ACB0-A6B9-4776-9078-B1D72D244787}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
