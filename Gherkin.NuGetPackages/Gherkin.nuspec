@@ -17,6 +17,6 @@
     <tags>specflow gherkin cucumber</tags>
   </metadata>
   <files>
-    <file src="bin\Gherkin.dll" target="lib\net45" />
+    <file src="bin/Gherkin.dll" target="lib\net45" />
   </files>
 </package>
