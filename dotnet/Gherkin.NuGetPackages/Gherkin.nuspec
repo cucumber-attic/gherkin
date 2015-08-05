@@ -5,7 +5,7 @@
     <version>3.0.0-alpha2</version>
     <title>Gherkin Parser</title>
     <authors>Aslak Hellesøy, Gaspar Nagy, TechTalk</authors>
-    <owners>TechTalk</owners>
+    <owners>Cucumber</owners>
     <summary>Cross-platform parser for the Gherkin language.</summary>
     <description>Cross-platform parser for the Gherkin language, used by Cucumber and SpecFlow to parse .feature files.</description>
     <language>en-US</language>
