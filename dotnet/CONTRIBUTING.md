@@ -19,4 +19,4 @@ run when you build with `make`.
 
 
     # Change version in `Gherkin.NuGetPackages\Gherkin.nuspec`
-    .nuget\NuGet.exe pack Gherkin.NuGetPackages\Gherkin.nuspec
+    mono --runtime=v4.0 .nuget/NuGet.exe pack Gherkin.NuGetPackages/Gherkin.nuspec    
