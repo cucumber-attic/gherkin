@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 public class GherkinLineTest {
     @Test
     public void finds_tags() {
-        GherkinLine gherkinLine = new GherkinLine("    @this @is  @atag  ", 0);
+        GherkinLine gherkinLine = new GherkinLine("    @this @is  @atag  ");
         List<GherkinLineSpan> gherkinLineSpans = gherkinLine.getTags();
 
         assertEquals(asList(

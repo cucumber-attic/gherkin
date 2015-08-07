@@ -8,12 +8,10 @@ import static gherkin.StringUtils.ltrim;
 
 public class GherkinLine implements IGherkinLine {
     private final String lineText;
-    private final int lineNumber;
     private final String trimmedLineText;
 
-    public GherkinLine(String lineText, int lineNumber) {
+    public GherkinLine(String lineText) {
         this.lineText = lineText;
-        this.lineNumber = lineNumber;
         this.trimmedLineText = ltrim(lineText);
     }
 

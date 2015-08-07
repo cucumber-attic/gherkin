@@ -7,11 +7,11 @@ import java.io.UnsupportedEncodingException;
 
 public class GenerateTokens {
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-        Parser<String> parser = new Parser<>();
+        TokenFormatterBuilder builder = new TokenFormatterBuilder();
+        Parser<String> parser = new Parser<>(builder);
         for (String fileName : args) {
             InputStreamReader in = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
-            TokenFormatterBuilder builder = new TokenFormatterBuilder();
-            String result = parser.parse(in, builder);
+            String result = parser.parse(in);
             System.out.print(result);
         }
     }

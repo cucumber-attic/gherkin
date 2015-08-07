@@ -21,17 +21,24 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-import static gherkin.Parser.IAstBuilder;
+import static gherkin.Parser.Builder;
 import static gherkin.Parser.RuleType;
 import static gherkin.Parser.TokenType;
 import static gherkin.StringUtils.join;
 
-public class AstBuilder<T> implements IAstBuilder<T> {
-    private final Deque<AstNode> stack = new ArrayDeque<>();
-    private final List<Comment> comments = new ArrayList<>();
+public class AstBuilder implements Builder<Feature> {
+    private Deque<AstNode> stack;
+    private List<Comment> comments;
 
     public AstBuilder() {
+        reset();
+    }
+
+    private void reset() {
+        stack = new ArrayDeque<>();
         stack.push(new AstNode(RuleType.None));
+
+        comments = new ArrayList<>();
     }
 
     private AstNode currentNode() {
@@ -184,7 +191,7 @@ public class AstBuilder<T> implements IAstBuilder<T> {
     private List<TableCell> getCells(Token token) {
         List<TableCell> cells = new ArrayList<>();
         for (GherkinLineSpan cellItem : token.mathcedItems) {
-            cells.add(new TableCell(getLocation(token, cellItem.Column), cellItem.Text));
+            cells.add(new TableCell(getLocation(token, cellItem.column), cellItem.text));
         }
         return cells;
     }
@@ -210,14 +217,16 @@ public class AstBuilder<T> implements IAstBuilder<T> {
         List<Tag> tags = new ArrayList<>();
         for (Token token : tokens) {
             for (GherkinLineSpan tagItem : token.mathcedItems) {
-                tags.add(new Tag(getLocation(token, tagItem.Column), tagItem.Text));
+                tags.add(new Tag(getLocation(token, tagItem.column), tagItem.text));
             }
         }
         return tags;
     }
 
     @Override
-    public T getResult() {
-        return currentNode().getSingle(RuleType.Feature, null);
+    public Feature getResult() {
+        Feature result = currentNode().getSingle(RuleType.Feature, null);
+        reset();
+        return result;
     }
 }

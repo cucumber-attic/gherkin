@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 public class GenerateAst {
     public static void main(String[] args) throws IOException {
         Gson gson = new Gson();
-        Parser<Feature> parser = new Parser<>();
+        Parser<Feature> parser = new Parser<>(new AstBuilder());
 
         long startTime = System.currentTimeMillis();
         for (String fileName : args) {
