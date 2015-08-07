@@ -14,7 +14,7 @@ import java.util.List;
 public class GeneratePickles {
     public static void main(String[] args) throws IOException {
         Gson gson = new Gson();
-        Parser<Feature> parser = new Parser<>();
+        Parser<Feature> parser = new Parser<>(new AstBuilder());
         Compiler compiler = new Compiler();
         List<Pickle> pickles = new ArrayList<>();
 

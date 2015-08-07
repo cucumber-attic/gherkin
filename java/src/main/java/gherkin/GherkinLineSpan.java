@@ -2,14 +2,14 @@ package gherkin;
 
 public class GherkinLineSpan {
     // One-based line position
-    public final int Column;
+    public final int column;
 
-    // Text part of the line
-    public final String Text;
+    // text part of the line
+    public final String text;
 
     public GherkinLineSpan(int column, String text) {
-        Column = column;
-        Text = text;
+        this.column = column;
+        this.text = text;
     }
 
     @Override
@@ -17,14 +17,14 @@ public class GherkinLineSpan {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GherkinLineSpan that = (GherkinLineSpan) o;
-        return Column == that.Column && Text.equals(that.Text);
+        return column == that.column && text.equals(that.text);
 
     }
 
     @Override
     public int hashCode() {
-        int result = Column;
-        result = 31 * result + Text.hashCode();
+        int result = column;
+        result = 31 * result + text.hashCode();
         return result;
     }
 }
