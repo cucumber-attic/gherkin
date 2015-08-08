@@ -21,4 +21,8 @@ public class TokenFormatterBuilder implements Parser.Builder<String> {
     public String getResult() {
         return tokensTextBuilder.toString();
     }
+
+    @Override
+    public void reset() {
+    }
 }
