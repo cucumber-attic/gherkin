@@ -26,7 +26,7 @@ for file in files:
     scanner = TokenScanner(file)
     parser = Parser()
     try:
-        print(json.dumps(parser.parse(scanner, AstBuilder(), TokenMatcher()), sort_keys=True, indent=2, separators=(',', ': '), ensure_ascii=False))
+        print(json.dumps(parser.parse(scanner, TokenMatcher()), sort_keys=True, indent=2, separators=(',', ': '), ensure_ascii=False))
     except ParserError as e:
         print(e.args[0], file=sys.stderr)
         sys.exit(1)

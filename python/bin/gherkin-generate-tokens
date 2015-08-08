@@ -20,5 +20,5 @@ if python2:
     sys.stdout = UTF8Writer(sys.stdout)
 for file in files:
     scanner = TokenScanner(file)
-    parser = Parser()
-    print(parser.parse(scanner, TokenFormatterBuilder(), TokenMatcher()))
+    parser = Parser(TokenFormatterBuilder())
+    print(parser.parse(scanner, TokenMatcher()))
