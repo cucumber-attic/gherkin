@@ -17,6 +17,15 @@ run when you build with `make`.
 
 ## Make a release
 
+If this is your first time, read through NuGet's guidelines for
+[Creating and Publishing a Package](https://docs.nuget.org/create/creating-and-publishing-a-package).
 
     # Change version in `Gherkin.NuGetPackages\Gherkin.nuspec`
-    mono --runtime=v4.0 .nuget/NuGet.exe pack Gherkin.NuGetPackages/Gherkin.nuspec    
+
+    # Replace X.Y.Z with the version
+    git commit -m "Release X.Y.Z"
+    git tag -a -m "Version X.Y.Z" vX.Y.Z
+    git push
+    git push --tags
+    mono --runtime=v4.0 .nuget/NuGet.exe pack Gherkin.NuGetPackages/Gherkin.nuspec
+    mono --runtime=v4.0 .nuget/NuGet.exe push Gherkin.X.Y.Z.nupkg
