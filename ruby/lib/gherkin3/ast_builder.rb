@@ -3,6 +3,10 @@ require_relative 'ast_node'
 module Gherkin3
   class AstBuilder
     def initialize
+      reset
+    end
+
+    def reset
       @stack = [AstNode.new(:None)]
       @comments = []
     end

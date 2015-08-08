@@ -3,12 +3,10 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__),"../lib"))
 require 'gherkin3/parser'
 require 'gherkin3/token_scanner'
 require 'gherkin3/token_formatter_builder'
-require 'gherkin3/token_matcher'
 
-parser = Gherkin3::Parser.new
+parser = Gherkin3::Parser.new(Gherkin3::TokenFormatterBuilder.new)
 files = ARGV + (STDIN.tty? ? [] : [STDIN])
 files.each do |file|
   scanner = Gherkin3::TokenScanner.new(file)
-  builder = Gherkin3::TokenFormatterBuilder.new
-  print parser.parse(scanner, builder, Gherkin3::TokenMatcher.new)
+  print parser.parse(scanner)
 end
