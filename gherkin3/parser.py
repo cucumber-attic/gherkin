@@ -79,7 +79,7 @@ class Parser:
         if context.errors:
             raise CompositeParserException(context.errors)
 
-        return self.get_result(context)
+        return self.get_result()
 
     def build(self, context, token):
         self.handle_ast_error(context, token, self.ast_builder.build)
@@ -95,7 +95,7 @@ class Parser:
     def end_rule(self, context, rule_type):
         self.handle_ast_error(context, rule_type, self.ast_builder.end_rule)
 
-    def get_result(self, context):
+    def get_result(self):
         return self.ast_builder.get_result()
 
     def read_token(self, context):
