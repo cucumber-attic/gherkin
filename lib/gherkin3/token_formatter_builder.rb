@@ -1,6 +1,10 @@
 module Gherkin3
   class TokenFormatterBuilder
     def initialize
+      reset
+    end
+
+    def reset
       @tokens_text = ""
     end
 
