@@ -160,3 +160,5 @@ acceptance/
 .compared
 .sln_built_debug
 *.userprefs
+*.nupkg
+Gherkin.NuGetPackages/bin/
