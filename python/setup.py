@@ -12,4 +12,5 @@ setup(
   download_url = 'https://github.com/cucumber/gherkin-python/archive/v3.0.0.tar.gz',
   keywords = ['gherkin', 'cucumber', 'bdd'],
   classifiers = [],
+  package_data = {'gherkin3': ['gherkin-languages.json']},
 )
