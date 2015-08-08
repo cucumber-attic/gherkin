@@ -3,6 +3,9 @@ from .ast_builder import AstBuilder
 
 class TokenFormatterBuilder(AstBuilder):
     def __init__(self):
+        self.reset()
+
+    def reset(self):
         self._tokens = []
 
     def build(self, token):

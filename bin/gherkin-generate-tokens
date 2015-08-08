@@ -18,7 +18,7 @@ files = sys.argv[1:]
 if python2:
     UTF8Writer = codecs.getwriter('utf8')
     sys.stdout = UTF8Writer(sys.stdout)
+parser = Parser(TokenFormatterBuilder())
 for file in files:
     scanner = TokenScanner(file)
-    parser = Parser(TokenFormatterBuilder())
-    print(parser.parse(scanner, TokenMatcher()))
+    print(parser.parse(scanner))

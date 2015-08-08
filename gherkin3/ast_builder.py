@@ -28,9 +28,7 @@ class AstBuilder:
             self.current_node().add(token.matched_type, token)
 
     def get_result(self):
-        result = self.current_node().get_single('Feature')
-        self.reset()
-        return result
+        return self.current_node().get_single('Feature')
 
     def current_node(self):
         return self.stack[-1]
