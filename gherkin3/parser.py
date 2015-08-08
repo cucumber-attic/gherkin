@@ -45,24 +45,21 @@ RULE_TYPE = [
     'Description',  # Description! := #Other+
   ]
 
-
 class ParserContext:
-    def __init__(self, token_scanner, ast_builder, token_matcher, token_queue, errors):
+    def __init__(self, token_scanner, token_matcher, token_queue, errors):
         self.token_scanner = token_scanner
-        self.ast_builder = ast_builder
         self.token_matcher = token_matcher
         self.token_queue = token_queue
         self.errors = errors
 
-
 class Parser:
-    def __init__(self):
+    def __init__(self, ast_builder=AstBuilder()):
+        self.ast_builder = ast_builder
         self.stop_at_first_error = False
 
-    def parse(self, token_scanner, ast_builder=AstBuilder(), token_matcher=TokenMatcher()):
+    def parse(self, token_scanner, token_matcher=TokenMatcher()):
         context = ParserContext(
             token_scanner,
-            ast_builder,
             token_matcher,
             deque(),
             []
@@ -85,7 +82,7 @@ class Parser:
         return self.get_result(context)
 
     def build(self, context, token):
-        self.handle_ast_error(context, token, context.ast_builder.build)
+        self.handle_ast_error(context, token, self.ast_builder.build)
 
     def add_error(self, context, error):
         context.errors.append(error)
@@ -93,13 +90,13 @@ class Parser:
             raise CompositeParserException(context.errors)
 
     def start_rule(self, context, rule_type):
-        self.handle_ast_error(context, rule_type, context.ast_builder.start_rule)
+        self.handle_ast_error(context, rule_type, self.ast_builder.start_rule)
 
     def end_rule(self, context, rule_type):
-        self.handle_ast_error(context, rule_type, context.ast_builder.end_rule)
+        self.handle_ast_error(context, rule_type, self.ast_builder.end_rule)
 
     def get_result(self, context):
-        return context.ast_builder.get_result()
+        return self.ast_builder.get_result()
 
     def read_token(self, context):
         if context.token_queue:

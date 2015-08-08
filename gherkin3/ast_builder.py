@@ -4,6 +4,9 @@ from .errors import AstBuilderException
 
 class AstBuilder:
     def __init__(self):
+        self.reset()
+
+    def reset(self):
         self.stack = [AstNode('None')]
         self.comments = []
 
@@ -25,7 +28,9 @@ class AstBuilder:
             self.current_node().add(token.matched_type, token)
 
     def get_result(self):
-        return self.current_node().get_single('Feature')
+        result = self.current_node().get_single('Feature')
+        self.reset()
+        return result
 
     def current_node(self):
         return self.stack[-1]
