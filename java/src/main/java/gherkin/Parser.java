@@ -108,6 +108,7 @@ public class Parser<T> {
     }
 
     public T parse(Reader source) {
+        builder.reset();
         ParserContext context = new ParserContext(
                 new TokenScanner(source),
                 new TokenMatcher(),
@@ -2433,6 +2434,7 @@ public class Parser<T> {
         void startRule(RuleType ruleType);
         void endRule(RuleType ruleType);
         T getResult();
+        void reset();
     }
 
     public interface ITokenScanner {

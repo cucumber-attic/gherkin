@@ -34,7 +34,8 @@ public class AstBuilder implements Builder<Feature> {
         reset();
     }
 
-    private void reset() {
+    @Override
+    public void reset() {
         stack = new ArrayDeque<>();
         stack.push(new AstNode(RuleType.None));
 
@@ -225,8 +226,6 @@ public class AstBuilder implements Builder<Feature> {
 
     @Override
     public Feature getResult() {
-        Feature result = currentNode().getSingle(RuleType.Feature, null);
-        reset();
-        return result;
+        return currentNode().getSingle(RuleType.Feature, null);
     }
 }
