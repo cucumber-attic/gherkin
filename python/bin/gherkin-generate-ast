@@ -21,12 +21,12 @@ files = sys.argv[1:]
 if python2:
     UTF8Writer = codecs.getwriter('utf8')
     sys.stdout = UTF8Writer(sys.stdout)
+parser = Parser()
 start_time = time.clock()
 for file in files:
     scanner = TokenScanner(file)
-    parser = Parser()
     try:
-        print(json.dumps(parser.parse(scanner, TokenMatcher()), sort_keys=True, indent=2, separators=(',', ': '), ensure_ascii=False))
+        print(json.dumps(parser.parse(scanner), sort_keys=True, indent=2, separators=(',', ': '), ensure_ascii=False))
     except ParserError as e:
         print(e.args[0], file=sys.stderr)
         sys.exit(1)

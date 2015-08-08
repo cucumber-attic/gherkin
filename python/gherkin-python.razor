@@ -40,21 +40,22 @@ RULE_TYPE = [
   ]
 
 class ParserContext:
-    def __init__(self, token_scanner, token_matcher, token_queue, errors):
+    def __init__(self, token_scanner, token_queue, errors):
         self.token_scanner = token_scanner
-        self.token_matcher = token_matcher
         self.token_queue = token_queue
         self.errors = errors
 
 class @Model.ParserClassName:
-    def __init__(self, ast_builder=AstBuilder()):
+    def __init__(self, ast_builder=AstBuilder(), token_matcher=TokenMatcher()):
         self.ast_builder = ast_builder
+        self.token_matcher = token_matcher
         self.stop_at_first_error = False
 
-    def parse(self, token_scanner, token_matcher=TokenMatcher()):
+    def parse(self, token_scanner):
+        self.ast_builder.reset()
+        self.token_matcher.reset()
         context = ParserContext(
             token_scanner,
-            token_matcher,
             deque(),
             []
             )
@@ -105,7 +106,7 @@ class @Model.ParserClassName:
         @:if token.eof():
         @:    return False
         }
-        return self.handle_external_error(context, False, token, context.token_matcher.match_@(rule.Name.Replace("#", "")))</text>
+        return self.handle_external_error(context, False, token, self.token_matcher.match_@(rule.Name.Replace("#", "")))</text>
 }
 
     def match_token(self, state, token, context):

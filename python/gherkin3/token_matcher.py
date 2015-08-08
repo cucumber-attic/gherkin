@@ -8,6 +8,11 @@ class TokenMatcher:
 
     def __init__(self, dialect_name='en'):
         self._change_dialect(dialect_name)
+        self.reset()
+
+    def reset(self):
+        if self.dialect_name != 'en':
+            self._change_dialect('en')
         self._indent_to_remove = 0
         self._active_doc_string_separator = None
 
