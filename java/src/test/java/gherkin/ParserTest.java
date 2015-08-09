@@ -32,7 +32,7 @@ public class ParserTest {
                 "      closed docstring\n" +
                 "      \"\"\"").getBytes()), "UTF-8");
         AstBuilder builder = new AstBuilder();
-        Parser<Feature> parser = new Parser<>(builder);
+        Parser<Feature> parser = new Parser<>(builder, new TokenMatcher());
 
         try {
             parser.parse(in1);

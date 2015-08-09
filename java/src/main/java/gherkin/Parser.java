@@ -82,25 +82,25 @@ public class Parser<T> {
     }
 
     private final Builder<T> builder;
+    private final ITokenMatcher tokenMatcher;
 
     public boolean stopAtFirstError;
 
     class ParserContext {
         public final ITokenScanner tokenScanner;
-        public final ITokenMatcher tokenMatcher;
         public final Queue<Token> tokenQueue;
         public final List<ParserException> errors;
 
-        ParserContext(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, Queue<Token> tokenQueue, List<ParserException> errors) {
+        ParserContext(ITokenScanner tokenScanner, Queue<Token> tokenQueue, List<ParserException> errors) {
             this.tokenScanner = tokenScanner;
-            this.tokenMatcher = tokenMatcher;
             this.tokenQueue = tokenQueue;
             this.errors = errors;
         }
     }
 
-    public Parser(Builder<T> builder) {
+    public Parser(Builder<T> builder, ITokenMatcher tokenMatcher) {
         this.builder = builder;
+        this.tokenMatcher = tokenMatcher;
     }
 
     public T parse(String source) {
@@ -108,10 +108,15 @@ public class Parser<T> {
     }
 
     public T parse(Reader source) {
+        return parse(new TokenScanner(source));
+    }
+
+    public T parse(ITokenScanner tokenScanner) {
         builder.reset();
+        tokenMatcher.reset();
+
         ParserContext context = new ParserContext(
-                new TokenScanner(source),
-                new TokenMatcher(),
+                tokenScanner,
                 new LinkedList<Token>(),
                 new ArrayList<ParserException>()
         );
@@ -195,7 +200,7 @@ public class Parser<T> {
     private boolean match_EOF(final ParserContext context, final Token token) {
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_EOF(token);
+                return tokenMatcher.match_EOF(token);
             }
         }, false);
     }
@@ -204,7 +209,7 @@ public class Parser<T> {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_Empty(token);
+                return tokenMatcher.match_Empty(token);
             }
         }, false);
     }
@@ -213,7 +218,7 @@ public class Parser<T> {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_Comment(token);
+                return tokenMatcher.match_Comment(token);
             }
         }, false);
     }
@@ -222,7 +227,7 @@ public class Parser<T> {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_TagLine(token);
+                return tokenMatcher.match_TagLine(token);
             }
         }, false);
     }
@@ -231,7 +236,7 @@ public class Parser<T> {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_FeatureLine(token);
+                return tokenMatcher.match_FeatureLine(token);
             }
         }, false);
     }
@@ -240,7 +245,7 @@ public class Parser<T> {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_BackgroundLine(token);
+                return tokenMatcher.match_BackgroundLine(token);
             }
         }, false);
     }
@@ -249,7 +254,7 @@ public class Parser<T> {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_ScenarioLine(token);
+                return tokenMatcher.match_ScenarioLine(token);
             }
         }, false);
     }
@@ -258,7 +263,7 @@ public class Parser<T> {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_ScenarioOutlineLine(token);
+                return tokenMatcher.match_ScenarioOutlineLine(token);
             }
         }, false);
     }
@@ -267,7 +272,7 @@ public class Parser<T> {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_ExamplesLine(token);
+                return tokenMatcher.match_ExamplesLine(token);
             }
         }, false);
     }
@@ -276,7 +281,7 @@ public class Parser<T> {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_StepLine(token);
+                return tokenMatcher.match_StepLine(token);
             }
         }, false);
     }
@@ -285,7 +290,7 @@ public class Parser<T> {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_DocStringSeparator(token);
+                return tokenMatcher.match_DocStringSeparator(token);
             }
         }, false);
     }
@@ -294,7 +299,7 @@ public class Parser<T> {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_TableRow(token);
+                return tokenMatcher.match_TableRow(token);
             }
         }, false);
     }
@@ -303,7 +308,7 @@ public class Parser<T> {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_Language(token);
+                return tokenMatcher.match_Language(token);
             }
         }, false);
     }
@@ -312,7 +317,7 @@ public class Parser<T> {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_Other(token);
+                return tokenMatcher.match_Other(token);
             }
         }, false);
     }
@@ -2456,5 +2461,6 @@ public class Parser<T> {
         boolean match_TableRow(Token token);
         boolean match_Language(Token token);
         boolean match_Other(Token token);
+        void reset();
     }
 }

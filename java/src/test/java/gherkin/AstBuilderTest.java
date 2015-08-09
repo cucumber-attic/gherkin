@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 public class AstBuilderTest {
     @Test
     public void is_reusable() {
-        Parser<Feature> parser = new Parser<>(new AstBuilder());
+        Parser<Feature> parser = new Parser<>(new AstBuilder(), new TokenMatcher());
 
         Feature f1 = parser.parse(new StringReader("Feature: 1"));
         Feature f2 = parser.parse(new StringReader("Feature: 2"));

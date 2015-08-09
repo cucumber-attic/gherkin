@@ -67,25 +67,25 @@ public class @Model.ParserClassName<T> {
     }
 
     private final Builder<T> builder;
+    private final ITokenMatcher tokenMatcher;
 
     public boolean stopAtFirstError;
 
     class ParserContext {
         public final ITokenScanner tokenScanner;
-        public final ITokenMatcher tokenMatcher;
         public final Queue<Token> tokenQueue;
         public final List<ParserException> errors;
 
-        ParserContext(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, Queue<Token> tokenQueue, List<ParserException> errors) {
+        ParserContext(ITokenScanner tokenScanner, Queue<Token> tokenQueue, List<ParserException> errors) {
             this.tokenScanner = tokenScanner;
-            this.tokenMatcher = tokenMatcher;
             this.tokenQueue = tokenQueue;
             this.errors = errors;
         }
     }
 
-    public Parser(Builder<T> builder) {
+    public Parser(Builder<T> builder, ITokenMatcher tokenMatcher) {
         this.builder = builder;
+        this.tokenMatcher = tokenMatcher;
     }
 
     public T parse(String source) {
@@ -93,10 +93,15 @@ public class @Model.ParserClassName<T> {
     }
 
     public T parse(Reader source) {
+        return parse(new TokenScanner(source));
+    }
+
+    public T parse(ITokenScanner tokenScanner) {
         builder.reset();
+        tokenMatcher.reset();
+
         ParserContext context = new ParserContext(
-                new TokenScanner(source),
-                new TokenMatcher(),
+                tokenScanner,
                 new LinkedList<Token>(),
                 new ArrayList<ParserException>()
         );
@@ -185,7 +190,7 @@ public class @Model.ParserClassName<T> {
         }
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return context.tokenMatcher.match_@(rule.Name.Replace("#", ""))(token);
+                return tokenMatcher.match_@(rule.Name.Replace("#", ""))(token);
             }
         }, false);
     }</text>
@@ -291,5 +296,6 @@ public class @Model.ParserClassName<T> {
         {
         @:boolean match_@(rule.Name.Replace("#", ""))(Token token);
         }
+        void reset();
     }
 }
