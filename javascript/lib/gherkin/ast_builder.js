@@ -6,6 +6,11 @@ module.exports = function AstBuilder () {
   var stack = [new AstNode('None')];
   var comments = [];
 
+  this.reset = function () {
+    stack = [new AstNode('None')];
+    comments = [];
+  };
+
   this.startRule = function (ruleType) {
     stack.push(new AstNode(ruleType));
   };

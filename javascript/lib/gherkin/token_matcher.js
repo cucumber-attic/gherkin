@@ -4,6 +4,16 @@ var Errors = require('./errors');
 module.exports = function TokenMatcher() {
   var LANGUAGE_PATTERN = /^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$/;
   changeDialect('en');
+  var activeDocStringSeparator = null;
+  var indentToRemove = null;
+
+  this.reset = function () {
+    if(dialectName != 'en') {
+      changeDialect('en')
+    }
+    activeDocStringSeparator = null;
+    indentToRemove = null;    
+  };
 
   this.match_TagLine = function match_TagLine(token) {
     if(token.line.startsWith('@')) {
@@ -80,9 +90,6 @@ module.exports = function TokenMatcher() {
     dialectName = newDialectName;
     dialect = newDialect;
   }
-
-  var activeDocStringSeparator = null;
-  var indentToRemove = null;
 
   this.match_DocStringSeparator = function match_DocStringSeparator(token) {
     return activeDocStringSeparator == null

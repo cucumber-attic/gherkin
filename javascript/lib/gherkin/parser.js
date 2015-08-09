@@ -1,7 +1,7 @@
 // This file is generated. Do not edit! Edit gherkin-javascript.razor instead.
 var Errors = require('./errors');
 
-module.exports = function Parser() {
+module.exports = function Parser(astBuilder, tokenMatcher) {
 
   var RULE_TYPES = [
     'None',
@@ -43,12 +43,14 @@ module.exports = function Parser() {
     'Description', // Description! := #Other+
   ]
 
+  var astBuilder = astBuilder;
+  var tokenMatcher = tokenMatcher;
   var context = {};
 
-  this.parse = function(tokenScanner, astBuilder, tokenMatcher) {
+  this.parse = function(tokenScanner) {
+    astBuilder.reset();
+    tokenMatcher.reset();
     context.tokenScanner = tokenScanner;
-    context.astBuilder = astBuilder;
-    context.tokenMatcher = tokenMatcher;
     context.tokenQueue = [];
     context.errors = [];
 
@@ -78,24 +80,24 @@ module.exports = function Parser() {
 
   function startRule(context, ruleType) {
     handleAstError(context, function () {
-      context.astBuilder.startRule(ruleType);
+      astBuilder.startRule(ruleType);
     });
   }
 
   function endRule(context, ruleType) {
     handleAstError(context, function () {
-      context.astBuilder.endRule(ruleType);
+      astBuilder.endRule(ruleType);
     });
   }
 
   function build(context, token) {
     handleAstError(context, function () {
-      context.astBuilder.build(token);
+      astBuilder.build(token);
     });
   }
 
   function getResult(context) {
-    return context.astBuilder.getResult();
+    return astBuilder.getResult();
   }
 
   function handleAstError(context, action) {
@@ -1878,7 +1880,7 @@ module.exports = function Parser() {
 
   function match_EOF(context, token) {
     return handleExternalError(context, false, function () {
-      return context.tokenMatcher.match_EOF(token);
+      return tokenMatcher.match_EOF(token);
     });
   }
 
@@ -1886,7 +1888,7 @@ module.exports = function Parser() {
   function match_Empty(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
-      return context.tokenMatcher.match_Empty(token);
+      return tokenMatcher.match_Empty(token);
     });
   }
 
@@ -1894,7 +1896,7 @@ module.exports = function Parser() {
   function match_Comment(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
-      return context.tokenMatcher.match_Comment(token);
+      return tokenMatcher.match_Comment(token);
     });
   }
 
@@ -1902,7 +1904,7 @@ module.exports = function Parser() {
   function match_TagLine(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
-      return context.tokenMatcher.match_TagLine(token);
+      return tokenMatcher.match_TagLine(token);
     });
   }
 
@@ -1910,7 +1912,7 @@ module.exports = function Parser() {
   function match_FeatureLine(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
-      return context.tokenMatcher.match_FeatureLine(token);
+      return tokenMatcher.match_FeatureLine(token);
     });
   }
 
@@ -1918,7 +1920,7 @@ module.exports = function Parser() {
   function match_BackgroundLine(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
-      return context.tokenMatcher.match_BackgroundLine(token);
+      return tokenMatcher.match_BackgroundLine(token);
     });
   }
 
@@ -1926,7 +1928,7 @@ module.exports = function Parser() {
   function match_ScenarioLine(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
-      return context.tokenMatcher.match_ScenarioLine(token);
+      return tokenMatcher.match_ScenarioLine(token);
     });
   }
 
@@ -1934,7 +1936,7 @@ module.exports = function Parser() {
   function match_ScenarioOutlineLine(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
-      return context.tokenMatcher.match_ScenarioOutlineLine(token);
+      return tokenMatcher.match_ScenarioOutlineLine(token);
     });
   }
 
@@ -1942,7 +1944,7 @@ module.exports = function Parser() {
   function match_ExamplesLine(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
-      return context.tokenMatcher.match_ExamplesLine(token);
+      return tokenMatcher.match_ExamplesLine(token);
     });
   }
 
@@ -1950,7 +1952,7 @@ module.exports = function Parser() {
   function match_StepLine(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
-      return context.tokenMatcher.match_StepLine(token);
+      return tokenMatcher.match_StepLine(token);
     });
   }
 
@@ -1958,7 +1960,7 @@ module.exports = function Parser() {
   function match_DocStringSeparator(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
-      return context.tokenMatcher.match_DocStringSeparator(token);
+      return tokenMatcher.match_DocStringSeparator(token);
     });
   }
 
@@ -1966,7 +1968,7 @@ module.exports = function Parser() {
   function match_TableRow(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
-      return context.tokenMatcher.match_TableRow(token);
+      return tokenMatcher.match_TableRow(token);
     });
   }
 
@@ -1974,7 +1976,7 @@ module.exports = function Parser() {
   function match_Language(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
-      return context.tokenMatcher.match_Language(token);
+      return tokenMatcher.match_Language(token);
     });
   }
 
@@ -1982,7 +1984,7 @@ module.exports = function Parser() {
   function match_Other(context, token) {
     if(token.isEof) return false;
     return handleExternalError(context, false, function () {
-      return context.tokenMatcher.match_Other(token);
+      return tokenMatcher.match_Other(token);
     });
   }
 
