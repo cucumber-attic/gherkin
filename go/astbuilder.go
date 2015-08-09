@@ -14,6 +14,12 @@ type astBuilder struct {
 	comments []*Comment
 }
 
+func (t *astBuilder) Reset() {
+     	t.comments = []*Comment{}
+	t.stack = []*astNode{}
+	t.push(newAstNode(RuleType_None))
+}
+
 func (t *astBuilder) GetFeature() *Feature {
 	res := t.currentNode().getSingle(RuleType_Feature)
 	if val, ok := res.(*Feature); ok {

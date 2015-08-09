@@ -20,6 +20,7 @@ type Builder interface {
 	Build(*Token) (bool, error)
 	StartRule(RuleType) (bool, error)
 	EndRule(RuleType) (bool, error)
+        Reset()
 }
 
 type Token struct {

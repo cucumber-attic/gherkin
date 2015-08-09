@@ -69,6 +69,8 @@ func (t *tokenGenerator) StartRule(r gherkin.RuleType) (bool, error) {
 func (t *tokenGenerator) EndRule(r gherkin.RuleType) (bool, error) {
 	return true, nil
 }
+func (t *tokenGenerator) Reset() {
+}
 
 func GenerateTokens(in io.Reader, out io.Writer) error {
 

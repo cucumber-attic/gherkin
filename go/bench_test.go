@@ -78,6 +78,8 @@ func (n *noopBuilder) StartRule(gherkin.RuleType) (bool, error) {
 func (n *noopBuilder) EndRule(gherkin.RuleType) (bool, error) {
 	return true, nil
 }
+func (n *noopBuilder) Reset() {
+}
 
 func Benchmark_ParseWithoutBuilder(b *testing.B) { //benchmark function starts with "Benchmark" and takes a pointer to type testing.B
 	b.StopTimer()

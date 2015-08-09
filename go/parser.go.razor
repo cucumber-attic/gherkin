@@ -117,6 +117,8 @@ func (pe parseErrors) Error() string {
 }
 
 func (p *parser) Parse(s Scanner, b Builder, m Matcher) (err error) {
+  b.Reset()
+  m.Reset()
   ctxt := &parseContext{p,s,b,m,nil,nil}
   var state int
   ctxt.startRule(RuleType_Feature)
@@ -246,7 +248,8 @@ func (ctxt *parseContext) matchAt_@(state.Id)(line *Line) (newState int, err err
 type Matcher interface {
   @foreach(var rule in Model.RuleSet.TokenRules)
   {<text>  Match@(rule.Name.Replace("#", ""))(line *Line) (bool,*Token,error)
-</text>}  
+</text>}
+  Reset()  
 }
 @foreach(var rule in Model.RuleSet.TokenRules)
 {
