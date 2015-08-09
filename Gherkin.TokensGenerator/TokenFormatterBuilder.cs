@@ -33,5 +33,11 @@ namespace Gherkin.TokensGenerator
         {
             return new object();
         }
+
+        public void Reset()
+        {
+            //nop
+        }
+
     }
 }
