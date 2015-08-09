@@ -181,6 +181,8 @@ func (pe parseErrors) Error() string {
 }
 
 func (p *parser) Parse(s Scanner, b Builder, m Matcher) (err error) {
+  b.Reset()
+  m.Reset()
   ctxt := &parseContext{p,s,b,m,nil,nil}
   var state int
   ctxt.startRule(RuleType_Feature)
@@ -2094,6 +2096,7 @@ type Matcher interface {
   MatchTableRow(line *Line) (bool,*Token,error)
   MatchLanguage(line *Line) (bool,*Token,error)
   MatchOther(line *Line) (bool,*Token,error)
+  Reset()  
 }
 
 func (ctxt *parseContext) isMatch_EOF(line *Line) bool {

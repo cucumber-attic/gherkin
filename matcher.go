@@ -33,6 +33,15 @@ func NewMatcher(gdp GherkinDialectProvider) Matcher {
 	}
 }
 
+func (m *matcher) Reset() {
+	m.indentToRemove = 0
+	m.activeDocStringSeparator = ""
+	if m.lang != "en" {
+		m.dialect = m.gdp.GetDialect("en")
+		m.lang = "en"
+	}
+}
+
 func (m *matcher) newTokenAtLocation(line, index int) (token *Token) {
 	column := index + 1
 	token = new(Token)
