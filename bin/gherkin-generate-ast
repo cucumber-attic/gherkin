@@ -2,15 +2,14 @@
 var fs = require('fs');
 var Gherkin = require('..');
 
-var parser = new Gherkin.Parser();
+var parser = new Gherkin.Parser(new Gherkin.AstBuilder(), new Gherkin.TokenMatcher());
 parser.stopAtFirstError = false;
 var files = process.argv.slice(2);
 var startTime = Date.now();
 files.forEach(function (file) {
   var scanner = new Gherkin.TokenScanner(fs.readFileSync(file, 'UTF-8'));
-  var builder = new Gherkin.AstBuilder();
   try {
-    var ast = parser.parse(scanner, builder, new Gherkin.TokenMatcher());
+    var ast = parser.parse(scanner);
     console.log(JSON.stringify(ast));
   } catch (e) {
     console.error(e.message);
