@@ -13,7 +13,14 @@ namespace Gherkin
 
         public AstBuilder()
         {
+            Reset();
+        }
+
+        public void Reset()
+        {
+            stack.Clear();
             stack.Push(new AstNode(RuleType.None));
+            comments.Clear();
         }
 
         public void Build(Token token)

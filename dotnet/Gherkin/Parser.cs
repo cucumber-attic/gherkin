@@ -94,6 +94,8 @@ namespace Gherkin
 
         public T Parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder<T> astBuilder)
         {
+            tokenMatcher.Reset();
+            astBuilder.Reset();
             var context = new ParserContext
             {
                 TokenScanner = tokenScanner,
@@ -2387,6 +2389,7 @@ namespace Gherkin
         void StartRule(RuleType ruleType);
         void EndRule(RuleType ruleType);
         T GetResult();
+        void Reset();
     }
 
     public partial interface ITokenScanner 
@@ -2410,6 +2413,7 @@ namespace Gherkin
         bool Match_TableRow(Token token);
         bool Match_Language(Token token);
         bool Match_Other(Token token);
+        void Reset();
     }
 }
 #pragma warning restore

@@ -81,6 +81,8 @@ namespace @Model.Namespace
 
         public T Parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder<T> astBuilder)
         {
+            tokenMatcher.Reset();
+            astBuilder.Reset();
             var context = new ParserContext
             {
                 TokenScanner = tokenScanner,
@@ -274,6 +276,7 @@ namespace @Model.Namespace
         void StartRule(RuleType ruleType);
         void EndRule(RuleType ruleType);
         T GetResult();
+        void Reset();
     }
 
     public partial interface ITokenScanner 
@@ -287,6 +290,7 @@ namespace @Model.Namespace
         {
         @:bool Match_@(rule.Name.Replace("#", ""))(Token token);
         }
+        void Reset();
     }
 }
 #pragma warning restore

@@ -28,6 +28,14 @@ namespace Gherkin
             this.dialectProvider = dialectProvider ?? new GherkinDialectProvider();
         }
 
+        public void Reset()
+        {
+            activeDocStringSeparator = null;
+            indentToRemove = 0;
+            if (currentDialect != dialectProvider.DefaultDialect)
+                currentDialect = dialectProvider.DefaultDialect;
+        }
+
         protected virtual void SetTokenMatched(Token token, TokenType matchedType, string text = null, string keyword = null, int? indent = null, GherkinLineSpan[] items = null)
         {
             token.MatchedType = matchedType;
