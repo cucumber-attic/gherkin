@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Gherkin.Ast;
 using Gherkin.AstGenerator;
 using Newtonsoft.Json;
@@ -35,15 +31,13 @@ namespace Gherkin.Specs
                 var expectedErrorsText = LineEndingHelper.NormalizeLineEndings(File.ReadAllText(expectedErrorsFile));
                 Assert.AreEqual(expectedErrorsText, errorsText);
             }
-
         }
 
         [Test]
         public void TestFeatureAfterParseError()
         {
             var tokenMatcher = new TokenMatcher();
-            var astBuilder = new AstBuilder<Feature>();
-            var parser = new Parser<Feature>();
+            var parser = new Parser(new AstBuilder<Feature>());
             var jsonSerializerSettings = new JsonSerializerSettings();
             jsonSerializerSettings.Formatting = Formatting.Indented;
             jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
@@ -55,7 +49,7 @@ Feature: Foo
   Scenario: Bar
     Given x
       ```
-      unclosed docstring")), tokenMatcher, astBuilder);
+      unclosed docstring")), tokenMatcher);
                 Assert.Fail("ParserException expected");
             }
             catch (ParserException)
@@ -66,7 +60,7 @@ Feature: Foo
     Given x
       """"""
       closed docstring
-      """"""")), tokenMatcher, astBuilder);
+      """"""")), tokenMatcher);
             var astText2 = LineEndingHelper.NormalizeLineEndings(JsonConvert.SerializeObject(parsingResult2, jsonSerializerSettings));
 
             string expected2 = LineEndingHelper.NormalizeLineEndings(@"{

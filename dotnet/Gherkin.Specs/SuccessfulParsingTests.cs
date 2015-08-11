@@ -26,15 +26,14 @@ namespace Gherkin.Specs
         public void TestMultipleFeatures()
         {
             var tokenMatcher = new TokenMatcher();
-            var astBuilder = new AstBuilder<Feature>();
-            var parser = new Parser<Feature>();
+            var parser = new Parser(new AstBuilder<Feature>());
             var jsonSerializerSettings = new JsonSerializerSettings();
             jsonSerializerSettings.Formatting = Formatting.Indented;
             jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
 
-            var parsingResult1 = parser.Parse(new TokenScanner(new StringReader("Feature: Test")), tokenMatcher, astBuilder);
+            var parsingResult1 = parser.Parse(new TokenScanner(new StringReader("Feature: Test")), tokenMatcher);
             var astText1 = LineEndingHelper.NormalizeLineEndings(JsonConvert.SerializeObject(parsingResult1, jsonSerializerSettings));
-            var parsingResult2 = parser.Parse(new TokenScanner(new StringReader("Feature: Test2")), tokenMatcher, astBuilder);
+            var parsingResult2 = parser.Parse(new TokenScanner(new StringReader("Feature: Test2")), tokenMatcher);
             var astText2 = LineEndingHelper.NormalizeLineEndings(JsonConvert.SerializeObject(parsingResult2, jsonSerializerSettings));
 
 	    string expected1 = LineEndingHelper.NormalizeLineEndings(@"{
