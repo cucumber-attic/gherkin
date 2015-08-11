@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Gherkin.Ast;
 using Gherkin.AstGenerator;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Gherkin.Specs
@@ -35,6 +36,80 @@ namespace Gherkin.Specs
                 Assert.AreEqual(expectedErrorsText, errorsText);
             }
 
+        }
+
+        [Test]
+        public void TestFeatureAfterParseError()
+        {
+            var tokenMatcher = new TokenMatcher();
+            var astBuilder = new AstBuilder<Feature>();
+            var parser = new Parser<Feature>();
+            var jsonSerializerSettings = new JsonSerializerSettings();
+            jsonSerializerSettings.Formatting = Formatting.Indented;
+            jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+
+            try
+            {
+                parser.Parse(new TokenScanner(new StringReader(@"# a comment
+Feature: Foo
+  Scenario: Bar
+    Given x
+      ```
+      unclosed docstring")), tokenMatcher, astBuilder);
+                Assert.Fail("ParserException expected");
+            }
+            catch (ParserException)
+            {
+            }
+            var parsingResult2 = parser.Parse(new TokenScanner(new StringReader(@"Feature: Foo
+  Scenario: Bar
+    Given x
+      """"""
+      closed docstring
+      """"""")), tokenMatcher, astBuilder);
+            var astText2 = LineEndingHelper.NormalizeLineEndings(JsonConvert.SerializeObject(parsingResult2, jsonSerializerSettings));
+
+            string expected2 = LineEndingHelper.NormalizeLineEndings(@"{
+  ""Tags"": [],
+  ""Location"": {
+    ""Line"": 1,
+    ""Column"": 1
+  },
+  ""Language"": ""en"",
+  ""Keyword"": ""Feature"",
+  ""Name"": ""Foo"",
+  ""ScenarioDefinitions"": [
+    {
+      ""Tags"": [],
+      ""Location"": {
+        ""Line"": 2,
+        ""Column"": 3
+      },
+      ""Keyword"": ""Scenario"",
+      ""Name"": ""Bar"",
+      ""Steps"": [
+        {
+          ""Location"": {
+            ""Line"": 3,
+            ""Column"": 5
+          },
+          ""Keyword"": ""Given "",
+          ""Text"": ""x"",
+          ""Argument"": {
+            ""Location"": {
+              ""Line"": 4,
+              ""Column"": 7
+            },
+            ""ContentType"": """",
+            ""Content"": ""closed docstring""
+          }
+        }
+      ]
+    }
+  ],
+  ""Comments"": []
+}");
+            Assert.AreEqual(expected2, astText2);
         }
     }
 }
