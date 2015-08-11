@@ -40,10 +40,11 @@ module Gherkin3
   ]
 
   class ParserContext
-    attr_reader :token_scanner, :ast_builder, :token_matcher, :token_queue, :errors
+    attr_reader :token_scanner, :token_matcher, :token_queue, :errors
 
-    def initialize(token_scanner, token_queue, errors)
+    def initialize(token_scanner, token_matcher, token_queue, errors)
       @@token_scanner = token_scanner
+      @@token_matcher = token_matcher
       @@token_queue = token_queue
       @@errors = errors
     end
@@ -52,16 +53,16 @@ module Gherkin3
   class @Model.ParserClassName
     attr_accessor :stop_at_first_error
 
-    def initialize(ast_builder=AstBuilder.new, token_matcher=TokenMatcher.new)
+    def initialize(ast_builder=AstBuilder.new)
       @@ast_builder = ast_builder
-      @@token_matcher = token_matcher
     end
 
-    def parse(token_scanner)
+    def parse(token_scanner, token_matcher=TokenMatcher.new)
       @@ast_builder.reset
-      @@token_matcher.reset
+      token_matcher.reset
       context = ParserContext.new(
         token_scanner,
+        token_matcher,
         [],
         []
       )
@@ -120,7 +121,7 @@ module Gherkin3
       @:return false if token.eof?
       }
       return handle_external_error(context, false) do
-        @@token_matcher.match_@(rule.Name.Replace("#", ""))(token)
+        context.token_matcher.match_@(rule.Name.Replace("#", ""))(token)
       end
     end</text>
 }

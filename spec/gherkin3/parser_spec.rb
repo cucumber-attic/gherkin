@@ -52,20 +52,23 @@ module Gherkin3
 
     it "can parse feature after parse error" do
       parser = Parser.new
+      matcher = TokenMatcher.new
 
       expect { parser.parse(TokenScanner.new("# a comment\n" +
                                              "Feature: Foo\n" +
                                              "  Scenario: Bar\n" +
                                              "    Given x\n" +
                                              "      ```\n" +
-                                             "      unclosed docstring\n"))
+                                             "      unclosed docstring\n"),
+                            matcher)
       }.to raise_error(ParserError)
       ast = parser.parse(TokenScanner.new("Feature: Foo\n" +
                                           "  Scenario: Bar\n" +
                                           "    Given x\n" +
                                           '      """' + "\n" +
                                           "      closed docstring\n" +
-                                          '      """' + "\n"))
+                                          '      """' + "\n"),
+                         matcher)
 
       expect(ast).to eq({
         type: :Feature,
