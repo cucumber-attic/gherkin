@@ -46,10 +46,11 @@ module Gherkin3
   ]
 
   class ParserContext
-    attr_reader :token_scanner, :ast_builder, :token_matcher, :token_queue, :errors
+    attr_reader :token_scanner, :token_matcher, :token_queue, :errors
 
-    def initialize(token_scanner, token_queue, errors)
+    def initialize(token_scanner, token_matcher, token_queue, errors)
       @token_scanner = token_scanner
+      @token_matcher = token_matcher
       @token_queue = token_queue
       @errors = errors
     end
@@ -58,16 +59,16 @@ module Gherkin3
   class Parser
     attr_accessor :stop_at_first_error
 
-    def initialize(ast_builder=AstBuilder.new, token_matcher=TokenMatcher.new)
+    def initialize(ast_builder=AstBuilder.new)
       @ast_builder = ast_builder
-      @token_matcher = token_matcher
     end
 
-    def parse(token_scanner)
+    def parse(token_scanner, token_matcher=TokenMatcher.new)
       @ast_builder.reset
-      @token_matcher.reset
+      token_matcher.reset
       context = ParserContext.new(
         token_scanner,
+        token_matcher,
         [],
         []
       )
@@ -121,98 +122,98 @@ module Gherkin3
 
     def match_EOF( context, token)
       return handle_external_error(context, false) do
-        @token_matcher.match_EOF(token)
+        context.token_matcher.match_EOF(token)
       end
     end
 
     def match_Empty( context, token)
       return false if token.eof?
       return handle_external_error(context, false) do
-        @token_matcher.match_Empty(token)
+        context.token_matcher.match_Empty(token)
       end
     end
 
     def match_Comment( context, token)
       return false if token.eof?
       return handle_external_error(context, false) do
-        @token_matcher.match_Comment(token)
+        context.token_matcher.match_Comment(token)
       end
     end
 
     def match_TagLine( context, token)
       return false if token.eof?
       return handle_external_error(context, false) do
-        @token_matcher.match_TagLine(token)
+        context.token_matcher.match_TagLine(token)
       end
     end
 
     def match_FeatureLine( context, token)
       return false if token.eof?
       return handle_external_error(context, false) do
-        @token_matcher.match_FeatureLine(token)
+        context.token_matcher.match_FeatureLine(token)
       end
     end
 
     def match_BackgroundLine( context, token)
       return false if token.eof?
       return handle_external_error(context, false) do
-        @token_matcher.match_BackgroundLine(token)
+        context.token_matcher.match_BackgroundLine(token)
       end
     end
 
     def match_ScenarioLine( context, token)
       return false if token.eof?
       return handle_external_error(context, false) do
-        @token_matcher.match_ScenarioLine(token)
+        context.token_matcher.match_ScenarioLine(token)
       end
     end
 
     def match_ScenarioOutlineLine( context, token)
       return false if token.eof?
       return handle_external_error(context, false) do
-        @token_matcher.match_ScenarioOutlineLine(token)
+        context.token_matcher.match_ScenarioOutlineLine(token)
       end
     end
 
     def match_ExamplesLine( context, token)
       return false if token.eof?
       return handle_external_error(context, false) do
-        @token_matcher.match_ExamplesLine(token)
+        context.token_matcher.match_ExamplesLine(token)
       end
     end
 
     def match_StepLine( context, token)
       return false if token.eof?
       return handle_external_error(context, false) do
-        @token_matcher.match_StepLine(token)
+        context.token_matcher.match_StepLine(token)
       end
     end
 
     def match_DocStringSeparator( context, token)
       return false if token.eof?
       return handle_external_error(context, false) do
-        @token_matcher.match_DocStringSeparator(token)
+        context.token_matcher.match_DocStringSeparator(token)
       end
     end
 
     def match_TableRow( context, token)
       return false if token.eof?
       return handle_external_error(context, false) do
-        @token_matcher.match_TableRow(token)
+        context.token_matcher.match_TableRow(token)
       end
     end
 
     def match_Language( context, token)
       return false if token.eof?
       return handle_external_error(context, false) do
-        @token_matcher.match_Language(token)
+        context.token_matcher.match_Language(token)
       end
     end
 
     def match_Other( context, token)
       return false if token.eof?
       return handle_external_error(context, false) do
-        @token_matcher.match_Other(token)
+        context.token_matcher.match_Other(token)
       end
     end
 
