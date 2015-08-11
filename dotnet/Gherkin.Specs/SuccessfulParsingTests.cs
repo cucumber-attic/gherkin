@@ -33,9 +33,9 @@ namespace Gherkin.Specs
             jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
 
             var parsingResult1 = parser.Parse(new TokenScanner(new StringReader("Feature: Test")), tokenMatcher, astBuilder);
-            var astText1 = JsonConvert.SerializeObject(parsingResult1, jsonSerializerSettings);
+            var astText1 = LineEndingHelper.NormalizeLineEndings(JsonConvert.SerializeObject(parsingResult1, jsonSerializerSettings));
             var parsingResult2 = parser.Parse(new TokenScanner(new StringReader("Feature: Test2")), tokenMatcher, astBuilder);
-            var astText2 = JsonConvert.SerializeObject(parsingResult2, jsonSerializerSettings);
+            var astText2 = LineEndingHelper.NormalizeLineEndings(JsonConvert.SerializeObject(parsingResult2, jsonSerializerSettings));
 
 	    string expected1 = LineEndingHelper.NormalizeLineEndings(@"{
   ""Tags"": [],
@@ -94,7 +94,7 @@ Feature: Foo
       """"""
       closed docstring
       """"""")), tokenMatcher, astBuilder);
-            var astText2 = JsonConvert.SerializeObject(parsingResult2, jsonSerializerSettings);
+            var astText2 = LineEndingHelper.NormalizeLineEndings(JsonConvert.SerializeObject(parsingResult2, jsonSerializerSettings));
 
 	    string expected2 = LineEndingHelper.NormalizeLineEndings(@"{
   ""Tags"": [],
