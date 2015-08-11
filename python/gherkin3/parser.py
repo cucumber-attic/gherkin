@@ -46,22 +46,23 @@ RULE_TYPE = [
   ]
 
 class ParserContext:
-    def __init__(self, token_scanner, token_queue, errors):
+    def __init__(self, token_scanner, token_matcher, token_queue, errors):
         self.token_scanner = token_scanner
+        self.token_matcher = token_matcher
         self.token_queue = token_queue
         self.errors = errors
 
 class Parser:
-    def __init__(self, ast_builder=AstBuilder(), token_matcher=TokenMatcher()):
+    def __init__(self, ast_builder=AstBuilder()):
         self.ast_builder = ast_builder
-        self.token_matcher = token_matcher
         self.stop_at_first_error = False
 
-    def parse(self, token_scanner):
+    def parse(self, token_scanner, token_matcher=TokenMatcher()):
         self.ast_builder.reset()
-        self.token_matcher.reset()
+        token_matcher.reset()
         context = ParserContext(
             token_scanner,
+            token_matcher,
             deque(),
             []
             )
@@ -106,72 +107,72 @@ class Parser:
             return context.token_scanner.read()
 
     def match_EOF(self, context, token):
-        return self.handle_external_error(context, False, token, self.token_matcher.match_EOF)
+        return self.handle_external_error(context, False, token, context.token_matcher.match_EOF)
 
     def match_Empty(self, context, token):
         if token.eof():
             return False
-        return self.handle_external_error(context, False, token, self.token_matcher.match_Empty)
+        return self.handle_external_error(context, False, token, context.token_matcher.match_Empty)
 
     def match_Comment(self, context, token):
         if token.eof():
             return False
-        return self.handle_external_error(context, False, token, self.token_matcher.match_Comment)
+        return self.handle_external_error(context, False, token, context.token_matcher.match_Comment)
 
     def match_TagLine(self, context, token):
         if token.eof():
             return False
-        return self.handle_external_error(context, False, token, self.token_matcher.match_TagLine)
+        return self.handle_external_error(context, False, token, context.token_matcher.match_TagLine)
 
     def match_FeatureLine(self, context, token):
         if token.eof():
             return False
-        return self.handle_external_error(context, False, token, self.token_matcher.match_FeatureLine)
+        return self.handle_external_error(context, False, token, context.token_matcher.match_FeatureLine)
 
     def match_BackgroundLine(self, context, token):
         if token.eof():
             return False
-        return self.handle_external_error(context, False, token, self.token_matcher.match_BackgroundLine)
+        return self.handle_external_error(context, False, token, context.token_matcher.match_BackgroundLine)
 
     def match_ScenarioLine(self, context, token):
         if token.eof():
             return False
-        return self.handle_external_error(context, False, token, self.token_matcher.match_ScenarioLine)
+        return self.handle_external_error(context, False, token, context.token_matcher.match_ScenarioLine)
 
     def match_ScenarioOutlineLine(self, context, token):
         if token.eof():
             return False
-        return self.handle_external_error(context, False, token, self.token_matcher.match_ScenarioOutlineLine)
+        return self.handle_external_error(context, False, token, context.token_matcher.match_ScenarioOutlineLine)
 
     def match_ExamplesLine(self, context, token):
         if token.eof():
             return False
-        return self.handle_external_error(context, False, token, self.token_matcher.match_ExamplesLine)
+        return self.handle_external_error(context, False, token, context.token_matcher.match_ExamplesLine)
 
     def match_StepLine(self, context, token):
         if token.eof():
             return False
-        return self.handle_external_error(context, False, token, self.token_matcher.match_StepLine)
+        return self.handle_external_error(context, False, token, context.token_matcher.match_StepLine)
 
     def match_DocStringSeparator(self, context, token):
         if token.eof():
             return False
-        return self.handle_external_error(context, False, token, self.token_matcher.match_DocStringSeparator)
+        return self.handle_external_error(context, False, token, context.token_matcher.match_DocStringSeparator)
 
     def match_TableRow(self, context, token):
         if token.eof():
             return False
-        return self.handle_external_error(context, False, token, self.token_matcher.match_TableRow)
+        return self.handle_external_error(context, False, token, context.token_matcher.match_TableRow)
 
     def match_Language(self, context, token):
         if token.eof():
             return False
-        return self.handle_external_error(context, False, token, self.token_matcher.match_Language)
+        return self.handle_external_error(context, False, token, context.token_matcher.match_Language)
 
     def match_Other(self, context, token):
         if token.eof():
             return False
-        return self.handle_external_error(context, False, token, self.token_matcher.match_Other)
+        return self.handle_external_error(context, False, token, context.token_matcher.match_Other)
 
     def match_token(self, state, token, context):
         state_map = {
