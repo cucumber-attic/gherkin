@@ -67,25 +67,25 @@ public class @Model.ParserClassName<T> {
     }
 
     private final Builder<T> builder;
-    private final ITokenMatcher tokenMatcher;
 
     public boolean stopAtFirstError;
 
     class ParserContext {
         public final ITokenScanner tokenScanner;
+        public final ITokenMatcher tokenMatcher;
         public final Queue<Token> tokenQueue;
         public final List<ParserException> errors;
 
-        ParserContext(ITokenScanner tokenScanner, Queue<Token> tokenQueue, List<ParserException> errors) {
+        ParserContext(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, Queue<Token> tokenQueue, List<ParserException> errors) {
             this.tokenScanner = tokenScanner;
+            this.tokenMatcher = tokenMatcher;
             this.tokenQueue = tokenQueue;
             this.errors = errors;
         }
     }
 
-    public Parser(Builder<T> builder, ITokenMatcher tokenMatcher) {
+    public Parser(Builder<T> builder) {
         this.builder = builder;
-        this.tokenMatcher = tokenMatcher;
     }
 
     public T parse(String source) {
@@ -97,11 +97,24 @@ public class @Model.ParserClassName<T> {
     }
 
     public T parse(ITokenScanner tokenScanner) {
+        return parse(tokenScanner, new TokenMatcher());
+    }
+
+    public T parse(String source, ITokenMatcher tokenMatcher) {
+        return parse(new StringReader(source), tokenMatcher);
+    }
+
+    public T parse(Reader source, ITokenMatcher tokenMatcher) {
+        return parse(new TokenScanner(source), tokenMatcher);
+    }
+
+    public T parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher) {
         builder.reset();
         tokenMatcher.reset();
 
         ParserContext context = new ParserContext(
                 tokenScanner,
+                tokenMatcher,
                 new LinkedList<Token>(),
                 new ArrayList<ParserException>()
         );
@@ -190,7 +203,7 @@ public class @Model.ParserClassName<T> {
         }
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
-                return tokenMatcher.match_@(rule.Name.Replace("#", ""))(token);
+                return context.tokenMatcher.match_@(rule.Name.Replace("#", ""))(token);
             }
         }, false);
     }</text>

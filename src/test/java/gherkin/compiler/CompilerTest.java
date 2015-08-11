@@ -2,7 +2,6 @@ package gherkin.compiler;
 
 import gherkin.AstBuilder;
 import gherkin.Parser;
-import gherkin.TokenMatcher;
 import gherkin.ast.Feature;
 import gherkin.deps.com.google.gson.Gson;
 import gherkin.deps.com.google.gson.GsonBuilder;
@@ -13,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class CompilerTest {
-    private final Parser<Feature> parser = new Parser<>(new AstBuilder(), new TokenMatcher());
+    private final Parser<Feature> parser = new Parser<>(new AstBuilder());
     private final Compiler compiler = new Compiler();
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 

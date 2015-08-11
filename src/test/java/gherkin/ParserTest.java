@@ -31,16 +31,16 @@ public class ParserTest {
                 "      \"\"\"\n" +
                 "      closed docstring\n" +
                 "      \"\"\"").getBytes()), "UTF-8");
-        AstBuilder builder = new AstBuilder();
-        Parser<Feature> parser = new Parser<>(builder, new TokenMatcher());
+        TokenMatcher matcher = new TokenMatcher();
+        Parser<Feature> parser = new Parser<>(new AstBuilder());
 
         try {
-            parser.parse(in1);
+            parser.parse(in1, matcher);
             fail("ParserException expected");
         } catch (ParserException e) {
             // pass
         }
-        Feature feature = parser.parse(in2);
+        Feature feature = parser.parse(in2, matcher);
 
         assertEquals(jsonParser.parse("" +
                 "{\"tags\":[]," +
