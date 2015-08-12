@@ -101,7 +101,7 @@ namespace Gherkin
 
         public T Parse(ITokenScanner tokenScanner)
         {
-            return Parse(tokenScanner, new TokenMatcher(), new AstBuilder<T>());
+            return Parse(tokenScanner, new TokenMatcher(), this.AstBuilder);
         }
 
         public T Parse(TokenScanner tokenScanner, TokenMatcher tokenMatcher)
