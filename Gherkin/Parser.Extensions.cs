@@ -6,16 +6,13 @@ namespace Gherkin
 {
     public class Parser : Parser<Feature>
     {
-        private readonly AstBuilder<Feature> astBuilder;
-
         public Parser()
-            : this (new AstBuilder<Feature>())
         {
         }
 
         public Parser(AstBuilder<Feature> astBuilder)
+            : base (astBuilder)
         {
-            this.astBuilder = astBuilder;
         }
 
         public Feature Parse(TextReader reader)
@@ -29,11 +26,6 @@ namespace Gherkin
             {
                 return Parse(new TokenScanner(reader));
             }
-        }
-
-        public Feature Parse(TokenScanner tokenScanner, TokenMatcher tokenMatcher)
-        {
-            return base.Parse(tokenScanner, tokenMatcher, this.astBuilder);
         }
     }
 }
