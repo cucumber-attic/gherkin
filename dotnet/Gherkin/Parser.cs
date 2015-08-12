@@ -75,7 +75,19 @@ namespace Gherkin
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public partial class Parser<T>
     {
+        public Parser()
+            : this(new AstBuilder<T>())
+        {
+        }
+
+        public Parser(AstBuilder<T> astBuilder)
+        {
+            this.AstBuilder = astBuilder;
+        }
+
         public bool StopAtFirstError { get; set;}
+
+        public AstBuilder<T> AstBuilder { get; }
 
         [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         protected class ParserContext
@@ -90,6 +102,11 @@ namespace Gherkin
         public T Parse(ITokenScanner tokenScanner)
         {
             return Parse(tokenScanner, new TokenMatcher(), new AstBuilder<T>());
+        }
+
+        public T Parse(TokenScanner tokenScanner, TokenMatcher tokenMatcher)
+        {
+            return Parse(tokenScanner, tokenMatcher, this.AstBuilder);
         }
 
         public T Parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder<T> astBuilder)
