@@ -13,8 +13,8 @@ public class AstBuilderTest {
         Parser<Feature> parser = new Parser<>(new AstBuilder());
         TokenMatcher matcher = new TokenMatcher();
 
-        Feature f1 = parser.parse(new StringReader("Feature: 1"), matcher);
-        Feature f2 = parser.parse(new StringReader("Feature: 2"), matcher);
+        Feature f1 = parser.parse("Feature: 1", matcher);
+        Feature f2 = parser.parse("Feature: 2", matcher);
 
         assertEquals("1", f1.getName());
         assertEquals("2", f2.getName());
