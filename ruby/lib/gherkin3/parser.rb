@@ -85,7 +85,7 @@ module Gherkin3
 
       raise CompositeParserException.new(context.errors) if context.errors.any?
 
-      get_result(context)
+      get_result()
     end
 
     def build(context, token)
@@ -111,7 +111,7 @@ module Gherkin3
       end
     end
 
-    def get_result(context)
+    def get_result()
       @ast_builder.get_result
     end
 
