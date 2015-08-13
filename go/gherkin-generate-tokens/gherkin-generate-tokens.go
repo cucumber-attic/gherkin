@@ -74,12 +74,12 @@ func (t *tokenGenerator) Reset() {
 
 func GenerateTokens(in io.Reader, out io.Writer) error {
 
-	parser := gherkin.NewParser()
+	builder := &tokenGenerator{out}
+	parser := gherkin.NewParser(builder)
 	parser.StopAtFirstError(true)
 	matcher := gherkin.NewMatcher(gherkin.GherkinDialectsBuildin())
 
 	scanner := gherkin.NewScanner(in)
-	builder := &tokenGenerator{out}
 
-	return parser.Parse(scanner, builder, matcher)
+	return parser.Parse(scanner, matcher)
 }

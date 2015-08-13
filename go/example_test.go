@@ -71,15 +71,15 @@ func ExampleParseFeature() {
 
 func ExampleParseMultipleFeatures() {
 
-	parser := gherkin.NewParser()
+	builder := gherkin.NewAstBuilder()
+	parser := gherkin.NewParser(builder)
 	parser.StopAtFirstError(false)
 	matcher := gherkin.NewMatcher(gherkin.GherkinDialectsBuildin())
-	builder := gherkin.NewAstBuilder()
 
 	input1 := `Feature: Test`
 	r1 := strings.NewReader(input1)
 
-	err1 := parser.Parse(gherkin.NewScanner(r1), builder, matcher)
+	err1 := parser.Parse(gherkin.NewScanner(r1), matcher)
 	if err1 != nil {
 		fmt.Fprintf(os.Stdout, "%s\n", err1)
 		return
@@ -94,7 +94,7 @@ func ExampleParseMultipleFeatures() {
 	input2 := `Feature: Test2`
 	r2 := strings.NewReader(input2)
 
-	err2 := parser.Parse(gherkin.NewScanner(r2), builder, matcher)
+	err2 := parser.Parse(gherkin.NewScanner(r2), matcher)
 	if err2 != nil {
 		fmt.Fprintf(os.Stdout, "%s\n", err2)
 		return
@@ -122,10 +122,10 @@ func ExampleParseMultipleFeatures() {
 
 func ExampleParseFeatureAfterParseError() {
 
-	parser := gherkin.NewParser()
+	builder := gherkin.NewAstBuilder()
+	parser := gherkin.NewParser(builder)
 	parser.StopAtFirstError(false)
 	matcher := gherkin.NewMatcher(gherkin.GherkinDialectsBuildin())
-	builder := gherkin.NewAstBuilder()
 
 	input1 := `# a comment
 Feature: Foo
@@ -135,7 +135,7 @@ Feature: Foo
       unclosed docstring`
 	r1 := strings.NewReader(input1)
 
-	err1 := parser.Parse(gherkin.NewScanner(r1), builder, matcher)
+	err1 := parser.Parse(gherkin.NewScanner(r1), matcher)
 	if err1 != nil {
 		fmt.Fprintf(os.Stdout, "%s\n", err1)
 	}
@@ -149,7 +149,7 @@ Feature: Foo
       """`
 	r2 := strings.NewReader(input2)
 
-	err2 := parser.Parse(gherkin.NewScanner(r2), builder, matcher)
+	err2 := parser.Parse(gherkin.NewScanner(r2), matcher)
 	if err2 != nil {
 		fmt.Fprintf(os.Stdout, "%s\n", err2)
 		return

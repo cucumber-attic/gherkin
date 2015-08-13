@@ -9,7 +9,7 @@ import (
 
 type Parser interface {
 	StopAtFirstError(b bool)
-	Parse(s Scanner, b Builder, m Matcher) (err error)
+	Parse(s Scanner, m Matcher) (err error)
 }
 
 type Scanner interface {
@@ -50,11 +50,14 @@ func (l *LineSpan) String() string {
 }
 
 type parser struct {
+	builder          Builder
 	stopAtFirstError bool
 }
 
-func NewParser() Parser {
-	return &parser{}
+func NewParser(b Builder) Parser {
+	return &parser{
+		builder: b,
+	}
 }
 
 func (p *parser) StopAtFirstError(b bool) {
@@ -114,14 +117,14 @@ func (g *Line) StartsWith(prefix string) bool {
 
 func ParseFeature(in io.Reader) (feature *Feature, err error) {
 
-	parser := NewParser()
+	builder := NewAstBuilder()
+	parser := NewParser(builder)
 	parser.StopAtFirstError(false)
 	matcher := NewMatcher(GherkinDialectsBuildin())
 
 	scanner := NewScanner(in)
-	builder := NewAstBuilder()
 
-	err = parser.Parse(scanner, builder, matcher)
+	err = parser.Parse(scanner, matcher)
 
 	return builder.GetFeature(), err
 }
