@@ -30,7 +30,7 @@
 // This file is generated. Do not edit! Edit gherkin-javascript.razor instead.
 var Errors = require('./errors');
 
-module.exports = function Parser(astBuilder, tokenMatcher) {
+module.exports = function Parser(astBuilder) {
 
   var RULE_TYPES = [
     'None',
@@ -40,13 +40,13 @@ module.exports = function Parser(astBuilder, tokenMatcher) {
   ]
 
   var astBuilder = astBuilder;
-  var tokenMatcher = tokenMatcher;
   var context = {};
 
-  this.parse = function(tokenScanner) {
+  this.parse = function(tokenScanner, tokenMatcher) {
     astBuilder.reset();
     tokenMatcher.reset();
     context.tokenScanner = tokenScanner;
+    context.tokenMatcher = tokenMatcher;
     context.tokenQueue = [];
     context.errors = [];
 
@@ -65,7 +65,7 @@ module.exports = function Parser(astBuilder, tokenMatcher) {
       throw Errors.CompositeParserException.create(context.errors);
     }
 
-    return getResult(context);
+    return getResult();
   };
 
   function addError(context, error) {
@@ -92,7 +92,7 @@ module.exports = function Parser(astBuilder, tokenMatcher) {
     });
   }
 
-  function getResult(context) {
+  function getResult() {
     return astBuilder.getResult();
   }
 
@@ -178,7 +178,7 @@ module.exports = function Parser(astBuilder, tokenMatcher) {
     @:if(token.isEof) return false;
     }
     return handleExternalError(context, false, function () {
-      return tokenMatcher.match_@(rule.Name.Replace("#", ""))(token);
+      return context.tokenMatcher.match_@(rule.Name.Replace("#", ""))(token);
     });
   }
 </text>
