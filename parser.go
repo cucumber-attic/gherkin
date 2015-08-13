@@ -180,10 +180,10 @@ func (pe parseErrors) Error() string {
   return strings.Join(ret,"\n")
 }
 
-func (p *parser) Parse(s Scanner, b Builder, m Matcher) (err error) {
-  b.Reset()
+func (p *parser) Parse(s Scanner, m Matcher) (err error) {
+  p.builder.Reset()
   m.Reset()
-  ctxt := &parseContext{p,s,b,m,nil,nil}
+  ctxt := &parseContext{p,s,p.builder,m,nil,nil}
   var state int
   ctxt.startRule(RuleType_Feature)
   for {
