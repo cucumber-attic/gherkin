@@ -3,9 +3,10 @@ var Gherkin = require('..');
 
 describe('Parser', function () {
   it("parses a simple feature", function () {
-    var parser = new Gherkin.Parser(new Gherkin.AstBuilder(), new Gherkin.TokenMatcher());
+    var parser = new Gherkin.Parser(new Gherkin.AstBuilder());
     var scanner = new Gherkin.TokenScanner("Feature: hello");
-    var ast = parser.parse(scanner);
+    var matcher = new Gherkin.TokenMatcher();
+    var ast = parser.parse(scanner, matcher);
     assert.deepEqual(ast, {
       type: 'Feature',
       tags: [],
@@ -21,9 +22,10 @@ describe('Parser', function () {
   });
 
   it("parses multiple features", function () {
-    var parser = new Gherkin.Parser(new Gherkin.AstBuilder(), new Gherkin.TokenMatcher());
-    var ast1 = parser.parse(new Gherkin.TokenScanner("Feature: hello"));
-    var ast2 = parser.parse(new Gherkin.TokenScanner("Feature: hello again"));
+    var parser = new Gherkin.Parser(new Gherkin.AstBuilder());
+    var matcher = new Gherkin.TokenMatcher();
+    var ast1 = parser.parse(new Gherkin.TokenScanner("Feature: hello"), matcher);
+    var ast2 = parser.parse(new Gherkin.TokenScanner("Feature: hello again"), matcher);
 
     assert.deepEqual(ast1, {
       type: 'Feature',
@@ -52,20 +54,23 @@ describe('Parser', function () {
   });
 
   it("parses feature after parse error", function () {
-    var parser = new Gherkin.Parser(new Gherkin.AstBuilder(), new Gherkin.TokenMatcher());
+    var parser = new Gherkin.Parser(new Gherkin.AstBuilder());
+    var matcher = new Gherkin.TokenMatcher();
     assert.throws(function() { parser.parse(new Gherkin.TokenScanner("# a comment\n" +
 								     "Feature: Foo\n" +
 								     "  Scenario: Bar\n" +
 								     "    Given x\n" +
 								     "      ```\n" +
-								     "      unclosed docstring\n")) },
+								     "      unclosed docstring\n"), 
+					    matcher) },
 		  Gherkin.ParserException);
     var ast = parser.parse(new Gherkin.TokenScanner("Feature: Foo\n" +
 						    "  Scenario: Bar\n" +
 						    "    Given x\n" +
 						    "      \"\"\"\n" +
 						    "      closed docstring\n" +
-						    "      \"\"\""));
+						    "      \"\"\""), 
+			   matcher);
 
     assert.deepEqual(ast, {
       type: 'Feature',
