@@ -75,41 +75,35 @@ namespace Gherkin
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public partial class Parser<T>
     {
+        private readonly IAstBuilder<T> astBuilder;
+
         public Parser()
             : this(new AstBuilder<T>())
         {
         }
 
-        public Parser(AstBuilder<T> astBuilder)
+        public Parser(IAstBuilder<T> astBuilder)
         {
-            this.AstBuilder = astBuilder;
+            this.astBuilder = astBuilder;
         }
 
         public bool StopAtFirstError { get; set;}
-
-        public AstBuilder<T> AstBuilder { get; }
 
         [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         protected class ParserContext
         {
             public ITokenScanner TokenScanner { get; set; }
             public ITokenMatcher TokenMatcher { get; set; }
-            public IAstBuilder<T> Builder { get; set; }
             public Queue<Token> TokenQueue { get; set; }
             public List<ParserException> Errors { get; set; }
         }
 
         public T Parse(ITokenScanner tokenScanner)
         {
-            return Parse(tokenScanner, new TokenMatcher(), this.AstBuilder);
+            return Parse(tokenScanner, new TokenMatcher());
         }
 
-        public T Parse(TokenScanner tokenScanner, TokenMatcher tokenMatcher)
-        {
-            return Parse(tokenScanner, tokenMatcher, this.AstBuilder);
-        }
-
-        public T Parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder<T> astBuilder)
+        public T Parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher)
         {
             tokenMatcher.Reset();
             astBuilder.Reset();
@@ -117,7 +111,6 @@ namespace Gherkin
             {
                 TokenScanner = tokenScanner,
                 TokenMatcher = tokenMatcher,
-                Builder = astBuilder,
                 TokenQueue = new Queue<Token>(),
                 Errors = new List<ParserException>()
             };
@@ -178,22 +171,22 @@ namespace Gherkin
 
         void Build(ParserContext context, Token token)
         {
-            HandleAstError(context, () => context.Builder.Build(token));
+            HandleAstError(context, () => this.astBuilder.Build(token));
         }
 
         void StartRule(ParserContext context, RuleType ruleType)
         {
-            HandleAstError(context, () => context.Builder.StartRule(ruleType));
+            HandleAstError(context, () => this.astBuilder.StartRule(ruleType));
         }
 
         void EndRule(ParserContext context, RuleType ruleType)
         {
-            HandleAstError(context, () => context.Builder.EndRule(ruleType));
+            HandleAstError(context, () => this.astBuilder.EndRule(ruleType));
         }
 
         T GetResult(ParserContext context)
         {
-            return context.Builder.GetResult();
+            return this.astBuilder.GetResult();
         }
 
         Token ReadToken(ParserContext context)
