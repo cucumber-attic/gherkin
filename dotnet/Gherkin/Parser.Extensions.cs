@@ -10,7 +10,7 @@ namespace Gherkin
         {
         }
 
-        public Parser(AstBuilder<Feature> astBuilder)
+        public Parser(IAstBuilder<Feature> astBuilder)
             : base (astBuilder)
         {
         }
