@@ -81,23 +81,26 @@ public class Parser<T> {
         }
     }
 
+    private final Builder<T> builder;
 
     public boolean stopAtFirstError;
 
     class ParserContext {
         public final ITokenScanner tokenScanner;
         public final ITokenMatcher tokenMatcher;
-        public final IAstBuilder<T> builder;
         public final Queue<Token> tokenQueue;
         public final List<ParserException> errors;
 
-        ParserContext(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, IAstBuilder<T> builder, Queue<Token> tokenQueue, List<ParserException> errors) {
+        ParserContext(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher, Queue<Token> tokenQueue, List<ParserException> errors) {
             this.tokenScanner = tokenScanner;
             this.tokenMatcher = tokenMatcher;
-            this.builder = builder;
             this.tokenQueue = tokenQueue;
             this.errors = errors;
         }
+    }
+
+    public Parser(Builder<T> builder) {
+        this.builder = builder;
     }
 
     public T parse(String source) {
@@ -105,15 +108,28 @@ public class Parser<T> {
     }
 
     public T parse(Reader source) {
-        AstBuilder<T> builder = new AstBuilder();
-        return parse(source, builder);
+        return parse(new TokenScanner(source));
     }
 
-    public T parse(Reader source, IAstBuilder<T> builder) {
+    public T parse(ITokenScanner tokenScanner) {
+        return parse(tokenScanner, new TokenMatcher());
+    }
+
+    public T parse(String source, ITokenMatcher tokenMatcher) {
+        return parse(new StringReader(source), tokenMatcher);
+    }
+
+    public T parse(Reader source, ITokenMatcher tokenMatcher) {
+        return parse(new TokenScanner(source), tokenMatcher);
+    }
+
+    public T parse(ITokenScanner tokenScanner, ITokenMatcher tokenMatcher) {
+        builder.reset();
+        tokenMatcher.reset();
+
         ParserContext context = new ParserContext(
-                new TokenScanner(source),
-                new TokenMatcher(),
-                builder,
+                tokenScanner,
+                tokenMatcher,
                 new LinkedList<Token>(),
                 new ArrayList<ParserException>()
         );
@@ -121,20 +137,18 @@ public class Parser<T> {
         startRule(context, RuleType.Feature);
         int state = 0;
         Token token;
-        do
-        {
+        do {
             token = readToken(context);
             state = matchToken(state, token, context);
-        } while(!token.isEOF());
+        } while (!token.isEOF());
 
         endRule(context, RuleType.Feature);
 
-        if (context.errors.size() > 0)
-        {
+        if (context.errors.size() > 0) {
             throw new ParserException.CompositeParserException(context.errors);
         }
 
-        return getResult(context);
+        return builder.getResult();
     }
 
     private void addError(ParserContext context, ParserException error) {
@@ -164,45 +178,39 @@ public class Parser<T> {
         return defaultValue;
     }
 
-    void build(final ParserContext context, final Token token) {
+    private void build(final ParserContext context, final Token token) {
         handleAstError(context, new Func<Void>() {
             public Void call() {
-                context.builder.build(token);
+                builder.build(token);
                 return null;
             }
         });
     }
 
-    void startRule(final ParserContext context, final RuleType ruleType) {
+    private void startRule(final ParserContext context, final RuleType ruleType) {
         handleAstError(context, new Func<Void>() {
             public Void call() {
-                context.builder.startRule(ruleType);
+                builder.startRule(ruleType);
                 return null;
             }
         });
     }
 
-    void endRule(final ParserContext context, final RuleType ruleType) {
+    private void endRule(final ParserContext context, final RuleType ruleType) {
         handleAstError(context, new Func<Void>() {
             public Void call() {
-                context.builder.endRule(ruleType);
+                builder.endRule(ruleType);
                 return null;
             }
         });
     }
 
-    T getResult(ParserContext context)
-    {
-        return context.builder.getResult();
-    }
-
-    Token readToken(ParserContext context)
-    {
+    private Token readToken(ParserContext context) {
         return context.tokenQueue.size() > 0 ? context.tokenQueue.remove() : context.tokenScanner.read();
     }
 
 
-    boolean match_EOF(final ParserContext context, final Token token) {
+    private boolean match_EOF(final ParserContext context, final Token token) {
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
                 return context.tokenMatcher.match_EOF(token);
@@ -210,7 +218,7 @@ public class Parser<T> {
         }, false);
     }
 
-    boolean match_Empty(final ParserContext context, final Token token) {
+    private boolean match_Empty(final ParserContext context, final Token token) {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
@@ -219,7 +227,7 @@ public class Parser<T> {
         }, false);
     }
 
-    boolean match_Comment(final ParserContext context, final Token token) {
+    private boolean match_Comment(final ParserContext context, final Token token) {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
@@ -228,7 +236,7 @@ public class Parser<T> {
         }, false);
     }
 
-    boolean match_TagLine(final ParserContext context, final Token token) {
+    private boolean match_TagLine(final ParserContext context, final Token token) {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
@@ -237,7 +245,7 @@ public class Parser<T> {
         }, false);
     }
 
-    boolean match_FeatureLine(final ParserContext context, final Token token) {
+    private boolean match_FeatureLine(final ParserContext context, final Token token) {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
@@ -246,7 +254,7 @@ public class Parser<T> {
         }, false);
     }
 
-    boolean match_BackgroundLine(final ParserContext context, final Token token) {
+    private boolean match_BackgroundLine(final ParserContext context, final Token token) {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
@@ -255,7 +263,7 @@ public class Parser<T> {
         }, false);
     }
 
-    boolean match_ScenarioLine(final ParserContext context, final Token token) {
+    private boolean match_ScenarioLine(final ParserContext context, final Token token) {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
@@ -264,7 +272,7 @@ public class Parser<T> {
         }, false);
     }
 
-    boolean match_ScenarioOutlineLine(final ParserContext context, final Token token) {
+    private boolean match_ScenarioOutlineLine(final ParserContext context, final Token token) {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
@@ -273,7 +281,7 @@ public class Parser<T> {
         }, false);
     }
 
-    boolean match_ExamplesLine(final ParserContext context, final Token token) {
+    private boolean match_ExamplesLine(final ParserContext context, final Token token) {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
@@ -282,7 +290,7 @@ public class Parser<T> {
         }, false);
     }
 
-    boolean match_StepLine(final ParserContext context, final Token token) {
+    private boolean match_StepLine(final ParserContext context, final Token token) {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
@@ -291,7 +299,7 @@ public class Parser<T> {
         }, false);
     }
 
-    boolean match_DocStringSeparator(final ParserContext context, final Token token) {
+    private boolean match_DocStringSeparator(final ParserContext context, final Token token) {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
@@ -300,7 +308,7 @@ public class Parser<T> {
         }, false);
     }
 
-    boolean match_TableRow(final ParserContext context, final Token token) {
+    private boolean match_TableRow(final ParserContext context, final Token token) {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
@@ -309,7 +317,7 @@ public class Parser<T> {
         }, false);
     }
 
-    boolean match_Language(final ParserContext context, final Token token) {
+    private boolean match_Language(final ParserContext context, final Token token) {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
@@ -318,7 +326,7 @@ public class Parser<T> {
         }, false);
     }
 
-    boolean match_Other(final ParserContext context, final Token token) {
+    private boolean match_Other(final ParserContext context, final Token token) {
         if (token.isEOF()) return false;
         return handleExternalError(context, new Func<Boolean>() {
             public Boolean call() {
@@ -327,10 +335,9 @@ public class Parser<T> {
         }, false);
     }
 
-    int matchToken(int state, Token token, ParserContext context) {
+    private int matchToken(int state, Token token, ParserContext context) {
         int newState;
-        switch(state)
-        {
+        switch(state) {
             case 0:
                 newState = matchTokenAt_0(token, context);
                 break;
@@ -441,7 +448,7 @@ public class Parser<T> {
 
 
     // Start
-    int matchTokenAt_0(Token token, ParserContext context) {
+    private int matchTokenAt_0(Token token, ParserContext context) {
         if (match_Language(context, token))
         {
                 startRule(context, RuleType.Feature_Header);
@@ -488,7 +495,7 @@ public class Parser<T> {
 
 
     // Feature:0>Feature_Header:0>#Language:0
-    int matchTokenAt_1(Token token, ParserContext context) {
+    private int matchTokenAt_1(Token token, ParserContext context) {
         if (match_TagLine(context, token))
         {
                 startRule(context, RuleType.Tags);
@@ -527,7 +534,7 @@ public class Parser<T> {
 
 
     // Feature:0>Feature_Header:1>Tags:0>#TagLine:0
-    int matchTokenAt_2(Token token, ParserContext context) {
+    private int matchTokenAt_2(Token token, ParserContext context) {
         if (match_TagLine(context, token))
         {
                 build(context, token);
@@ -566,7 +573,7 @@ public class Parser<T> {
 
 
     // Feature:0>Feature_Header:2>#FeatureLine:0
-    int matchTokenAt_3(Token token, ParserContext context) {
+    private int matchTokenAt_3(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.Feature_Header);
@@ -637,7 +644,7 @@ public class Parser<T> {
 
 
     // Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
-    int matchTokenAt_4(Token token, ParserContext context) {
+    private int matchTokenAt_4(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.Description);
@@ -708,7 +715,7 @@ public class Parser<T> {
 
 
     // Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0
-    int matchTokenAt_5(Token token, ParserContext context) {
+    private int matchTokenAt_5(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.Feature_Header);
@@ -773,7 +780,7 @@ public class Parser<T> {
 
 
     // Feature:1>Background:0>#BackgroundLine:0
-    int matchTokenAt_6(Token token, ParserContext context) {
+    private int matchTokenAt_6(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.Background);
@@ -843,7 +850,7 @@ public class Parser<T> {
 
 
     // Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
-    int matchTokenAt_7(Token token, ParserContext context) {
+    private int matchTokenAt_7(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.Description);
@@ -913,7 +920,7 @@ public class Parser<T> {
 
 
     // Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
-    int matchTokenAt_8(Token token, ParserContext context) {
+    private int matchTokenAt_8(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.Background);
@@ -977,7 +984,7 @@ public class Parser<T> {
 
 
     // Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
-    int matchTokenAt_9(Token token, ParserContext context) {
+    private int matchTokenAt_9(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.Step);
@@ -1058,7 +1065,7 @@ public class Parser<T> {
 
 
     // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
-    int matchTokenAt_10(Token token, ParserContext context) {
+    private int matchTokenAt_10(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.DataTable);
@@ -1137,7 +1144,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0
-    int matchTokenAt_11(Token token, ParserContext context) {
+    private int matchTokenAt_11(Token token, ParserContext context) {
         if (match_TagLine(context, token))
         {
                 build(context, token);
@@ -1184,7 +1191,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0
-    int matchTokenAt_12(Token token, ParserContext context) {
+    private int matchTokenAt_12(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.Scenario);
@@ -1258,7 +1265,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
-    int matchTokenAt_13(Token token, ParserContext context) {
+    private int matchTokenAt_13(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.Description);
@@ -1332,7 +1339,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
-    int matchTokenAt_14(Token token, ParserContext context) {
+    private int matchTokenAt_14(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.Scenario);
@@ -1400,7 +1407,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
-    int matchTokenAt_15(Token token, ParserContext context) {
+    private int matchTokenAt_15(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.Step);
@@ -1485,7 +1492,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
-    int matchTokenAt_16(Token token, ParserContext context) {
+    private int matchTokenAt_16(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.DataTable);
@@ -1568,7 +1575,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
-    int matchTokenAt_17(Token token, ParserContext context) {
+    private int matchTokenAt_17(Token token, ParserContext context) {
         if (match_Empty(context, token))
         {
                 build(context, token);
@@ -1622,7 +1629,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
-    int matchTokenAt_18(Token token, ParserContext context) {
+    private int matchTokenAt_18(Token token, ParserContext context) {
         if (match_Comment(context, token))
         {
                 endRule(context, RuleType.Description);
@@ -1674,7 +1681,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
-    int matchTokenAt_19(Token token, ParserContext context) {
+    private int matchTokenAt_19(Token token, ParserContext context) {
         if (match_Comment(context, token))
         {
                 build(context, token);
@@ -1722,7 +1729,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
-    int matchTokenAt_20(Token token, ParserContext context) {
+    private int matchTokenAt_20(Token token, ParserContext context) {
         if (match_TableRow(context, token))
         {
                 startRule(context, RuleType.DataTable);
@@ -1785,7 +1792,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
-    int matchTokenAt_21(Token token, ParserContext context) {
+    private int matchTokenAt_21(Token token, ParserContext context) {
         if (match_TableRow(context, token))
         {
                 build(context, token);
@@ -1844,7 +1851,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:0>Tags:0>#TagLine:0
-    int matchTokenAt_22(Token token, ParserContext context) {
+    private int matchTokenAt_22(Token token, ParserContext context) {
         if (match_TagLine(context, token))
         {
                 build(context, token);
@@ -1884,7 +1891,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0
-    int matchTokenAt_23(Token token, ParserContext context) {
+    private int matchTokenAt_23(Token token, ParserContext context) {
         if (match_Empty(context, token))
         {
                 build(context, token);
@@ -1923,7 +1930,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
-    int matchTokenAt_24(Token token, ParserContext context) {
+    private int matchTokenAt_24(Token token, ParserContext context) {
         if (match_Comment(context, token))
         {
                 endRule(context, RuleType.Description);
@@ -1958,7 +1965,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0
-    int matchTokenAt_25(Token token, ParserContext context) {
+    private int matchTokenAt_25(Token token, ParserContext context) {
         if (match_Comment(context, token))
         {
                 build(context, token);
@@ -1991,7 +1998,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>#TableRow:0
-    int matchTokenAt_26(Token token, ParserContext context) {
+    private int matchTokenAt_26(Token token, ParserContext context) {
         if (match_TableRow(context, token))
         {
                 build(context, token);
@@ -2024,7 +2031,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:3>#TableRow:0
-    int matchTokenAt_27(Token token, ParserContext context) {
+    private int matchTokenAt_27(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.Examples);
@@ -2120,7 +2127,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-    int matchTokenAt_29(Token token, ParserContext context) {
+    private int matchTokenAt_29(Token token, ParserContext context) {
         if (match_DocStringSeparator(context, token))
         {
                 build(context, token);
@@ -2148,7 +2155,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-    int matchTokenAt_30(Token token, ParserContext context) {
+    private int matchTokenAt_30(Token token, ParserContext context) {
         if (match_StepLine(context, token))
         {
                 endRule(context, RuleType.DocString);
@@ -2202,7 +2209,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-    int matchTokenAt_31(Token token, ParserContext context) {
+    private int matchTokenAt_31(Token token, ParserContext context) {
         if (match_DocStringSeparator(context, token))
         {
                 build(context, token);
@@ -2230,7 +2237,7 @@ public class Parser<T> {
 
 
     // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-    int matchTokenAt_32(Token token, ParserContext context) {
+    private int matchTokenAt_32(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.DocString);
@@ -2308,7 +2315,7 @@ public class Parser<T> {
 
 
     // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-    int matchTokenAt_33(Token token, ParserContext context) {
+    private int matchTokenAt_33(Token token, ParserContext context) {
         if (match_DocStringSeparator(context, token))
         {
                 build(context, token);
@@ -2336,7 +2343,7 @@ public class Parser<T> {
 
 
     // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-    int matchTokenAt_34(Token token, ParserContext context) {
+    private int matchTokenAt_34(Token token, ParserContext context) {
         if (match_EOF(context, token))
         {
                 endRule(context, RuleType.DocString);
@@ -2410,7 +2417,7 @@ public class Parser<T> {
 
 
 
-    boolean lookahead_0(ParserContext context, Token currentToken) {
+    private boolean lookahead_0(ParserContext context, Token currentToken) {
         currentToken.detach();
         Token token;
         Queue<Token> queue = new ArrayDeque<Token>();
@@ -2440,11 +2447,12 @@ public class Parser<T> {
     }
 
 
-    public interface IAstBuilder<T> {
+    public interface Builder<T> {
         void build(Token token);
         void startRule(RuleType ruleType);
         void endRule(RuleType ruleType);
         T getResult();
+        void reset();
     }
 
     public interface ITokenScanner {
@@ -2466,5 +2474,6 @@ public class Parser<T> {
         boolean match_TableRow(Token token);
         boolean match_Language(Token token);
         boolean match_Other(Token token);
+        void reset();
     }
 }

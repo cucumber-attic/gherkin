@@ -7,6 +7,11 @@ module Gherkin3
 
     def initialize(dialect_name = 'en')
       change_dialect(dialect_name, nil)
+      reset
+    end
+
+    def reset
+      change_dialect('en', nil) unless @dialect_name == 'en'
       @active_doc_string_separator = nil
       @indent_to_remove = 0
     end

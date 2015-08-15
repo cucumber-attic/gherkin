@@ -2,8 +2,6 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__),"../lib"))
 require 'gherkin3/parser'
 require 'gherkin3/token_scanner'
-require 'gherkin3/token_matcher'
-require 'gherkin3/ast_builder'
 require 'json'
 
 parser = Gherkin3::Parser.new
@@ -12,9 +10,8 @@ files = ARGV.any? ? ARGV : (STDIN.tty? ? [] : [STDIN])
 start_time = Time.now
 files.each do |file|
   scanner = Gherkin3::TokenScanner.new(file)
-  builder = Gherkin3::AstBuilder.new
   begin
-    puts JSON.generate(parser.parse(scanner, builder, Gherkin3::TokenMatcher.new))
+    puts JSON.generate(parser.parse(scanner))
   rescue Gherkin3::ParserError => e
     STDERR.puts e.message
     exit 1

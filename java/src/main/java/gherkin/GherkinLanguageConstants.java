@@ -1,10 +1,10 @@
 package gherkin;
 
 public interface GherkinLanguageConstants {
-    public final String TAG_PREFIX = "@";
-    public final String COMMENT_PREFIX = "#";
-    public final String TITLE_KEYWORD_SEPARATOR = ":";
-    public final String TABLE_CELL_SEPARATOR = "|";
-    public final String DOCSTRING_SEPARATOR = "\"\"\"";
-    public final String DOCSTRING_ALTERNATIVE_SEPARATOR = "```";
+    String TAG_PREFIX = "@";
+    String COMMENT_PREFIX = "#";
+    String TITLE_KEYWORD_SEPARATOR = ":";
+    String TABLE_CELL_SEPARATOR = "|";
+    String DOCSTRING_SEPARATOR = "\"\"\"";
+    String DOCSTRING_ALTERNATIVE_SEPARATOR = "```";
 }

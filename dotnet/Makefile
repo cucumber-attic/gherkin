@@ -15,7 +15,7 @@ all: .compared
 	touch $@
 
 .built: .sln_built_debug $(NUNIT) LICENSE
-	mono --runtime=v4.0 $(NUNIT) -noxml -nologo -stoponerror Gherkin/bin/Debug/Gherkin.dll
+	mono --runtime=v4.0 $(NUNIT) -noxml -nologo -stoponerror Gherkin.Specs/bin/Debug/Gherkin.Specs.dll
 	touch $@
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built

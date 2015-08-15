@@ -51,7 +51,8 @@ Feature: Dead Simple Calculator
 
 func Benchmark_NewParserMatcherScanner(b *testing.B) { //benchmark function starts with "Benchmark" and takes a pointer to type testing.B
 	for i := 0; i < b.N; i++ { // use b.N for looping
-		_ = gherkin.NewParser()
+		noopbuilder := new(noopBuilder)
+		_ = gherkin.NewParser(noopbuilder)
 		_ = gherkin.NewMatcher(gherkin.GherkinDialectsBuildin())
 		_ = gherkin.NewScanner(strings.NewReader(benchmarkGherkinText))
 	}
@@ -78,21 +79,22 @@ func (n *noopBuilder) StartRule(gherkin.RuleType) (bool, error) {
 func (n *noopBuilder) EndRule(gherkin.RuleType) (bool, error) {
 	return true, nil
 }
+func (n *noopBuilder) Reset() {
+}
 
 func Benchmark_ParseWithoutBuilder(b *testing.B) { //benchmark function starts with "Benchmark" and takes a pointer to type testing.B
 	b.StopTimer()
 
-	parser := gherkin.NewParser()
+	noopbuilder := new(noopBuilder)
+	parser := gherkin.NewParser(noopbuilder)
 	parser.StopAtFirstError(true)
 	matcher := gherkin.NewMatcher(gherkin.GherkinDialectsBuildin())
-	noopbuilder := new(noopBuilder)
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ { // use b.N for looping
 		in := strings.NewReader(benchmarkGherkinText)
 		scanner := gherkin.NewScanner(in)
-		var builder gherkin.Builder = noopbuilder
-		err := parser.Parse(scanner, builder, matcher)
+		err := parser.Parse(scanner, matcher)
 		if err != nil {
 			b.FailNow()
 		}

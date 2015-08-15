@@ -1,7 +1,7 @@
 // This file is generated. Do not edit! Edit gherkin-javascript.razor instead.
 var Errors = require('./errors');
 
-module.exports = function Parser() {
+module.exports = function Parser(astBuilder) {
 
   var RULE_TYPES = [
     'None',
@@ -43,11 +43,13 @@ module.exports = function Parser() {
     'Description', // Description! := #Other+
   ]
 
+  var astBuilder = astBuilder;
   var context = {};
 
-  this.parse = function(tokenScanner, astBuilder, tokenMatcher) {
+  this.parse = function(tokenScanner, tokenMatcher) {
+    astBuilder.reset();
+    tokenMatcher.reset();
     context.tokenScanner = tokenScanner;
-    context.astBuilder = astBuilder;
     context.tokenMatcher = tokenMatcher;
     context.tokenQueue = [];
     context.errors = [];
@@ -67,7 +69,7 @@ module.exports = function Parser() {
       throw Errors.CompositeParserException.create(context.errors);
     }
 
-    return getResult(context);
+    return getResult();
   };
 
   function addError(context, error) {
@@ -78,24 +80,24 @@ module.exports = function Parser() {
 
   function startRule(context, ruleType) {
     handleAstError(context, function () {
-      context.astBuilder.startRule(ruleType);
+      astBuilder.startRule(ruleType);
     });
   }
 
   function endRule(context, ruleType) {
     handleAstError(context, function () {
-      context.astBuilder.endRule(ruleType);
+      astBuilder.endRule(ruleType);
     });
   }
 
   function build(context, token) {
     handleAstError(context, function () {
-      context.astBuilder.build(token);
+      astBuilder.build(token);
     });
   }
 
-  function getResult(context) {
-    return context.astBuilder.getResult();
+  function getResult() {
+    return astBuilder.getResult();
   }
 
   function handleAstError(context, action) {

@@ -26,7 +26,7 @@ public class StringUtils {
         return s.substring(i);
     }
 
-    public static interface ToString<T> {
+    public interface ToString<T> {
         ToString<String> DEFAULT = new ToString<String>() {
             @Override
             public String toString(String o) {
@@ -34,6 +34,6 @@ public class StringUtils {
             }
         };
 
-        public String toString(T o);
+        String toString(T o);
     }
 }

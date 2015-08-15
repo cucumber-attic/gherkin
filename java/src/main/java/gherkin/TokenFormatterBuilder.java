@@ -1,12 +1,12 @@
 package gherkin;
 
-public class TokenFormatterBuilder implements Parser.IAstBuilder<String> {
+public class TokenFormatterBuilder implements Parser.Builder<String> {
     private final TokenFormatter formatter = new TokenFormatter();
     private final StringBuilder tokensTextBuilder = new StringBuilder();
 
     @Override
     public void build(Token token) {
-        tokensTextBuilder.append(formatter.FormatToken(token)).append("\n");
+        tokensTextBuilder.append(formatter.formatToken(token)).append("\n");
     }
 
     @Override
@@ -20,5 +20,9 @@ public class TokenFormatterBuilder implements Parser.IAstBuilder<String> {
     @Override
     public String getResult() {
         return tokensTextBuilder.toString();
+    }
+
+    @Override
+    public void reset() {
     }
 }

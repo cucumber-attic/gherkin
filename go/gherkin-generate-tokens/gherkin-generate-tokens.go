@@ -69,15 +69,17 @@ func (t *tokenGenerator) StartRule(r gherkin.RuleType) (bool, error) {
 func (t *tokenGenerator) EndRule(r gherkin.RuleType) (bool, error) {
 	return true, nil
 }
+func (t *tokenGenerator) Reset() {
+}
 
 func GenerateTokens(in io.Reader, out io.Writer) error {
 
-	parser := gherkin.NewParser()
+	builder := &tokenGenerator{out}
+	parser := gherkin.NewParser(builder)
 	parser.StopAtFirstError(true)
 	matcher := gherkin.NewMatcher(gherkin.GherkinDialectsBuildin())
 
 	scanner := gherkin.NewScanner(in)
-	builder := &tokenGenerator{out}
 
-	return parser.Parse(scanner, builder, matcher)
+	return parser.Parse(scanner, matcher)
 }

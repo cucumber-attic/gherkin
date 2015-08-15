@@ -40,11 +40,10 @@ module Gherkin3
   ]
 
   class ParserContext
-    attr_reader :token_scanner, :ast_builder, :token_matcher, :token_queue, :errors
+    attr_reader :token_scanner, :token_matcher, :token_queue, :errors
 
-    def initialize(token_scanner, ast_builder, token_matcher, token_queue, errors)
+    def initialize(token_scanner, token_matcher, token_queue, errors)
       @@token_scanner = token_scanner
-      @@ast_builder = ast_builder
       @@token_matcher = token_matcher
       @@token_queue = token_queue
       @@errors = errors
@@ -54,10 +53,15 @@ module Gherkin3
   class @Model.ParserClassName
     attr_accessor :stop_at_first_error
 
-    def parse(token_scanner, ast_builder=AstBuilder.new, token_matcher=TokenMatcher.new)
+    def initialize(ast_builder=AstBuilder.new)
+      @@ast_builder = ast_builder
+    end
+
+    def parse(token_scanner, token_matcher=TokenMatcher.new)
+      @@ast_builder.reset
+      token_matcher.reset
       context = ParserContext.new(
         token_scanner,
-        ast_builder,
         token_matcher,
         [],
         []
@@ -75,12 +79,12 @@ module Gherkin3
 
       raise CompositeParserException.new(context.errors) if context.errors.any?
 
-      get_result(context)
+      get_result()
     end
 
     def build(context, token)
       handle_ast_error(context) do
-        context.ast_builder.build(token)
+        @@ast_builder.build(token)
       end
     end
 
@@ -91,18 +95,18 @@ module Gherkin3
 
     def start_rule(context, rule_type)
       handle_ast_error(context) do
-        context.ast_builder.start_rule(rule_type)
+        @@ast_builder.start_rule(rule_type)
       end
     end
 
     def end_rule(context, rule_type)
       handle_ast_error(context) do
-        context.ast_builder.end_rule(rule_type)
+        @@ast_builder.end_rule(rule_type)
       end
     end
 
-    def get_result(context)
-      context.ast_builder.get_result
+    def get_result()
+      @@ast_builder.get_result
     end
 
     def read_token(context)

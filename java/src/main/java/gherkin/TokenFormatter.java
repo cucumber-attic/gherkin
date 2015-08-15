@@ -4,11 +4,11 @@ public class TokenFormatter {
     private static final StringUtils.ToString<GherkinLineSpan> SPAN_TO_STRING = new StringUtils.ToString<GherkinLineSpan>() {
         @Override
         public String toString(GherkinLineSpan o) {
-            return o.Column + ":" + o.Text;
+            return o.column + ":" + o.text;
         }
     };
 
-    public String FormatToken(Token token) {
+    public String formatToken(Token token) {
         if (token.isEOF())
             return "EOF";
 

@@ -3,13 +3,13 @@ package gherkin;
 import java.util.List;
 
 public interface IGherkinLine {
-    public Integer indent();
+    Integer indent();
 
-    public void detach();
+    void detach();
 
-    public String getLineText(int indentToRemove);
+    String getLineText(int indentToRemove);
 
-    public boolean isEmpty();
+    boolean isEmpty();
 
     boolean startsWith(String prefix);
 

@@ -1,12 +1,20 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using Gherkin.Ast;
 
 namespace Gherkin
 {
     public class Parser : Parser<Feature>
     {
+        public Parser()
+        {
+        }
+
+        public Parser(IAstBuilder<Feature> astBuilder)
+            : base (astBuilder)
+        {
+        }
+
         public Feature Parse(TextReader reader)
         {
             return Parse(new TokenScanner(reader));

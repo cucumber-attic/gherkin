@@ -34,7 +34,7 @@ Our wish-list is (in no particular order):
 
 ```java
 // Java
-Parser<Feature> parser = new Parser<>();
+Parser<Feature> parser = new Parser<>(new AstBuilder());
 Feature feature = parser.parse(gherkinDoc);
 ```
 
