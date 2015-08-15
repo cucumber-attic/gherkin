@@ -5,7 +5,7 @@ sudo: false
 before_install:
   - export EnableNuGetPackageRestore=true
 
-script: "mono --runtime=v4.0 .nuget/NuGet.exe restore Gherkin.CSharp.sln;xbuild /p:Configuration=Debug;.nuget/NuGet.exe pack dotnet/Gherkin.NuGetPackages/Gherkin.nuspec"
+script: "mono .nuget/NuGet.exe restore Gherkin.CSharp.sln;xbuild /p:Configuration=Debug;.nuget/NuGet.exe pack dotnet/Gherkin.NuGetPackages/Gherkin.nuspec"
 
 branches:
   only:

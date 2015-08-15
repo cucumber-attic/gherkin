@@ -27,5 +27,5 @@ If this is your first time, read through NuGet's guidelines for
     git tag -a -m "Version X.Y.Z" vX.Y.Z
     git push
     git push --tags
-    mono --runtime=v4.0 .nuget/NuGet.exe pack Gherkin.NuGetPackages/Gherkin.nuspec
-    mono --runtime=v4.0 .nuget/NuGet.exe push Gherkin.X.Y.Z.nupkg
+    mono .nuget/NuGet.exe pack Gherkin.NuGetPackages/Gherkin.nuspec
+    mono .nuget/NuGet.exe push Gherkin.X.Y.Z.nupkg
