@@ -55,7 +55,10 @@ feature = parser.parse(gherkin_doc)
 // JavaScript
 var Gherkin = require('gherkin');
 var parser = new Gherkin.Parser();
-var feature = parser.parse(gherkinDoc);
+var feature = parser.parse(
+  new Gherkin.TokenScanner(gherkinDoc),
+  new Gherkin.AstBuilder(),
+  new Gherkin.TokenMatcher());
 ```
 
 ```go
