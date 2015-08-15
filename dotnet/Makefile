@@ -15,7 +15,7 @@ all: .compared
 	touch $@
 
 .built: .sln_built_debug $(NUNIT) LICENSE
-	mono --runtime=v4.0 $(NUNIT) -noxml -nologo -stoponerror Gherkin.Specs/bin/Debug/Gherkin.Specs.dll
+	mono $(NUNIT) -noxml -nologo -stoponerror Gherkin.Specs/bin/Debug/Gherkin.Specs.dll
 	touch $@
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
@@ -49,7 +49,7 @@ Gherkin/Parser.cs: ../gherkin.berp gherkin-csharp.razor ../bin/berp.exe
 .sln_built_debug: Gherkin/Parser.cs $(CS_FILES) Gherkin/gherkin-languages.json
 	rm -f $@
 	mono --version
-	mono --runtime=v4.0 .nuget/NuGet.exe restore Gherkin.CSharp.sln
+	mono .nuget/NuGet.exe restore Gherkin.CSharp.sln
 	xbuild /p:Configuration=Debug
 	touch $@
 
@@ -64,7 +64,7 @@ Gherkin/bin/Release/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES) Gherkin/gherkin-l
 	touch $@
 
 $(NUNIT):
-	mono --runtime=v4.0 .nuget/NuGet.exe install NUnit.Runners -Version 2.6.3 -o packages
+	mono .nuget/NuGet.exe install NUnit.Runners -Version 2.6.3 -o packages
 
 Gherkin/gherkin-languages.json: ../gherkin-languages.json
 	cp $< $@
