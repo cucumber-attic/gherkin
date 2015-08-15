@@ -30,13 +30,12 @@ public class TokenScanner implements Parser.ITokenScanner {
     }
 
     @Override
-    public Token read() {
-        try {
-            String line = reader.readLine();
-            Location location = new Location(++lineNumber, 0);
-            return line == null ? new Token(null, location) : new Token(new GherkinLine(line), location);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public Token read() throws IOException {
+        String line = reader.readLine();
+        Location location = new Location(++lineNumber, 0);
+        if(line == null) {
+            return new Token(null, location);
         }
+        return new Token(new GherkinLine(line), location);
     }
 }

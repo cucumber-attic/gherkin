@@ -6,6 +6,7 @@
 
 package gherkin;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayDeque;
@@ -206,7 +207,11 @@ public class Parser<T> {
     }
 
     private Token readToken(ParserContext context) {
-        return context.tokenQueue.size() > 0 ? context.tokenQueue.remove() : context.tokenScanner.read();
+        try {
+            return context.tokenQueue.size() > 0 ? context.tokenQueue.remove() : context.tokenScanner.read();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -2456,7 +2461,7 @@ public class Parser<T> {
     }
 
     public interface ITokenScanner {
-        Token read();
+        Token read() throws IOException;
     }
 
     public interface ITokenMatcher {

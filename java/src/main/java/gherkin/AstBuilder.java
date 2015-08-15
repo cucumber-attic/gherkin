@@ -159,12 +159,10 @@ public class AstBuilder implements Builder<Feature> {
                 Background background = node.getSingle(RuleType.Background, null);
                 List<ScenarioDefinition> scenarioDefinitions = node.getItems(RuleType.Scenario_Definition);
                 String description = getDescription(header);
-                if (featureLine.matchedGherkinDialect == null) return null;
-                String language = featureLine.matchedGherkinDialect.getLanguage();
+                String language = featureLine.matchedGherkinDialect != null ? featureLine.matchedGherkinDialect.getLanguage() : null;
 
                 return new Feature(tags, getLocation(featureLine, 0), language, featureLine.matchedKeyword, featureLine.matchedText, description, background, scenarioDefinitions, comments);
             }
-
         }
         return node;
     }
