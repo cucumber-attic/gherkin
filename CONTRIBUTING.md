@@ -26,3 +26,5 @@ run when you build with `make`.
     npm outdated --depth 0 # See if you can upgrade anything
     npm version NEW_VERSION
     npm publish
+    git push
+    git push --tags
