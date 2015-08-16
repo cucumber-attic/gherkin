@@ -15,7 +15,7 @@ run when you build with `make`.
 
 ## Make a release
 
-    # TODO: Use the maven release plugin
-
     # Change version in `pom.xml`
-    mvn -Psign clean source:jar javadoc:jar deploy
+    mvn release:clean
+  	mvn --batch-mode -P release-sign-artifacts release:prepare -DdevelopmentVersion=X.Y.Z+1-SNAPSHOT
+  	mvn --batch-mode -P release-sign-artifacts release:perform
