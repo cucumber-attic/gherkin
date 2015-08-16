@@ -24,5 +24,5 @@ run when you build with `make`.
     # Do not manually change the version in package.json - this
     # happens during npm version.
     npm outdated --depth 0 # See if you can upgrade anything
-    npm version NEW_VERSION -m
+    npm version NEW_VERSION
     npm publish
