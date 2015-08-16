@@ -2,9 +2,9 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>Gherkin</id>
-    <version>3.0.0-alpha2</version>
+    <version>3.1.0</version>
     <title>Gherkin Parser</title>
-    <authors>Aslak Hellesøy, Gaspar Nagy, TechTalk</authors>
+    <authors>Aslak Hellesøy, Gaspar Nagy, TechTalk, Cucumber</authors>
     <owners>Cucumber</owners>
     <summary>Cross-platform parser for the Gherkin language.</summary>
     <description>Cross-platform parser for the Gherkin language, used by Cucumber and SpecFlow to parse .feature files.</description>
