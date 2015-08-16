@@ -1,10 +1,11 @@
 // This file is generated. Do not edit! Edit gherkin-javascript.razor instead.
 var Errors = require('./errors');
+var AstBuilder = require('./ast_builder');
+var TokenScanner = require('./token_scanner');
+var TokenMatcher = require('./token_matcher');
 
-module.exports = function Parser(astBuilder) {
-
-  var RULE_TYPES = [
-    'None',
+var RULE_TYPES = [
+  'None',
     '_EOF', // #EOF
     '_Empty', // #Empty
     '_Comment', // #Comment
@@ -41,19 +42,25 @@ module.exports = function Parser(astBuilder) {
     'Examples_Description', // Examples_Description := Description_Helper
     'Description_Helper', // Description_Helper := #Empty* Description? #Comment*
     'Description', // Description! := #Other+
-  ]
+];
 
-  var astBuilder = astBuilder;
-  var context = {};
+module.exports = function Parser(builder) {
+  builder = builder || new AstBuilder();
+  var context;
 
   this.parse = function(tokenScanner, tokenMatcher) {
-    astBuilder.reset();
+    if(typeof tokenScanner == 'string') {
+      tokenScanner = new TokenScanner(tokenScanner);
+    }
+    tokenMatcher = tokenMatcher || new TokenMatcher();
+    builder.reset();
     tokenMatcher.reset();
-    context.tokenScanner = tokenScanner;
-    context.tokenMatcher = tokenMatcher;
-    context.tokenQueue = [];
-    context.errors = [];
-
+    context = {
+      tokenScanner: tokenScanner,
+      tokenMatcher: tokenMatcher,
+      tokenQueue: [],
+      errors: []
+    };
     startRule(context, 'Feature');
     var state = 0;
     var token = null;
@@ -80,24 +87,24 @@ module.exports = function Parser(astBuilder) {
 
   function startRule(context, ruleType) {
     handleAstError(context, function () {
-      astBuilder.startRule(ruleType);
+      builder.startRule(ruleType);
     });
   }
 
   function endRule(context, ruleType) {
     handleAstError(context, function () {
-      astBuilder.endRule(ruleType);
+      builder.endRule(ruleType);
     });
   }
 
   function build(context, token) {
     handleAstError(context, function () {
-      astBuilder.build(token);
+      builder.build(token);
     });
   }
 
   function getResult() {
-    return astBuilder.getResult();
+    return builder.getResult();
   }
 
   function handleAstError(context, action) {

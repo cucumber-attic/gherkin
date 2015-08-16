@@ -1,3 +1,7 @@
+# Git master
+
+* (JavaScript) Default argument for `Parser(builder)` and `Parser.parse(scanner, matcher)`
+
 # 3.1.0 (2015-08-16)
 
 * (Java) Maven artifact `groupId` changed to `io.cucumber` (was previously `info.cukes`)
