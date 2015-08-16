@@ -20,12 +20,14 @@ run when you build with `make`.
 If this is your first time, read through NuGet's guidelines for
 [Creating and Publishing a Package](https://docs.nuget.org/create/creating-and-publishing-a-package).
 
-    # Change version in `Gherkin.NuGetPackages\Gherkin.nuspec`
-
     # Replace X.Y.Z with the version
+    # Change version in `Gherkin.NuGetPackages\Gherkin.nuspec`
+    git clean -dfx
+    mono .nuget/NuGet.exe restore Gherkin.CSharp.sln
+    xbuild /p:Configuration=Release
+    mono .nuget/NuGet.exe pack Gherkin.NuGetPackages/Gherkin.nuspec
+    mono .nuget/NuGet.exe push Gherkin.X.Y.Z.nupkg
     git commit -m "Release X.Y.Z"
     git tag -a -m "Version X.Y.Z" vX.Y.Z
     git push
     git push --tags
-    mono .nuget/NuGet.exe pack Gherkin.NuGetPackages/Gherkin.nuspec
-    mono .nuget/NuGet.exe push Gherkin.X.Y.Z.nupkg
