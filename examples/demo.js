@@ -1,19 +1,15 @@
 var input = document.getElementById('input');
 var output = document.getElementById('output');
 var parser = new Gherkin.Parser();
+parser.stopAtFirstError = false;
 
 function parse() {
-  console.log('parsing');
   var result;
   try {
-    var builder = new Gherkin.AstBuilder();
-    parser.stopAtFirstError = false;
-
-    var scanner = new Gherkin.TokenScanner(input.value);
-    var ast = parser.parse(scanner, builder, new Gherkin.TokenMatcher());
+    var ast = parser.parse(input.value);
     result = JSON.stringify(ast, null, 2);
   } catch (e) {
-    result = e.message;
+    result = e.stack;
   }
   output.innerText = result;
 }
