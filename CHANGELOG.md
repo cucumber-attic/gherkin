@@ -1,4 +1,4 @@
-# 3.1.0 (In Git)
+# 3.1.0 (2015-08-16)
 
 * (JavaScript) remove tea-error dependency
 * [#57](https://github.com/cucumber/gherkin3/issues/57), [#58](https://github.com/cucumber/gherkin3/issues/58) Release Nuget package
