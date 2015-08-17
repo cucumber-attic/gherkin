@@ -6,6 +6,7 @@ gherkin3/ast_builder.py
 gherkin3/ast_node.py
 gherkin3/dialect.py
 gherkin3/errors.py
+gherkin3/gherkin-languages.json
 gherkin3/gherkin_line.py
 gherkin3/parser.py
 gherkin3/token.py
