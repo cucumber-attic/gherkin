@@ -1,3 +1,29 @@
+def table_cells(row):
+    """
+    An iterator returning all the table cells in a row, accounting for
+    escaping.
+    """
+
+    row = iter(row)
+    cell = ''
+    while True:
+        char = next(row, None)
+        if char == '|':
+            yield cell
+            cell = ''
+        elif char == '\\':
+            char = next(row)
+            if char == 'n':
+                cell += '\n'
+            else:
+                cell += char
+        elif char:
+            cell += char
+        else:
+            break
+    yield cell
+
+
 class GherkinLine:
     def __init__(self, line_text, line_number):
         self._line_text = line_text
@@ -25,7 +51,7 @@ class GherkinLine:
 
     def table_cells(self):
         column = self.indent + 1
-        items = self._trimmed_line_text.strip().split('|')
+        items = list(table_cells(self._trimmed_line_text.strip()))
         cells = []
         for item in items[1:-1]:
             cell_indent = len(item) - len(item.lstrip()) + 1
