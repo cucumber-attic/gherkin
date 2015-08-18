@@ -80,9 +80,9 @@ namespace Gherkin
         public IEnumerable<GherkinLineSpan> GetTableCells()
         {
             int position = Indent;
-            var items = trimmedLineText.Split(new [] { GherkinLanguageConstants.TABLE_CELL_SEPARATOR }, StringSplitOptions.None);
+            var items = SplitCells(trimmedLineText).ToList();
             bool isBeforeFirst = true;
-            foreach (var item in items.Take(items.Length - 1)) // skipping the one after last
+            foreach (var item in items.Take(items.Count - 1)) // skipping the one after last
             {
                 if (!isBeforeFirst)
                 {
@@ -100,6 +100,30 @@ namespace Gherkin
                 position += item.Length;
                 position++; // separator
             }
+        }
+
+        private IEnumerable<string> SplitCells(string row)
+        {
+            var rowEnum = row.GetEnumerator();
+            string cell = "";
+            while (rowEnum.MoveNext()) {
+                char c = rowEnum.Current;
+                if (c.ToString() == GherkinLanguageConstants.TABLE_CELL_SEPARATOR) {
+                    yield return cell;
+                    cell = "";
+                } else if (c == GherkinLanguageConstants.TABLE_CELL_ESCAPE_CHAR) {
+                    rowEnum.MoveNext();
+                    c = rowEnum.Current;
+                    if (c == GherkinLanguageConstants.TABLE_CELL_NEWLINE_ESCAPE) {
+                        cell += "\n";
+                    } else {
+                        cell += c;
+                    }
+                } else {
+                    cell += c;
+                }
+            }
+            yield return cell;
         }
 
         private string Trim(string s, out int trimmedStart)
