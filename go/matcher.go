@@ -1,8 +1,10 @@
 package gherkin
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
+	"unicode/utf8"
 )
 
 const (
@@ -10,7 +12,8 @@ const (
 	COMMENT_PREFIX                  = "#"
 	TAG_PREFIX                      = "@"
 	TITLE_KEYWORD_SEPARATOR         = ":"
-	TABLE_CELL_SEPARATOR            = "|"
+	TABLE_CELL_SEPARATOR            = '|'
+	ESCAPED_NEWLINE                 = 'n'
 	DOCSTRING_SEPARATOR             = "\"\"\""
 	DOCSTRING_ALTERNATIVE_SEPARATOR = "```"
 )
@@ -167,18 +170,50 @@ func (m *matcher) MatchDocStringSeparator(line *Line) (ok bool, token *Token, er
 	return
 }
 
+func SplitTableRow(row string) chan string {
+	res := make(chan string)
+
+	go func() {
+		var cell = ""
+
+		for i, w := 0, 0; i < len(row); i += w {
+			var char rune
+			char, w = utf8.DecodeRuneInString(row[i:])
+			if char == TABLE_CELL_SEPARATOR {
+				res <- cell
+				cell = ""
+			} else if char == '\\' {
+				i += w
+				char, w = utf8.DecodeRuneInString(row[i:])
+				if char == ESCAPED_NEWLINE {
+					cell += "\n"
+				} else {
+					cell += fmt.Sprintf("%c", char)
+				}
+			} else {
+				cell += fmt.Sprintf("%c", char)
+			}
+		}
+
+		res <- cell
+		close(res)
+	}()
+
+	return res
+}
+
 func (m *matcher) MatchTableRow(line *Line) (ok bool, token *Token, err error) {
-	if line.StartsWith(TABLE_CELL_SEPARATOR) {
+	var firstChar, _ = utf8.DecodeRuneInString(line.TrimmedLineText)
+	if firstChar == TABLE_CELL_SEPARATOR {
 		var cells []*LineSpan
 		var column = line.Indent() + 1
 		ttxt := strings.Trim(line.TrimmedLineText, " ")
-		splits := strings.Split(ttxt[1:len(ttxt)-1], TABLE_CELL_SEPARATOR)
-		for i := range splits {
-			element := splits[i]
+		splits := SplitTableRow(ttxt[1:len(ttxt)-1])
+		for element := range splits {
 			txt := strings.TrimLeft(element, " ")
 			ind := len(element) - len(txt)
 			cells = append(cells, &LineSpan{column + ind + 1, strings.TrimRight(txt, " ")})
-			column = column + len(element) + 1
+			column = column + utf8.RuneCountInString(element) + 1
 		}
 
 		token, ok = m.newTokenAtLocation(line.LineNumber, line.Indent()), true
