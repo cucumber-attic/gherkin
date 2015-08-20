@@ -1,7 +1,6 @@
 package gherkin
 
 import (
-	"fmt"
 	"regexp"
 	"strings"
 	"unicode/utf8"
@@ -170,50 +169,39 @@ func (m *matcher) MatchDocStringSeparator(line *Line) (ok bool, token *Token, er
 	return
 }
 
-func SplitTableRow(row string) chan string {
-	res := make(chan string)
-
-	go func() {
-		var cell = ""
-
-		for i, w := 0, 0; i < len(row); i += w {
-			var char rune
-			char, w = utf8.DecodeRuneInString(row[i:])
-			if char == TABLE_CELL_SEPARATOR {
-				res <- cell
-				cell = ""
-			} else if char == '\\' {
-				i += w
-				char, w = utf8.DecodeRuneInString(row[i:])
-				if char == ESCAPED_NEWLINE {
-					cell += "\n"
-				} else {
-					cell += fmt.Sprintf("%c", char)
-				}
-			} else {
-				cell += fmt.Sprintf("%c", char)
-			}
-		}
-
-		res <- cell
-		close(res)
-	}()
-
-	return res
-}
-
 func (m *matcher) MatchTableRow(line *Line) (ok bool, token *Token, err error) {
-	var firstChar, _ = utf8.DecodeRuneInString(line.TrimmedLineText)
+	var firstChar, firstPos = utf8.DecodeRuneInString(line.TrimmedLineText)
 	if firstChar == TABLE_CELL_SEPARATOR {
 		var cells []*LineSpan
-		var column = line.Indent() + 1
-		ttxt := strings.Trim(line.TrimmedLineText, " ")
-		splits := SplitTableRow(ttxt[1:len(ttxt)-1])
-		for element := range splits {
-			txt := strings.TrimLeft(element, " ")
-			ind := len(element) - len(txt)
-			cells = append(cells, &LineSpan{column + ind + 1, strings.TrimRight(txt, " ")})
-			column = column + utf8.RuneCountInString(element) + 1
+		var cell []rune
+		var startCol = line.Indent() + 2 // column where the current cell started
+		// start after the first separator, it's not included in the cell
+		for i, w, col := firstPos, 0, startCol; i < len(line.TrimmedLineText); i += w {
+			var char rune
+			char, w = utf8.DecodeRuneInString(line.TrimmedLineText[i:])
+			if char == TABLE_CELL_SEPARATOR {
+				// append current cell
+				txt := string(cell)
+				txtTrimmed := strings.TrimLeft(txt, " ")
+				ind := len(txt) - len(txtTrimmed)
+				cells = append(cells, &LineSpan{startCol + ind, strings.TrimRight(txtTrimmed, " ")})
+				// start building next
+				cell = make([]rune, 0)
+				startCol = col + 1
+			} else if char == '\\' {
+				// skip this character but count the column
+				i += w
+				col++
+				char, w = utf8.DecodeRuneInString(line.TrimmedLineText[i:])
+				if char == ESCAPED_NEWLINE {
+					cell = append(cell, '\n')
+				} else {
+					cell = append(cell, char)
+				}
+			} else {
+				cell = append(cell, char)
+			}
+			col++
 		}
 
 		token, ok = m.newTokenAtLocation(line.LineNumber, line.Indent()), true
