@@ -34,19 +34,47 @@ module Gherkin3
     end
 
     def table_cells
-      column = @indent + 1
-      items = @trimmed_line_text.split('|')
-      if @trimmed_line_text[-1] == '|'
-        items = items[1..-1] # There is no space after last |, only skip space before first |
-      else
-        items = items[1..-2] # Skip space before and after outer |
+      cells = []
+
+      self.split_table_cells(@trimmed_line_text) do |item, column|
+        cell_indent = item.length - item.lstrip.length
+        span = Span.new(@indent + column + cell_indent, item.strip)
+        cells.push(span)
       end
-      items.map do |item|
-        cell_indent = item.length - item.lstrip.length + 1
-        span = Span.new(column + cell_indent, item.strip)
-        column += item.length + 1
-        span
+
+      cells
+    end
+
+    def split_table_cells(row)
+      col = 0
+      start_col = col + 1
+      cell = ''
+      first_cell = true
+      while col < row.length
+        char = row[col]
+        col += 1
+        if char == '|'
+          if first_cell
+            # First cell (content before the first |) is skipped
+            first_cell = false
+          else
+            yield cell, start_col
+          end
+          cell = ''
+          start_col = col + 1
+        elsif char == '\\'
+          char = row[col]
+          col += 1
+          if char == 'n'
+            cell += '\n'
+          else
+            cell += char
+          end
+        else
+          cell += char
+        end
       end
+      # Last cell (content after the last |) is skipped
     end
 
     def tags
