@@ -64,7 +64,42 @@ public class GherkinLine implements IGherkinLine {
 
     @Override
     public List<GherkinLineSpan> getTableCells() {
-        return getSpans("\\s*\\|\\s*");
+        List<GherkinLineSpan> lineSpans = new ArrayList<GherkinLineSpan>();
+        StringBuilder cell = new StringBuilder();
+        boolean beforeFirst = true;
+        int startCol = 0;
+        for (int col = 0; col < trimmedLineText.length(); col++) {
+            char c = trimmedLineText.charAt(col);
+            if (c == '|') {
+                if (beforeFirst) {
+                    // Skip the first empty span
+                    beforeFirst = false;
+                } else {
+                    int contentStart = 0;
+                    while (contentStart < cell.length() && Character.isWhitespace(cell.charAt(contentStart))) {
+                        contentStart++;
+                    }
+                    if (contentStart == cell.length()) {
+                        contentStart = 0;
+                    }
+                    lineSpans.add(new GherkinLineSpan(indent() + startCol + contentStart + 2, cell.toString().trim()));
+                    startCol = col;
+                }
+                cell = new StringBuilder();
+            } else if (c == '\\') {
+                col++;
+                c = trimmedLineText.charAt(col);
+                if (c == 'n') {
+                    cell.append('\n');
+                } else {
+                    cell.append(c);
+                }
+            } else {
+                cell.append(c);
+            }
+        }
+
+        return lineSpans;
     }
 
     private List<GherkinLineSpan> getSpans(String delimiter) {
