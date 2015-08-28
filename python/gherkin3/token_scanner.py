@@ -9,7 +9,7 @@ except ImportError:
     from io import StringIO
 
 
-class TokenScanner:
+class TokenScanner(object):
     def __init__(self, io):
         if isinstance(io, str):
             if os.path.exists(io):

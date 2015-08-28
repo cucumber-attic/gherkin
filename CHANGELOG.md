@@ -1,5 +1,6 @@
 # Git master
 
+* [#72](https://github.com/cucumber/gherkin3/pull/72) (Python) Use new-style classes
 * (JavaScript) Default argument for `Parser(builder)` and `Parser.parse(scanner, matcher)`
 
 # 3.1.0 (2015-08-16)
