@@ -45,14 +45,14 @@ RULE_TYPE = [
     'Description',  # Description! := #Other+
   ]
 
-class ParserContext:
+class ParserContext(object):
     def __init__(self, token_scanner, token_matcher, token_queue, errors):
         self.token_scanner = token_scanner
         self.token_matcher = token_matcher
         self.token_queue = token_queue
         self.errors = errors
 
-class Parser:
+class Parser(object):
     def __init__(self, ast_builder=AstBuilder()):
         self.ast_builder = ast_builder
         self.stop_at_first_error = False
