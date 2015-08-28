@@ -1,4 +1,4 @@
-class Token:
+class Token(object):
     def __init__(self, gherkin_line, location):
         self.line = gherkin_line
         self.location = location

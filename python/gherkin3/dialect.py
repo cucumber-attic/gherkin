@@ -2,7 +2,7 @@ import os
 import json
 
 
-class Dialect:
+class Dialect(object):
     DIALECTS = json.load(open(os.path.join(os.path.dirname(__file__),
                                            'gherkin-languages.json'), 'r'), encoding='utf-8')
 

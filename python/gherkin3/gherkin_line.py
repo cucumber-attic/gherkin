@@ -1,4 +1,4 @@
-class GherkinLine:
+class GherkinLine(object):
     def __init__(self, line_text, line_number):
         self._line_text = line_text
         self._line_number = line_number
