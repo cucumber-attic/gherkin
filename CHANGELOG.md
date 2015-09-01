@@ -1,5 +1,6 @@
 # Git master
 
+* (Python) [#74](https://github.com/cucumber/gherkin3/pull/74) Close file descriptors
 * (Python) [#72](https://github.com/cucumber/gherkin3/pull/72) Use new-style classes
 * (JavaScript) Default argument for `Parser(builder)` and `Parser.parse(scanner, matcher)`
 
