@@ -3,11 +3,10 @@ import os
 from .token import Token
 from .gherkin_line import GherkinLine
 try:
-    python2 = True
     from cStringIO import StringIO
     io.StringIO = StringIO
 except ImportError:
-    python2 = False
+    pass
 
 
 class TokenScanner(object):
@@ -24,7 +23,7 @@ class TokenScanner(object):
         location = {'line': self.line_number}
         line = self.io.readline()
         return Token((GherkinLine(line, self.line_number) if line else line), location)
-    
+
     def __del__(self):
         # close file descriptor if it's still open
         try:
