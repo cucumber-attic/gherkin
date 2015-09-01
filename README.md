@@ -70,6 +70,7 @@ feature, err := gherkin.ParseFeature(reader)
 *Download the package via: `go get github.com/cucumber/gherkin-go`*
 
 ```python
+# Python
 from gherkin3.token_scanner import TokenScanner
 from gherkin3.parser import Parser
 
