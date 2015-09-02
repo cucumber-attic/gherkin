@@ -14,10 +14,12 @@ This project adheres to [Semantic Versioning](http://semver.org).
 ### Changed
 * (Java)        Improvements to the build process
 * (JavaScript)  It's now possible to pass a string directly to `Parser.parse()`
-* (Python)      [#72](https://github.com/cucumber/gherkin3/pull/72) Use new-style classes
+* (Python)      Use new-style classes 
+  ([#72](https://github.com/cucumber/gherkin3/pull/72))
 
 ### Fixed
-* (Python)      [#74](https://github.com/cucumber/gherkin3/pull/74) File descriptors are now excplicitly closed
+* (Python) File descriptors are now excplicitly closed
+  ([#74](https://github.com/cucumber/gherkin3/pull/74))
 
 
 
@@ -27,15 +29,18 @@ This project adheres to [Semantic Versioning](http://semver.org).
 * (JavaScript) Remove `tea-error` dependency
 
 ### Added
-* (.NET) [#57](https://github.com/cucumber/gherkin3/issues/57)
-     and [#58](https://github.com/cucumber/gherkin3/issues/58) Release Nuget package
+* (.NET) Release Nuget package
+  ([#57](https://github.com/cucumber/gherkin3/issues/57),
+   [#58](https://github.com/cucumber/gherkin3/issues/58))
 
 ### Changed
 * (Java) Maven `groupId` artifact changed from `info.cukes` to `io.cucumber`
 
 ### Fixed
-* (All) [#62](https://github.com/cucumber/gherkin3/issues/62) Multiple calls to `parse()` cannot use the same instance of `AstBuilder` 
-* (Python) [#63](https://github.com/cucumber/gherkin3/issues/63) `gherkin-languages.json` not packaged
+* (All) Multiple calls to `parse()` cannot use the same instance of `AstBuilder`
+  ([#62](https://github.com/cucumber/gherkin3/issues/62))
+* (Python) `gherkin-languages.json` not packaged
+  ([#63](https://github.com/cucumber/gherkin3/issues/63))
 
 
 
