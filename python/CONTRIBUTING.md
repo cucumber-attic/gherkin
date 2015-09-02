@@ -10,7 +10,7 @@ Just run `make` from this directory.
 
 ### Using nosetests
 
-Just run `nosetests` from this directory (you need to `npm test` first).
+Just run `nosetests` from this directory (you need to `pip install -r requirements.txt` first).
 
 Keep in mind that this will only run unit tests. The acceptance tests are only
 run when you build with `make`.

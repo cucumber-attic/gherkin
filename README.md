@@ -18,9 +18,6 @@ Gherkin 3 is currently implemented for the following platforms:
 * Go
 * Python
 
-See `TODO.md` for what's remaining before we're ready to roll it out and refactor
-the Cucumber implementations to use it.
-
 See `CONTRIBUTING.md` if you want to contribute a parser for a new language.
 Our wish-list is (in no particular order):
 
@@ -70,6 +67,7 @@ feature, err := gherkin.ParseFeature(reader)
 *Download the package via: `go get github.com/cucumber/gherkin-go`*
 
 ```python
+# Python
 from gherkin3.token_scanner import TokenScanner
 from gherkin3.parser import Parser
 

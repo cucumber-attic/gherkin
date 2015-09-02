@@ -2,7 +2,7 @@ from .ast_node import AstNode
 from .errors import AstBuilderException
 
 
-class AstBuilder:
+class AstBuilder(object):
     def __init__(self):
         self.reset()
 
