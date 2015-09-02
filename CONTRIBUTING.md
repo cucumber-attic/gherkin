@@ -2,13 +2,15 @@ Please read [CONTRIBUTING](https://github.com/cucumber/gherkin3/blob/master/CONT
 You should clone the [cucumber/gherkin3](https://github.com/cucumber/gherkin3) repo if you want
 to contribute.
 
-## Using make
+## Run tests
+
+### Using make
 
 Just run `make` from this directory.
 
 Even if you prefer `make` - run `rake` occasionally, as it reports better warnings.
 
-## Using rake
+### Using rake
 
 Just run `rake` from this directory.
 
