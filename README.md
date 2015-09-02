@@ -18,9 +18,6 @@ Gherkin 3 is currently implemented for the following platforms:
 * Go
 * Python
 
-See `TODO.md` for what's remaining before we're ready to roll it out and refactor
-the Cucumber implementations to use it.
-
 See `CONTRIBUTING.md` if you want to contribute a parser for a new language.
 Our wish-list is (in no particular order):
 
@@ -146,7 +143,7 @@ The compiler compiles the AST produced by the parser
 into a simpler form - *Pickles*.
 
     ╔═══╗   ┌────────┐   ╔═══════╗
-    ║AST║──▶│Compiler│──▶║Pickles║
+    ║AST║──▶︎│Compiler│──▶︎║Pickles║
     ╚═══╝   └────────┘   ╚═══════╝
 
 The rationale is to decouple Gherkin from Cucumber so that Cucumber is open to
