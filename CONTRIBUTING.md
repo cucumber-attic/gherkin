@@ -2,11 +2,13 @@ Please read [CONTRIBUTING](https://github.com/cucumber/gherkin3/blob/master/CONT
 You should clone the [cucumber/gherkin3](https://github.com/cucumber/gherkin3) repo if you want
 to contribute.
 
-## Using make
+## Run tests
+
+### Using make
 
 Just run `make` from this directory.
 
-## Using just Maven
+### Using just Maven
 
 Just run `mvn clean test` from this directory.
 
