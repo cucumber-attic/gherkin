@@ -2,6 +2,14 @@ require_relative 'token'
 require_relative 'gherkin_line'
 
 module Gherkin3
+  
+  # The scanner reads a gherkin doc (typically read from a .feature file) and 
+  # creates a token for line. The tokens are passed to the parser, which outputs 
+  # an AST (Abstract Syntax Tree).
+  #
+  # If the scanner sees a # language header, it will reconfigure itself dynamically 
+  # to look for Gherkin keywords for the associated language. The keywords are defined 
+  # in gherkin-languages.json.
   class TokenScanner
 
     def initialize(source_or_path_or_io)
