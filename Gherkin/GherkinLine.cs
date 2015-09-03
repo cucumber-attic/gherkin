@@ -79,27 +79,53 @@ namespace Gherkin
         }
         public IEnumerable<GherkinLineSpan> GetTableCells()
         {
-            int position = Indent;
-            var items = trimmedLineText.Split(new [] { GherkinLanguageConstants.TABLE_CELL_SEPARATOR }, StringSplitOptions.None);
+            var items = SplitCells(trimmedLineText).ToList();
             bool isBeforeFirst = true;
-            foreach (var item in items.Take(items.Length - 1)) // skipping the one after last
+            foreach (var item in items.Take(items.Count - 1)) // skipping the one after last
             {
                 if (!isBeforeFirst)
                 {
                     int trimmedStart;
-                    var cellText = Trim(item, out trimmedStart);
-                    var cellPosition = position + trimmedStart;
+                    var cellText = Trim(item.Item1, out trimmedStart);
+                    var cellPosition = item.Item2 + trimmedStart;
 
                     if (cellText.Length == 0)
-                        cellPosition = position;
+                        cellPosition = item.Item2;
 
-                    yield return new GherkinLineSpan(cellPosition + 1, cellText);
+                    yield return new GherkinLineSpan(Indent + cellPosition + 1, cellText);
                 }
 
                 isBeforeFirst = false;
-                position += item.Length;
-                position++; // separator
             }
+        }
+
+        private IEnumerable<Tuple<string, int>> SplitCells(string row)
+        {
+            var rowEnum = row.GetEnumerator();
+            string cell = "";
+            int pos = 0;
+            int startPos = 0;
+            while (rowEnum.MoveNext()) {
+                pos++;
+                char c = rowEnum.Current;
+                if (c.ToString() == GherkinLanguageConstants.TABLE_CELL_SEPARATOR) {
+                    yield return Tuple.Create(cell, startPos);
+                    cell = "";
+                    startPos = pos;
+                } else if (c == GherkinLanguageConstants.TABLE_CELL_ESCAPE_CHAR) {
+                    rowEnum.MoveNext();
+                    pos++;
+                    c = rowEnum.Current;
+                    if (c == GherkinLanguageConstants.TABLE_CELL_NEWLINE_ESCAPE) {
+                        cell += "\n";
+                    } else {
+                        cell += c;
+                    }
+                } else {
+                    cell += c;
+                }
+            }
+            yield return Tuple.Create(cell, startPos);
         }
 
         private string Trim(string s, out int trimmedStart)
