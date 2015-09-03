@@ -11,12 +11,13 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ## [Unreleased][unreleased]
 
 ### Added
-* (JavaScript)  Default arguments for `Parser(builder)` and `Parser.parse(scanner, matcher)` 
+* (JavaScript)  Default arguments for `Parser(builder)` and `Parser.parse(scanner, matcher)` (by [aslakhellesoy](https://github.com/aslakhellesoy))
+* (All) Added Bosnian ([#48](https://github.com/cucumber/gherkin3/pull/48) by [10-io](https://github.com/10-io))
 
 ### Changed
 * (Java)        Improvements to the build process
 * (JavaScript)  It's now possible to pass a string directly to `Parser.parse()`
-* (Python)      Use new-style classes 
+* (Python)      Use new-style classes
   ([#72](https://github.com/cucumber/gherkin3/pull/72))
 
 ### Fixed
