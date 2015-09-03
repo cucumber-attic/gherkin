@@ -3,7 +3,7 @@
 
     <groupId>io.cucumber</groupId>
     <artifactId>gherkin3</artifactId>
-    <version>3.1.1-SNAPSHOT</version>
+    <version>3.1.1</version>
     <packaging>jar</packaging>
     <name>Gherkin</name>
     <description>Gherkin parser</description>
@@ -25,7 +25,7 @@
         <connection>scm:git:git://github.com/cucumber/gherkin-java.git</connection>
         <developerConnection>scm:git:git@github.com:cucumber/gherkin-java.git</developerConnection>
         <url>git://github.com/cucumber/gherkin-java.git</url>
-      <tag>HEAD</tag>
+      <tag>v3.1.1</tag>
   </scm>
 
     <dependencies>
