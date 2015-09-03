@@ -142,7 +142,8 @@ a section for the upcoming changes.
 
 Then finally create a tag in this master repo and push.
 
-    git tag vX.Y.Z
+    git commit -m "Release X.Y.Z"
+    git tag -a -m "Version X.Y.Z" vX.Y.Z
     git push
     git push --tags
     make push-subtrees
