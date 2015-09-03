@@ -63,5 +63,32 @@ namespace Gherkin.Specs
             Assert.AreEqual(expected1, astText1);
             Assert.AreEqual(expected2, astText2);
         }
+
+        [Test]
+        public void TestChangeDefaultLanguage()
+        {
+            var tokenMatcher = new TokenMatcher("no");
+            var parser = new Parser(new AstBuilder<Feature>());
+            var jsonSerializerSettings = new JsonSerializerSettings();
+            jsonSerializerSettings.Formatting = Formatting.Indented;
+            jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+
+            var parsingResult = parser.Parse(new TokenScanner(new StringReader("Egenskap: i18n support")), tokenMatcher);
+            var astText = LineEndingHelper.NormalizeLineEndings(JsonConvert.SerializeObject(parsingResult, jsonSerializerSettings));
+
+	    string expected = LineEndingHelper.NormalizeLineEndings(@"{
+  ""Tags"": [],
+  ""Location"": {
+    ""Line"": 1,
+    ""Column"": 1
+  },
+  ""Language"": ""no"",
+  ""Keyword"": ""Egenskap"",
+  ""Name"": ""i18n support"",
+  ""ScenarioDefinitions"": [],
+  ""Comments"": []
+}");
+            Assert.AreEqual(expected, astText);
+        }
     }
 }

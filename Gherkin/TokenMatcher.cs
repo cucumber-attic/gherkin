@@ -28,6 +28,9 @@ namespace Gherkin
             this.dialectProvider = dialectProvider ?? new GherkinDialectProvider();
         }
 
+        public TokenMatcher(string defaultLanguage) : this(new GherkinDialectProvider(defaultLanguage)) {
+        }
+
         public void Reset()
         {
             activeDocStringSeparator = null;
