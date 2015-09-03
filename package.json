@@ -21,10 +21,10 @@
   },
   "homepage": "https://github.com/cucumber/gherkin3",
   "devDependencies": {
-    "bower": "^1.4.1",
+    "bower": "^1.5.2",
     "browserify": "^11.0.1",
-    "mocha": "^2.2.5",
-    "mversion": "^1.10.0",
+    "mocha": "^2.3.0",
+    "mversion": "^1.10.1",
     "uglify-js": "^2.4.24"
   }
 }
