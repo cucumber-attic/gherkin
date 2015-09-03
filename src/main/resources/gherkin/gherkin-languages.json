@@ -208,6 +208,48 @@
       "Apabila "
     ]
   },
+  "bs": {
+    "and": [
+      "* ",
+      "I ",
+      "A "
+    ],
+    "background": [
+      "Pozadina"
+    ],
+    "but": [
+      "* ",
+      "Ali "
+    ],
+    "examples": [
+      "Primjeri"
+    ],
+    "feature": [
+      "Karakteristika"
+    ],
+    "given": [
+       "* ",
+       "Dato "
+    ],
+    "name": "Bosnian",
+    "native": "Bosanski",
+    "scenario": [
+       "Scenariju",
+       "Scenario"
+    ],
+    "scenarioOutline": [
+       "Scenariju-obris",
+       "Scenario-outline"
+    ], 
+    "then": [
+      "* ",
+      "Zatim "
+    ],
+    "when": [
+      "* ",
+      "Kada "
+    ]
+  },
   "ca": {
     "and": [
       "* ",
