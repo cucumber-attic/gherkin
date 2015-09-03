@@ -137,9 +137,15 @@ When all components are released, update the master repo:
 
     make pull-subtrees
 
-Then finally create a tag there:
+Now, update `CHANGELOG.md` with the new release number and date, while keeping
+a section for the upcoming changes.
 
-    git tag v3.0.0
+Then finally create a tag in this master repo and push.
+
+    git tag vX.Y.Z
+    git push
+    git push --tags
+    make push-subtrees
 
 ## Benchmarking
 
