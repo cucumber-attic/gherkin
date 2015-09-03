@@ -1,4 +1,5 @@
 from gherkin3.token_scanner import TokenScanner
+from gherkin3.token_matcher import TokenMatcher
 from gherkin3.parser import Parser
 from gherkin3.errors import ParserError
 from nose.tools import assert_equals, assert_raises
@@ -61,3 +62,19 @@ def test_parse_feature_after_parser_error():
         'type': 'Scenario'}]
 
     assert_equals(expected, feature['scenarioDefinitions'])
+
+
+def test_change_the_default_language():
+    parser = Parser()
+    matcher = TokenMatcher('no')
+    feature = parser.parse(TokenScanner("Egenskap: i18n support"), matcher)
+    expected = {'comments': [],
+     'keyword': u'Egenskap',
+     'language': 'no',
+     'location': {'column': 1, 'line': 1},
+     'name': u'i18n support',
+     'scenarioDefinitions': [],
+     'tags': [],
+     'type': 'Feature'}
+
+    assert_equals(expected, feature)
