@@ -13,6 +13,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Added
 * (JavaScript)  Default arguments for `Parser(builder)` and `Parser.parse(scanner, matcher)` (by [aslakhellesoy](https://github.com/aslakhellesoy))
 * (All) Added Bosnian ([#48](https://github.com/cucumber/gherkin3/pull/48) by [10-io](https://github.com/10-io))
+* (Python) Allow `parser.parse(gherkin)` to take a String argument (by [aslakhellesoy](https://github.com/aslakhellesoy))
 
 ### Changed
 * (Java)        Improvements to the build process

@@ -32,27 +32,27 @@ Our wish-list is (in no particular order):
 ```java
 // Java
 Parser<Feature> parser = new Parser<>(new AstBuilder());
-Feature feature = parser.parse(gherkinDoc);
+Feature feature = parser.parse("Feature: ...");
 ```
 
 ```csharp
 // C#
 var parser = new Parser();
-var feature = parser.Parse(gherkinDoc);
+var feature = parser.Parse("Feature: ...");
 ```
 
 ```ruby
 # Ruby
 require 'gherkin3'
 parser = Gherkin3::Parser.new
-feature = parser.parse(gherkin_doc)
+feature = parser.parse("Feature: ...")
 ```
 
 ```javascript
 // JavaScript
 var Gherkin = require('gherkin');
 var parser = new Gherkin.Parser();
-var feature = parser.parse("Feature: Foo");
+var feature = parser.parse("Feature: ...");
 ```
 
 ```go
@@ -68,11 +68,10 @@ feature, err := gherkin.ParseFeature(reader)
 
 ```python
 # Python
-from gherkin3.token_scanner import TokenScanner
 from gherkin3.parser import Parser
 
 parser = Parser()
-feature = parser.parse(TokenScanner("Feature: Foo"))
+feature = parser.parse("Feature: ...")
 ```
 
 ## Why Gherkin 3?
