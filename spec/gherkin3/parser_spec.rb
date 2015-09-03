@@ -95,5 +95,22 @@ module Gherkin3
         comments: []
       })
     end
+
+    it "can change the default language" do
+      parser = Parser.new
+      matcher = TokenMatcher.new("no")
+      scanner = TokenScanner.new("Egenskap: i18n support")
+      ast = parser.parse(scanner, matcher)
+      expect(ast).to eq({
+        type: :Feature,
+        tags: [],
+        location: {line: 1, column: 1},
+        language: "no",
+        keyword: "Egenskap",
+        name: "i18n support",
+        scenarioDefinitions: [],
+        comments: []
+      })
+    end
   end
 end

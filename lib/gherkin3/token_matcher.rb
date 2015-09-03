@@ -6,12 +6,13 @@ module Gherkin3
     LANGUAGE_PATTERN = /^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$/
 
     def initialize(dialect_name = 'en')
+      @default_dialect_name = dialect_name
       change_dialect(dialect_name, nil)
       reset
     end
 
     def reset
-      change_dialect('en', nil) unless @dialect_name == 'en'
+      change_dialect(@default_dialect_name, nil) unless @dialect_name == @default_dialect_name
       @active_doc_string_separator = nil
       @indent_to_remove = 0
     end
