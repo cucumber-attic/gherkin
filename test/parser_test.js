@@ -102,4 +102,23 @@ describe('Parser', function () {
       comments: []
     });
   });
+
+  it("can change the default language", function () {
+    var parser = new Gherkin.Parser(new Gherkin.AstBuilder());
+    var matcher = new Gherkin.TokenMatcher("no");
+    var scanner = new Gherkin.TokenScanner("Egenskap: i18n support");
+    var ast = parser.parse(scanner, matcher);
+    assert.deepEqual(ast, {
+      type: 'Feature',
+      tags: [],
+      location: { line: 1, column: 1 },
+      language: 'no',
+      keyword: 'Egenskap',
+      name: 'i18n support',
+      description: undefined,
+      background: undefined,
+      scenarioDefinitions: [],
+      comments: []
+    });
+  });
 });
