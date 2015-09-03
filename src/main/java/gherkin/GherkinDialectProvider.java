@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class GherkinDialectProvider implements IGherkinDialectProvider {
     private static Map<String, Map<String, List<String>>> DIALECTS;
+    private final String default_dialect_name;
 
     static {
         Gson gson = new Gson();
@@ -22,8 +23,16 @@ public class GherkinDialectProvider implements IGherkinDialectProvider {
         }
     }
 
+    public GherkinDialectProvider(String default_dialect_name) {
+        this.default_dialect_name = default_dialect_name;
+    }
+
+    public GherkinDialectProvider() {
+        this("en");
+    }
+
     public GherkinDialect getDefaultDialect() {
-        return getDialect("en", null);
+        return getDialect(default_dialect_name, null);
     }
 
     @Override

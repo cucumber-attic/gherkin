@@ -65,5 +65,25 @@ public class ParserTest {
                 "\"location\":{\"line\":1,\"column\":1}}"),
                 jsonParser.parse(gson.toJson(feature)));
     }
+    @Test
+    public void change_default_language() throws Exception {
+        Gson gson = new Gson();
+        JsonParser jsonParser = new JsonParser();
+        TokenMatcher matcher = new TokenMatcher("no");
+        Parser<Feature> parser = new Parser<>(new AstBuilder());
+
+	    Feature feature = parser.parse("Egenskap: i18n support\n", matcher);
+
+        assertEquals(jsonParser.parse("" +
+                "{\"tags\":[]," +
+                "\"language\":\"no\"," +
+                "\"keyword\":\"Egenskap\"," +
+                "\"name\":\"i18n support\"," +
+                "\"scenarioDefinitions\":[]," +
+                "\"comments\":[]," +
+                "\"type\":\"Feature\"," +
+                "\"location\":{\"line\":1,\"column\":1}}"),
+                jsonParser.parse(gson.toJson(feature)));
+    }
 
 }
