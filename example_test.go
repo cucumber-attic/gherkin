@@ -183,3 +183,32 @@ Feature: Foo
 	//     Steps: length: 1
 	//
 }
+
+func ExampleChangeDefaultDialect() {
+
+	builder := gherkin.NewAstBuilder()
+	parser := gherkin.NewParser(builder)
+	parser.StopAtFirstError(false)
+	matcher := gherkin.NewLanguageMatcher(gherkin.GherkinDialectsBuildin(), "no")
+	input := "Egenskap: i18n support"
+	reader := strings.NewReader(input)
+
+	err := parser.Parse(gherkin.NewScanner(reader), matcher)
+	if err != nil {
+		fmt.Fprintf(os.Stdout, "%s\n", err)
+		return
+	}
+	feature := builder.GetFeature()
+	fmt.Fprintf(os.Stdout, "Location: %+v\n", feature.Location)
+	fmt.Fprintf(os.Stdout, "Keyword: %+v\n", feature.Keyword)
+	fmt.Fprintf(os.Stdout, "Name: %+v\n", feature.Name)
+	fmt.Fprintf(os.Stdout, "ScenarioDefinitions: length: %+v\n", len(feature.ScenarioDefinitions))
+
+	// Output:
+	//
+	// Location: &{Line:1 Column:1}
+	// Keyword: Egenskap
+	// Name: i18n support
+	// ScenarioDefinitions: length: 0
+	//
+}
