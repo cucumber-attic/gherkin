@@ -5,6 +5,21 @@ using Gherkin.Ast;
 
 namespace Gherkin
 {
+    /// <summary>
+    /// This class is used by the Parser to build an AST (Abstract Syntax Tree), which is 
+    /// composed of Nodes.
+    /// 
+    /// The implementation is simple objects without behaviour, only data. 
+    /// The AST must have a JSON representation (this is used for testing).
+    /// 
+    /// Every Node has a Location, which describes the line number and column number in 
+    /// the input file. These numbers are 1-indexed.
+    /// 
+    /// All fields on nodes are strings (except for `Location.line` and `Location.column`).
+    /// 
+    /// In the JSON representation, each Node also has a `type` property with the name of 
+    /// the node type.
+    /// </summary>
     public class AstBuilder<T> : IAstBuilder<T>
     {
         private readonly Stack<AstNode> stack = new Stack<AstNode>();

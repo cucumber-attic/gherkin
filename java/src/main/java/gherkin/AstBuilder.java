@@ -26,6 +26,27 @@ import static gherkin.Parser.RuleType;
 import static gherkin.Parser.TokenType;
 import static gherkin.StringUtils.join;
 
+
+/**
+ * <p>
+ * This class is used by the Parser to build an AST (Abstract Syntax Tree), which is 
+ * composed of Nodes.</p>
+ * 
+ * <p>
+ * The implementation is simple objects without behaviour, only data. 
+ * The AST must have a JSON representation (this is used for testing).</p>
+ * 
+ * <p>
+ * Every Node has a Location, which describes the line number and column number in 
+ * the input file. These numbers are 1-indexed.</p>
+ * 
+ * <p>
+ * All fields on nodes are strings (except for `Location.line` and `Location.column`).</p>
+ * 
+ * <p>
+ * In the JSON representation, each Node also has a `type` property with the name of 
+ * the node type.</p>
+ */
 public class AstBuilder implements Builder<Feature> {
     private Deque<AstNode> stack;
     private List<Comment> comments;
