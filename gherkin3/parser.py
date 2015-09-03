@@ -2,8 +2,8 @@
 from collections import deque
 from .ast_builder import AstBuilder
 from .token_matcher import TokenMatcher
+from .token_scanner import TokenScanner
 from .errors import UnexpectedEOFException, UnexpectedTokenException, ParserException, CompositeParserException
-
 
 RULE_TYPE = [
     'None',
@@ -57,7 +57,8 @@ class Parser(object):
         self.ast_builder = ast_builder
         self.stop_at_first_error = False
 
-    def parse(self, token_scanner, token_matcher=TokenMatcher()):
+    def parse(self, token_scanner_or_str, token_matcher=TokenMatcher()):
+        token_scanner = TokenScanner(token_scanner_or_str) if isinstance(token_scanner_or_str, str) else token_scanner_or_str
         self.ast_builder.reset()
         token_matcher.reset()
         context = ParserContext(
