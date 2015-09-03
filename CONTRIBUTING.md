@@ -20,10 +20,10 @@ run when you build with `make`.
 This is based on [How to submit a package to PyPI](http://peterdowns.com/posts/first-time-with-pypi.html)
 
     # Change `version` and `download_url` in `setup.py`
-
     # Replace X.Y.Z with the version
+
+    python setup.py sdist upload -r pypi
     git commit -m "Release X.Y.Z"
     git tag -a -m "Version X.Y.Z" vX.Y.Z
     git push
     git push --tags
-    python setup.py sdist upload -r pypi
