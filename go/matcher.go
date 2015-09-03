@@ -19,6 +19,7 @@ const (
 
 type matcher struct {
 	gdp                      GherkinDialectProvider
+        default_lang             string
 	lang                     string
 	dialect                  *GherkinDialect
 	activeDocStringSeparator string
@@ -29,8 +30,19 @@ type matcher struct {
 func NewMatcher(gdp GherkinDialectProvider) Matcher {
 	return &matcher{
 		gdp:             gdp,
+		default_lang:    DEFAULT_DIALECT,
 		lang:            DEFAULT_DIALECT,
 		dialect:         gdp.GetDialect(DEFAULT_DIALECT),
+		languagePattern: regexp.MustCompile("^\\s*#\\s*language\\s*:\\s*([a-zA-Z\\-_]+)\\s*$"),
+	}
+}
+
+func NewLanguageMatcher(gdp GherkinDialectProvider, language string) Matcher {
+	return &matcher{
+		gdp:             gdp,
+		default_lang:    language,
+		lang:            language,
+		dialect:         gdp.GetDialect(language),
 		languagePattern: regexp.MustCompile("^\\s*#\\s*language\\s*:\\s*([a-zA-Z\\-_]+)\\s*$"),
 	}
 }
@@ -39,7 +51,7 @@ func (m *matcher) Reset() {
 	m.indentToRemove = 0
 	m.activeDocStringSeparator = ""
 	if m.lang != "en" {
-		m.dialect = m.gdp.GetDialect("en")
+		m.dialect = m.gdp.GetDialect(m.default_lang)
 		m.lang = "en"
 	}
 }

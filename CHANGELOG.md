@@ -11,6 +11,10 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ## [Unreleased][unreleased]
 
 ### Added
+* (All)         It's now possible to pass a default language to the TokenMatcher.
+                Previously it only worked in Javascript.
+  ([#78](https://github.com/cucumber/gherkin3/issues/78)
+   by [brasmusson](https://github.com/brasmusson))
 
 ### Changed
 

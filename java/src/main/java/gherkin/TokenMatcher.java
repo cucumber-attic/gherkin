@@ -25,6 +25,10 @@ public class TokenMatcher implements ITokenMatcher {
         this(new GherkinDialectProvider());
     }
 
+    public TokenMatcher(String default_dialect_name) {
+        this(new GherkinDialectProvider(default_dialect_name));
+    }
+
     @Override
     public void reset() {
         activeDocStringSeparator = null;
