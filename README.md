@@ -251,3 +251,7 @@ The various compilers producing pickles might move to a separate project too.
 ## Building Gherkin 3
 
 See `CONTRIBUTING.md`
+
+## Projects using Gherkin 3
+
+- [godog](https://github.com/DATA-DOG/godog) - Cucumber like BDD framework for **go**
