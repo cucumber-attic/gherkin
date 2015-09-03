@@ -3,6 +3,7 @@ package gherkin
 import (
 	"regexp"
 	"strings"
+	"unicode/utf8"
 )
 
 const (
@@ -10,7 +11,8 @@ const (
 	COMMENT_PREFIX                  = "#"
 	TAG_PREFIX                      = "@"
 	TITLE_KEYWORD_SEPARATOR         = ":"
-	TABLE_CELL_SEPARATOR            = "|"
+	TABLE_CELL_SEPARATOR            = '|'
+	ESCAPED_NEWLINE                 = 'n'
 	DOCSTRING_SEPARATOR             = "\"\"\""
 	DOCSTRING_ALTERNATIVE_SEPARATOR = "```"
 )
@@ -168,17 +170,38 @@ func (m *matcher) MatchDocStringSeparator(line *Line) (ok bool, token *Token, er
 }
 
 func (m *matcher) MatchTableRow(line *Line) (ok bool, token *Token, err error) {
-	if line.StartsWith(TABLE_CELL_SEPARATOR) {
+	var firstChar, firstPos = utf8.DecodeRuneInString(line.TrimmedLineText)
+	if firstChar == TABLE_CELL_SEPARATOR {
 		var cells []*LineSpan
-		var column = line.Indent() + 1
-		ttxt := strings.Trim(line.TrimmedLineText, " ")
-		splits := strings.Split(ttxt[1:len(ttxt)-1], TABLE_CELL_SEPARATOR)
-		for i := range splits {
-			element := splits[i]
-			txt := strings.TrimLeft(element, " ")
-			ind := len(element) - len(txt)
-			cells = append(cells, &LineSpan{column + ind + 1, strings.TrimRight(txt, " ")})
-			column = column + len(element) + 1
+		var cell []rune
+		var startCol = line.Indent() + 2 // column where the current cell started
+		// start after the first separator, it's not included in the cell
+		for i, w, col := firstPos, 0, startCol; i < len(line.TrimmedLineText); i += w {
+			var char rune
+			char, w = utf8.DecodeRuneInString(line.TrimmedLineText[i:])
+			if char == TABLE_CELL_SEPARATOR {
+				// append current cell
+				txt := string(cell)
+				txtTrimmed := strings.TrimLeft(txt, " ")
+				ind := len(txt) - len(txtTrimmed)
+				cells = append(cells, &LineSpan{startCol + ind, strings.TrimRight(txtTrimmed, " ")})
+				// start building next
+				cell = make([]rune, 0)
+				startCol = col + 1
+			} else if char == '\\' {
+				// skip this character but count the column
+				i += w
+				col++
+				char, w = utf8.DecodeRuneInString(line.TrimmedLineText[i:])
+				if char == ESCAPED_NEWLINE {
+					cell = append(cell, '\n')
+				} else {
+					cell = append(cell, char)
+				}
+			} else {
+				cell = append(cell, char)
+			}
+			col++
 		}
 
 		token, ok = m.newTokenAtLocation(line.LineNumber, line.Indent()), true

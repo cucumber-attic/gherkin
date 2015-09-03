@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Scenario: They are the future",
+    "source": [
+      {
+        "column": 3,
+        "line": 2
+      }
+    ],
+    "steps": [
+      {
+        "argument": {
+          "rows": [
+            [
+              "æ",
+              "o"
+            ],
+            [
+              "a",
+              "ø"
+            ]
+          ]
+        },
+        "source": [
+          {
+            "column": 5,
+            "line": 3
+          }
+        ],
+        "text": "they have arrived"
+      },
+      {
+        "argument": {
+          "rows": [
+            [
+              "æ",
+              "|o"
+            ],
+            [
+              "|a",
+              "ø\\"
+            ]
+          ]
+        },
+        "source": [
+          {
+            "column": 5,
+            "line": 6
+          }
+        ],
+        "text": "they have arrived"
+      }
+    ],
+    "tags": []
+  }
+]
