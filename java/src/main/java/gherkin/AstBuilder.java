@@ -26,6 +26,17 @@ import static gherkin.Parser.RuleType;
 import static gherkin.Parser.TokenType;
 import static gherkin.StringUtils.join;
 
+
+/**
+ * <p>
+ * The <code>AstBuilder</code> (used by the <code>Parser</code>) builds the AST (Abstract Syntax Tree).
+ * The AST is comprised of <code>AstNode</code> objects (or “nodes”).</p>
+ * 
+ * <p>
+ * The implementation is simple objects without behaviour, only data. 
+ * It's up to the implementation to decide whether to use classes or just basic collections, 
+ * but the AST must have a JSON representation (this is used for testing).</p>
+ */
 public class AstBuilder implements Builder<Feature> {
     private Deque<AstNode> stack;
     private List<Comment> comments;

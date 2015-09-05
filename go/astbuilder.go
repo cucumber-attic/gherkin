@@ -4,6 +4,14 @@ import (
 	"strings"
 )
 
+/*
+The AstBuilder (used by the Parser) builds the AST (Abstract Syntax Tree).
+The AST is comprised of AstNode objects (or “nodes”).
+
+The implementation is simple objects without behaviour, only data. 
+It's up to the implementation to decide whether to use classes or just basic collections, 
+but the AST must have a JSON representation (this is used for testing).
+*/
 type AstBuilder interface {
 	Builder
 	GetFeature() *Feature
@@ -28,6 +36,19 @@ func (t *astBuilder) GetFeature() *Feature {
 	return nil
 }
 
+/*
+Nodes are created by the AstBuilder, and are the building blocks of the AST (Abstract Syntax Tree).
+Every node has a Location that describes the line number and column number in the input file.
+These numbers are 1-indexed.
+
+All fields on nodes are strings (except for Location.line and Location.column).
+
+The implementation is simple objects without behaviour, only data.
+It's up to the implementation to decide whether to use classes or just basic collections,
+but the AST must have a JSON representation (this is used for testing).
+
+Each node in the JSON representation also has a type property with the name of the node type.
+*/
 type astNode struct {
 	ruleType RuleType
 	subNodes map[RuleType][]interface{}

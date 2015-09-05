@@ -3,6 +3,15 @@ from .errors import AstBuilderException
 
 
 class AstBuilder(object):
+    """
+    The :class:`AstBuilder` (used by the :class:`Parser`) builds the AST (Abstract Syntax Tree).
+    The AST is comprised of :class:`AstNode` objects (or “nodes”).
+
+    The implementation is simple objects without behaviour, only data. 
+    It's up to the implementation to decide whether to use classes or just basic collections, 
+    but the AST must have a JSON representation (this is used for testing).
+    """
+    
     def __init__(self):
         self.reset()
 

@@ -1,6 +1,13 @@
 require_relative 'ast_node'
 
 module Gherkin3
+  
+  # The AstBuilder (used by the Parser) builds the AST (Abstract Syntax Tree).
+  # The AST is comprised of AstNode objects (or “nodes”).
+  #
+  # The implementation is simple objects without behaviour, only data.
+  # It's up to the implementation to decide whether to use classes or just basic collections,
+  # but the AST must have a JSON representation (this is used for testing).
   class AstBuilder
     def initialize
       reset
