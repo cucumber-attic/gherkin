@@ -18,20 +18,20 @@ class TokenMatcher(object):
         self._active_doc_string_separator = None
 
     def match_FeatureLine(self, token):
-        return self._match_title_line(token, 'FeatureLine', self.dialect.feature_keywords())
+        return self._match_title_line(token, 'FeatureLine', self.dialect.feature_keywords)
 
     def match_ScenarioLine(self, token):
-        return self._match_title_line(token, 'ScenarioLine', self.dialect.scenario_keywords())
+        return self._match_title_line(token, 'ScenarioLine', self.dialect.scenario_keywords)
 
     def match_ScenarioOutlineLine(self, token):
         return self._match_title_line(token, 'ScenarioOutlineLine',
-                                      self.dialect.scenario_outline_keywords())
+                                      self.dialect.scenario_outline_keywords)
 
     def match_BackgroundLine(self, token):
-        return self._match_title_line(token, 'BackgroundLine', self.dialect.background_keywords())
+        return self._match_title_line(token, 'BackgroundLine', self.dialect.background_keywords)
 
     def match_ExamplesLine(self, token):
-        return self._match_title_line(token, 'ExamplesLine', self.dialect.examples_keywords())
+        return self._match_title_line(token, 'ExamplesLine', self.dialect.examples_keywords)
 
     def match_TableRow(self, token):
         if not token.line.startswith('|'):
@@ -41,11 +41,11 @@ class TokenMatcher(object):
         return True
 
     def match_StepLine(self, token):
-        keywords = (self.dialect.given_keywords() +
-                    self.dialect.when_keywords() +
-                    self.dialect.then_keywords() +
-                    self.dialect.and_keywords() +
-                    self.dialect.but_keywords())
+        keywords = (self.dialect.given_keywords +
+                    self.dialect.when_keywords +
+                    self.dialect.then_keywords +
+                    self.dialect.and_keywords +
+                    self.dialect.but_keywords)
         for keyword in (k for k in keywords if token.line.startswith(k)):
             title = token.line.get_rest_trimmed(len(keyword))
             self._set_token_matched(token, 'StepLine', title, keyword)

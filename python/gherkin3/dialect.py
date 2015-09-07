@@ -21,32 +21,42 @@ class Dialect(object):
     def __init__(self, spec):
         self.spec = spec
 
+    @property
     def feature_keywords(self):
         return self.spec['feature']
 
+    @property
     def scenario_keywords(self):
         return self.spec['scenario']
 
+    @property
     def scenario_outline_keywords(self):
         return self.spec['scenarioOutline']
 
+    @property
     def background_keywords(self):
         return self.spec['background']
 
+    @property
     def examples_keywords(self):
         return self.spec['examples']
 
+    @property
     def given_keywords(self):
         return self.spec['given']
 
+    @property
     def when_keywords(self):
         return self.spec['when']
 
+    @property
     def then_keywords(self):
         return self.spec['then']
 
+    @property
     def and_keywords(self):
         return self.spec['and']
 
+    @property
     def but_keywords(self):
         return self.spec['but']
