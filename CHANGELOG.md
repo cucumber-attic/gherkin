@@ -17,6 +17,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
    by [brasmusson](https://github.com/brasmusson))
 
 ### Changed
+* (Python) Use `@properties` in Dialect class
+  ([#86](https://github.com/cucumber/gherkin3/pull/86)
+   by [Zearin](https://github.com/Zearin))
 
 ### Fixed
 
