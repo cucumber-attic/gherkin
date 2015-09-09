@@ -33,7 +33,7 @@ class TokenFormatterBuilder(AstBuilder):
                                  for item in token.matched_items])
             }
         
-        return '({location[line]!s}:{location[column]!s}){matched[type]}' \
-               ':{matched[keyword]}/{matched[text]}/{matched[items]}'.format(
+        return ('({location[line]!s}:{location[column]!s}){matched[type]}'
+               ':{matched[keyword]}/{matched[text]}/{matched[items]}').format(
                     location = token.location,
                     matched = matched)
