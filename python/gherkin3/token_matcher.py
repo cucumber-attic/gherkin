@@ -50,6 +50,9 @@ class TokenMatcher(object):
     def _unescaped_docstring(self, text):
         return text.replace('\\"\\"\\"', '"""')
     
+    #
+    #   TITLE LINE matches
+    #
     def match_FeatureLine(self, token):
         return self._match_title_line(token, 'FeatureLine', self.dialect.feature_keywords)
 
@@ -65,7 +68,10 @@ class TokenMatcher(object):
 
     def match_ExamplesLine(self, token):
         return self._match_title_line(token, 'ExamplesLine', self.dialect.examples_keywords)
-
+    
+    #
+    #   ALL OTHER matches
+    #
     def match_TableRow(self, token):
         if not token.line.startswith('|'):
             return False
