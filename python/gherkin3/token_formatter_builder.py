@@ -22,11 +22,17 @@ class TokenFormatterBuilder(AstBuilder):
 
     def _format_token(self, token):
         if token.eof():
-            return "EOF"
-
-        return ('(' + str(token.location['line']) + ':' + str(token.location['column']) + ')' +
-                token.matched_type + ':' +
-                (token.matched_keyword if token.matched_keyword else "") + '/' +
-                (token.matched_text if token.matched_text else "") + '/' +
-                ','.join([str(item['column']) + ':' + item['text'] for item in
-                          token.matched_items]))
+            return 'EOF'
+        
+        matched = {
+            'type':    token.matched_type,
+            'keyword': token.matched_keyword if token.matched_keyword else '',
+            'text':    token.matched_text    if token.matched_text    else '',
+            'items':   ','.join(['{item[column]!s}:{item[text]!s}'.format(item=item) 
+                                 for item in token.matched_items])
+            }
+        
+        return '({location[line]!s}:{location[column]!s}){matched[type]}'
+               ':{matched[keyword]}/{matched[text]}/{matched[items]}'.format(
+                    location = token.location,
+                    matched = matched)
