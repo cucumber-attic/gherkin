@@ -3,10 +3,13 @@ from .dialect import Dialect
 from .errors import NoSuchLanguageException
 
 
-class TokenMatcher(object):
-    LANGUAGE_RE = re.compile(r"^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$")
+DEFAULT_DIALECT_NAME = 'en'
+LANGUAGE_RE = re.compile(r"^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$")
 
-    def __init__(self, dialect_name='en'):
+
+class TokenMatcher(object):
+
+    def __init__(self, dialect_name=DEFAULT_DIALECT_NAME):
         self._default_dialect_name = dialect_name
         self._change_dialect(dialect_name)
         self.reset()
@@ -17,6 +20,41 @@ class TokenMatcher(object):
         self._indent_to_remove = 0
         self._active_doc_string_separator = None
 
+    def _change_dialect(self, dialect_name, location=None):
+        dialect = Dialect.for_name(dialect_name)
+        if not dialect:
+            raise NoSuchLanguageException(dialect_name, location)
+        self.dialect_name = dialect_name
+        self.dialect = dialect
+
+    def _match_title_line(self, token, token_type, keywords):
+        for keyword in (k for k in keywords if token.line.startswith_title_keyword(k)):
+            title = token.line.get_rest_trimmed(len(keyword) + len(':'))
+            self._set_token_matched(token, token_type, title, keyword)
+            return True
+        return False
+    
+    def _set_token_matched(self, token, matched_type, text=None,
+                           keyword=None, indent=None, items=None):
+        if items is None:
+            items = []
+        token.matched_type = matched_type
+        token.matched_text = text.rstrip('\r\n') if text is not None else None  # text == '' should not result in None
+        token.matched_keyword = keyword
+        if indent is not None:
+            token.matched_indent = indent
+        else:
+            token.matched_indent = token.line.indent if token.line else 0
+        token.matched_items = items
+        token.location['column'] = token.matched_indent + 1
+        token.matched_gherkin_dialect = self.dialect_name
+
+    def _unescaped_docstring(self, text):
+        return text.replace('\\"\\"\\"', '"""')
+    
+    #
+    #   TITLE LINE matches
+    #
     def match_FeatureLine(self, token):
         return self._match_title_line(token, 'FeatureLine', self.dialect.feature_keywords)
 
@@ -32,7 +70,10 @@ class TokenMatcher(object):
 
     def match_ExamplesLine(self, token):
         return self._match_title_line(token, 'ExamplesLine', self.dialect.examples_keywords)
-
+    
+    #
+    #   ALL OTHER matches
+    #
     def match_TableRow(self, token):
         if not token.line.startswith('|'):
             return False
@@ -50,13 +91,11 @@ class TokenMatcher(object):
             title = token.line.get_rest_trimmed(len(keyword))
             self._set_token_matched(token, 'StepLine', title, keyword)
             return True
-
         return False
 
     def match_Comment(self, token):
         if not token.line.startswith('#'):
             return False
-
         text = token.line._line_text  # take the entire line, including leading space
         self._set_token_matched(token, 'Comment', text, indent=0)
         return True
@@ -64,15 +103,13 @@ class TokenMatcher(object):
     def match_Empty(self, token):
         if not token.line.is_empty():
             return False
-
         self._set_token_matched(token, 'Empty', indent=0)
         return True
 
     def match_Language(self, token):
-        match = self.LANGUAGE_RE.match(token.line.get_line_text())
+        match = LANGUAGE_RE.match(token.line.get_line_text())
         if not match:
             return False
-
         dialect_name = match.group(1)
         self._set_token_matched(token, 'Language', dialect_name)
         self._change_dialect(dialect_name, token.location)
@@ -81,7 +118,6 @@ class TokenMatcher(object):
     def match_TagLine(self, token):
         if not token.line.startswith('@'):
             return False
-
         self._set_token_matched(token, 'TagLine', items=token.line.tags())
         return True
 
@@ -97,7 +133,6 @@ class TokenMatcher(object):
     def _match_DocStringSeparator(self, token, separator, is_open):
         if not token.line.startswith(separator):
             return False
-
         content_type = None
         if is_open:
             content_type = token.line.get_rest_trimmed(len(separator))
@@ -119,38 +154,5 @@ class TokenMatcher(object):
     def match_EOF(self, token):
         if not token.eof():
             return False
-
         self._set_token_matched(token, 'EOF')
         return True
-
-    def _match_title_line(self, token, token_type, keywords):
-        for keyword in (k for k in keywords if token.line.startswith_title_keyword(k)):
-            title = token.line.get_rest_trimmed(len(keyword) + len(':'))
-            self._set_token_matched(token, token_type, title, keyword)
-            return True
-
-        return False
-
-    def _set_token_matched(self, token, matched_type, text=None,
-                           keyword=None, indent=None, items=[]):
-        token.matched_type = matched_type
-        token.matched_text = text.rstrip('\r\n') if text is not None else None  # text == '' should not result in None
-        token.matched_keyword = keyword
-        if indent is not None:
-            token.matched_indent = indent
-        else:
-            token.matched_indent = token.line.indent if token.line else 0
-        token.matched_items = items
-        token.location['column'] = token.matched_indent + 1
-        token.matched_gherkin_dialect = self.dialect_name
-
-    def _change_dialect(self, dialect_name, location=None):
-        dialect = Dialect.for_name(dialect_name)
-        if not dialect:
-            raise NoSuchLanguageException(dialect_name, location)
-
-        self.dialect_name = dialect_name
-        self.dialect = dialect
-
-    def _unescaped_docstring(self, text):
-        return text.replace('\\"\\"\\"', '"""')
