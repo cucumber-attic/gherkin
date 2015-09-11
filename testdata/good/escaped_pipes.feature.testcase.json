@@ -1,0 +1,33 @@
+[
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 2
+      }
+    ],
+    "name": "Scenario: They are the future",
+    "steps": [
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 3
+          }
+        ],
+        "name": "Given they have arrived",
+        "text": "they have arrived"
+      },
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 6
+          }
+        ],
+        "name": "Given they have arrived",
+        "text": "they have arrived"
+      }
+    ]
+  }
+]

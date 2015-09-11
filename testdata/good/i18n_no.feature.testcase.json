@@ -1,0 +1,43 @@
+[
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 4
+      }
+    ],
+    "name": "Scenario: Parsing many languages",
+    "steps": [
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 5
+          }
+        ],
+        "name": "Gitt Gherkin supports many languages",
+        "text": "Gherkin supports many languages"
+      },
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 6
+          }
+        ],
+        "name": "Når Norwegian keywords are parsed",
+        "text": "Norwegian keywords are parsed"
+      },
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 7
+          }
+        ],
+        "name": "Så they should be recognized",
+        "text": "they should be recognized"
+      }
+    ]
+  }
+]

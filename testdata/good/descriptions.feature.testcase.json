@@ -1,0 +1,158 @@
+[
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 4
+      }
+    ],
+    "name": "Scenario: two lines",
+    "steps": [
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 7
+          }
+        ],
+        "name": "Given the minimalism",
+        "text": "the minimalism"
+      }
+    ]
+  },
+  {
+    "locations": [
+      {
+        "column": 1,
+        "line": 9
+      }
+    ],
+    "name": "Scenario: without indentation",
+    "steps": [
+      {
+        "locations": [
+          {
+            "column": 3,
+            "line": 11
+          }
+        ],
+        "name": "Given the minimalism",
+        "text": "the minimalism"
+      }
+    ]
+  },
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 13
+      }
+    ],
+    "name": "Scenario: empty lines in the middle",
+    "steps": [
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 17
+          }
+        ],
+        "name": "Given the minimalism",
+        "text": "the minimalism"
+      }
+    ]
+  },
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 19
+      }
+    ],
+    "name": "Scenario: empty lines around",
+    "steps": [
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 24
+          }
+        ],
+        "name": "Given the minimalism",
+        "text": "the minimalism"
+      }
+    ]
+  },
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 26
+      }
+    ],
+    "name": "Scenario: comment after description",
+    "steps": [
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 31
+          }
+        ],
+        "name": "Given the minimalism",
+        "text": "the minimalism"
+      }
+    ]
+  },
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 33
+      }
+    ],
+    "name": "Scenario: comment right after description",
+    "steps": [
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 38
+          }
+        ],
+        "name": "Given the minimalism",
+        "text": "the minimalism"
+      }
+    ]
+  },
+  {
+    "locations": [
+      {
+        "column": 5,
+        "line": 47
+      },
+      {
+        "column": 3,
+        "line": 40
+      }
+    ],
+    "name": "Scenario: scenario outline with a description",
+    "steps": [
+      {
+        "argument": null,
+        "locations": [
+          {
+            "column": 5,
+            "line": 47
+          },
+          {
+            "column": 5,
+            "line": 42
+          }
+        ],
+        "name": "Given the minimalism",
+        "text": "the minimalism"
+      }
+    ]
+  }
+]

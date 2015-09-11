@@ -1,0 +1,33 @@
+[
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 7
+      }
+    ],
+    "name": "Scenario: minimalistic",
+    "steps": [
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 4
+          }
+        ],
+        "name": "Given the minimalism inside a background",
+        "text": "the minimalism inside a background"
+      },
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 8
+          }
+        ],
+        "name": "Given the minimalism",
+        "text": "the minimalism"
+      }
+    ]
+  }
+]

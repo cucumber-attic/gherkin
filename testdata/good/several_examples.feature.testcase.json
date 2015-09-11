@@ -1,0 +1,72 @@
+[
+  {
+    "locations": [
+      {
+        "column": 7,
+        "line": 9
+      },
+      {
+        "column": 3,
+        "line": 3
+      }
+    ],
+    "name": "Scenario: minimalistic",
+    "steps": [
+      {
+        "argument": null,
+        "locations": [
+          {
+            "column": 7,
+            "line": 9
+          },
+          {
+            "column": 5,
+            "line": 4
+          }
+        ],
+        "name": "Given the foo",
+        "text": "the foo"
+      }
+    ]
+  },
+  {
+    "locations": [
+      {
+        "column": 7,
+        "line": 14
+      },
+      {
+        "column": 3,
+        "line": 3
+      }
+    ],
+    "name": "Scenario: minimalistic",
+    "steps": [
+      {
+        "argument": null,
+        "locations": [
+          {
+            "column": 7,
+            "line": 14
+          },
+          {
+            "column": 5,
+            "line": 4
+          }
+        ],
+        "name": "Given the bar",
+        "text": "the bar"
+      }
+    ]
+  },
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 17
+      }
+    ],
+    "name": "Scenario: ha ok",
+    "steps": []
+  }
+]

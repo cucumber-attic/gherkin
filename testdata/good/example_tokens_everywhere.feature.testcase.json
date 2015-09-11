@@ -1,0 +1,204 @@
+[
+  {
+    "locations": [
+      {
+        "column": 7,
+        "line": 13
+      },
+      {
+        "column": 3,
+        "line": 3
+      }
+    ],
+    "name": "Scenario: the un",
+    "steps": [
+      {
+        "argument": {
+          "content": "trois",
+          "locations": [
+            {
+              "column": 7,
+              "line": 13
+            },
+            {
+              "column": 7,
+              "line": 5
+            }
+          ],
+          "type": "DocString"
+        },
+        "locations": [
+          {
+            "column": 7,
+            "line": 13
+          },
+          {
+            "column": 5,
+            "line": 4
+          }
+        ],
+        "name": "Given the deux:",
+        "text": "the deux:"
+      },
+      {
+        "argument": {
+          "locations": [
+            {
+              "column": 7,
+              "line": 13
+            },
+            {
+              "column": 7,
+              "line": 9
+            }
+          ],
+          "rows": [
+            {
+              "cells": [
+                {
+                  "locations": [
+                    {
+                      "column": 7,
+                      "line": 13
+                    },
+                    {
+                      "column": 9,
+                      "line": 9
+                    }
+                  ],
+                  "type": "TableCell",
+                  "value": "cinq"
+                }
+              ],
+              "locations": [
+                {
+                  "column": 7,
+                  "line": 13
+                },
+                {
+                  "column": 7,
+                  "line": 9
+                }
+              ],
+              "type": "TableRow"
+            }
+          ],
+          "type": "DataTable"
+        },
+        "locations": [
+          {
+            "column": 7,
+            "line": 13
+          },
+          {
+            "column": 5,
+            "line": 8
+          }
+        ],
+        "name": "Given the quatre:",
+        "text": "the quatre:"
+      }
+    ]
+  },
+  {
+    "locations": [
+      {
+        "column": 7,
+        "line": 14
+      },
+      {
+        "column": 3,
+        "line": 3
+      }
+    ],
+    "name": "Scenario: the uno",
+    "steps": [
+      {
+        "argument": {
+          "content": "tres",
+          "locations": [
+            {
+              "column": 7,
+              "line": 14
+            },
+            {
+              "column": 7,
+              "line": 5
+            }
+          ],
+          "type": "DocString"
+        },
+        "locations": [
+          {
+            "column": 7,
+            "line": 14
+          },
+          {
+            "column": 5,
+            "line": 4
+          }
+        ],
+        "name": "Given the dos:",
+        "text": "the dos:"
+      },
+      {
+        "argument": {
+          "locations": [
+            {
+              "column": 7,
+              "line": 14
+            },
+            {
+              "column": 7,
+              "line": 9
+            }
+          ],
+          "rows": [
+            {
+              "cells": [
+                {
+                  "locations": [
+                    {
+                      "column": 7,
+                      "line": 14
+                    },
+                    {
+                      "column": 9,
+                      "line": 9
+                    }
+                  ],
+                  "type": "TableCell",
+                  "value": "cinco"
+                }
+              ],
+              "locations": [
+                {
+                  "column": 7,
+                  "line": 14
+                },
+                {
+                  "column": 7,
+                  "line": 9
+                }
+              ],
+              "type": "TableRow"
+            }
+          ],
+          "type": "DataTable"
+        },
+        "locations": [
+          {
+            "column": 7,
+            "line": 14
+          },
+          {
+            "column": 5,
+            "line": 8
+          }
+        ],
+        "name": "Given the quatro:",
+        "text": "the quatro:"
+      }
+    ]
+  }
+]

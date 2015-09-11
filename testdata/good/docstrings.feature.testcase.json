@@ -1,0 +1,83 @@
+[
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 3
+      }
+    ],
+    "name": "Scenario: minimalistic",
+    "steps": [
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 4
+          }
+        ],
+        "name": "Given a simple DocString",
+        "text": "a simple DocString"
+      },
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 11
+          }
+        ],
+        "name": "Given a DocString with content type",
+        "text": "a DocString with content type"
+      },
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 17
+          }
+        ],
+        "name": "And a DocString with wrong indentation",
+        "text": "a DocString with wrong indentation"
+      },
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 21
+          }
+        ],
+        "name": "And a DocString with alternative separator",
+        "text": "a DocString with alternative separator"
+      },
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 26
+          }
+        ],
+        "name": "And a DocString with normal separator inside",
+        "text": "a DocString with normal separator inside"
+      },
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 32
+          }
+        ],
+        "name": "And a DocString with alternative separator inside",
+        "text": "a DocString with alternative separator inside"
+      },
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 38
+          }
+        ],
+        "name": "And a DocString with escaped separator inside",
+        "text": "a DocString with escaped separator inside"
+      }
+    ]
+  }
+]

@@ -1,0 +1,53 @@
+[
+  {
+    "locations": [
+      {
+        "column": 1,
+        "line": 7
+      }
+    ],
+    "name": "Scenario: minimalistic",
+    "steps": [
+      {
+        "locations": [
+          {
+            "column": 5,
+            "line": 8
+          }
+        ],
+        "name": "Given the minimalism",
+        "text": "the minimalism"
+      }
+    ]
+  },
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 19
+      },
+      {
+        "column": 1,
+        "line": 12
+      }
+    ],
+    "name": "Scenario: minimalistic outline",
+    "steps": [
+      {
+        "argument": null,
+        "locations": [
+          {
+            "column": 3,
+            "line": 19
+          },
+          {
+            "column": 5,
+            "line": 13
+          }
+        ],
+        "name": "Given the minimalism",
+        "text": "the minimalism"
+      }
+    ]
+  }
+]
