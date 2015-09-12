@@ -4,21 +4,23 @@ function Compiler() {
   this.compile = function (feature) {
     var testCases = [];
     var backgroundSteps = feature.background ? feature.background.steps : [];
-
+    var featureTags = feature.tags;
     var dialect = dialects[feature.language];
 
     feature.scenarioDefinitions.forEach(function (scenarioDefinition) {
       if(scenarioDefinition.type === 'Scenario') {
-        compileScenario(backgroundSteps, scenarioDefinition, dialect, testCases);
+        compileScenario(featureTags, backgroundSteps, scenarioDefinition, dialect, testCases);
       } else {
-        compileScenarioOutline(backgroundSteps, scenarioDefinition, dialect, testCases);
+        compileScenarioOutline(featureTags, backgroundSteps, scenarioDefinition, dialect, testCases);
       }
     });
     return testCases;
   };
 
-  function compileScenario(backgroundSteps, scenario, dialect, testCases) {
+  function compileScenario(featureTags, backgroundSteps, scenario, dialect, testCases) {
+    var tags = [].concat(featureTags).concat(scenario.tags);
     var testCase = {
+      tags: tags,
       name: scenario.keyword + ": " + scenario.name,
       locations: [scenario.location],
       steps: []
@@ -36,13 +38,15 @@ function Compiler() {
     });
   }
 
-  function compileScenarioOutline(backgroundSteps, scenarioOutline, dialect, testCases) {
+  function compileScenarioOutline(featureTags, backgroundSteps, scenarioOutline, dialect, testCases) {
     scenarioOutline.examples.forEach(function (examples) {
       examples.tableBody.forEach(function (values) {
         var scenarioName = interpolate(scenarioOutline.name, examples.tableHeader, values);
         var keyword = dialect.scenario[0];
 
+        var tags = [].concat(featureTags).concat(scenarioOutline.tags).concat(examples.tags);
         var testCase = {
+          tags: tags,
           name: keyword + ": " + scenarioName,
           locations: [values.location, scenarioOutline.location],
           steps: []

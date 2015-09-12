@@ -27,6 +27,16 @@
         "name": "Given the foo",
         "text": "the foo"
       }
+    ],
+    "tags": [
+      {
+        "location": {
+          "column": 5,
+          "line": 6
+        },
+        "name": "@foo",
+        "type": "Tag"
+      }
     ]
   },
   {
@@ -57,6 +67,16 @@
         "name": "Given the bar",
         "text": "the bar"
       }
+    ],
+    "tags": [
+      {
+        "location": {
+          "column": 5,
+          "line": 11
+        },
+        "name": "@bar",
+        "type": "Tag"
+      }
     ]
   },
   {
@@ -67,6 +87,16 @@
       }
     ],
     "name": "Scenario: ha ok",
-    "steps": []
+    "steps": [],
+    "tags": [
+      {
+        "location": {
+          "column": 3,
+          "line": 16
+        },
+        "name": "@zap",
+        "type": "Tag"
+      }
+    ]
   }
 ]

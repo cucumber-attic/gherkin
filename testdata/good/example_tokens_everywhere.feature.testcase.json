@@ -98,7 +98,8 @@
         "name": "Given the quatre:",
         "text": "the quatre:"
       }
-    ]
+    ],
+    "tags": []
   },
   {
     "locations": [
@@ -199,6 +200,7 @@
         "name": "Given the quatro:",
         "text": "the quatro:"
       }
-    ]
+    ],
+    "tags": []
   }
 ]

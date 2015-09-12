@@ -78,6 +78,7 @@
         "name": "And a DocString with escaped separator inside",
         "text": "a DocString with escaped separator inside"
       }
-    ]
+    ],
+    "tags": []
   }
 ]
