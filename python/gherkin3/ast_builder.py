@@ -15,7 +15,7 @@ class AstBuilder(object):
 
     def end_rule(self, rule_type):
         node = self.stack.pop()
-        self.current_node().add(node.rule_type, self.transform_node(node))
+        self.current_node.add(node.rule_type, self.transform_node(node))
 
     def build(self, token):
         if token.matched_type == 'Comment':
@@ -25,11 +25,12 @@ class AstBuilder(object):
                 'text': token.matched_text
             })
         else:
-            self.current_node().add(token.matched_type, token)
+            self.current_node.add(token.matched_type, token)
 
     def get_result(self):
-        return self.current_node().get_single('Feature')
+        return self.current_node.get_single('Feature')
 
+    @property
     def current_node(self):
         return self.stack[-1]
 
