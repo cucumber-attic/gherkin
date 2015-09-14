@@ -11,6 +11,7 @@
       }
     ],
     "name": "Scenario: the un",
+    "path": "../testdata/good/example_tokens_everywhere.feature",
     "steps": [
       {
         "argument": {
@@ -113,6 +114,7 @@
       }
     ],
     "name": "Scenario: the uno",
+    "path": "../testdata/good/example_tokens_everywhere.feature",
     "steps": [
       {
         "argument": {

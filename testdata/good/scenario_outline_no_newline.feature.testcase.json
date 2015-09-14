@@ -11,6 +11,7 @@
       }
     ],
     "name": "Scenario: minimalistic",
+    "path": "../testdata/good/scenario_outline_no_newline.feature",
     "steps": [
       {
         "argument": null,

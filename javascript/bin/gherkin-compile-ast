@@ -11,7 +11,7 @@ files.forEach(function (file) {
   var scanner = new Gherkin.TokenScanner(fs.readFileSync(file, 'UTF-8'));
   try {
     var feature = parser.parse(scanner, matcher);
-    var testCases = compiler.compile(feature);
+    var testCases = compiler.compile(feature, file);
     console.log(JSON.stringify(testCases));
   } catch (e) {
     console.error(e.stack);

@@ -7,6 +7,7 @@
       }
     ],
     "name": "Scenario: minimalistic",
+    "path": "../testdata/good/tags.feature",
     "steps": [
       {
         "locations": [
@@ -82,6 +83,7 @@
       }
     ],
     "name": "Scenario: minimalistic outline",
+    "path": "../testdata/good/tags.feature",
     "steps": [
       {
         "argument": null,

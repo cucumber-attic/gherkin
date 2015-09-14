@@ -1,7 +1,7 @@
 var dialects = require('./gherkin-languages.json');
 
 function Compiler() {
-  this.compile = function (feature) {
+  this.compile = function (feature, path) {
     var testCases = [];
     var backgroundSteps = feature.background ? feature.background.steps : [];
     var featureTags = feature.tags;
@@ -9,17 +9,18 @@ function Compiler() {
 
     feature.scenarioDefinitions.forEach(function (scenarioDefinition) {
       if(scenarioDefinition.type === 'Scenario') {
-        compileScenario(featureTags, backgroundSteps, scenarioDefinition, dialect, testCases);
+        compileScenario(featureTags, backgroundSteps, scenarioDefinition, dialect, path, testCases);
       } else {
-        compileScenarioOutline(featureTags, backgroundSteps, scenarioDefinition, dialect, testCases);
+        compileScenarioOutline(featureTags, backgroundSteps, scenarioDefinition, dialect, path, testCases);
       }
     });
     return testCases;
   };
 
-  function compileScenario(featureTags, backgroundSteps, scenario, dialect, testCases) {
+  function compileScenario(featureTags, backgroundSteps, scenario, dialect, path, testCases) {
     var tags = [].concat(featureTags).concat(scenario.tags);
     var testCase = {
+      path: path,
       tags: tags,
       name: scenario.keyword + ": " + scenario.name,
       locations: [scenario.location],
@@ -38,7 +39,7 @@ function Compiler() {
     });
   }
 
-  function compileScenarioOutline(featureTags, backgroundSteps, scenarioOutline, dialect, testCases) {
+  function compileScenarioOutline(featureTags, backgroundSteps, scenarioOutline, dialect, path, testCases) {
     scenarioOutline.examples.forEach(function (examples) {
       examples.tableBody.forEach(function (values) {
         var scenarioName = interpolate(scenarioOutline.name, examples.tableHeader, values);
@@ -46,6 +47,7 @@ function Compiler() {
 
         var tags = [].concat(featureTags).concat(scenarioOutline.tags).concat(examples.tags);
         var testCase = {
+          path: path,
           tags: tags,
           name: keyword + ": " + scenarioName,
           locations: [values.location, scenarioOutline.location],
