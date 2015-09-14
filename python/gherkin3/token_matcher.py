@@ -132,7 +132,9 @@ class TokenMatcher(object):
         return False
 
     def _set_token_matched(self, token, matched_type, text=None,
-                           keyword=None, indent=None, items=[]):
+                           keyword=None, indent=None, items=None):
+        if items is None:
+            items = []
         token.matched_type = matched_type
         token.matched_text = text.rstrip('\r\n') if text is not None else None  # text == '' should not result in None
         token.matched_keyword = keyword
