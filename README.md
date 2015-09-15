@@ -43,7 +43,7 @@ var feature = parser.Parse("Feature: ...");
 
 ```ruby
 # Ruby
-require 'gherkin3'
+require 'gherkin3/parser'
 parser = Gherkin3::Parser.new
 feature = parser.parse("Feature: ...")
 ```
