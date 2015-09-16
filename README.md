@@ -44,8 +44,10 @@ var feature = parser.Parse("Feature: ...");
 ```ruby
 # Ruby
 require 'gherkin3/parser'
+require 'gherkin3/token_scanner'
 parser = Gherkin3::Parser.new
-feature = parser.parse("Feature: ...")
+scanner = Gherkin3::TokenScanner.new("Feature: ...")
+feature = parser.parse(scanner)
 ```
 
 ```javascript
