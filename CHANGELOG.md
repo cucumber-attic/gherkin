@@ -15,6 +15,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
                 Previously it only worked in Javascript.
   ([#78](https://github.com/cucumber/gherkin3/issues/78)
    by [brasmusson](https://github.com/brasmusson))
+* (JavaScript) Added browserified `dist/gherkin.js` and `dist/gherkin.min.js` by [aslakhellesoy](https://github.com/aslakhellesoy)
 
 ### Changed
 * (Python) Use `@properties` in Dialect class
@@ -26,17 +27,17 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ## [3.1.1] - 2015-09-03
 
 ### Added
-* (All)         Added Bosnian 
-  ([#48](https://github.com/cucumber/gherkin3/pull/48) 
+* (All)         Added Bosnian
+  ([#48](https://github.com/cucumber/gherkin3/pull/48)
    by [10-io](https://github.com/10-io))
-* (All)         Added support for `\n`, '\|' and '\\' in table cells 
-  ([#40](https://github.com/cucumber/gherkin3/issues/40), 
-   [#71](https://github.com/cucumber/gherkin3/pull/71) 
+* (All)         Added support for `\n`, '\|' and '\\' in table cells
+  ([#40](https://github.com/cucumber/gherkin3/issues/40),
+   [#71](https://github.com/cucumber/gherkin3/pull/71)
    by [koterpillar](https://github.com/koterpillar))
-* (JavaScript)  Default arguments for `Parser(builder)` and `Parser.parse(scanner, matcher)` 
+* (JavaScript)  Default arguments for `Parser(builder)` and `Parser.parse(scanner, matcher)`
   (by [aslakhellesoy](https://github.com/aslakhellesoy))
 * (JavaScript)  It's now possible to pass a string directly to `Parser.parse()`
-* (Python)      It's now possible to pass a string directly to `Parser.parse()` 
+* (Python)      It's now possible to pass a string directly to `Parser.parse()`
   (by [aslakhellesoy](https://github.com/aslakhellesoy))
 
 

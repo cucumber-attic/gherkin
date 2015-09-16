@@ -53,7 +53,7 @@ dist/gherkin.js: lib/gherkin/parser.js LICENSE node_modules/.fetched
 	echo '/*' > $@
 	cat LICENSE >> $@
 	echo '*/' >> $@
-	./node_modules/.bin/browserify index.js --ignore-missing >> $@
+	./node_modules/.bin/browserify index.js >> $@
 
 dist/gherkin.min.js: dist/gherkin.js node_modules/.fetched
 	mkdir -p `dirname $@`
