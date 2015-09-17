@@ -8,7 +8,7 @@ DIALECT_FILE_PATH = os.path.join(
     'gherkin-languages.json'
     )
 
-with io.open(DIALECT_FILE_PATH, 'r') as file:
+with io.open(DIALECT_FILE_PATH, 'rb') as file:
     DIALECTS = json.load(file, encoding='utf-8')
 
 
