@@ -18,6 +18,7 @@ all: .compared
 
 show-version-info:
 	python --version
+	python3 --version
 .PHONY: show-version-info
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
