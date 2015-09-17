@@ -11,20 +11,20 @@ except ImportError:
 
 class TokenScanner(object):
     """
-    The scanner reads a gherkin doc (typically read from a `.feature` file) and creates a token for 
-    each line. 
-    
+    The scanner reads a gherkin doc (typically read from a `.feature` file) and creates a token for
+    each line.
+
     The tokens are passed to the parser, which outputs an AST (Abstract Syntax Tree).
-    
-    If the scanner sees a `#` language header, it will reconfigure itself dynamically to look for 
-    Gherkin keywords for the associated language. The keywords are defined in 
+
+    If the scanner sees a `#` language header, it will reconfigure itself dynamically to look for
+    Gherkin keywords for the associated language. The keywords are defined in
     :file:`gherkin-languages.json`.
     """
-    
+
     def __init__(self, path_or_str):
         if isinstance(path_or_str, str):
             if os.path.exists(path_or_str):
-                self.io = io.open(path_or_str, 'rU')
+                self.io = io.open(path_or_str, 'rU', encoding='utf8')
             else:
                 self.io = io.StringIO(path_or_str)
         self.line_number = 0
