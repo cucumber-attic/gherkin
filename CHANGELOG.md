@@ -23,6 +23,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
    by [Zearin](https://github.com/Zearin))
 
 ### Fixed
+* (Python) Fix file parsing on Windows.
+  ([#93](https://github.com/cucumber/gherkin3/issues/93)
+   by [brasmusson](https://github.com/brasmusson))
 
 ## [3.1.1] - 2015-09-03
 
