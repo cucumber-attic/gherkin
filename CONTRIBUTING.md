@@ -86,6 +86,31 @@ it will try to regenerate it the next time you run `make`.
 When all files are identical and successfully compared, `make` will create the `.compared`
 file, indicating that the acceptance tests passed.
 
+## Consistency between implementations
+
+TL;DR anyone who only knows one of the supported programming languages should be
+able to fix a bug or add a feature in all the other implementations. -Simply by
+finding their way around a consistently organised codebase.
+
+As of Sept 2015 Gherkin3 is implemented in 6 languages. This number is likely to
+increase to a dozen within a year or two. Very few programmers are intimate with
+all those languages. Therefore, in order to make it as easy as possible to refactor,
+fix bugs, add features and release packages it is essential that all implementations
+have a similar structure.
+
+For example, I (Aslak) don't currently know go at all, and very little Python.
+Still, I have been able to fix bugs and refactor the go and python code simply
+because I know where to find stuff since they follow the same structure.
+
+If one implementation looks completely different, this becomes a huge burden that
+will slow everything down.
+
+So for this reason, please don't start a new implementation that doesn't use Berp,
+or add a feature in one implementation without also doing it in all the other
+implementations. Don't refactor the code to follow some nice design pattern if
+it makes the code so different from the other implementations that it can no longer
+be maintained by someone who doesn't know the language.
+
 ## Implementing a parser for a new language
 
 First off, fork the repository and create a branch for the new language.
