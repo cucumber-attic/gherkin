@@ -18,7 +18,7 @@ Gherkin 3 is currently implemented for the following platforms:
 * Go
 * Python
 
-See `CONTRIBUTING.md` if you want to contribute a parser for a new language.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) if you want to contribute a parser for a new language.
 Our wish-list is (in no particular order):
 
 * C
@@ -250,4 +250,4 @@ The various compilers producing pickles might move to a separate project too.
 
 ## Building Gherkin 3
 
-See `CONTRIBUTING.md`
+See [`CONTRIBUTING.md`](CONTRIBUTING.md)
