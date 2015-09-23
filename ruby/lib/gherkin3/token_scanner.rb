@@ -1,8 +1,10 @@
 require_relative 'token'
 require_relative 'gherkin_line'
 
+require 'stringio'
+
 module Gherkin3
-  
+
   # The scanner reads a gherkin doc (typically read from a .feature file) and 
   # creates a token for line. The tokens are passed to the parser, which outputs 
   # an AST (Abstract Syntax Tree).
