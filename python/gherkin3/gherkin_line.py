@@ -23,6 +23,7 @@ class GherkinLine(object):
     def startswith_title_keyword(self, keyword):
         return self._trimmed_line_text.startswith(keyword + ':')
 
+    @property
     def table_cells(self):
         cells = []
         for cell, col in self.split_table_cells(self._trimmed_line_text.strip()):
@@ -65,6 +66,7 @@ class GherkinLine(object):
                 break
         # Last cell (content after the last |) is skipped
 
+    @property
     def tags(self):
         column = self.indent + 1
         items = self._trimmed_line_text.strip().split('@')

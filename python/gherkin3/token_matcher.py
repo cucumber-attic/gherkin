@@ -37,7 +37,7 @@ class TokenMatcher(object):
         if not token.line.startswith('|'):
             return False
         # TODO: indent
-        self._set_token_matched(token, 'TableRow', items=token.line.table_cells())
+        self._set_token_matched(token, 'TableRow', items=token.line.table_cells)
         return True
 
     def match_StepLine(self, token):
@@ -82,7 +82,7 @@ class TokenMatcher(object):
         if not token.line.startswith('@'):
             return False
 
-        self._set_token_matched(token, 'TagLine', items=token.line.tags())
+        self._set_token_matched(token, 'TagLine', items=token.line.tags)
         return True
 
     def match_DocStringSeparator(self, token):
