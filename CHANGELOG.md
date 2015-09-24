@@ -10,7 +10,13 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 
 ## [Unreleased][unreleased]
 
+### Removed
+* (Ruby) `Parser.parse` no longer treats `String` as a file path (only as source).
+
 ### Added
+* (Ruby) `Parser.parse` now accepts a `String`, `StringIO`, `IO` or `TokenScanner`.
+  ([#100](https://github.com/cucumber/gherkin3/pull/100)
+  by [maxmeyer](https://github.com/maxmeyer))
 * (All)         It's now possible to pass a default language to the TokenMatcher.
                 Previously it only worked in Javascript.
   ([#78](https://github.com/cucumber/gherkin3/issues/78)

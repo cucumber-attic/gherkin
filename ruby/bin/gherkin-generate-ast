@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__),"../lib"))
 require 'gherkin3/parser'
-require 'gherkin3/token_scanner'
 require 'json'
 
 parser = Gherkin3::Parser.new
@@ -9,9 +8,10 @@ parser.stop_at_first_error = false
 files = ARGV.any? ? ARGV : (STDIN.tty? ? [] : [STDIN])
 start_time = Time.now
 files.each do |file|
-  scanner = Gherkin3::TokenScanner.new(file)
   begin
-    puts JSON.generate(parser.parse(scanner))
+    File.open(file) do |io|
+      puts JSON.generate(parser.parse(io))
+    end
   rescue Gherkin3::ParserError => e
     STDERR.puts e.message
     exit 1

@@ -1,27 +1,26 @@
+require 'stringio'
 require_relative 'token'
 require_relative 'gherkin_line'
 
 module Gherkin3
-  
-  # The scanner reads a gherkin doc (typically read from a .feature file) and 
-  # creates a token for line. The tokens are passed to the parser, which outputs 
+  # The scanner reads a gherkin doc (typically read from a .feature file) and
+  # creates a token for line. The tokens are passed to the parser, which outputs
   # an AST (Abstract Syntax Tree).
   #
-  # If the scanner sees a # language header, it will reconfigure itself dynamically 
-  # to look for Gherkin keywords for the associated language. The keywords are defined 
+  # If the scanner sees a # language header, it will reconfigure itself dynamically
+  # to look for Gherkin keywords for the associated language. The keywords are defined
   # in gherkin-languages.json.
   class TokenScanner
-
-    def initialize(source_or_path_or_io)
+    def initialize(source_or_io)
       @line_number = 0
-      if String === source_or_path_or_io
-        if File.file?(source_or_path_or_io)
-          @io = File.open(source_or_path_or_io, 'r:BOM|UTF-8')
-        else
-          @io = StringIO.new(source_or_path_or_io)
-        end
+
+      case(source_or_io)
+      when String
+        @io = StringIO.new(source_or_io)
+      when StringIO, IO
+        @io = source_or_io
       else
-        @io = source_or_path_or_io
+        fail ArgumentError, "Please a pass String, StringIO or IO. I got a #{source_or_io.class}"
       end
     end
 
