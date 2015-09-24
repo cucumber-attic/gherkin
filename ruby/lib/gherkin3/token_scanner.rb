@@ -2,7 +2,6 @@ require_relative 'token'
 require_relative 'gherkin_line'
 
 module Gherkin3
-  
   # The scanner reads a gherkin doc (typically read from a .feature file) and 
   # creates a token for line. The tokens are passed to the parser, which outputs 
   # an AST (Abstract Syntax Tree).
@@ -11,17 +10,15 @@ module Gherkin3
   # to look for Gherkin keywords for the associated language. The keywords are defined 
   # in gherkin-languages.json.
   class TokenScanner
-
-    def initialize(source_or_path_or_io)
+    def initialize(source_or_io)
       @line_number = 0
-      if String === source_or_path_or_io
-        if File.file?(source_or_path_or_io)
-          @io = File.open(source_or_path_or_io, 'r:BOM|UTF-8')
-        else
-          @io = StringIO.new(source_or_path_or_io)
-        end
+
+      if String === source_or_io
+        @io = StringIO.new(source_or_io)
+      elsif source_or_io.is_a? IO
+        @io = source_or_io
       else
-        @io = source_or_path_or_io
+        fail ArgumentError, 'Please a pass "String" or "IO".'
       end
     end
 

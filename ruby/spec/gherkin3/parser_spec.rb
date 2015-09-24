@@ -23,6 +23,37 @@ module Gherkin3
       })
     end
 
+    it "parses string feature" do
+      parser = Parser.new
+      ast = parser.parse("Feature: test")
+      expect(ast).to eq({
+        type: :Feature,
+        tags: [],
+        location: {line: 1, column: 1},
+        language: "en",
+        keyword: "Feature",
+        name: "test",
+        scenarioDefinitions: [],
+        comments: []
+      })
+    end
+
+    it "parses io feature" do
+      parser = Parser.new
+      ast = parser.parse(StringIO.new("Feature: test"))
+
+      expect(ast).to eq({
+        type: :Feature,
+        tags: [],
+        location: {line: 1, column: 1},
+        language: "en",
+        keyword: "Feature",
+        name: "test",
+        scenarioDefinitions: [],
+        comments: []
+      })
+    end
+
     it "can parse multiple features" do
       parser = Parser.new
       ast1 = parser.parse(TokenScanner.new("Feature: test"))
