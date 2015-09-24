@@ -1,6 +1,7 @@
 # This file is generated. Do not edit! Edit gherkin-ruby.razor instead.
 require_relative 'ast_builder'
 require_relative 'token_matcher'
+require_relative 'token_scanner'
 require_relative 'errors'
 
 module Gherkin3
@@ -64,6 +65,8 @@ module Gherkin3
     end
 
     def parse(token_scanner, token_matcher=TokenMatcher.new)
+      token_scanner = token_scanner.is_a?(TokenScanner) ? token_scanner : TokenScanner.new(token_scanner)
+
       @ast_builder.reset
       token_matcher.reset
       context = ParserContext.new(
