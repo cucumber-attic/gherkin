@@ -58,6 +58,8 @@ module Gherkin3
     end
 
     def parse(token_scanner, token_matcher=TokenMatcher.new)
+      token_scanner = token_scanner.is_a?(TokenScanner) ? token_scanner : TokenScanner.new(token_scanner)
+
       @@ast_builder.reset
       token_matcher.reset
       context = ParserContext.new(
