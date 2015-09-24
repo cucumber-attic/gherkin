@@ -9,5 +9,5 @@ following command to generate the ruby files.
 
 ~~~bash
 cd <project_root>/ruby
-bundle exec make
+make
 ~~~
