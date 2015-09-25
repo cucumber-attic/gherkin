@@ -122,6 +122,12 @@ class Parser {
             self.astBuilder.build(token)
         }
     }
+    
+    func addError(context: ParserContext, error: InvalidOperationException) throws {
+        
+        context.errors.append(error)
+        throw InvalidOperationException.CompositeParserException
+    }
 
     func startRule(context: ParserContext, ruleType: RuleType) {
         handleASTError(context, action: {
@@ -147,11 +153,25 @@ class Parser {
         return context.tokenQueue.count > 0 ? context.tokenQueue.removeFirst() : context.tokenScanner.read()
     }
 
-    func addError(context: ParserContext, error: InvalidOperationException) throws {
-        
-        context.errors.append(error)
-        throw InvalidOperationException.CompositeParserException
+    
+    /*
+    @foreach(var rule in Model.RuleSet.TokenRules)
+    {<text>
+        def match_@(rule.Name.Replace("#", ""))( context, token)
+        @if (rule.Name != "#EOF")
+        {
+        @:return false if token.eof?
+        }
+        return handle_external_error(context, false) do
+        context.token_matcher.match_@(rule.Name.Replace("#", ""))(token)
+        end
+        end</text>
     }
+    */
+    func match_(context: ParserContext, token: Token) {
+        
+    }
+
 
     func matchToken(state: Int, token: Token, context: ParserContext) throws -> Int {
         switch state {
@@ -169,6 +189,36 @@ class Parser {
         }
     }
     
+    /*
+    @foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
+    {<text>
+    # @Raw(state.Comment)
+    def match_token_at_@(state.Id)(token, context)
+    @foreach(var transition in state.Transitions)
+    {
+    @:if @MatchToken(transition.TokenType)
+    if (transition.LookAheadHint != null)
+    {
+    @:if lookahead_@(transition.LookAheadHint.Id)(context, token)
+    }
+    foreach(var production in transition.Productions)
+    {
+    @CallProduction(production)
+    }
+    @:return @transition.TargetState
+    if (transition.LookAheadHint != null)
+    {
+    @:end
+    }
+    @:end
+    }
+    @HandleParserError(state.Transitions.Select(t => "#" + t.TokenType.ToString()).Distinct(), state)
+    end</text>
+    }
+    */
+    func matchTokenAt0(token: Token, context: ParserContext) {
+        
+    }
     
     
     

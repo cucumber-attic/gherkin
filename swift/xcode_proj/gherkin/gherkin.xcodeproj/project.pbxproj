@@ -13,6 +13,7 @@
 		7ACD06861BB446CC00416A35 /* TokenScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD06851BB446CC00416A35 /* TokenScanner.swift */; settings = {ASSET_TAGS = (); }; };
 		7ACD06881BB4470D00416A35 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD06871BB4470D00416A35 /* Token.swift */; settings = {ASSET_TAGS = (); }; };
 		7ACD068A1BB4594900416A35 /* StreamReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD06891BB4594900416A35 /* StreamReader.swift */; settings = {ASSET_TAGS = (); }; };
+		7ACD068E1BB58C8D00416A35 /* Dialect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD068D1BB58C8D00416A35 /* Dialect.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +36,7 @@
 		7ACD06851BB446CC00416A35 /* TokenScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenScanner.swift; sourceTree = "<group>"; };
 		7ACD06871BB4470D00416A35 /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		7ACD06891BB4594900416A35 /* StreamReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamReader.swift; sourceTree = "<group>"; };
+		7ACD068D1BB58C8D00416A35 /* Dialect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dialect.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				7ACD06851BB446CC00416A35 /* TokenScanner.swift */,
 				7ACD06871BB4470D00416A35 /* Token.swift */,
 				7ACD06891BB4594900416A35 /* StreamReader.swift */,
+				7ACD068D1BB58C8D00416A35 /* Dialect.swift */,
 			);
 			path = gherkin;
 			sourceTree = "<group>";
@@ -138,6 +141,7 @@
 				7ACD06881BB4470D00416A35 /* Token.swift in Sources */,
 				7ACD06821BB4466C00416A35 /* ASTBuilder.swift in Sources */,
 				7ACD067B1BB4460A00416A35 /* main.swift in Sources */,
+				7ACD068E1BB58C8D00416A35 /* Dialect.swift in Sources */,
 				7ACD06841BB446AA00416A35 /* TokenMatcher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -256,6 +260,7 @@
 				7ACD06801BB4460A00416A35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
