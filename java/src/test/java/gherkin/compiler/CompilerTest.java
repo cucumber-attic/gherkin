@@ -6,7 +6,6 @@ import gherkin.ast.Feature;
 import gherkin.deps.com.google.gson.Gson;
 import gherkin.deps.com.google.gson.GsonBuilder;
 import org.junit.Test;
-import pickles.Pickle;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,28 +17,28 @@ public class CompilerTest {
 
     @Test
     public void compiles_a_scenario() throws IOException {
-        List<Pickle> pickles = compiler.compile(parser.parse("" +
+        List<TestCase> testCases = compiler.compile(parser.parse("" +
                 "Feature: f\n" +
                 "  Scenario: s\n" +
-                "    Given passing\n"));
+                "    Given passing\n"), "features/hello.feature");
 
-        System.out.println(gson.toJson(pickles));
+        System.out.println(gson.toJson(testCases));
     }
 
     @Test
     public void compiles_step_with_data_table() throws IOException {
-        List<Pickle> pickles = compiler.compile(parser.parse("" +
+        List<TestCase> testCases = compiler.compile(parser.parse("" +
                 "Feature: f\n" +
                 "  Scenario: s\n" +
                 "    Given passing\n" +
-                "      |x|\n"));
+                "      |x|\n"), "features/hello.feature");
 
-        System.out.println(gson.toJson(pickles));
+        System.out.println(gson.toJson(testCases));
     }
 
     @Test
     public void compiles_in_a_background() throws IOException {
-        List<Pickle> pickles = compiler.compile(parser.parse("" +
+        List<TestCase> testCases = compiler.compile(parser.parse("" +
                 "Feature: f\n" +
                 "  Background:\n" +
                 "    Given a\n" +
@@ -48,14 +47,14 @@ public class CompilerTest {
                 "    Given b\n" +
                 "    \n" +
                 "  Scenario:\n" +
-                "    Given c\n"));
+                "    Given c\n"), "features/hello.feature");
 
-        System.out.println(gson.toJson(pickles));
+        System.out.println(gson.toJson(testCases));
     }
 
     @Test
     public void compiles_a_scenario_outline() throws IOException {
-        List<Pickle> pickles = compiler.compile(parser.parse("" +
+        List<TestCase> testCases = compiler.compile(parser.parse("" +
                 "Feature: Minimal Scenario Outline\n" +
                 "\n" +
                 "  Scenario Outline: <what>\n" +
@@ -63,14 +62,14 @@ public class CompilerTest {
                 "\n" +
                 "    Examples: \n" +
                 "      | what       |\n" +
-                "      | minimalism |\n"));
+                "      | minimalism |\n"), "features/hello.feature");
 
-        System.out.println(gson.toJson(pickles));
+        System.out.println(gson.toJson(testCases));
     }
 
     @Test
     public void compiles_a_scenario_outline_with_data_tables_and_docstrings() throws IOException {
-        List<Pickle> pickles = compiler.compile(parser.parse("" +
+        List<TestCase> testCases = compiler.compile(parser.parse("" +
                 "Feature: Minimal Scenario Outline\n" +
                 "\n" +
                 "  Scenario Outline: <what>\n" +
@@ -83,14 +82,14 @@ public class CompilerTest {
                 "\n" +
                 "    Examples: \n" +
                 "      | what       |\n" +
-                "      | minimalism |\n"));
+                "      | minimalism |\n"), "features/hello.feature");
 
-        System.out.println(gson.toJson(pickles));
+        System.out.println(gson.toJson(testCases));
     }
 
     @Test
     public void compiles_a_scenario_outline_with_background() throws IOException {
-        List<Pickle> pickles = compiler.compile(parser.parse("" +
+        List<TestCase> testCases = compiler.compile(parser.parse("" +
                 "Feature: Minimal Scenario Outline\n" +
                 "  Background:\n" +
                 "    Given a\n" +
@@ -100,8 +99,8 @@ public class CompilerTest {
                 "\n" +
                 "    Examples: \n" +
                 "      | what       |\n" +
-                "      | minimalism |\n"));
+                "      | minimalism |\n"), "features/hello.feature");
 
-        System.out.println(gson.toJson(pickles));
+        System.out.println(gson.toJson(testCases));
     }
 }

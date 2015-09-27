@@ -38,11 +38,12 @@ THE SOFTWARE.
     Parser: require('./lib/gherkin/parser'),
     TokenScanner: require('./lib/gherkin/token_scanner'),
     TokenMatcher: require('./lib/gherkin/token_matcher'),
-    AstBuilder: require('./lib/gherkin/ast_builder')
+    AstBuilder: require('./lib/gherkin/ast_builder'),
+    Compiler: require('./lib/gherkin/compiler'),
   };
 }));
 
-},{"./lib/gherkin/ast_builder":2,"./lib/gherkin/parser":7,"./lib/gherkin/token_matcher":9,"./lib/gherkin/token_scanner":10}],2:[function(require,module,exports){
+},{"./lib/gherkin/ast_builder":2,"./lib/gherkin/compiler":4,"./lib/gherkin/parser":8,"./lib/gherkin/token_matcher":10,"./lib/gherkin/token_scanner":11}],2:[function(require,module,exports){
 var AstNode = require('./ast_node');
 var Errors = require('./errors');
 
@@ -163,7 +164,7 @@ module.exports = function AstBuilder () {
         }
       case 'DocString':
         var separatorToken = node.getTokens('DocStringSeparator')[0];
-        var contentType = separatorToken.matchedText;
+        var contentType = separatorToken.matchedText.length > 0 ? separatorToken.matchedText : undefined;
         var lineTokens = node.getTokens('Other');
         var content = lineTokens.map(function (t) {return t.matchedText}).join("\n");
 
@@ -289,7 +290,7 @@ module.exports = function AstBuilder () {
 
 };
 
-},{"./ast_node":3,"./errors":4}],3:[function(require,module,exports){
+},{"./ast_node":3,"./errors":5}],3:[function(require,module,exports){
 function AstNode (ruleType) {
   this.ruleType = ruleType;
   this._subItems = {};
@@ -320,6 +321,129 @@ AstNode.prototype.getTokens = function (tokenType) {
 module.exports = AstNode;
 
 },{}],4:[function(require,module,exports){
+var dialects = require('./gherkin-languages.json');
+
+function Compiler() {
+  this.compile = function (feature, path) {
+    var testCases = [];
+    var backgroundSteps = feature.background ? feature.background.steps : [];
+    var featureTags = feature.tags;
+    var dialect = dialects[feature.language];
+
+    feature.scenarioDefinitions.forEach(function (scenarioDefinition) {
+      if(scenarioDefinition.type === 'Scenario') {
+        compileScenario(featureTags, backgroundSteps, scenarioDefinition, dialect, path, testCases);
+      } else {
+        compileScenarioOutline(featureTags, backgroundSteps, scenarioDefinition, dialect, path, testCases);
+      }
+    });
+    return testCases;
+  };
+
+  function compileScenario(featureTags, backgroundSteps, scenario, dialect, path, testCases) {
+    var tags = [].concat(featureTags).concat(scenario.tags);
+    var testCase = {
+      path: path,
+      tags: tags,
+      name: scenario.keyword + ": " + scenario.name,
+      locations: [scenario.location],
+      steps: []
+    };
+    testCases.push(testCase);
+
+    var steps = [].concat(backgroundSteps).concat(scenario.steps);
+    steps.forEach(function (step) {
+      var testStep = {
+        name: step.keyword + step.text,
+        text: step.text,
+        argument: step.argument,
+        locations: [step.location]
+      };
+      testCase.steps.push(testStep);
+    });
+  }
+
+  function compileScenarioOutline(featureTags, backgroundSteps, scenarioOutline, dialect, path, testCases) {
+    var keyword = dialect.scenario[0];
+    scenarioOutline.examples.forEach(function (examples) {
+      examples.tableBody.forEach(function (values) {
+        var scenarioName = interpolate(scenarioOutline.name, examples.tableHeader, values);
+        var testCaseName = keyword + ": " + scenarioName;
+
+        var tags = [].concat(featureTags).concat(scenarioOutline.tags).concat(examples.tags);
+        var testCase = {
+          path: path,
+          tags: tags,
+          name: testCaseName,
+          locations: [values.location, scenarioOutline.location],
+          steps: []
+        };
+        testCases.push(testCase);
+
+        var steps = [].concat(backgroundSteps);
+        scenarioOutline.steps.forEach(function (scenarioOutlineStep) {
+          var testStepArgument = createTestSteprgument(scenarioOutlineStep.argument, examples.tableHeader, values);
+          testStepText = interpolate(scenarioOutlineStep.text, examples.tableHeader, values);
+          var testStep = {
+            name: scenarioOutlineStep.keyword + testStepText,
+            text: testStepText,
+            argument: testStepArgument,
+            locations: [values.location, scenarioOutlineStep.location]
+          };
+          testCase.steps.push(testStep);
+        });
+      });
+    });
+  }
+
+  function createTestStepArgument(argument, variables, values) {
+    if (!argument) return undefined;
+    if (argument.type === 'DataTable') {
+      var result = {
+        type: argument.type,
+        location: argument.location,
+        // locations: [values.location, argument.location],
+        rows: argument.rows.map(function (row) {
+          return {
+            type: row.type,
+            location: row.location,
+            // locations: [values.location, row.location],
+            cells: row.cells.map(function (cell) {
+              return {
+                type: cell.type,
+                location: cell.location,
+                // locations: [values.location, cell.location],
+                value: interpolate(cell.value, variables, values)
+              };
+            })
+          };
+        })
+      };
+      return result;
+    }
+    if (argument.type === 'DocString') {
+      return {
+        type: argument.type,
+        location: argument.location,
+        // locations: [values.location, argument.location],
+        content: interpolate(argument.content, variables, values)
+      }
+    }
+    throw Error('Internal error');
+  }
+
+  function interpolate(name, variables, values) {
+    variables.cells.forEach(function (headerCell, n) {
+      var valueCell = values.cells[n];
+      name = name.replace('<' + headerCell.value + '>', valueCell.value);
+    });
+    return name;
+  }
+}
+
+module.exports = Compiler;
+
+},{"./gherkin-languages.json":6}],5:[function(require,module,exports){
 var Errors = {};
 
 [
@@ -382,7 +506,7 @@ function createError(Ctor, message, location) {
 
 module.exports = Errors;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports={
   "af": {
     "and": [
@@ -3261,7 +3385,7 @@ module.exports={
   }
 }
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 function GherkinLine(lineText, lineNumber) {
   this.lineText = lineText;
   this.lineNumber = lineNumber;
@@ -3341,7 +3465,7 @@ GherkinLine.prototype.getTags = function getTags() {
 
 module.exports = GherkinLine;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 // This file is generated. Do not edit! Edit gherkin-javascript.razor instead.
 var Errors = require('./errors');
 var AstBuilder = require('./ast_builder');
@@ -5365,7 +5489,7 @@ module.exports = function Parser(builder) {
 
 }
 
-},{"./ast_builder":2,"./errors":4,"./token_matcher":9,"./token_scanner":10}],8:[function(require,module,exports){
+},{"./ast_builder":2,"./errors":5,"./token_matcher":10,"./token_scanner":11}],9:[function(require,module,exports){
 function Token(line, location) {
   this.line = line;
   this.location = location;
@@ -5382,7 +5506,7 @@ Token.prototype.detach = function () {
 
 module.exports = Token;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var dialects = require('./gherkin-languages.json');
 var Errors = require('./errors');
 var LANGUAGE_PATTERN = /^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$/;
@@ -5573,7 +5697,7 @@ module.exports = function TokenMatcher(defaultDialectName) {
   }
 };
 
-},{"./errors":4,"./gherkin-languages.json":5}],10:[function(require,module,exports){
+},{"./errors":5,"./gherkin-languages.json":6}],11:[function(require,module,exports){
 var Token = require('./token');
 var GherkinLine = require('./gherkin_line');
 
@@ -5598,4 +5722,4 @@ module.exports = function TokenScanner(source) {
   }
 };
 
-},{"./gherkin_line":6,"./token":8}]},{},[1]);
+},{"./gherkin_line":7,"./token":9}]},{},[1]);

@@ -10,6 +10,65 @@
     "path": "../testdata/good/escaped_pipes.feature",
     "steps": [
       {
+        "argument": {
+          "location": {
+            "column": 7,
+            "line": 4
+          },
+          "rows": [
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 9,
+                    "line": 4
+                  },
+                  "type": "TableCell",
+                  "value": "æ"
+                },
+                {
+                  "location": {
+                    "column": 13,
+                    "line": 4
+                  },
+                  "type": "TableCell",
+                  "value": "o"
+                }
+              ],
+              "location": {
+                "column": 7,
+                "line": 4
+              },
+              "type": "TableRow"
+            },
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 9,
+                    "line": 5
+                  },
+                  "type": "TableCell",
+                  "value": "a"
+                },
+                {
+                  "location": {
+                    "column": 13,
+                    "line": 5
+                  },
+                  "type": "TableCell",
+                  "value": "ø"
+                }
+              ],
+              "location": {
+                "column": 7,
+                "line": 5
+              },
+              "type": "TableRow"
+            }
+          ],
+          "type": "DataTable"
+        },
         "locations": [
           {
             "column": 5,
@@ -20,6 +79,65 @@
         "text": "they have arrived"
       },
       {
+        "argument": {
+          "location": {
+            "column": 7,
+            "line": 7
+          },
+          "rows": [
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 9,
+                    "line": 7
+                  },
+                  "type": "TableCell",
+                  "value": "æ"
+                },
+                {
+                  "location": {
+                    "column": 15,
+                    "line": 7
+                  },
+                  "type": "TableCell",
+                  "value": "|o"
+                }
+              ],
+              "location": {
+                "column": 7,
+                "line": 7
+              },
+              "type": "TableRow"
+            },
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 9,
+                    "line": 8
+                  },
+                  "type": "TableCell",
+                  "value": "|a"
+                },
+                {
+                  "location": {
+                    "column": 15,
+                    "line": 8
+                  },
+                  "type": "TableCell",
+                  "value": "ø\\"
+                }
+              ],
+              "location": {
+                "column": 7,
+                "line": 8
+              },
+              "type": "TableRow"
+            }
+          ],
+          "type": "DataTable"
+        },
         "locations": [
           {
             "column": 5,

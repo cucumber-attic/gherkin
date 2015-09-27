@@ -86,7 +86,7 @@ type Step struct {
 
 type DocString struct {
 	Node
-	ContentType string `json:"contentType"`
+	ContentType string `json:"contentType,omitempty"`
 	Content     string `json:"content"`
 	Delimitter  string `json:"-"`
 }

@@ -19,7 +19,6 @@
         {
           "argument": {
             "content": "first line (no indent)\n  second line (indented with two spaces)\n\nthird line was empty",
-            "contentType": "",
             "location": {
               "column": 7,
               "line": 5
@@ -55,7 +54,6 @@
         {
           "argument": {
             "content": "wrongly indented line",
-            "contentType": "",
             "location": {
               "column": 7,
               "line": 18
@@ -73,7 +71,6 @@
         {
           "argument": {
             "content": "first line\nsecond line",
-            "contentType": "",
             "location": {
               "column": 7,
               "line": 22
@@ -91,7 +88,6 @@
         {
           "argument": {
             "content": "first line\n\"\"\"\nthird line",
-            "contentType": "",
             "location": {
               "column": 7,
               "line": 27
@@ -109,7 +105,6 @@
         {
           "argument": {
             "content": "first line\n```\nthird line",
-            "contentType": "",
             "location": {
               "column": 7,
               "line": 33
@@ -127,7 +122,6 @@
         {
           "argument": {
             "content": "first line\n\"\"\"\nthird line",
-            "contentType": "",
             "location": {
               "column": 7,
               "line": 39

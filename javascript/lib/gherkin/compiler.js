@@ -33,6 +33,7 @@ function Compiler() {
       var testStep = {
         name: step.keyword + step.text,
         text: step.text,
+        argument: step.argument,
         locations: [step.location]
       };
       testCase.steps.push(testStep);
@@ -40,16 +41,17 @@ function Compiler() {
   }
 
   function compileScenarioOutline(featureTags, backgroundSteps, scenarioOutline, dialect, path, testCases) {
+    var keyword = dialect.scenario[0];
     scenarioOutline.examples.forEach(function (examples) {
       examples.tableBody.forEach(function (values) {
         var scenarioName = interpolate(scenarioOutline.name, examples.tableHeader, values);
-        var keyword = dialect.scenario[0];
+        var testCaseName = keyword + ": " + scenarioName;
 
         var tags = [].concat(featureTags).concat(scenarioOutline.tags).concat(examples.tags);
         var testCase = {
           path: path,
           tags: tags,
-          name: keyword + ": " + scenarioName,
+          name: testCaseName,
           locations: [values.location, scenarioOutline.location],
           steps: []
         };
@@ -57,7 +59,7 @@ function Compiler() {
 
         var steps = [].concat(backgroundSteps);
         scenarioOutline.steps.forEach(function (scenarioOutlineStep) {
-          var testStepArgument = createTestCaseArgument(scenarioOutlineStep.argument, examples.tableHeader, values);
+          var testStepArgument = createTestStepArgument(scenarioOutlineStep.argument, examples.tableHeader, values);
           testStepText = interpolate(scenarioOutlineStep.text, examples.tableHeader, values);
           var testStep = {
             name: scenarioOutlineStep.keyword + testStepText,
@@ -71,20 +73,23 @@ function Compiler() {
     });
   }
 
-  function createTestCaseArgument(argument, variables, values) {
-    if (!argument) return null;
+  function createTestStepArgument(argument, variables, values) {
+    if (!argument) return undefined;
     if (argument.type === 'DataTable') {
       var result = {
         type: argument.type,
-        locations: [values.location, argument.location],
+        location: argument.location,
+        // locations: [values.location, argument.location],
         rows: argument.rows.map(function (row) {
           return {
             type: row.type,
-            locations: [values.location, row.location],
+            location: row.location,
+            // locations: [values.location, row.location],
             cells: row.cells.map(function (cell) {
               return {
                 type: cell.type,
-                locations: [values.location, cell.location],
+                location: cell.location,
+                // locations: [values.location, cell.location],
                 value: interpolate(cell.value, variables, values)
               };
             })
@@ -96,7 +101,8 @@ function Compiler() {
     if (argument.type === 'DocString') {
       return {
         type: argument.type,
-        locations: [values.location, argument.location],
+        location: argument.location,
+        // locations: [values.location, argument.location],
         content: interpolate(argument.content, variables, values)
       }
     }

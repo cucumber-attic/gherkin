@@ -16,16 +16,10 @@
       {
         "argument": {
           "content": "trois",
-          "locations": [
-            {
-              "column": 7,
-              "line": 13
-            },
-            {
-              "column": 7,
-              "line": 5
-            }
-          ],
+          "location": {
+            "column": 7,
+            "line": 5
+          },
           "type": "DocString"
         },
         "locations": [
@@ -43,44 +37,26 @@
       },
       {
         "argument": {
-          "locations": [
-            {
-              "column": 7,
-              "line": 13
-            },
-            {
-              "column": 7,
-              "line": 9
-            }
-          ],
+          "location": {
+            "column": 7,
+            "line": 9
+          },
           "rows": [
             {
               "cells": [
                 {
-                  "locations": [
-                    {
-                      "column": 7,
-                      "line": 13
-                    },
-                    {
-                      "column": 9,
-                      "line": 9
-                    }
-                  ],
+                  "location": {
+                    "column": 9,
+                    "line": 9
+                  },
                   "type": "TableCell",
                   "value": "cinq"
                 }
               ],
-              "locations": [
-                {
-                  "column": 7,
-                  "line": 13
-                },
-                {
-                  "column": 7,
-                  "line": 9
-                }
-              ],
+              "location": {
+                "column": 7,
+                "line": 9
+              },
               "type": "TableRow"
             }
           ],
@@ -119,16 +95,10 @@
       {
         "argument": {
           "content": "tres",
-          "locations": [
-            {
-              "column": 7,
-              "line": 14
-            },
-            {
-              "column": 7,
-              "line": 5
-            }
-          ],
+          "location": {
+            "column": 7,
+            "line": 5
+          },
           "type": "DocString"
         },
         "locations": [
@@ -146,44 +116,26 @@
       },
       {
         "argument": {
-          "locations": [
-            {
-              "column": 7,
-              "line": 14
-            },
-            {
-              "column": 7,
-              "line": 9
-            }
-          ],
+          "location": {
+            "column": 7,
+            "line": 9
+          },
           "rows": [
             {
               "cells": [
                 {
-                  "locations": [
-                    {
-                      "column": 7,
-                      "line": 14
-                    },
-                    {
-                      "column": 9,
-                      "line": 9
-                    }
-                  ],
+                  "location": {
+                    "column": 9,
+                    "line": 9
+                  },
                   "type": "TableCell",
                   "value": "cinco"
                 }
               ],
-              "locations": [
-                {
-                  "column": 7,
-                  "line": 14
-                },
-                {
-                  "column": 7,
-                  "line": 9
-                }
-              ],
+              "location": {
+                "column": 7,
+                "line": 9
+              },
               "type": "TableRow"
             }
           ],

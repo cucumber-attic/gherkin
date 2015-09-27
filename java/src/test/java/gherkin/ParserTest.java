@@ -52,7 +52,6 @@ public class ParserTest {
                 "        \"keyword\":\"Given \"," +
                 "        \"text\":\"x\"," +
                 "        \"argument\":{" +
-                "            \"contentType\":\"\"," +
                 "            \"content\":\"closed docstring\"," +
                 "            \"type\":\"DocString\"," +
                 "            \"location\":{\"line\":4,\"column\":7}}," +

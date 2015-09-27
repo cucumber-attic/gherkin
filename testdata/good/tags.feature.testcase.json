@@ -86,7 +86,6 @@
     "path": "../testdata/good/tags.feature",
     "steps": [
       {
-        "argument": null,
         "locations": [
           {
             "column": 3,

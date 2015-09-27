@@ -152,7 +152,6 @@
     "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
-        "argument": null,
         "locations": [
           {
             "column": 5,

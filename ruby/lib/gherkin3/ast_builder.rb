@@ -118,7 +118,7 @@ module Gherkin3
         )
       when :DocString
         separator_token = node.get_tokens(:DocStringSeparator)[0]
-        content_type = separator_token.matched_text
+        content_type = separator_token.matched_text == '' ? nil : separator_token.matched_text
         line_tokens = node.get_tokens(:Other)
         content = line_tokens.map { |t| t.matched_text }.join("\n")
 

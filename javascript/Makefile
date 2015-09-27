@@ -34,16 +34,16 @@ acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feat
 	diff --unified $<.ast.json $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
 
-# acceptance/testdata/%.feature.testcase.json: ../testdata/%.feature .built
-# 	mkdir -p `dirname $@`
-# 	bin/gherkin-compile-ast $< | jq --sort-keys "." > $<.testcase.json
-# .DELETE_ON_ERROR: ../testdata/%.feature.testcase.json
-
-acceptance/testdata/%.feature.testcase.json: ../testdata/%.feature ../testdata/%.feature.testcase.json .built
+acceptance/testdata/%.feature.testcase.json: ../testdata/%.feature .built
 	mkdir -p `dirname $@`
-	bin/gherkin-compile-ast $< | jq --sort-keys "." > $@
-	diff --unified $<.testcase.json $@
-.DELETE_ON_ERROR: acceptance/testdata/%.feature.testcase.json
+	bin/gherkin-generate-test-cases $< | jq --sort-keys "." > $<.testcase.json
+.DELETE_ON_ERROR: ../testdata/%.feature.testcase.json
+
+# acceptance/testdata/%.feature.testcase.json: ../testdata/%.feature ../testdata/%.feature.testcase.json .built
+# 	mkdir -p `dirname $@`
+# 	bin/gherkin-generate-test-cases $< | jq --sort-keys "." > $@
+# 	diff --unified $<.testcase.json $@
+# .DELETE_ON_ERROR: acceptance/testdata/%.feature.testcase.json
 
 acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors .built
 	mkdir -p `dirname $@`
