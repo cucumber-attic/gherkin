@@ -11,9 +11,8 @@ class Dialect {
     
     class func dialectFor(name: String)
     
-    init() {
+    init(spec: ) {
         
     }
-    
     
 }
