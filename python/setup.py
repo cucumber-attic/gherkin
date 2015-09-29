@@ -11,6 +11,10 @@ setup(
   license = 'MIT',
   download_url = 'https://github.com/cucumber/gherkin-python/archive/v3.1.1.tar.gz',
   keywords = ['gherkin', 'cucumber', 'bdd'],
-  classifiers = [],
+  classifiers = [
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 2',
+    'Programming Language :: Python :: 3',
+  ],
   package_data = {'gherkin3': ['gherkin-languages.json']},
 )
