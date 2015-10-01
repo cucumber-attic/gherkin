@@ -43,3 +43,4 @@ script: "cd $TARGET_LANG; make"
 branches:
   only:
     - master
+    - ruby-scenario-outlines-with-tags
