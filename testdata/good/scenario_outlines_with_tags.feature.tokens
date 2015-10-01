@@ -1,0 +1,16 @@
+(1:1)FeatureLine:Feature//
+(2:3)TagLine://3:@foo1
+(3:3)TagLine://3:@foo2
+(4:3)ScenarioOutlineLine:Scenario Outline//
+(5:5)StepLine:Given /<x>/
+(6:5)ExamplesLine:Examples//
+(7:5)TableRow://7:x
+(8:5)TableRow://7:y
+(9:3)TagLine://3:@bar1
+(10:3)TagLine://3:@bar2
+(11:3)ScenarioOutlineLine:Scenario Outline//
+(12:5)StepLine:Given /<m>/
+(13:5)ExamplesLine:Examples//
+(14:5)TableRow://7:m
+(15:5)TableRow://7:n
+EOF

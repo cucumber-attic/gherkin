@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Scenario: ",
+    "source": [
+      {
+        "column": 3,
+        "line": 4
+      }
+    ],
+    "steps": [
+      {
+        "source": [
+          {
+            "column": 5,
+            "line": 5
+          },
+          {
+            "column": 5,
+            "line": 8
+          }
+        ],
+        "text": "y"
+      }
+    ],
+    "tags": [
+      {
+        "name": "@foo1",
+        "source": {
+          "column": 3,
+          "line": 2
+        }
+      },
+      {
+        "name": "@foo2",
+        "source": {
+          "column": 3,
+          "line": 3
+        }
+      }
+    ]
+  },
+  {
+    "name": "Scenario: ",
+    "source": [
+      {
+        "column": 3,
+        "line": 11
+      }
+    ],
+    "steps": [
+      {
+        "source": [
+          {
+            "column": 5,
+            "line": 12
+          },
+          {
+            "column": 5,
+            "line": 15
+          }
+        ],
+        "text": "n"
+      }
+    ],
+    "tags": [
+      {
+        "name": "@bar1",
+        "source": {
+          "column": 3,
+          "line": 9
+        }
+      },
+      {
+        "name": "@bar2",
+        "source": {
+          "column": 3,
+          "line": 10
+        }
+      }
+    ]
+  }
+]
