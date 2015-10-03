@@ -1,29 +1,34 @@
 [
   {
-    "name": "Scenario: minimalistic",
-    "source": [
+    "locations": [
       {
         "column": 3,
         "line": 7
       }
     ],
+    "name": "Scenario: minimalistic",
+    "path": "../testdata/good/background.feature",
     "steps": [
       {
-        "source": [
+        "arguments": [],
+        "locations": [
           {
             "column": 5,
             "line": 4
           }
         ],
+        "name": "Given the minimalism inside a background",
         "text": "the minimalism inside a background"
       },
       {
-        "source": [
+        "arguments": [],
+        "locations": [
           {
             "column": 5,
             "line": 8
           }
         ],
+        "name": "Given the minimalism",
         "text": "the minimalism"
       }
     ],

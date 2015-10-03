@@ -1,95 +1,141 @@
 [
   {
-    "name": "Scenario: the un",
-    "source": [
+    "locations": [
+      {
+        "column": 7,
+        "line": 13
+      },
       {
         "column": 3,
         "line": 3
       }
     ],
+    "name": "Scenario: the un",
+    "path": "../testdata/good/example_tokens_everywhere.feature",
     "steps": [
       {
-        "argument": {
-          "content": "trois"
-        },
-        "source": [
+        "arguments": [
+          {
+            "content": "trois",
+            "location": {
+              "column": 7,
+              "line": 5
+            }
+          }
+        ],
+        "locations": [
+          {
+            "column": 7,
+            "line": 13
+          },
           {
             "column": 5,
             "line": 4
-          },
-          {
-            "column": 7,
-            "line": 13
           }
         ],
+        "name": "Given the deux:",
         "text": "the deux:"
       },
       {
-        "argument": {
-          "rows": [
-            [
-              "cinq"
-            ]
-          ]
-        },
-        "source": [
+        "arguments": [
           {
-            "column": 5,
-            "line": 8
-          },
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "location": {
+                      "column": 9,
+                      "line": 9
+                    },
+                    "value": "cinq"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "locations": [
           {
             "column": 7,
             "line": 13
+          },
+          {
+            "column": 5,
+            "line": 8
           }
         ],
+        "name": "Given the quatre:",
         "text": "the quatre:"
       }
     ],
     "tags": []
   },
   {
-    "name": "Scenario: the uno",
-    "source": [
+    "locations": [
+      {
+        "column": 7,
+        "line": 14
+      },
       {
         "column": 3,
         "line": 3
       }
     ],
+    "name": "Scenario: the uno",
+    "path": "../testdata/good/example_tokens_everywhere.feature",
     "steps": [
       {
-        "argument": {
-          "content": "tres"
-        },
-        "source": [
+        "arguments": [
+          {
+            "content": "tres",
+            "location": {
+              "column": 7,
+              "line": 5
+            }
+          }
+        ],
+        "locations": [
+          {
+            "column": 7,
+            "line": 14
+          },
           {
             "column": 5,
             "line": 4
-          },
-          {
-            "column": 7,
-            "line": 14
           }
         ],
+        "name": "Given the dos:",
         "text": "the dos:"
       },
       {
-        "argument": {
-          "rows": [
-            [
-              "cinco"
-            ]
-          ]
-        },
-        "source": [
+        "arguments": [
           {
-            "column": 5,
-            "line": 8
-          },
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "location": {
+                      "column": 9,
+                      "line": 9
+                    },
+                    "value": "cinco"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "locations": [
           {
             "column": 7,
             "line": 14
+          },
+          {
+            "column": 5,
+            "line": 8
           }
         ],
+        "name": "Given the quatro:",
         "text": "the quatro:"
       }
     ],
