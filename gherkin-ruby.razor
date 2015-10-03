@@ -178,7 +178,7 @@ module Gherkin3
       loop do
         token = read_token(context)
         token.detach
-        queue.unshift(token)
+        queue.push(token)
 
         if (false @foreach(var tokenType in lookAheadHint.ExpectedTokens) {<text>|| @MatchToken(tokenType)</text>})
           match = true
