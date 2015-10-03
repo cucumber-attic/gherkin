@@ -29,6 +29,11 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
    by [Zearin](https://github.com/Zearin))
 
 ### Fixed
+* (Ruby) Fixed bug in the parser's lookahead
+  ([#104](https://github.com/cucumber/gherkin3/issues/104)
+  by [brasmusson](https://github.com/brasmusson)
+  and [aslakhellesoy](https://github.com/aslakhellesoy))
+
 * (Python) Fix file parsing on Windows.
   ([#93](https://github.com/cucumber/gherkin3/issues/93)
    by [brasmusson](https://github.com/brasmusson))
