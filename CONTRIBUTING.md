@@ -163,7 +163,7 @@ When all components are released, update the master repo:
     make pull-subtrees
 
 Now, update `CHANGELOG.md` with the new release number and date, while keeping
-a section for the upcoming changes.
+a section for the upcoming changes. Also update the links at the bottom of the file.
 
 Then finally create a tag in this master repo and push.
 
