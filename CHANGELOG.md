@@ -14,6 +14,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Added
 ### Changed
 ### Fixed
+* (Go) Fixed bug in the parser's lookahead
+  (by [brasmusson](https://github.com/brasmusson))
 
 ## [3.1.2] - 2015-10-04
 

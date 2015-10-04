@@ -151,5 +151,94 @@
         }
       }
     ]
+  },
+  {
+    "name": "Scenario: minimalistic outline",
+    "source": [
+      {
+        "column": 1,
+        "line": 12
+      }
+    ],
+    "steps": [
+      {
+        "source": [
+          {
+            "column": 5,
+            "line": 13
+          },
+          {
+            "column": 3,
+            "line": 25
+          }
+        ],
+        "text": "the more minimalism"
+      }
+    ],
+    "tags": [
+      {
+        "name": "@feature_tag1",
+        "source": {
+          "column": 1,
+          "line": 1
+        }
+      },
+      {
+        "name": "@feature_tag2",
+        "source": {
+          "column": 15,
+          "line": 1
+        }
+      },
+      {
+        "name": "@feature_tag3",
+        "source": {
+          "column": 3,
+          "line": 2
+        }
+      },
+      {
+        "name": "@so_tag1",
+        "source": {
+          "column": 1,
+          "line": 10
+        }
+      },
+      {
+        "name": "@so_tag2",
+        "source": {
+          "column": 11,
+          "line": 10
+        }
+      },
+      {
+        "name": "@so_tag3",
+        "source": {
+          "column": 3,
+          "line": 11
+        }
+      },
+      {
+        "name": "@ex_tag4",
+        "source": {
+          "column": 1,
+          "line": 21
+        }
+      },
+      {
+        "name": "@ex_tag5",
+        "source": {
+          "column": 10,
+          "line": 21
+        }
+      },
+      {
+        "name": "@ex_tag6",
+        "source": {
+          "column": 3,
+          "line": 22
+        }
+      }
+    ]
   }
 ]
