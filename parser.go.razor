@@ -285,7 +285,7 @@ func (ctxt *parseContext) lookahead_@(lookAheadHint.Id)(initialLine *Line) bool 
         match = true;
         break
       }
-      if false @foreach(var tokenType in lookAheadHint.Skip) { <text>|| @IsMatchToken(tokenType)</text>} {
+      if !(false @foreach(var tokenType in lookAheadHint.Skip) { <text>|| @IsMatchToken(tokenType)</text>}) {
         break
       }
       if atEof {
