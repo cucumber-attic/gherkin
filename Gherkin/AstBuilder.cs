@@ -67,7 +67,7 @@ namespace Gherkin
                 case RuleType.DocString:
                 {
                     var separatorToken = node.GetTokens(TokenType.DocStringSeparator).First();
-                    var contentType = separatorToken.MatchedText;
+                    var contentType = separatorToken.MatchedText.Length == 0 ? null : separatorToken.MatchedText;
                     var lineTokens = node.GetTokens(TokenType.Other);
                     var content = string.Join(Environment.NewLine, lineTokens.Select(lt => lt.MatchedText));
 

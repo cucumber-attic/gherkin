@@ -94,7 +94,6 @@ Feature: Foo
               ""Line"": 4,
               ""Column"": 7
             },
-            ""ContentType"": """",
             ""Content"": ""closed docstring""
           }
         }
