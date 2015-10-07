@@ -89,7 +89,6 @@ describe('Parser', function () {
         steps: [{
           argument: {
             content: 'closed docstring',
-            contentType: null,
             location: { line: 4, column: 7 },
             type: 'DocString',
           },
