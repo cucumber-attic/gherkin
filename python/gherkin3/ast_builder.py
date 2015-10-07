@@ -35,8 +35,7 @@ class AstBuilder(object):
         return self.stack[-1]
 
     def get_location(self, token, column=None):
-        # TODO: translated from JS... is it right?
-        return (token.location if (not column or column == 0) else
+        return (token.location if not column else
                 {'line': token.location['line'], 'column': column})
 
     def get_tags(self, node):
