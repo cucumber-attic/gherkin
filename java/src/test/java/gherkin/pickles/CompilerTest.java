@@ -10,6 +10,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 public class CompilerTest {
     private final Parser<Feature> parser = new Parser<>(new AstBuilder());
     private final Compiler compiler = new Compiler();
@@ -22,85 +24,34 @@ public class CompilerTest {
                 "  Scenario: s\n" +
                 "    Given passing\n"), "features/hello.feature");
 
-        System.out.println(gson.toJson(pickles));
-    }
 
-    @Test
-    public void compiles_step_with_data_table() throws IOException {
-        List<Pickle> pickles = compiler.compile(parser.parse("" +
-                "Feature: f\n" +
-                "  Scenario: s\n" +
-                "    Given passing\n" +
-                "      |x|\n"), "features/hello.feature");
-
-        System.out.println(gson.toJson(pickles));
-    }
-
-    @Test
-    public void compiles_in_a_background() throws IOException {
-        List<Pickle> pickles = compiler.compile(parser.parse("" +
-                "Feature: f\n" +
-                "  Background:\n" +
-                "    Given a\n" +
-                "\n" +
-                "  Scenario:\n" +
-                "    Given b\n" +
-                "    \n" +
-                "  Scenario:\n" +
-                "    Given c\n"), "features/hello.feature");
-
-        System.out.println(gson.toJson(pickles));
-    }
-
-    @Test
-    public void compiles_a_scenario_outline() throws IOException {
-        List<Pickle> pickles = compiler.compile(parser.parse("" +
-                "Feature: Minimal Scenario Outline\n" +
-                "\n" +
-                "  Scenario Outline: <what>\n" +
-                "    Given the <what>\n" +
-                "\n" +
-                "    Examples: \n" +
-                "      | what       |\n" +
-                "      | minimalism |\n"), "features/hello.feature");
-
-        System.out.println(gson.toJson(pickles));
-    }
-
-    @Test
-    public void compiles_a_scenario_outline_with_data_tables_and_docstrings() throws IOException {
-        List<Pickle> pickles = compiler.compile(parser.parse("" +
-                "Feature: Minimal Scenario Outline\n" +
-                "\n" +
-                "  Scenario Outline: <what>\n" +
-                "    Given the table <what>\n" +
-                "      | <what> |\n" +
-                "    And the docstring <what>\n" +
-                "      ```\n" +
-                "      doc<what>\n" +
-                "      ```\n" +
-                "\n" +
-                "    Examples: \n" +
-                "      | what       |\n" +
-                "      | minimalism |\n"), "features/hello.feature");
-
-        System.out.println(gson.toJson(pickles));
-    }
-
-    @Test
-    public void compiles_a_scenario_outline_with_background() throws IOException {
-        List<Pickle> pickles = compiler.compile(parser.parse("" +
-                "Feature: Minimal Scenario Outline\n" +
-                "  Background:\n" +
-                "    Given a\n" +
-                "\n" +
-                "  Scenario Outline: minimalistic\n" +
-                "    Given the <what>\n" +
-                "\n" +
-                "    Examples: \n" +
-                "      | what       |\n" +
-                "      | minimalism |\n"), "features/hello.feature");
-
-        System.out.println(gson.toJson(pickles));
+        assertEquals("" +
+                        "[\n" +
+                        "  {\n" +
+                        "    \"path\": \"features/hello.feature\",\n" +
+                        "    \"name\": \"Scenario: s\",\n" +
+                        "    \"steps\": [\n" +
+                        "      {\n" +
+                        "        \"name\": \"Given passing\",\n" +
+                        "        \"text\": \"passing\",\n" +
+                        "        \"arguments\": [],\n" +
+                        "        \"locations\": [\n" +
+                        "          {\n" +
+                        "            \"line\": 3,\n" +
+                        "            \"column\": 5\n" +
+                        "          }\n" +
+                        "        ]\n" +
+                        "      }\n" +
+                        "    ],\n" +
+                        "    \"tags\": [],\n" +
+                        "    \"locations\": [\n" +
+                        "      {\n" +
+                        "        \"line\": 2,\n" +
+                        "        \"column\": 3\n" +
+                        "      }\n" +
+                        "    ]\n" +
+                        "  }\n" +
+                        "]",
+                gson.toJson(pickles));
     }
 }
