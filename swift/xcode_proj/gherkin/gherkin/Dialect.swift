@@ -9,9 +9,11 @@ DIALECTS = JSON.parse File.read(DIALECT_FILE_PATH)
 class Dialect {
     let spec: Dictionary<String,String>
     
-    class func dialectFor(name: String)
+    class func dialectFor(name: String) {
+        
+    }
     
-    init(spec: ) {
+    init(spec: String) {
         
     }
     

@@ -47,8 +47,12 @@ class TokenScanner {
         :return: Token
     */
     func read() -> Token {
-        var location = [ "line": self.lineNumber += 1 ]
+        var location: Int = self.lineNumber += 1
         
-//        if 
+        if self.fileContents || var line: String = self.fileContents.gets {
+            
+            let gherkinLine = line ? GherkinLine(lineText: line, lineNumber: location) : nil
+            return Token(line: gherkinLine, location: location)
+        }
     }
 }

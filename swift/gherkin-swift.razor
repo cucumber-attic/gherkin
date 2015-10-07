@@ -10,7 +10,7 @@
       @:  endRule(context, ruleType: .@production.RuleName);
       break;
     case ProductionRuleType.Process:
-      @:  build(context, token);
+      @:  build(context, token: token);
       break;
   }
 }
@@ -19,11 +19,18 @@
       let state_comment: String = "State: @state.Id - @Raw(state.Comment)"
       token.detach()
       let expected_tokens = ["@Raw(string.Join("\", \"", expectedTokens))"]
-      let error = token.eof() ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      let error: InvalidOperationException
+      if token.eof() {
+          error = InvalidOperationException.UnexpectedEOFException(token: token, expected_tokens: expected_tokens, state_comment: state_comment)
+      } else {
+          error = InvalidOperationException.UnexpectedTokenException(token: token, expected_tokens: expected_tokens, state_comment: state_comment)
+      }
       if stopAtFirstError {
         throw InvalidOperationException.GenericErrorFIXME
       }
-      addError(context, error)
+      do{
+        try addError(context, error: error)
+      }
       return @state.Id</text>}
 @helper MatchToken(TokenType tokenType)
 {<text>match@(tokenType)(context, token: token)</text>}
@@ -40,8 +47,8 @@ enum InvalidOperationException: ErrorType {
 
     case CompositeParserException
     case UnknownState
-    case UnexpectedEOFException
-    case UnexpectedTokenException
+    case UnexpectedEOFException(token: Token, expected_tokens: [String], state_comment: String)
+    case UnexpectedTokenException(token: Token, expected_tokens: [String], state_comment: String)
     case GenericErrorFIXME
 }
 
@@ -110,16 +117,23 @@ class Parser {
       }
   }
 
+  func addError(context: ParserContext, error: InvalidOperationException) throws {
+      context.errors.append(error)
+      if context.errors.count > 10 {
+          throw InvalidOperationException.CompositeParserException
+      }
+  }
+
   func startRule(context: ParserContext, ruleType: RuleType) {
 
-      handleASTError(context, action: {
+      handleASTError(context, action: { () -> Bool in
           self.astBuilder.startRule(ruleType)
       })
   }
 
   func endRule(context: ParserContext, ruleType: RuleType) {
 
-      handleASTError(context, action: {
+      handleASTError(context, action: { () -> Bool in
           self.astBuilder.endRule(ruleType)
       })
   }
@@ -133,21 +147,21 @@ class Parser {
 
   }
 
-  @foreach(var rule in Model.RuleSet.TokenRules)
-  {<text>
-    func match@(rule.Name.Replace("#", ""))(context: ParserContext, token: Token) -> Bool {
-      @if (rule.Name != "#EOF")
-      {<text>
-      if token.eof() {
-        return false
-      } else {
-        return handleExternalError(context, defaultValue: false, action: { () -> Bool in
-                context.tokenMatcher.match@(rule.Name.Replace("#", ""))(token)
-             })
-      }</text>
-      }
+@foreach(var rule in Model.RuleSet.TokenRules)
+{<text>
+  func match@(rule.Name.Replace("#", ""))(context: ParserContext, token: Token) -> Bool {
+    @if (rule.Name != "#EOF")
+    {<text>
+    if token.eof() {
+      return false
+    } else {
+      return handleExternalError(context, defaultValue: false, action: { () -> Bool in
+              context.tokenMatcher.match@(rule.Name.Replace("#", ""))(token)
+           })
     }</text>
-  }
+    }
+  }</text>
+}
 
   func matchToken(state: Int, token: Token, context: ParserContext) throws -> Int {
     switch state {
@@ -164,20 +178,20 @@ class Parser {
   @foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
   {<text>
     // @Raw(state.Comment)
-    func matchTokenAt@(state.Id)(token: Token, context: ParserContext) -> Int {
+    func matchTokenAt@(state.Id)(token: Token, context: ParserContext) throws -> Int {
       @foreach(var transition in state.Transitions)
       {
       @:if @MatchToken(transition.TokenType) {
         if (transition.LookAheadHint != null)
         {
-        @:if lookahead@(transition.LookAheadHint.Id)(context, token: token) {
-          }
-          foreach(var production in transition.Productions)
-          {
-            @CallProduction(production)
-          }
-          @:return @transition.TargetState
-        @:}
+        @:if lookAhead@(transition.LookAheadHint.Id)(context, currentToken: token) {
+            }
+            foreach(var production in transition.Productions)
+            {
+              @CallProduction(production)
+            }
+            @:return @transition.TargetState
+          @:}
         if (transition.LookAheadHint != null)
         {
       @:}
@@ -187,13 +201,47 @@ class Parser {
     }</text>
   }
 
+  @foreach(var lookAheadHint in Model.RuleSet.LookAheadHints)
+  {
+      <text>
+      func lookAhead@(lookAheadHint.Id)(context: ParserContext, currentToken: Token) -> Bool {
+        currentToken.detach()
+        var token: Token
+        var queue: [Token]
+        var match: Bool = false
+        repeat {
+          token = readToken(context)
+          token.detach()
+          queue.insert(token, atIndex: 0)
 
+          if (false @foreach(var tokenType in lookAheadHint.ExpectedTokens) {<text>|| @MatchToken(tokenType)</text>}) {
+            match = true
+            break
+          }
 
-  private func handleASTError(context: ParserContext, action: () throws -> Bool ) -> Bool {
+          if (false || matchEmpty(context, token: token) || matchComment(context, token: token) || matchTagLine(context, token: token)) {
 
-      handleExternalError(context, defaultValue: true, action: action)
+            } else {
+
+                break
+            }
+        } while true
+
+        context.tokenQueue.appendContentsOf(queue)
+
+        return match
+      }
+      </text>
   }
 
-  private func handleExternalError(context: ParserContext, defaultValue: Bool, action: () throws -> Bool ) -> Bool {
 
+
+    private func handleASTError(context: ParserContext, action: () -> Bool ) {
+
+        handleExternalError(context, defaultValue: true, action: action)
+    }
+
+    private func handleExternalError(context: ParserContext, defaultValue: Bool, action: () -> Bool ) {
+
+    }
   }

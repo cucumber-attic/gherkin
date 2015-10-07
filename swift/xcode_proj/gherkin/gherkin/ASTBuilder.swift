@@ -8,11 +8,11 @@ class ASTBuilder {
         print("reset")
     }
     
-    func startRule(ruleType: RuleType) {
+    func startRule(ruleType: RuleType) -> Bool {
         
     }
     
-    func endRule(ruleType: RuleType) {
+    func endRule(ruleType: RuleType) -> Bool {
         
     }
     
@@ -20,7 +20,7 @@ class ASTBuilder {
         
     }
     
-    func build(token: Token) {
+    func build(token: Token) -> Bool {
         
     }
 }

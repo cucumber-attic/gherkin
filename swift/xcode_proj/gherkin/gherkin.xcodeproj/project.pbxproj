@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A9A64B61BBEE7410011D644 /* GherkinLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A64B51BBEE7410011D644 /* GherkinLine.swift */; settings = {ASSET_TAGS = (); }; };
 		7AC102311BB9969A00289887 /* parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC102301BB9969A00289887 /* parser.swift */; settings = {ASSET_TAGS = (); }; };
 		7ACD067B1BB4460A00416A35 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD067A1BB4460A00416A35 /* main.swift */; };
 		7ACD06821BB4466C00416A35 /* ASTBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD06811BB4466C00416A35 /* ASTBuilder.swift */; settings = {ASSET_TAGS = (); }; };
@@ -30,6 +31,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7A9A64B51BBEE7410011D644 /* GherkinLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GherkinLine.swift; sourceTree = "<group>"; };
 		7AC102301BB9969A00289887 /* parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = parser.swift; path = ../../../lib/gherkin/parser.swift; sourceTree = "<group>"; };
 		7ACD06771BB4460A00416A35 /* gherkin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = gherkin; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ACD067A1BB4460A00416A35 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -74,11 +76,12 @@
 				7ACD067A1BB4460A00416A35 /* main.swift */,
 				7AC102301BB9969A00289887 /* parser.swift */,
 				7ACD06811BB4466C00416A35 /* ASTBuilder.swift */,
+				7ACD068D1BB58C8D00416A35 /* Dialect.swift */,
+				7A9A64B51BBEE7410011D644 /* GherkinLine.swift */,
+				7ACD06891BB4594900416A35 /* StreamReader.swift */,
 				7ACD06831BB446AA00416A35 /* TokenMatcher.swift */,
 				7ACD06851BB446CC00416A35 /* TokenScanner.swift */,
 				7ACD06871BB4470D00416A35 /* Token.swift */,
-				7ACD06891BB4594900416A35 /* StreamReader.swift */,
-				7ACD068D1BB58C8D00416A35 /* Dialect.swift */,
 			);
 			path = gherkin;
 			sourceTree = "<group>";
@@ -143,6 +146,7 @@
 				7ACD06861BB446CC00416A35 /* TokenScanner.swift in Sources */,
 				7ACD06881BB4470D00416A35 /* Token.swift in Sources */,
 				7ACD06821BB4466C00416A35 /* ASTBuilder.swift in Sources */,
+				7A9A64B61BBEE7410011D644 /* GherkinLine.swift in Sources */,
 				7AC102311BB9969A00289887 /* parser.swift in Sources */,
 				7ACD067B1BB4460A00416A35 /* main.swift in Sources */,
 				7ACD068E1BB58C8D00416A35 /* Dialect.swift in Sources */,
