@@ -1,86 +1,101 @@
 [
   {
-    "name": "Scenario: minimalistic",
-    "source": [
+    "locations": [
+      {
+        "column": 7,
+        "line": 9
+      },
       {
         "column": 3,
         "line": 3
       }
     ],
+    "name": "Scenario: minimalistic",
+    "path": "../testdata/good/several_examples.feature",
     "steps": [
       {
-        "source": [
-          {
-            "column": 5,
-            "line": 4
-          },
+        "arguments": [],
+        "locations": [
           {
             "column": 7,
             "line": 9
+          },
+          {
+            "column": 5,
+            "line": 4
           }
         ],
+        "name": "Given the foo",
         "text": "the foo"
       }
     ],
     "tags": [
       {
-        "name": "@foo",
-        "source": {
+        "location": {
           "column": 5,
           "line": 6
-        }
+        },
+        "name": "@foo"
       }
     ]
   },
   {
-    "name": "Scenario: minimalistic",
-    "source": [
+    "locations": [
+      {
+        "column": 7,
+        "line": 14
+      },
       {
         "column": 3,
         "line": 3
       }
     ],
+    "name": "Scenario: minimalistic",
+    "path": "../testdata/good/several_examples.feature",
     "steps": [
       {
-        "source": [
-          {
-            "column": 5,
-            "line": 4
-          },
+        "arguments": [],
+        "locations": [
           {
             "column": 7,
             "line": 14
+          },
+          {
+            "column": 5,
+            "line": 4
           }
         ],
+        "name": "Given the bar",
         "text": "the bar"
       }
     ],
     "tags": [
       {
-        "name": "@bar",
-        "source": {
+        "location": {
           "column": 5,
           "line": 11
-        }
+        },
+        "name": "@bar"
       }
     ]
   },
   {
-    "name": "Scenario: ha ok",
-    "source": [
+    "locations": [
       {
         "column": 3,
         "line": 17
       }
     ],
+    "name": "Scenario: ha ok",
+    "path": "../testdata/good/several_examples.feature",
     "steps": [],
     "tags": [
       {
-        "name": "@zap",
-        "source": {
+        "location": {
           "column": 3,
           "line": 16
-        }
+        },
+        "name": "@zap"
       }
     ]
   }

@@ -1,51 +1,156 @@
-var EventEmitter = require('events').EventEmitter;
-var util = require('util');
+var dialects = require('./gherkin-languages.json');
 
 function Compiler() {
-  EventEmitter.call(this);
+  this.compile = function (feature, path) {
+    var pickles = [];
+    var dialect = dialects[feature.language];
 
-  var self = this;
-
-  this.compile = function (feature) {
-    var backgroundSteps = feature.background ? feature.background.steps : [];
+    var featureTags = feature.tags;
+    var backgroundSteps = getBackgroundSteps(feature.background);
 
     feature.scenarioDefinitions.forEach(function (scenarioDefinition) {
       if(scenarioDefinition.type === 'Scenario') {
-        compileScenario(backgroundSteps, scenarioDefinition);
+        compileScenario(featureTags, backgroundSteps, scenarioDefinition, dialect, path, pickles);
       } else {
-        compileScenarioOutline(backgroundSteps, scenarioDefinition);
+        compileScenarioOutline(featureTags, backgroundSteps, scenarioDefinition, dialect, path, pickles);
       }
     });
+    return pickles;
   };
 
-  function compileScenario(backgroundSteps, scenario) {
-    var testCase = {
-      name: scenario.keyword + ": " + scenario.name,
-      location: scenario.location
-    };
-    self.emit('test-case', testCase);
+  function compileScenario(featureTags, backgroundSteps, scenario, dialect, path, pickles) {
+    var steps = [].concat(backgroundSteps);
 
-    var steps = [].concat(backgroundSteps).concat(scenario.steps);
-    steps.forEach(function (step) {
-      var testStep = {
-        name: step.keyword + step.name,
-        location: step.location
-      };
-      self.emit('test-step', testStep);
+    var tags = [].concat(featureTags).concat(scenario.tags);
+
+    scenario.steps.forEach(function (step) {
+      steps.push(pickleStep(step));
     });
+
+    var pickle = {
+      path: path,
+      tags: pickleTags(tags),
+      name: scenario.keyword + ": " + scenario.name,
+      locations: [scenario.location],
+      steps: steps
+    };
+    pickles.push(pickle);
   }
 
-  function compileScenarioOutline(backgroundSteps, scenarioOutline) {
-    scenarioOutline.examples.forEach(function (example) {
-      example.rows.forEach(function (row) {
-        var i = 0;
-        row.cells.forEach(function (cell) {
+  function compileScenarioOutline(featureTags, backgroundSteps, scenarioOutline, dialect, path, pickles) {
+    var keyword = dialect.scenario[0];
+    scenarioOutline.examples.forEach(function (examples) {
+      var variableCells = examples.tableHeader.cells;
+      examples.tableBody.forEach(function (values) {
+        var valueCells = values.cells;
+        var steps = [].concat(backgroundSteps);
+        var tags = [].concat(featureTags).concat(scenarioOutline.tags).concat(examples.tags);
 
+        scenarioOutline.steps.forEach(function (scenarioOutlineStep) {
+          var stepText = interpolate(scenarioOutlineStep.text, variableCells, valueCells);
+          var arguments = createPickleArguments(scenarioOutlineStep.argument, variableCells, valueCells);
+          var pickleStep = {
+            name: scenarioOutlineStep.keyword + stepText,
+            text: stepText,
+            arguments: arguments,
+            locations: [
+              pickleLocation(values.location),
+              pickleLocation(scenarioOutlineStep.location)
+            ]
+          };
+          steps.push(pickleStep);
         });
+
+        var pickle = {
+          path: path,
+          name: keyword + ": " + interpolate(scenarioOutline.name, variableCells, valueCells),
+          steps: steps,
+          tags: pickleTags(tags),
+          locations: [
+            pickleLocation(values.location),
+            pickleLocation(scenarioOutline.location)
+          ]
+        };
+        pickles.push(pickle);
+
       });
     });
   }
+
+  function createPickleArguments(argument, variables, values) {
+    var result = [];
+    if (!argument) return result;
+    if (argument.type === 'DataTable') {
+      var table = {
+        rows: argument.rows.map(function (row) {
+          return {
+            cells: row.cells.map(function (cell) {
+              return {
+                location: pickleLocation(cell.location),
+                value: interpolate(cell.value, variables, values)
+              };
+            })
+          };
+        })
+      };
+      result.push(table);
+    } else if (argument.type === 'DocString') {
+      var docString = {
+        location: argument.location,
+        // locations: [values.location, argument.location],
+        content: interpolate(argument.content, variables, values)
+      }
+      result.push(docString);
+    } else {
+      throw Error('Internal error');
+    }
+    return result;
+  }
+
+  function interpolate(name, variableCells, valueCells) {
+    variableCells.forEach(function (variableCell, n) {
+      var valueCell = valueCells[n];
+      name = name.replace('<' + variableCell.value + '>', valueCell.value);
+    });
+    return name;
+  }
+
+  function getBackgroundSteps(background) {
+    if(background) {
+      return background.steps.map(function (step) {
+        return pickleStep(step);
+      });
+    } else {
+      return [];
+    }
+  }
+
+  function pickleStep(step) {
+    return {
+      name: step.keyword + step.text,
+      text: step.text,
+      arguments: createPickleArguments(step.argument, [], []),
+      locations: [pickleLocation(step.location)]
+    }
+  }
+
+  function pickleLocation(location) {
+    return {
+      line: location.line,
+      column: location.column
+    }
+  }
+
+  function pickleTags(tags) {
+    return tags.map(pickleTag);
+  }
+
+  function pickleTag(tag) {
+    return {
+      name: tag.name,
+      location: pickleLocation(tag.location)
+    };
+  }
 }
 
-util.inherits(Compiler, EventEmitter);
 module.exports = Compiler;

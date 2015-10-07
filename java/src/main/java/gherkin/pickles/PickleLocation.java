@@ -1,4 +1,4 @@
-package pickles;
+package gherkin.pickles;
 
 public class PickleLocation {
     private final int line;
