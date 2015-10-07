@@ -56,7 +56,6 @@ def test_parse_feature_after_parser_error():
             'argument': {
                 'content': u'closed docstring',
                 'type': 'DocString',
-                'contentType': u'',
                 'location': {'column': 7, 'line': 4}}}],
         'location': {'column': 3, 'line': 2},
         'type': 'Scenario'}]
