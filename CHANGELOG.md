@@ -14,6 +14,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Added
 ### Changed
 ### Fixed
+* (JavaScript) make parser work on Node 0.10 (as well as 4.1)
+  (by [aslakhellesoy](https://github.com/aslakhellesoy))
 * (Go) Fixed bug in the parser's lookahead
   (by [brasmusson](https://github.com/brasmusson))
 
