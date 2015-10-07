@@ -13,6 +13,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 ### Added
 ### Changed
+* (All) the AST's `DocString` `contentType` property is not defined rather than
+  an empty string when the Gherkin doc doesn't specify the type after three backticks.
+  (by [aslakhellesoy](https://github.com/aslakhellesoy))
 ### Fixed
 * (JavaScript) make parser work on Node 0.10 (as well as 4.1)
   (by [aslakhellesoy](https://github.com/aslakhellesoy))
