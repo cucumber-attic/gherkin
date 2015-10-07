@@ -325,119 +325,154 @@ var dialects = require('./gherkin-languages.json');
 
 function Compiler() {
   this.compile = function (feature, path) {
-    var testCases = [];
-    var backgroundSteps = feature.background ? feature.background.steps : [];
-    var featureTags = feature.tags;
+    var pickles = [];
     var dialect = dialects[feature.language];
+
+    var featureTags = feature.tags;
+    var backgroundSteps = getBackgroundSteps(feature.background);
 
     feature.scenarioDefinitions.forEach(function (scenarioDefinition) {
       if(scenarioDefinition.type === 'Scenario') {
-        compileScenario(featureTags, backgroundSteps, scenarioDefinition, dialect, path, testCases);
+        compileScenario(featureTags, backgroundSteps, scenarioDefinition, dialect, path, pickles);
       } else {
-        compileScenarioOutline(featureTags, backgroundSteps, scenarioDefinition, dialect, path, testCases);
+        compileScenarioOutline(featureTags, backgroundSteps, scenarioDefinition, dialect, path, pickles);
       }
     });
-    return testCases;
+    return pickles;
   };
 
-  function compileScenario(featureTags, backgroundSteps, scenario, dialect, path, testCases) {
+  function compileScenario(featureTags, backgroundSteps, scenario, dialect, path, pickles) {
+    var steps = [].concat(backgroundSteps);
+
     var tags = [].concat(featureTags).concat(scenario.tags);
-    var testCase = {
+
+    scenario.steps.forEach(function (step) {
+      steps.push(pickleStep(step));
+    });
+
+    var pickle = {
       path: path,
-      tags: tags,
+      tags: pickleTags(tags),
       name: scenario.keyword + ": " + scenario.name,
       locations: [scenario.location],
-      steps: []
+      steps: steps
     };
-    testCases.push(testCase);
-
-    var steps = [].concat(backgroundSteps).concat(scenario.steps);
-    steps.forEach(function (step) {
-      var testStep = {
-        name: step.keyword + step.text,
-        text: step.text,
-        argument: step.argument,
-        locations: [step.location]
-      };
-      testCase.steps.push(testStep);
-    });
+    pickles.push(pickle);
   }
 
-  function compileScenarioOutline(featureTags, backgroundSteps, scenarioOutline, dialect, path, testCases) {
+  function compileScenarioOutline(featureTags, backgroundSteps, scenarioOutline, dialect, path, pickles) {
     var keyword = dialect.scenario[0];
     scenarioOutline.examples.forEach(function (examples) {
+      var variableCells = examples.tableHeader.cells;
       examples.tableBody.forEach(function (values) {
-        var scenarioName = interpolate(scenarioOutline.name, examples.tableHeader, values);
-        var testCaseName = keyword + ": " + scenarioName;
-
-        var tags = [].concat(featureTags).concat(scenarioOutline.tags).concat(examples.tags);
-        var testCase = {
-          path: path,
-          tags: tags,
-          name: testCaseName,
-          locations: [values.location, scenarioOutline.location],
-          steps: []
-        };
-        testCases.push(testCase);
-
+        var valueCells = values.cells;
         var steps = [].concat(backgroundSteps);
+        var tags = [].concat(featureTags).concat(scenarioOutline.tags).concat(examples.tags);
+
         scenarioOutline.steps.forEach(function (scenarioOutlineStep) {
-          var testStepArgument = createTestSteprgument(scenarioOutlineStep.argument, examples.tableHeader, values);
-          testStepText = interpolate(scenarioOutlineStep.text, examples.tableHeader, values);
-          var testStep = {
-            name: scenarioOutlineStep.keyword + testStepText,
-            text: testStepText,
-            argument: testStepArgument,
-            locations: [values.location, scenarioOutlineStep.location]
+          var stepText = interpolate(scenarioOutlineStep.text, variableCells, valueCells);
+          var arguments = createPickleArguments(scenarioOutlineStep.argument, variableCells, valueCells);
+          var pickleStep = {
+            name: scenarioOutlineStep.keyword + stepText,
+            text: stepText,
+            arguments: arguments,
+            locations: [
+              pickleLocation(values.location),
+              pickleLocation(scenarioOutlineStep.location)
+            ]
           };
-          testCase.steps.push(testStep);
+          steps.push(pickleStep);
         });
+
+        var pickle = {
+          path: path,
+          name: keyword + ": " + interpolate(scenarioOutline.name, variableCells, valueCells),
+          steps: steps,
+          tags: pickleTags(tags),
+          locations: [
+            pickleLocation(values.location),
+            pickleLocation(scenarioOutline.location)
+          ]
+        };
+        pickles.push(pickle);
+
       });
     });
   }
 
-  function createTestStepArgument(argument, variables, values) {
-    if (!argument) return undefined;
+  function createPickleArguments(argument, variables, values) {
+    var result = [];
+    if (!argument) return result;
     if (argument.type === 'DataTable') {
-      var result = {
-        type: argument.type,
-        location: argument.location,
-        // locations: [values.location, argument.location],
+      var table = {
         rows: argument.rows.map(function (row) {
           return {
-            type: row.type,
-            location: row.location,
-            // locations: [values.location, row.location],
             cells: row.cells.map(function (cell) {
               return {
-                type: cell.type,
-                location: cell.location,
-                // locations: [values.location, cell.location],
+                location: pickleLocation(cell.location),
                 value: interpolate(cell.value, variables, values)
               };
             })
           };
         })
       };
-      return result;
-    }
-    if (argument.type === 'DocString') {
-      return {
-        type: argument.type,
+      result.push(table);
+    } else if (argument.type === 'DocString') {
+      var docString = {
         location: argument.location,
         // locations: [values.location, argument.location],
         content: interpolate(argument.content, variables, values)
       }
+      result.push(docString);
+    } else {
+      throw Error('Internal error');
     }
-    throw Error('Internal error');
+    return result;
   }
 
-  function interpolate(name, variables, values) {
-    variables.cells.forEach(function (headerCell, n) {
-      var valueCell = values.cells[n];
-      name = name.replace('<' + headerCell.value + '>', valueCell.value);
+  function interpolate(name, variableCells, valueCells) {
+    variableCells.forEach(function (variableCell, n) {
+      var valueCell = valueCells[n];
+      name = name.replace('<' + variableCell.value + '>', valueCell.value);
     });
     return name;
+  }
+
+  function getBackgroundSteps(background) {
+    if(background) {
+      return background.steps.map(function (step) {
+        return pickleStep(step);
+      });
+    } else {
+      return [];
+    }
+  }
+
+  function pickleStep(step) {
+    return {
+      name: step.keyword + step.text,
+      text: step.text,
+      arguments: createPickleArguments(step.argument, [], []),
+      locations: [pickleLocation(step.location)]
+    }
+  }
+
+  function pickleLocation(location) {
+    return {
+      line: location.line,
+      column: location.column
+    }
+  }
+
+  function pickleTags(tags) {
+    return tags.map(pickleTag);
+  }
+
+  function pickleTag(tag) {
+    return {
+      name: tag.name,
+      location: pickleLocation(tag.location)
+    };
   }
 }
 

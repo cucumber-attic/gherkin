@@ -18,6 +18,6 @@ public class PickleTable implements Argument {
 
     @Override
     public PickleLocation getLocation() {
-        return rows.get(0).getCells().get(0).getLocations().get(0);
+        return rows.get(0).getCells().get(0).getLocation();
     }
 }
