@@ -1,4 +1,4 @@
-var dialects = require('./gherkin-languages.json');
+var dialects = require('../gherkin-languages.json');
 
 function Compiler() {
   this.compile = function (feature, path) {
