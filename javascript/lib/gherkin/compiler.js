@@ -31,7 +31,7 @@ function Compiler() {
       path: path,
       tags: pickleTags(tags),
       name: scenario.keyword + ": " + scenario.name,
-      locations: [scenario.location],
+      locations: [pickleLocation(scenario.location)],
       steps: steps
     };
     pickles.push(pickle);
@@ -96,8 +96,7 @@ function Compiler() {
       result.push(table);
     } else if (argument.type === 'DocString') {
       var docString = {
-        location: argument.location,
-        // locations: [values.location, argument.location],
+        location: pickleLocation(argument.location),
         content: interpolate(argument.content, variables, values)
       }
       result.push(docString);
