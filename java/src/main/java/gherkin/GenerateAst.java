@@ -25,7 +25,8 @@ public class GenerateAst {
                 matcher = new TokenMatcher();
             } else if (fileName.endsWith(".md")) {
                 PatternsReader patternsReader = new PatternsReader();
-                List<Pattern> patterns = patternsReader.read(new InputStreamReader(new FileInputStream(fileName.replaceAll(".md$", ".patterns")), "UTF-8"));
+                String patternsFileName = fileName.replaceAll(".md$", ".patterns");
+                List<Pattern> patterns = patternsReader.read(new InputStreamReader(new FileInputStream(patternsFileName), "UTF-8"));
                 matcher = new MarkdownTokenMatcher(patterns);
             } else {
                 System.err.println("Not Gherkin or Markdown: " + fileName);
