@@ -68,7 +68,7 @@ class TokenMatcher {
 //    end
     private func matchTitleLine(token: Token, tokenType: TokenType, keywords: [String]) -> Bool {
         
-        title = token.
+        title = token.line.
         setTokenMatched(token, matchedType: tokenType, text: title, keyword: keyword)
         return true
     }

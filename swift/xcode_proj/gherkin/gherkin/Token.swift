@@ -18,7 +18,7 @@ import Foundation
 //end
 
 struct Token {
-    var line: String
+    var line: GherkinLine
     var location: [String: String]
     var matchedType: TokenType?
     var matchedText: String?
@@ -27,7 +27,7 @@ struct Token {
     var matchedItems: [String]?
     var matchedGherkinDialect: String?
     
-    init(line: String, location: [String: String]) {
+    init(line: GherkinLine, location: [String: String]) {
         self.line = line
         self.location = location
     }
