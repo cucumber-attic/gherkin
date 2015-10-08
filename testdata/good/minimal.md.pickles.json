@@ -1,0 +1,26 @@
+[
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 3
+      }
+    ],
+    "name": "minimalistic",
+    "path": "../testdata/good/minimal.md",
+    "steps": [
+      {
+        "arguments": [],
+        "locations": [
+          {
+            "column": 7,
+            "line": 4
+          }
+        ],
+        "name": "nullthe minimalism",
+        "text": "the minimalism"
+      }
+    ],
+    "tags": []
+  }
+]

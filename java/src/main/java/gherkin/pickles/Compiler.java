@@ -29,7 +29,7 @@ public class Compiler {
 
     public List<Pickle> compile(Feature feature, String path) {
         List<Pickle> pickles = new ArrayList<>();
-        GherkinDialect dialect = new GherkinDialectProvider().getDialect(feature.getLanguage(), null);
+        String scenarioKeyword = getScenarioKeyword(feature);
 
         List<Tag> featureTags = feature.getTags();
         List<PickleStep> backgroundSteps = getBackgroundSteps(feature.getBackground());
@@ -38,10 +38,20 @@ public class Compiler {
             if (scenarioDefinition instanceof Scenario) {
                 compileScenario(pickles, backgroundSteps, (Scenario) scenarioDefinition, featureTags, path);
             } else {
-                compileScenarioOutline(pickles, backgroundSteps, (ScenarioOutline) scenarioDefinition, featureTags, path, dialect);
+                compileScenarioOutline(pickles, backgroundSteps, (ScenarioOutline) scenarioDefinition, featureTags, path, scenarioKeyword);
             }
         }
         return pickles;
+    }
+
+    private String getScenarioKeyword(Feature feature) {
+        String language = feature.getLanguage();
+        if (language != null) {
+            GherkinDialect dialect = new GherkinDialectProvider().getDialect(language, null);
+            return dialect.getScenarioKeywords().get(0);
+        } else {
+            return null;
+        }
     }
 
     private void compileScenario(List<Pickle> pickles, List<PickleStep> backgroundSteps, Scenario scenario, List<Tag> featureTags, String path) {
@@ -56,9 +66,11 @@ public class Compiler {
             steps.add(pickle(step));
         }
 
+        String namePrefix = scenario.getKeyword() == null ? "" : scenario.getKeyword() + ": ";
+        String name = namePrefix + scenario.getName();
         Pickle pickle = new Pickle(
                 path,
-                scenario.getKeyword() + ": " + scenario.getName(),
+                name,
                 steps,
                 pickle(scenarioTags),
                 singletonList(pickle(scenario.getLocation()))
@@ -66,8 +78,7 @@ public class Compiler {
         pickles.add(pickle);
     }
 
-    private void compileScenarioOutline(List<Pickle> pickles, List<PickleStep> backgroundSteps, ScenarioOutline scenarioOutline, List<Tag> featureTags, String path, GherkinDialect dialect) {
-        String keyword = dialect.getScenarioKeywords().get(0);
+    private void compileScenarioOutline(List<Pickle> pickles, List<PickleStep> backgroundSteps, ScenarioOutline scenarioOutline, List<Tag> featureTags, String path, String scenarioKeyword) {
         for (final Examples examples : scenarioOutline.getExamples()) {
             List<TableCell> variableCells = examples.getTableHeader().getCells();
             for (final TableRow values : examples.getTableBody()) {
@@ -99,9 +110,11 @@ public class Compiler {
                     steps.add(pickleStep);
                 }
 
+                String namePrefix = scenarioKeyword == null ? "" : scenarioKeyword + ": ";
+                String name = namePrefix + interpolate(scenarioOutline.getName(), variableCells, valueCells);
                 Pickle pickle = new Pickle(
                         path,
-                        keyword + ": " + interpolate(scenarioOutline.getName(), variableCells, valueCells),
+                        name,
                         steps,
                         pickle(tags),
                         asList(
