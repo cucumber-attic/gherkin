@@ -15,6 +15,6 @@
     TokenScanner: require('./lib/gherkin/token_scanner'),
     TokenMatcher: require('./lib/gherkin/token_matcher'),
     AstBuilder: require('./lib/gherkin/ast_builder'),
-    Compiler: require('./lib/gherkin/compiler'),
+    Compiler: require('./lib/gherkin/pickles/compiler')
   };
 }));
