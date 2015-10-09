@@ -25,7 +25,6 @@
             "line": 4
           }
         ],
-        "name": "Given the foo",
         "text": "the foo"
       }
     ],
@@ -65,7 +64,6 @@
             "line": 4
           }
         ],
-        "name": "Given the bar",
         "text": "the bar"
       }
     ],

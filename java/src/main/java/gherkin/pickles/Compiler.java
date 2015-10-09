@@ -89,7 +89,6 @@ public class Compiler {
                     // a list of locations, we could just reuse the same classes
 
                     PickleStep pickleStep = new PickleStep(
-                            scenarioOutlineStep.getKeyword() + stepText,
                             stepText,
                             createPickleArguments(scenarioOutlineStep.getArgument(), variableCells, valueCells),
                             asList(
@@ -168,7 +167,6 @@ public class Compiler {
 
     private PickleStep pickle(Step step) {
         return new PickleStep(
-                step.getKeyword() + step.getText(),
                 step.getText(),
                 createPickleArguments(step.getArgument()),
                 singletonList(pickle(step.getLocation()))

@@ -58,7 +58,6 @@
             "line": 4
           }
         ],
-        "name": "Given a simple data table",
         "text": "a simple data table"
       },
       {
@@ -85,7 +84,6 @@
             "line": 7
           }
         ],
-        "name": "And a data table with a single cell",
         "text": "a data table with a single cell"
       },
       {
@@ -126,7 +124,6 @@
             "line": 9
           }
         ],
-        "name": "And a data table with different fromatting",
         "text": "a data table with different fromatting"
       },
       {
@@ -167,7 +164,6 @@
             "line": 11
           }
         ],
-        "name": "And a data table with an empty cell",
         "text": "a data table with an empty cell"
       },
       {
@@ -237,7 +233,6 @@
             "line": 13
           }
         ],
-        "name": "And a data table with comments and newlines inside",
         "text": "a data table with comments and newlines inside"
       }
     ],

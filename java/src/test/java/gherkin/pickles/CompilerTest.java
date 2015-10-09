@@ -32,7 +32,6 @@ public class CompilerTest {
                         "    \"name\": \"Scenario: s\",\n" +
                         "    \"steps\": [\n" +
                         "      {\n" +
-                        "        \"name\": \"Given passing\",\n" +
                         "        \"text\": \"passing\",\n" +
                         "        \"arguments\": [],\n" +
                         "        \"locations\": [\n" +

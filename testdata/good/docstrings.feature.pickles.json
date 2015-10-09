@@ -25,7 +25,6 @@
             "line": 4
           }
         ],
-        "name": "Given a simple DocString",
         "text": "a simple DocString"
       },
       {
@@ -44,7 +43,6 @@
             "line": 11
           }
         ],
-        "name": "Given a DocString with content type",
         "text": "a DocString with content type"
       },
       {
@@ -63,7 +61,6 @@
             "line": 17
           }
         ],
-        "name": "And a DocString with wrong indentation",
         "text": "a DocString with wrong indentation"
       },
       {
@@ -82,7 +79,6 @@
             "line": 21
           }
         ],
-        "name": "And a DocString with alternative separator",
         "text": "a DocString with alternative separator"
       },
       {
@@ -101,7 +97,6 @@
             "line": 26
           }
         ],
-        "name": "And a DocString with normal separator inside",
         "text": "a DocString with normal separator inside"
       },
       {
@@ -120,7 +115,6 @@
             "line": 32
           }
         ],
-        "name": "And a DocString with alternative separator inside",
         "text": "a DocString with alternative separator inside"
       },
       {
@@ -139,7 +133,6 @@
             "line": 38
           }
         ],
-        "name": "And a DocString with escaped separator inside",
         "text": "a DocString with escaped separator inside"
       }
     ],

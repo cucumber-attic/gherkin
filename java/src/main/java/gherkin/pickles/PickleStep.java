@@ -5,13 +5,11 @@ import java.util.List;
 import static java.util.Collections.unmodifiableList;
 
 public class PickleStep {
-    private final String name;
     private final String text;
     private final List<Argument> arguments;
     private final List<PickleLocation> locations;
 
-    public PickleStep(String name, String text, List<Argument> arguments, List<PickleLocation> locations) {
-        this.name = name;
+    public PickleStep(String text, List<Argument> arguments, List<PickleLocation> locations) {
         this.text = text;
         this.arguments = unmodifiableList(arguments);
         this.locations = unmodifiableList(locations);
