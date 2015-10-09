@@ -11,6 +11,20 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ## [Unreleased][unreleased]
 
 ### Removed
+### Added
+### Changed
+* (All) the AST's `DocString` `contentType` property is not defined rather than
+  an empty string when the Gherkin doc doesn't specify the type after three backticks.
+  (by [aslakhellesoy](https://github.com/aslakhellesoy))
+### Fixed
+* (JavaScript) make parser work on Node 0.10 (as well as 4.1)
+  (by [aslakhellesoy](https://github.com/aslakhellesoy))
+* (Go) Fixed bug in the parser's lookahead
+  (by [brasmusson](https://github.com/brasmusson))
+
+## [3.1.2] - 2015-10-04
+
+### Removed
 * (Ruby) `Parser.parse` no longer treats `String` as a file path (only as source).
 
 ### Added
@@ -29,6 +43,10 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
    by [Zearin](https://github.com/Zearin))
 
 ### Fixed
+* (Ruby) Fixed bug in the parser's lookahead
+  ([#104](https://github.com/cucumber/gherkin3/issues/104)
+  by [brasmusson](https://github.com/brasmusson)
+  and [aslakhellesoy](https://github.com/aslakhellesoy))
 * (Python) Fix file parsing on Windows.
   ([#93](https://github.com/cucumber/gherkin3/issues/93)
    by [brasmusson](https://github.com/brasmusson))
@@ -79,12 +97,11 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
   ([#63](https://github.com/cucumber/gherkin3/issues/63))
 
 
-
 ## 3.0.0 - 2015-07-16
 
 * First release
 
-
 [unreleased]: https://github.com/cucumber/gherkin3/compare/v3.1.1...HEAD
+[3.1.2]:      https://github.com/cucumber/gherkin3/compare/v3.1.1...v3.1.2
 [3.1.1]:      https://github.com/cucumber/gherkin3/compare/v3.1.0...v3.1.1
 [3.1.0]:      https://github.com/cucumber/gherkin3/compare/v3.0.0...v3.1.0

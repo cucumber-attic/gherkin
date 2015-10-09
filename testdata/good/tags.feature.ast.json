@@ -126,6 +126,77 @@
             }
           ],
           "type": "Examples"
+        },
+        {
+          "keyword": "Examples",
+          "location": {
+            "column": 1,
+            "line": 23
+          },
+          "name": "",
+          "tableBody": [
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 5,
+                    "line": 25
+                  },
+                  "type": "TableCell",
+                  "value": "more minimalism"
+                }
+              ],
+              "location": {
+                "column": 3,
+                "line": 25
+              },
+              "type": "TableRow"
+            }
+          ],
+          "tableHeader": {
+            "cells": [
+              {
+                "location": {
+                  "column": 5,
+                  "line": 24
+                },
+                "type": "TableCell",
+                "value": "what"
+              }
+            ],
+            "location": {
+              "column": 3,
+              "line": 24
+            },
+            "type": "TableRow"
+          },
+          "tags": [
+            {
+              "location": {
+                "column": 1,
+                "line": 21
+              },
+              "name": "@ex_tag4",
+              "type": "Tag"
+            },
+            {
+              "location": {
+                "column": 10,
+                "line": 21
+              },
+              "name": "@ex_tag5",
+              "type": "Tag"
+            },
+            {
+              "location": {
+                "column": 3,
+                "line": 22
+              },
+              "name": "@ex_tag6",
+              "type": "Tag"
+            }
+          ],
+          "type": "Examples"
         }
       ],
       "keyword": "Scenario Outline",

@@ -1,45 +1,66 @@
 [
   {
-    "name": "Scenario: the un",
-    "source": [
+    "locations": [
+      {
+        "column": 7,
+        "line": 13
+      },
       {
         "column": 3,
         "line": 3
       }
     ],
+    "name": "Scenario: the un",
+    "path": "../testdata/good/example_tokens_everywhere.feature",
     "steps": [
       {
-        "argument": {
-          "content": "trois"
-        },
-        "source": [
+        "arguments": [
           {
-            "column": 5,
-            "line": 4
-          },
+            "content": "trois",
+            "location": {
+              "column": 7,
+              "line": 5
+            }
+          }
+        ],
+        "locations": [
           {
             "column": 7,
             "line": 13
+          },
+          {
+            "column": 5,
+            "line": 4
           }
         ],
         "text": "the deux:"
       },
       {
-        "argument": {
-          "rows": [
-            [
-              "cinq"
-            ]
-          ]
-        },
-        "source": [
+        "arguments": [
           {
-            "column": 5,
-            "line": 8
-          },
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "location": {
+                      "column": 9,
+                      "line": 9
+                    },
+                    "value": "cinq"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "locations": [
           {
             "column": 7,
             "line": 13
+          },
+          {
+            "column": 5,
+            "line": 8
           }
         ],
         "text": "the quatre:"
@@ -48,46 +69,67 @@
     "tags": []
   },
   {
-    "name": "Scenario: the uno",
-    "source": [
+    "locations": [
+      {
+        "column": 7,
+        "line": 14
+      },
       {
         "column": 3,
         "line": 3
       }
     ],
+    "name": "Scenario: the uno",
+    "path": "../testdata/good/example_tokens_everywhere.feature",
     "steps": [
       {
-        "argument": {
-          "content": "tres"
-        },
-        "source": [
+        "arguments": [
           {
-            "column": 5,
-            "line": 4
-          },
+            "content": "tres",
+            "location": {
+              "column": 7,
+              "line": 5
+            }
+          }
+        ],
+        "locations": [
           {
             "column": 7,
             "line": 14
+          },
+          {
+            "column": 5,
+            "line": 4
           }
         ],
         "text": "the dos:"
       },
       {
-        "argument": {
-          "rows": [
-            [
-              "cinco"
-            ]
-          ]
-        },
-        "source": [
+        "arguments": [
           {
-            "column": 5,
-            "line": 8
-          },
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "location": {
+                      "column": 9,
+                      "line": 9
+                    },
+                    "value": "cinco"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "locations": [
           {
             "column": 7,
             "line": 14
+          },
+          {
+            "column": 5,
+            "line": 8
           }
         ],
         "text": "the quatro:"

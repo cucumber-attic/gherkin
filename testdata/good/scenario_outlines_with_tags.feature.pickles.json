@@ -1,0 +1,94 @@
+[
+  {
+    "locations": [
+      {
+        "column": 5,
+        "line": 8
+      },
+      {
+        "column": 3,
+        "line": 4
+      }
+    ],
+    "name": "Scenario: ",
+    "path": "../testdata/good/scenario_outlines_with_tags.feature",
+    "steps": [
+      {
+        "arguments": [],
+        "locations": [
+          {
+            "column": 5,
+            "line": 8
+          },
+          {
+            "column": 5,
+            "line": 5
+          }
+        ],
+        "text": "y"
+      }
+    ],
+    "tags": [
+      {
+        "location": {
+          "column": 3,
+          "line": 2
+        },
+        "name": "@foo1"
+      },
+      {
+        "location": {
+          "column": 3,
+          "line": 3
+        },
+        "name": "@foo2"
+      }
+    ]
+  },
+  {
+    "locations": [
+      {
+        "column": 5,
+        "line": 15
+      },
+      {
+        "column": 3,
+        "line": 11
+      }
+    ],
+    "name": "Scenario: ",
+    "path": "../testdata/good/scenario_outlines_with_tags.feature",
+    "steps": [
+      {
+        "arguments": [],
+        "locations": [
+          {
+            "column": 5,
+            "line": 15
+          },
+          {
+            "column": 5,
+            "line": 12
+          }
+        ],
+        "text": "n"
+      }
+    ],
+    "tags": [
+      {
+        "location": {
+          "column": 3,
+          "line": 9
+        },
+        "name": "@bar1"
+      },
+      {
+        "location": {
+          "column": 3,
+          "line": 10
+        },
+        "name": "@bar2"
+      }
+    ]
+  }
+]

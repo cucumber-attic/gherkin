@@ -180,7 +180,6 @@
         {
           "argument": {
             "content": "<three>",
-            "contentType": "",
             "location": {
               "column": 7,
               "line": 5

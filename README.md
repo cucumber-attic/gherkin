@@ -77,8 +77,8 @@ feature = parser.parse("Feature: ...")
 ## Table cell escaping
 
 If you want to use a newline character in a table cell, you can write this
-as `\n`. If you need a '|' as part of the cell, you can escape it as '\|'. And
-finally, if you need a '\', you can escape that with '\\'.
+as `\n`. If you need a '|' as part of the cell, you can escape it as `\|`. And
+finally, if you need a '\', you can escape that with `\\`.
 
 ## Why Gherkin 3?
 

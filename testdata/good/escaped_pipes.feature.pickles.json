@@ -1,27 +1,58 @@
 [
   {
-    "name": "Scenario: They are the future",
-    "source": [
+    "locations": [
       {
         "column": 3,
         "line": 2
       }
     ],
+    "name": "Scenario: They are the future",
+    "path": "../testdata/good/escaped_pipes.feature",
     "steps": [
       {
-        "argument": {
-          "rows": [
-            [
-              "æ",
-              "o"
-            ],
-            [
-              "a",
-              "ø"
+        "arguments": [
+          {
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "location": {
+                      "column": 9,
+                      "line": 4
+                    },
+                    "value": "æ"
+                  },
+                  {
+                    "location": {
+                      "column": 13,
+                      "line": 4
+                    },
+                    "value": "o"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "location": {
+                      "column": 9,
+                      "line": 5
+                    },
+                    "value": "a"
+                  },
+                  {
+                    "location": {
+                      "column": 13,
+                      "line": 5
+                    },
+                    "value": "ø"
+                  }
+                ]
+              }
             ]
-          ]
-        },
-        "source": [
+          }
+        ],
+        "locations": [
           {
             "column": 5,
             "line": 3
@@ -30,19 +61,49 @@
         "text": "they have arrived"
       },
       {
-        "argument": {
-          "rows": [
-            [
-              "æ",
-              "|o"
-            ],
-            [
-              "|a",
-              "ø\\"
+        "arguments": [
+          {
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "location": {
+                      "column": 9,
+                      "line": 7
+                    },
+                    "value": "æ"
+                  },
+                  {
+                    "location": {
+                      "column": 15,
+                      "line": 7
+                    },
+                    "value": "|o"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "location": {
+                      "column": 9,
+                      "line": 8
+                    },
+                    "value": "|a"
+                  },
+                  {
+                    "location": {
+                      "column": 15,
+                      "line": 8
+                    },
+                    "value": "ø\\"
+                  }
+                ]
+              }
             ]
-          ]
-        },
-        "source": [
+          }
+        ],
+        "locations": [
           {
             "column": 5,
             "line": 6

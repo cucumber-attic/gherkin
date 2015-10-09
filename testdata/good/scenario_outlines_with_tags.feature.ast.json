@@ -1,0 +1,186 @@
+{
+  "comments": [],
+  "keyword": "Feature",
+  "language": "en",
+  "location": {
+    "column": 1,
+    "line": 1
+  },
+  "name": "",
+  "scenarioDefinitions": [
+    {
+      "examples": [
+        {
+          "keyword": "Examples",
+          "location": {
+            "column": 5,
+            "line": 6
+          },
+          "name": "",
+          "tableBody": [
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 7,
+                    "line": 8
+                  },
+                  "type": "TableCell",
+                  "value": "y"
+                }
+              ],
+              "location": {
+                "column": 5,
+                "line": 8
+              },
+              "type": "TableRow"
+            }
+          ],
+          "tableHeader": {
+            "cells": [
+              {
+                "location": {
+                  "column": 7,
+                  "line": 7
+                },
+                "type": "TableCell",
+                "value": "x"
+              }
+            ],
+            "location": {
+              "column": 5,
+              "line": 7
+            },
+            "type": "TableRow"
+          },
+          "tags": [],
+          "type": "Examples"
+        }
+      ],
+      "keyword": "Scenario Outline",
+      "location": {
+        "column": 3,
+        "line": 4
+      },
+      "name": "",
+      "steps": [
+        {
+          "keyword": "Given ",
+          "location": {
+            "column": 5,
+            "line": 5
+          },
+          "text": "<x>",
+          "type": "Step"
+        }
+      ],
+      "tags": [
+        {
+          "location": {
+            "column": 3,
+            "line": 2
+          },
+          "name": "@foo1",
+          "type": "Tag"
+        },
+        {
+          "location": {
+            "column": 3,
+            "line": 3
+          },
+          "name": "@foo2",
+          "type": "Tag"
+        }
+      ],
+      "type": "ScenarioOutline"
+    },
+    {
+      "examples": [
+        {
+          "keyword": "Examples",
+          "location": {
+            "column": 5,
+            "line": 13
+          },
+          "name": "",
+          "tableBody": [
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 7,
+                    "line": 15
+                  },
+                  "type": "TableCell",
+                  "value": "n"
+                }
+              ],
+              "location": {
+                "column": 5,
+                "line": 15
+              },
+              "type": "TableRow"
+            }
+          ],
+          "tableHeader": {
+            "cells": [
+              {
+                "location": {
+                  "column": 7,
+                  "line": 14
+                },
+                "type": "TableCell",
+                "value": "m"
+              }
+            ],
+            "location": {
+              "column": 5,
+              "line": 14
+            },
+            "type": "TableRow"
+          },
+          "tags": [],
+          "type": "Examples"
+        }
+      ],
+      "keyword": "Scenario Outline",
+      "location": {
+        "column": 3,
+        "line": 11
+      },
+      "name": "",
+      "steps": [
+        {
+          "keyword": "Given ",
+          "location": {
+            "column": 5,
+            "line": 12
+          },
+          "text": "<m>",
+          "type": "Step"
+        }
+      ],
+      "tags": [
+        {
+          "location": {
+            "column": 3,
+            "line": 9
+          },
+          "name": "@bar1",
+          "type": "Tag"
+        },
+        {
+          "location": {
+            "column": 3,
+            "line": 10
+          },
+          "name": "@bar2",
+          "type": "Tag"
+        }
+      ],
+      "type": "ScenarioOutline"
+    }
+  ],
+  "tags": [],
+  "type": "Feature"
+}

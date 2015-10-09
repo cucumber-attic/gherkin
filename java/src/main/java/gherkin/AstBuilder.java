@@ -80,7 +80,7 @@ public class AstBuilder implements Builder<Feature> {
             }
             case DocString: {
                 Token separatorToken = node.getTokens(TokenType.DocStringSeparator).get(0);
-                String contentType = separatorToken.matchedText;
+                String contentType = separatorToken.matchedText.length() > 0 ? separatorToken.matchedText : null;
                 List<Token> lineTokens = node.getTokens(TokenType.Other);
                 StringBuilder content = new StringBuilder();
                 boolean newLine = false;

@@ -118,16 +118,20 @@ module.exports = function AstBuilder () {
         }
       case 'DocString':
         var separatorToken = node.getTokens('DocStringSeparator')[0];
-        var contentType = separatorToken.matchedText;
+        var contentType = separatorToken.matchedText.length > 0 ? separatorToken.matchedText : undefined;
         var lineTokens = node.getTokens('Other');
         var content = lineTokens.map(function (t) {return t.matchedText}).join("\n");
 
-        return {
+        var result = {
           type: node.ruleType,
           location: getLocation(separatorToken),
-          contentType: contentType,
           content: content
         };
+        // conditionally add this like this (needed to make tests pass on node 0.10 as well as 4.0)
+        if(contentType) {
+          result.contentType = contentType;
+        }
+        return result;
       case 'DataTable':
         var rows = getTableRows(node);
         return {

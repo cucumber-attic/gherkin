@@ -18,7 +18,9 @@ matrix:
       rvm: jruby-head
 
     - env: TARGET_LANG=javascript
-      node_js: 0.12
+      node_js: 0.10.40
+    - env: TARGET_LANG=javascript
+      node_js: 4.1.2
 
     - env: TARGET_LANG=go
       go: latest

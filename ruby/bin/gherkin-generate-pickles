@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__),"../lib"))
+require 'gherkin3/pickles/compiler'
+require 'gherkin3/parser'
+require 'json'
+
+compiler = Gherkin3::Pickles::Compiler.new
+parser = Gherkin3::Parser.new
+parser.stop_at_first_error = false
+files = ARGV.any? ? ARGV : (STDIN.tty? ? [] : [STDIN])
+start_time = Time.now
+files.each do |file|
+  begin
+    File.open(file) do |io|
+      feature = parser.parse(io)
+      pickles = compiler.compile(feature, file);
+      puts JSON.generate(pickles)
+    end
+  rescue Gherkin3::ParserError => e
+    STDERR.puts e.message
+    exit 1
+  end
+end
+end_time = Time.now
+STDERR.puts (end_time - start_time)*1000 if ENV['GHERKIN_PERF']

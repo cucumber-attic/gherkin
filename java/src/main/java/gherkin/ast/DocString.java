@@ -13,4 +13,8 @@ public class DocString extends Node {
     public String getContent() {
         return content;
     }
+
+    public String getContentType() {
+        return contentType;
+    }
 }

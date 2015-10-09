@@ -61,7 +61,7 @@ describe('Parser', function () {
 								     "  Scenario: Bar\n" +
 								     "    Given x\n" +
 								     "      ```\n" +
-								     "      unclosed docstring\n"), 
+								     "      unclosed docstring\n"),
 					    matcher) },
 		  Gherkin.ParserException);
     var ast = parser.parse(new Gherkin.TokenScanner("Feature: Foo\n" +
@@ -69,7 +69,7 @@ describe('Parser', function () {
 						    "    Given x\n" +
 						    "      \"\"\"\n" +
 						    "      closed docstring\n" +
-						    "      \"\"\""), 
+						    "      \"\"\""),
 			   matcher);
 
     assert.deepEqual(ast, {
@@ -89,7 +89,6 @@ describe('Parser', function () {
         steps: [{
           argument: {
             content: 'closed docstring',
-            contentType: '',
             location: { line: 4, column: 7 },
             type: 'DocString',
           },

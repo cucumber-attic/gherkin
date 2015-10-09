@@ -1871,7 +1871,7 @@ module Gherkin3
       loop do
         token = read_token(context)
         token.detach
-        queue.unshift(token)
+        queue.push(token)
 
         if (false || match_ExamplesLine(context, token))
           match = true
