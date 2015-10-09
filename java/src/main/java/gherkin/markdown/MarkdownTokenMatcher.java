@@ -33,7 +33,7 @@ public class MarkdownTokenMatcher implements Parser.ITokenMatcher {
 
     @Override
     public boolean match_Empty(Token token) {
-        if(match_StepLine(token) || match_ScenarioLine(token)) {
+        if (match_StepLine(token) || match_ScenarioLine(token)) {
             return false;
         }
         token.matchedType = Parser.TokenType.Empty;
@@ -124,7 +124,7 @@ public class MarkdownTokenMatcher implements Parser.ITokenMatcher {
             token.mathcedItems = null;
             token.matchedGherkinDialect = null;
             token.matchedIndent = -1;
-            token.location = new Location(token.location.getLine(), start);
+            token.location = new Location(token.location.getLine(), start + 1);
             return true;
         } else {
             token.matchedType = Parser.TokenType.Empty;
