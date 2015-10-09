@@ -54,7 +54,6 @@ module Gherkin3
               step_text = interpolate(scenario_outline_step[:text], variable_cells, value_cells);
               arguments = create_pickle_arguments(scenario_outline_step[:argument], variable_cells, value_cells)
               pickle_step = {
-                name: scenario_outline_step[:keyword] + step_text,
                 text: step_text,
                 arguments: arguments,
                 locations: [
@@ -130,7 +129,6 @@ module Gherkin3
 
       def pickle_step(step)
         {
-          name: step[:keyword] + step[:text],
           text: step[:text],
           arguments: create_pickle_arguments(step[:argument], [], []),
           locations: [pickle_location(step[:location])]
