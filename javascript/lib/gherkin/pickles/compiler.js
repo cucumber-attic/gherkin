@@ -54,7 +54,7 @@ function Compiler() {
             arguments: arguments,
             locations: [
               pickleLocation(values.location),
-              pickleLocation(scenarioOutlineStep.location)
+              pickleStepLocation(scenarioOutlineStep)
             ]
           };
           steps.push(pickleStep);
@@ -127,8 +127,15 @@ function Compiler() {
     return {
       text: step.text,
       arguments: createPickleArguments(step.argument, [], []),
-      locations: [pickleLocation(step.location)]
+      locations: [pickleStepLocation(step)]
     }
+  }
+
+  function pickleStepLocation(step) {
+    return {
+      line: step.location.line,
+      column: step.location.column + (step.keyword ? step.keyword.length : 0)
+    };
   }
 
   function pickleLocation(location) {

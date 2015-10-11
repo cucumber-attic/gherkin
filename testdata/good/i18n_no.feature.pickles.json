@@ -13,7 +13,7 @@
         "arguments": [],
         "locations": [
           {
-            "column": 5,
+            "column": 10,
             "line": 5
           }
         ],
@@ -23,7 +23,7 @@
         "arguments": [],
         "locations": [
           {
-            "column": 5,
+            "column": 9,
             "line": 6
           }
         ],
@@ -33,7 +33,7 @@
         "arguments": [],
         "locations": [
           {
-            "column": 5,
+            "column": 8,
             "line": 7
           }
         ],
