@@ -37,7 +37,7 @@ public class CompilerTest {
                         "        \"locations\": [\n" +
                         "          {\n" +
                         "            \"line\": 3,\n" +
-                        "            \"column\": 5\n" +
+                        "            \"column\": 11\n" +
                         "          }\n" +
                         "        ]\n" +
                         "      }\n" +

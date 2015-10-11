@@ -53,15 +53,15 @@ public class Compiler {
         scenarioTags.addAll(scenario.getTags());
 
         for (Step step : scenario.getSteps()) {
-            steps.add(pickle(step));
+            steps.add(pickleStep(step));
         }
 
         Pickle pickle = new Pickle(
                 path,
                 scenario.getKeyword() + ": " + scenario.getName(),
                 steps,
-                pickle(scenarioTags),
-                singletonList(pickle(scenario.getLocation()))
+                pickleTags(scenarioTags),
+                singletonList(pickleLocation(scenario.getLocation()))
         );
         pickles.add(pickle);
     }
@@ -92,8 +92,8 @@ public class Compiler {
                             stepText,
                             createPickleArguments(scenarioOutlineStep.getArgument(), variableCells, valueCells),
                             asList(
-                                    pickle(values.getLocation()),
-                                    pickle(scenarioOutlineStep.getLocation())
+                                    pickleLocation(values.getLocation()),
+                                    pickleStepLocation(scenarioOutlineStep)
                             )
                     );
                     steps.add(pickleStep);
@@ -103,10 +103,10 @@ public class Compiler {
                         path,
                         keyword + ": " + interpolate(scenarioOutline.getName(), variableCells, valueCells),
                         steps,
-                        pickle(tags),
+                        pickleTags(tags),
                         asList(
-                                pickle(values.getLocation()),
-                                pickle(scenarioOutline.getLocation())
+                                pickleLocation(values.getLocation()),
+                                pickleLocation(scenarioOutline.getLocation())
                         )
                 );
 
@@ -133,7 +133,7 @@ public class Compiler {
                 for (TableCell cell : cells) {
                     newCells.add(
                             new PickleCell(
-                                    pickle(cell.getLocation()),
+                                    pickleLocation(cell.getLocation()),
                                     interpolate(cell.getValue(), variableCells, valueCells)
                             )
                     );
@@ -145,7 +145,7 @@ public class Compiler {
             DocString ds = (DocString) argument;
             result.add(
                     new PickleString(
-                            pickle(ds.getLocation()),
+                            pickleLocation(ds.getLocation()),
                             interpolate(ds.getContent(), variableCells, valueCells)
                     )
             );
@@ -159,17 +159,17 @@ public class Compiler {
         List<PickleStep> result = new ArrayList<>();
         if (background != null) {
             for (Step step : background.getSteps()) {
-                result.add(pickle(step));
+                result.add(pickleStep(step));
             }
         }
         return unmodifiableList(result);
     }
 
-    private PickleStep pickle(Step step) {
+    private PickleStep pickleStep(Step step) {
         return new PickleStep(
                 step.getText(),
                 createPickleArguments(step.getArgument()),
-                singletonList(pickle(step.getLocation()))
+                singletonList(pickleStepLocation(step))
         );
     }
 
@@ -184,19 +184,26 @@ public class Compiler {
         return name;
     }
 
-    private PickleLocation pickle(Location location) {
+    private PickleLocation pickleStepLocation(Step step) {
+        return new PickleLocation(
+                step.getLocation().getLine(),
+                step.getLocation().getColumn() + (step.getKeyword() != null ? step.getKeyword().length() : 0)
+        );
+    }
+
+    private PickleLocation pickleLocation(Location location) {
         return new PickleLocation(location.getLine(), location.getColumn());
     }
 
-    private List<PickleTag> pickle(List<Tag> tags) {
+    private List<PickleTag> pickleTags(List<Tag> tags) {
         List<PickleTag> result = new ArrayList<>();
         for (Tag tag : tags) {
-            result.add(pickle(tag));
+            result.add(pickleTag(tag));
         }
         return result;
     }
 
-    private PickleTag pickle(Tag tag) {
-        return new PickleTag(pickle(tag.getLocation()), tag.getName());
+    private PickleTag pickleTag(Tag tag) {
+        return new PickleTag(pickleLocation(tag.getLocation()), tag.getName());
     }
 }
