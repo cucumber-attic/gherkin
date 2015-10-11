@@ -5423,7 +5423,6 @@ function Compiler() {
           var stepText = interpolate(scenarioOutlineStep.text, variableCells, valueCells);
           var arguments = createPickleArguments(scenarioOutlineStep.argument, variableCells, valueCells);
           var pickleStep = {
-            name: scenarioOutlineStep.keyword + stepText,
             text: stepText,
             arguments: arguments,
             locations: [
@@ -5499,7 +5498,6 @@ function Compiler() {
 
   function pickleStep(step) {
     return {
-      name: step.keyword + step.text,
       text: step.text,
       arguments: createPickleArguments(step.argument, [], []),
       locations: [pickleLocation(step.location)]
