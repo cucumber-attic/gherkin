@@ -5423,12 +5423,11 @@ function Compiler() {
           var stepText = interpolate(scenarioOutlineStep.text, variableCells, valueCells);
           var arguments = createPickleArguments(scenarioOutlineStep.argument, variableCells, valueCells);
           var pickleStep = {
-            name: scenarioOutlineStep.keyword + stepText,
             text: stepText,
             arguments: arguments,
             locations: [
               pickleLocation(values.location),
-              pickleLocation(scenarioOutlineStep.location)
+              pickleStepLocation(scenarioOutlineStep)
             ]
           };
           steps.push(pickleStep);
@@ -5482,7 +5481,8 @@ function Compiler() {
   function interpolate(name, variableCells, valueCells) {
     variableCells.forEach(function (variableCell, n) {
       var valueCell = valueCells[n];
-      name = name.replace('<' + variableCell.value + '>', valueCell.value);
+      var search = new RegExp('<' + variableCell.value + '>', 'g')
+      name = name.replace(search, valueCell.value);
     });
     return name;
   }
@@ -5499,11 +5499,17 @@ function Compiler() {
 
   function pickleStep(step) {
     return {
-      name: step.keyword + step.text,
       text: step.text,
       arguments: createPickleArguments(step.argument, [], []),
-      locations: [pickleLocation(step.location)]
+      locations: [pickleStepLocation(step)]
     }
+  }
+
+  function pickleStepLocation(step) {
+    return {
+      line: step.location.line,
+      column: step.location.column + (step.keyword ? step.keyword.length : 0)
+    };
   }
 
   function pickleLocation(location) {
