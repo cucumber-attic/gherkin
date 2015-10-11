@@ -58,7 +58,7 @@ module Gherkin3
                 arguments: arguments,
                 locations: [
                   pickle_location(values[:location]),
-                  pickle_location(scenario_outline_step[:location])
+                  pickle_step_location(scenario_outline_step)
                 ]
               }
               steps.push(pickle_step)
@@ -131,7 +131,14 @@ module Gherkin3
         {
           text: step[:text],
           arguments: create_pickle_arguments(step[:argument], [], []),
-          locations: [pickle_location(step[:location])]
+          locations: [pickle_step_location(step)]
+        }
+      end
+
+      def pickle_step_location(step)
+        {
+          line: step[:location][:line],
+          column: step[:location][:column] + (step[:keyword] ? step[:keyword].length : 0)
         }
       end
 
