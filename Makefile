@@ -38,7 +38,7 @@ acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feat
 # 	mkdir -p `dirname $@`
 # 	bin/gherkin-generate-pickles $< | jq --sort-keys "." > $<.pickles.json
 # .DELETE_ON_ERROR: ../testdata/%.feature.pickles.json
-#
+
 acceptance/testdata/%.feature.pickles.json: ../testdata/%.feature ../testdata/%.feature.pickles.json .built
 	mkdir -p `dirname $@`
 	bin/gherkin-generate-pickles $< | jq --sort-keys "." > $@
