@@ -108,7 +108,8 @@ function Compiler() {
   function interpolate(name, variableCells, valueCells) {
     variableCells.forEach(function (variableCell, n) {
       var valueCell = valueCells[n];
-      name = name.replace('<' + variableCell.value + '>', valueCell.value);
+      var search = new RegExp('<' + variableCell.value + '>', 'g')
+      name = name.replace(search, valueCell.value);
     });
     return name;
   }
