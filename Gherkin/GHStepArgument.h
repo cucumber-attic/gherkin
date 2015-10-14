@@ -1,0 +1,3 @@
+﻿@interface GHStepArgument : NSObject
+
+@end
