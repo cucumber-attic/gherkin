@@ -1,0 +1,3 @@
+﻿@interface GHNode : NSObject
+
+@end
