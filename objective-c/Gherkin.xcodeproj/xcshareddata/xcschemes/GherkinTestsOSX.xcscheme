@@ -16,9 +16,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5B18C8A91BCDBF6200D16073"
-               BuildableName = "GherkinTests.xctest"
-               BlueprintName = "GherkinTests"
+               BlueprintIdentifier = "5BAA189A1BCFF81C00D59664"
+               BuildableName = "GherkinTestsOSX.xctest"
+               BlueprintName = "GherkinTestsOSX"
                ReferencedContainer = "container:Gherkin.xcodeproj">
             </BuildableReference>
          </TestableReference>

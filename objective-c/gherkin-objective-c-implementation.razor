@@ -53,7 +53,7 @@
 
 @@end
 
-@@implementation @Model.ParserClassName
+@@implementation GH@(Model.ParserClassName)
 {
     id<GHAstBuilderProtocol>    astBuilder;
 }
@@ -75,12 +75,12 @@
     return self;
 }
 
-- (id)initWithTokenScanner:(id<GHTokenScannerProtocol>)theTokenScanner
+- (id)parseWithTokenScanner:(id<GHTokenScannerProtocol>)theTokenScanner
 {
-    return [self initWithTokenScanner: theTokenScanner tokenMatcher: [[GHTokenMatcher alloc] init]];
+    return [self parseWithTokenScanner: theTokenScanner tokenMatcher: [[GHTokenMatcher alloc] init]];
 }
 
-- (id)initWithTokenScanner:(id<GHTokenScannerProtocol>)theTokenScanner tokenMatcher:(id<GHTokenMatcherProtocol>)theTokenMatcher
+- (id)parseWithTokenScanner:(id<GHTokenScannerProtocol>)theTokenScanner tokenMatcher:(id<GHTokenMatcherProtocol>)theTokenMatcher
 {
     [theTokenMatcher reset];
     [astBuilder reset];
@@ -242,17 +242,17 @@
 @foreach(var lookAheadHint in Model.RuleSet.LookAheadHints)
 {
 <text>
-- (BOOL)lookAheadWithContext_@(lookAheadHint.Id):(GHParserContext *)theContext token:(GHToken *)theToken
+- (BOOL)lookAheadWithContext_@(lookAheadHint.Id):(GHParserContext *)theContext token:(GHToken *)currentToken
 {
-    [theToken detach];
-    GHToken * token;
+    [currentToken detach];
+    GHToken * theToken;
     NSMutableArray<GHToken *> * tokenBuffer = [[NSMutableArray<GHToken *> alloc] init];
     BOOL match = NO;
     do
     {
-        token = [self readTokenWithContext: theContext];
-        [token detach];
-        [tokenBuffer addObject: token];
+        theToken = [self readTokenWithContext: theContext];
+        [theToken detach];
+        [tokenBuffer addObject: theToken];
 
         if (NO
         @foreach(var tokenType in lookAheadHint.ExpectedTokens)

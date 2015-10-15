@@ -12,16 +12,21 @@
     NSArray<NSString *> * lines;
 }
 
-- (id)initWithContentsOfFile:(NSString *)theFilePath
+- (id)initWithText:(NSString *)theFileContent
 {
     if (self = [super init])
     {
         lineNumber = 0;
-        NSString * fileContent = [GHLineEndingHelper normalizeLineEndings: [NSString stringWithContentsOfFile: theFilePath encoding: NSUTF8StringEncoding error: NULL]];
+        NSString * fileContent = [GHLineEndingHelper normalizeLineEndings: theFileContent];
         lines = [fileContent componentsSeparatedByString: @"\n"];
     }
     
     return self;
+}
+
+- (id)initWithContentsOfFile:(NSString *)theFilePath
+{
+    return [self initWithText: [NSString stringWithContentsOfFile: theFilePath encoding: NSUTF8StringEncoding error: NULL]];
 }
 
 /// <summary>

@@ -14,4 +14,15 @@
     return i ? [self substringFromIndex: i] : self;
 }
 
+- (NSString *)stringByTrimmingEndWithCharactersInSet:(NSCharacterSet *)theCharacterSet
+{
+    NSInteger length = [self length] - 1;
+    while (length > 0 && [theCharacterSet characterIsMember: [self characterAtIndex: length]])
+    {
+        length--;
+    }
+    
+    return length > 0 ? [self substringToIndex: length + 1] : self;
+}
+
 @end

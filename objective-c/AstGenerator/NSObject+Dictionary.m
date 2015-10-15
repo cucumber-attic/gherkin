@@ -42,6 +42,10 @@ static NSDateFormatter * dateFormatter;
             NSString * propertyName = [NSString stringWithUTF8String:ivar_getName(ivars[i])];
             id object = [self valueForKey: propertyName];
             
+            // Ugly fix to replace "desc" properties by "description" because the ToString() method is named "description" in ObjC...
+            if ([propertyName isEqualToString: @"desc"])
+                propertyName = @"description";
+            
             if (object)
             {
                 if ([object isKindOfClass:[NSArray class]] || [object isKindOfClass:[NSSet class]])
@@ -77,6 +81,7 @@ static NSDateFormatter * dateFormatter;
         currentClass = class_getSuperclass(currentClass);
     }
     
+    // Add type based on class name to the dictionary
     if ([[self class] conformsToProtocol: @protocol(GHHasLocationProtocol)])
         [dictionary setObject: [NSStringFromClass([self class]) stringByReplacingOccurrencesOfString: @"GH" withString: @""] forKey: @"type"];
     

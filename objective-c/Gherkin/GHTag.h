@@ -1,6 +1,8 @@
 @class GHLocation;
 
-@interface GHTag : NSObject
+#import "GHHasLocationProtocol.h"
+
+@interface GHTag : NSObject <GHHasLocationProtocol>
 
 @property (nonatomic, readonly) GHLocation  * location;
 @property (nonatomic, readonly) NSString    * name;

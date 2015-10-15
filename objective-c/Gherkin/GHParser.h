@@ -124,6 +124,7 @@ typedef enum    GHRuleType
 
 @property (nonatomic, assign) BOOL  stopAtFirstError;
 
+- (id)initWithAstBuilder:(id<GHAstBuilderProtocol>)theAstBuilder;
 - (id)parseWithTokenScanner:(id<GHTokenScannerProtocol>)theTokenScanner;
 - (id)parseWithTokenScanner:(id<GHTokenScannerProtocol>)theTokenScanner tokenMatcher:(id<GHTokenMatcherProtocol>)theTokenMatcher;
 

@@ -18,10 +18,8 @@
 		5B18C89F1BCD797800D16073 /* GHGherkinLanguageSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C89E1BCD797800D16073 /* GHGherkinLanguageSetting.m */; settings = {ASSET_TAGS = (); }; };
 		5B18C8A01BCD81FC00D16073 /* GHTokenMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8871BCD34EB00D16073 /* GHTokenMatcher.m */; settings = {ASSET_TAGS = (); }; };
 		5B18C8A51BCDA46C00D16073 /* GHAstNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8A41BCDA46C00D16073 /* GHAstNode.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8AD1BCDBF6300D16073 /* GherkinTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8AC1BCDBF6300D16073 /* GherkinTests.m */; };
 		5B18C8AF1BCDBF6300D16073 /* libGherkiniOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B18C83F1BCD0BD400D16073 /* libGherkiniOS.a */; settings = {ASSET_TAGS = (); }; };
 		5B18C8B61BCDBF8A00D16073 /* GHGherkinLineTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8B51BCDBF8A00D16073 /* GHGherkinLineTest.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8B71BCDC01100D16073 /* GHGherkinLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8811BCD34EB00D16073 /* GHGherkinLine.m */; settings = {ASSET_TAGS = (); }; };
 		5B18C8B81BCDC06E00D16073 /* GHAstBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C87C1BCD34EB00D16073 /* GHAstBuilder.m */; settings = {ASSET_TAGS = (); }; };
 		5B18C8E11BCE423800D16073 /* GHBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8BB1BCE423800D16073 /* GHBackground.m */; settings = {ASSET_TAGS = (); }; };
 		5B18C8E21BCE423800D16073 /* GHComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8BD1BCE423800D16073 /* GHComment.m */; settings = {ASSET_TAGS = (); }; };
@@ -46,7 +44,7 @@
 		5BAA17EC1BCEF60600D59664 /* GHAstGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EB1BCEF60600D59664 /* GHAstGenerator.m */; settings = {ASSET_TAGS = (); }; };
 		5BAA17F01BCEF81100D59664 /* GHLineEndingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */; settings = {ASSET_TAGS = (); }; };
 		5BAA17FF1BCEFEC200D59664 /* gherkin-languages.json in Resources */ = {isa = PBXBuildFile; fileRef = 5BAA17FE1BCEFEC200D59664 /* gherkin-languages.json */; settings = {ASSET_TAGS = (); }; };
-		5BAA18031BCEFEF600D59664 /* GherkinLanguages.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BAA17F81BCEFEA500D59664 /* GherkinLanguages.bundle */; };
+		5BAA18031BCEFEF600D59664 /* GherkinLanguages.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5BAA17F81BCEFEA500D59664 /* GherkinLanguages.bundle */; };
 		5BAA18111BCF00E600D59664 /* GHAstBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8A21BCD86F100D16073 /* GHAstBuilder.h */; settings = {ASSET_TAGS = (); }; };
 		5BAA18121BCF00E600D59664 /* GHAstBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C87C1BCD34EB00D16073 /* GHAstBuilder.m */; settings = {ASSET_TAGS = (); }; };
 		5BAA18131BCF00E600D59664 /* GHAstNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8A31BCDA46C00D16073 /* GHAstNode.h */; settings = {ASSET_TAGS = (); }; };
@@ -62,7 +60,7 @@
 		5BAA181D1BCF00E600D59664 /* GHGherkinDialectProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C87F1BCD34EB00D16073 /* GHGherkinDialectProvider.m */; settings = {ASSET_TAGS = (); }; };
 		5BAA181E1BCF00E600D59664 /* GHGherkinLanguageConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8911BCD412D00D16073 /* GHGherkinLanguageConstants.h */; settings = {ASSET_TAGS = (); }; };
 		5BAA181F1BCF00E600D59664 /* GHGherkinLanguageConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8801BCD34EB00D16073 /* GHGherkinLanguageConstants.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18201BCF00E600D59664 /* GHGherkinLine.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8931BCD47AF00D16073 /* GHGherkinLine.h */; settings = {ASSET_TAGS = (); }; };
+		5BAA18201BCF00E600D59664 /* GHGherkinLine.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8931BCD47AF00D16073 /* GHGherkinLine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5BAA18211BCF00E600D59664 /* GHGherkinLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8811BCD34EB00D16073 /* GHGherkinLine.m */; settings = {ASSET_TAGS = (); }; };
 		5BAA18221BCF00E600D59664 /* GHGherkinLineSpan.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8821BCD34EB00D16073 /* GHGherkinLineSpan.h */; settings = {ASSET_TAGS = (); }; };
 		5BAA18231BCF00E600D59664 /* GHGherkinLineSpan.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C88D1BCD3D6300D16073 /* GHGherkinLineSpan.m */; settings = {ASSET_TAGS = (); }; };
@@ -120,6 +118,11 @@
 		5BAA185D1BCF061800D59664 /* GHParser+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8841BCD34EB00D16073 /* GHParser+Extensions.m */; settings = {ASSET_TAGS = (); }; };
 		5BAA185E1BCF06C800D59664 /* GHParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8F21BCE78C100D16073 /* GHParser.m */; settings = {ASSET_TAGS = (); }; };
 		5BAA18911BCF923700D59664 /* NSObject+Dictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA18901BCF923700D59664 /* NSObject+Dictionary.m */; settings = {ASSET_TAGS = (); }; };
+		5BAA18A01BCFF81C00D59664 /* libGherkinOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BAA18081BCF00DA00D59664 /* libGherkinOSX.a */; settings = {ASSET_TAGS = (); }; };
+		5BAA18A61BCFF8BB00D59664 /* GHGherkinLineTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8B51BCDBF8A00D16073 /* GHGherkinLineTest.m */; };
+		5BAA18A71BCFF8BB00D59664 /* GHGherkinTokenizationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17DD1BCED40600D59664 /* GHGherkinTokenizationTest.m */; };
+		5BAA18A81BCFFBB700D59664 /* GHLineEndingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */; settings = {ASSET_TAGS = (); }; };
+		5BAA18A91BCFFBB800D59664 /* GHLineEndingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +141,13 @@
 			remoteInfo = GherkinLanguages;
 		};
 		5BAA18561BCF019400D59664 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B18C8371BCD0BD400D16073 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5BAA18071BCF00DA00D59664;
+			remoteInfo = GherkinOSX;
+		};
+		5BAA18A11BCFF81C00D59664 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5B18C8371BCD0BD400D16073 /* Project object */;
 			proxyType = 1;
@@ -197,8 +207,7 @@
 		5B18C8A21BCD86F100D16073 /* GHAstBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHAstBuilder.h; sourceTree = "<group>"; };
 		5B18C8A31BCDA46C00D16073 /* GHAstNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHAstNode.h; sourceTree = "<group>"; };
 		5B18C8A41BCDA46C00D16073 /* GHAstNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHAstNode.m; sourceTree = "<group>"; };
-		5B18C8AA1BCDBF6200D16073 /* GherkinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GherkinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5B18C8AC1BCDBF6300D16073 /* GherkinTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GherkinTests.m; sourceTree = "<group>"; };
+		5B18C8AA1BCDBF6200D16073 /* GherkinTestsiOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GherkinTestsiOS.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B18C8AE1BCDBF6300D16073 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5B18C8B51BCDBF8A00D16073 /* GHGherkinLineTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHGherkinLineTest.m; sourceTree = "<group>"; };
 		5B18C8BA1BCE423800D16073 /* GHBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHBackground.h; sourceTree = "<group>"; };
@@ -248,17 +257,16 @@
 		5BAA17E51BCEF4EA00D59664 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5BAA17EA1BCEF60600D59664 /* GHAstGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHAstGenerator.h; sourceTree = "<group>"; };
 		5BAA17EB1BCEF60600D59664 /* GHAstGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHAstGenerator.m; sourceTree = "<group>"; };
-		5BAA17EE1BCEF81100D59664 /* GHLineEndingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHLineEndingHelper.h; sourceTree = "<group>"; };
-		5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHLineEndingHelper.m; sourceTree = "<group>"; };
+		5BAA17EE1BCEF81100D59664 /* GHLineEndingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GHLineEndingHelper.h; path = AstGenerator/GHLineEndingHelper.h; sourceTree = "<group>"; };
+		5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHLineEndingHelper.m; path = AstGenerator/GHLineEndingHelper.m; sourceTree = "<group>"; };
 		5BAA17F81BCEFEA500D59664 /* GherkinLanguages.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GherkinLanguages.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BAA17FA1BCEFEA500D59664 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5BAA17FE1BCEFEC200D59664 /* gherkin-languages.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gherkin-languages.json"; sourceTree = "<group>"; };
 		5BAA18081BCF00DA00D59664 /* libGherkinOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGherkinOSX.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		5BAA18591BCF02C700D59664 /* gherkin-objective-c-header.razor */ = {isa = PBXFileReference; lastKnownFileType = text; path = "gherkin-objective-c-header.razor"; sourceTree = "<group>"; };
-		5BAA185A1BCF02C700D59664 /* gherkin-objective-c-implementation.razor */ = {isa = PBXFileReference; lastKnownFileType = text; path = "gherkin-objective-c-implementation.razor"; sourceTree = "<group>"; };
 		5BAA185B1BCF03DA00D59664 /* GHParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHParser.h; sourceTree = "<group>"; };
 		5BAA188F1BCF923700D59664 /* NSObject+Dictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Dictionary.h"; sourceTree = "<group>"; };
 		5BAA18901BCF923700D59664 /* NSObject+Dictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Dictionary.m"; sourceTree = "<group>"; };
+		5BAA189B1BCFF81C00D59664 /* GherkinTestsOSX.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GherkinTestsOSX.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -282,7 +290,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5BAA18581BCF019C00D59664 /* libGherkinOSX.a in Frameworks */,
-				5BAA18031BCEFEF600D59664 /* GherkinLanguages.bundle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +307,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5BAA18981BCFF81C00D59664 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5BAA18A01BCFF81C00D59664 /* libGherkinOSX.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -310,6 +325,8 @@
 				5B18C8AB1BCDBF6300D16073 /* GherkinTests */,
 				5BAA17E41BCEF4EA00D59664 /* AstGenerator */,
 				5BAA17F91BCEFEA500D59664 /* GherkinLanguages */,
+				5BAA17EE1BCEF81100D59664 /* GHLineEndingHelper.h */,
+				5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */,
 				5B18C8401BCD0BD400D16073 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -318,10 +335,11 @@
 			isa = PBXGroup;
 			children = (
 				5B18C83F1BCD0BD400D16073 /* libGherkiniOS.a */,
-				5B18C8AA1BCDBF6200D16073 /* GherkinTests.xctest */,
+				5B18C8AA1BCDBF6200D16073 /* GherkinTestsiOS.xctest */,
 				5BAA17E31BCEF4E900D59664 /* AstGenerator */,
 				5BAA17F81BCEFEA500D59664 /* GherkinLanguages.bundle */,
 				5BAA18081BCF00DA00D59664 /* libGherkinOSX.a */,
+				5BAA189B1BCFF81C00D59664 /* GherkinTestsOSX.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -363,8 +381,6 @@
 				5B18C8891BCD35B900D16073 /* GHTokenScanner.m */,
 				5BAA185B1BCF03DA00D59664 /* GHParser.h */,
 				5B18C8F21BCE78C100D16073 /* GHParser.m */,
-				5BAA18591BCF02C700D59664 /* gherkin-objective-c-header.razor */,
-				5BAA185A1BCF02C700D59664 /* gherkin-objective-c-implementation.razor */,
 			);
 			path = Gherkin;
 			sourceTree = "<group>";
@@ -372,7 +388,6 @@
 		5B18C8AB1BCDBF6300D16073 /* GherkinTests */ = {
 			isa = PBXGroup;
 			children = (
-				5B18C8AC1BCDBF6300D16073 /* GherkinTests.m */,
 				5B18C8AE1BCDBF6300D16073 /* Info.plist */,
 				5B18C8B51BCDBF8A00D16073 /* GHGherkinLineTest.m */,
 				5BAA17DD1BCED40600D59664 /* GHGherkinTokenizationTest.m */,
@@ -431,8 +446,6 @@
 				5BAA17E51BCEF4EA00D59664 /* main.m */,
 				5BAA17EA1BCEF60600D59664 /* GHAstGenerator.h */,
 				5BAA17EB1BCEF60600D59664 /* GHAstGenerator.m */,
-				5BAA17EE1BCEF81100D59664 /* GHLineEndingHelper.h */,
-				5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */,
 				5BAA188F1BCF923700D59664 /* NSObject+Dictionary.h */,
 				5BAA18901BCF923700D59664 /* NSObject+Dictionary.m */,
 			);
@@ -517,9 +530,9 @@
 			productReference = 5B18C83F1BCD0BD400D16073 /* libGherkiniOS.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		5B18C8A91BCDBF6200D16073 /* GherkinTests */ = {
+		5B18C8A91BCDBF6200D16073 /* GherkinTestsiOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5B18C8B21BCDBF6300D16073 /* Build configuration list for PBXNativeTarget "GherkinTests" */;
+			buildConfigurationList = 5B18C8B21BCDBF6300D16073 /* Build configuration list for PBXNativeTarget "GherkinTestsiOS" */;
 			buildPhases = (
 				5B18C8A61BCDBF6200D16073 /* Sources */,
 				5B18C8A71BCDBF6200D16073 /* Frameworks */,
@@ -530,9 +543,9 @@
 			dependencies = (
 				5B18C8B11BCDBF6300D16073 /* PBXTargetDependency */,
 			);
-			name = GherkinTests;
+			name = GherkinTestsiOS;
 			productName = GherkinTests;
-			productReference = 5B18C8AA1BCDBF6200D16073 /* GherkinTests.xctest */;
+			productReference = 5B18C8AA1BCDBF6200D16073 /* GherkinTestsiOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		5BAA17E21BCEF4E900D59664 /* AstGenerator */ = {
@@ -589,6 +602,24 @@
 			productReference = 5BAA18081BCF00DA00D59664 /* libGherkinOSX.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		5BAA189A1BCFF81C00D59664 /* GherkinTestsOSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5BAA18A31BCFF81C00D59664 /* Build configuration list for PBXNativeTarget "GherkinTestsOSX" */;
+			buildPhases = (
+				5BAA18971BCFF81C00D59664 /* Sources */,
+				5BAA18981BCFF81C00D59664 /* Frameworks */,
+				5BAA18991BCFF81C00D59664 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5BAA18A21BCFF81C00D59664 /* PBXTargetDependency */,
+			);
+			name = GherkinTestsOSX;
+			productName = GherkinTests;
+			productReference = 5BAA189B1BCFF81C00D59664 /* GherkinTestsOSX.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -613,6 +644,9 @@
 					5BAA18071BCF00DA00D59664 = {
 						CreatedOnToolsVersion = 7.0;
 					};
+					5BAA189A1BCFF81C00D59664 = {
+						CreatedOnToolsVersion = 7.0;
+					};
 				};
 			};
 			buildConfigurationList = 5B18C83A1BCD0BD400D16073 /* Build configuration list for PBXProject "Gherkin" */;
@@ -628,10 +662,11 @@
 			projectRoot = "";
 			targets = (
 				5B18C83E1BCD0BD400D16073 /* GherkiniOS */,
-				5B18C8A91BCDBF6200D16073 /* GherkinTests */,
+				5B18C8A91BCDBF6200D16073 /* GherkinTestsiOS */,
 				5BAA17E21BCEF4E900D59664 /* AstGenerator */,
 				5BAA17F71BCEFEA500D59664 /* GherkinLanguages */,
 				5BAA18071BCF00DA00D59664 /* GherkinOSX */,
+				5BAA189A1BCFF81C00D59664 /* GherkinTestsOSX */,
 			);
 		};
 /* End PBXProject section */
@@ -653,6 +688,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		5BAA18001BCEFEDE00D59664 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5BAA18031BCEFEF600D59664 /* GherkinLanguages.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5BAA18991BCFF81C00D59664 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -704,9 +747,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BAA18A91BCFFBB800D59664 /* GHLineEndingHelper.m in Sources */,
 				5BAA17DE1BCED40600D59664 /* GHGherkinTokenizationTest.m in Sources */,
-				5B18C8B71BCDC01100D16073 /* GHGherkinLine.m in Sources */,
-				5B18C8AD1BCDBF6300D16073 /* GherkinTests.m in Sources */,
 				5B18C8B61BCDBF8A00D16073 /* GHGherkinLineTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -767,6 +809,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5BAA18971BCFF81C00D59664 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5BAA18A81BCFFBB700D59664 /* GHLineEndingHelper.m in Sources */,
+				5BAA18A61BCFF8BB00D59664 /* GHGherkinLineTest.m in Sources */,
+				5BAA18A71BCFF8BB00D59664 /* GHGherkinTokenizationTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -784,6 +836,11 @@
 			isa = PBXTargetDependency;
 			target = 5BAA18071BCF00DA00D59664 /* GherkinOSX */;
 			targetProxy = 5BAA18561BCF019400D59664 /* PBXContainerItemProxy */;
+		};
+		5BAA18A21BCFF81C00D59664 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5BAA18071BCF00DA00D59664 /* GherkinOSX */;
+			targetProxy = 5BAA18A11BCFF81C00D59664 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -889,6 +946,7 @@
 		5B18C8B31BCDBF6300D16073 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREFIX_HEADER = Gherkin/Gherkin.pch;
 				INFOPLIST_FILE = GherkinTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gherkin.GherkinTests;
@@ -899,6 +957,7 @@
 		5B18C8B41BCDBF6300D16073 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREFIX_HEADER = Gherkin/Gherkin.pch;
 				INFOPLIST_FILE = GherkinTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gherkin.GherkinTests;
@@ -980,6 +1039,34 @@
 			};
 			name = Release;
 		};
+		5BAA18A41BCFF81C00D59664 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREFIX_HEADER = Gherkin/Gherkin.pch;
+				INFOPLIST_FILE = GherkinTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gherkin.GherkinTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5BAA18A51BCFF81C00D59664 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREFIX_HEADER = Gherkin/Gherkin.pch;
+				INFOPLIST_FILE = GherkinTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gherkin.GherkinTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1001,7 +1088,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5B18C8B21BCDBF6300D16073 /* Build configuration list for PBXNativeTarget "GherkinTests" */ = {
+		5B18C8B21BCDBF6300D16073 /* Build configuration list for PBXNativeTarget "GherkinTestsiOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B18C8B31BCDBF6300D16073 /* Debug */,
@@ -1017,6 +1104,7 @@
 				5BAA17E91BCEF4EA00D59664 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5BAA17FB1BCEFEA500D59664 /* Build configuration list for PBXNativeTarget "GherkinLanguages" */ = {
 			isa = XCConfigurationList;
@@ -1025,12 +1113,22 @@
 				5BAA17FD1BCEFEA500D59664 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5BAA180E1BCF00DB00D59664 /* Build configuration list for PBXNativeTarget "GherkinOSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5BAA180F1BCF00DB00D59664 /* Debug */,
 				5BAA18101BCF00DB00D59664 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5BAA18A31BCFF81C00D59664 /* Build configuration list for PBXNativeTarget "GherkinTestsOSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5BAA18A41BCFF81C00D59664 /* Debug */,
+				5BAA18A51BCFF81C00D59664 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

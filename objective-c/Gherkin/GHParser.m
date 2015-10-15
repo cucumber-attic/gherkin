@@ -7,6 +7,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
+
 #import "GHParser.h"
 
 #import "GHAstBuilder.h"
@@ -2282,17 +2283,17 @@
 
 
 
-- (BOOL)lookAheadWithContext_0:(GHParserContext *)theContext token:(GHToken *)theToken
+- (BOOL)lookAheadWithContext_0:(GHParserContext *)theContext token:(GHToken *)currentToken
 {
-    [theToken detach];
-    GHToken * token;
+    [currentToken detach];
+    GHToken * theToken;
     NSMutableArray<GHToken *> * tokenBuffer = [[NSMutableArray<GHToken *> alloc] init];
     BOOL match = NO;
     do
     {
-        token = [self readTokenWithContext: theContext];
-        [token detach];
-        [tokenBuffer addObject: token];
+        theToken = [self readTokenWithContext: theContext];
+        [theToken detach];
+        [tokenBuffer addObject: theToken];
 
         if (NO
             || [self matchExamplesLineWithContext: theContext token: theToken]
