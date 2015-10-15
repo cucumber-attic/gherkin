@@ -180,23 +180,16 @@
         {
             NSArray<GHToken *> * lineTokens = (NSArray<GHToken *> *)[theNode tokensWithType: GHTokenTypeOther];
 
-            // Trim trailing empty lines
-            NSInteger i = [lineTokens count];
-            while (--i > 0)
+            NSMutableArray<GHToken *> * lineTokensBuffer = [lineTokens mutableCopy];
+            NSEnumerator * reverseObjectEnumerator = [lineTokens reverseObjectEnumerator];
+            for (GHToken * lineToken in reverseObjectEnumerator)
             {
-                if (![[[lineTokens[i] matchedText] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
+                if (![[[lineToken matchedText] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
+                    [lineTokensBuffer removeObject: lineToken];
+                else
                     break;
             }
-            if (i > 0)
-            {
-                NSMutableArray<NSString *> * matchedTexts = [[NSMutableArray<NSString *> alloc] initWithCapacity: i];
-                for (NSUInteger j = 0; j <= i; j++)
-                {
-                    [matchedTexts addObject: [lineTokens[j] matchedText]];
-                }
-                return [matchedTexts componentsJoinedByString: @"\n"];
-            }
-            return @"";
+            return [[lineTokensBuffer valueForKey: @"matchedText"] componentsJoinedByString: @"\n"];
         }
         case GHRuleTypeFeature:
         {
