@@ -4,9 +4,6 @@ int main(int argc, const char * argv[])
 {
     @autoreleasepool {
 
-        /*NSString * tokensText = [GHTokensGenerator generateTokensFromFile: @"/Users/julien.curro/Workspaces/gherkin3/objective-c/../testdata/good/i18n_no.feature"];
-        puts([tokensText UTF8String]);*/
-        
         if (argc <= 1)
         {
             NSLog(@"Usage: ./TokensGenerator test-feature-file.feature");

@@ -38,7 +38,7 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
 clean:
-	rm -rf .compared .built acceptance Gherkin/GHParser.m Gherkin/GHParser.h Gherkin/gherkin-languages.json
+	rm -rf .compared .built acceptance Gherkin/GHParser.m Gherkin/GHParser.h gherkin-languages.json
 	rm -rf */bin
 	rm -rf */obj
 	xcodebuild clean -scheme "GherkinOSX"
@@ -50,23 +50,23 @@ Gherkin/GHParser.h: ../gherkin.berp gherkin-objective-c-header.razor ../bin/berp
 Gherkin/GHParser.m: ../gherkin.berp gherkin-objective-c-implementation.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-objective-c-implementation.razor -o $@
 
-.xcodeproj_built_debug: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) Gherkin/gherkin-languages.json
+.xcodeproj_built_debug: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) gherkin-languages.json
 	rm -f $@
 	xcodebuild -version
 	xcodebuild -scheme "GherkinOSX" -configuration Debug
 	touch $@
 
-Gherkin/bin/Debug/Gherkin.a: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) Gherkin/gherkin-languages.json
+Gherkin/bin/Debug/Gherkin.a: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) gherkin-languages.json
 	rm -f $@
 	xcodebuild -scheme "GherkinOSX" -configuration Debug
 	touch $@
 
-Gherkin/bin/Release/Gherkin.a: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) Gherkin/gherkin-languages.json
+Gherkin/bin/Release/Gherkin.a: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) gherkin-languages.json
 	rm -f $@
 	xcodebuild -scheme "GherkinOSX" -configuration Release
 	touch $@
 
-Gherkin/gherkin-languages.json: ../gherkin-languages.json
+gherkin-languages.json: ../gherkin-languages.json
 	cp $< $@
 
 LICENSE: ../LICENSE
