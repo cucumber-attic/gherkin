@@ -28,6 +28,11 @@
     return [self dialectWithLanguage: language location: nil];
 }
 
+- (id)init
+{
+    return [self initWithLanguage: @"en"];
+}
+
 - (id)initWithLanguage:(NSString *)theLanguage
 {
     if (self = [super init])
@@ -47,8 +52,8 @@
 
 - (NSDictionary<NSString *, GHGherkinLanguageSetting *> *)languagesSetting
 {
-    /*var resourceStream = typeof(GherkinDialectProvider).Assembly.GetManifestResourceStream(typeof(GherkinDialectProvider), languageFileName);*/
-    NSData * languagesFileContent = [NSData dataWithContentsOfFile: @"gherkin-languages.json"];
+    NSBundle * gherkinLanguagesBundle = [NSBundle bundleWithPath: [[NSBundle mainBundle] pathForResource: @"GherkinLanguages" ofType: @"bundle"]];
+    NSData * languagesFileContent = [NSData dataWithContentsOfFile: [gherkinLanguagesBundle pathForResource: @"gherkin-languages" ofType: @"json"]];
     
     /*TODO: check for error
     if (resourceStream == null)

@@ -16,7 +16,7 @@
 @property (nonatomic, strong) NSArray<GHGherkinLineSpan *>  * matchedItems;
 @property (nonatomic, assign) NSUInteger                    matchedIndent;
 @property (nonatomic, strong) GHGherkinDialect              * matchedGherkinDialect;
-@property (nonatomic, assign) GHLocation                    * location;
+@property (nonatomic, strong) GHLocation                    * location;
 
 - (id)initWithGherkinLine:(id<GHGherkinLineProtocol>)theGherkinLine location:(GHLocation *)theLocation;
 - (void)detach;

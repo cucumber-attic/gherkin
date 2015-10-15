@@ -8,7 +8,7 @@
 #import "GHGherkinLanguageConstants.h"
 #import "GHLocation.h"
 
-#import "GHParser.m"
+#import "GHParser.h"
 
 @interface GHTokenMatcher ()
 
@@ -77,8 +77,7 @@
     [theToken setMatchedText: theText];
     [theToken setMatchedItems: theItems];
     [theToken setMatchedGherkinDialect: currentDialect];
-    if (theIndent)
-        [theToken setMatchedIndent: [theToken line] ? [[theToken line] indent] : 0];
+    [theToken setMatchedIndent: theIndent ? [theIndent integerValue] : [theToken line] ? [[theToken line] indent] : 0];
     
     [theToken setLocation: [[GHLocation alloc] initWithLine: [[theToken location] line] column: [theToken matchedIndent] + 1]];
 }
@@ -98,7 +97,7 @@
 - (BOOL)matchOtherWithToken:(GHToken *)theToken
 {
     NSString * text = [[theToken line] lineTextByRemovingIndent: indentToRemove]; //take the entire line, except removing DocString indents
-    [self setTokenMatched: theToken tokenType: GHTokenTypeOther text: [self unescapeDocString: text] keyword: nil indent: 0 items: nil];
+    [self setTokenMatched: theToken tokenType: GHTokenTypeOther text: [self unescapeDocString: text] keyword: nil indent: @(0) items: nil];
     
     return YES;
 }
@@ -107,7 +106,7 @@
 {
     if ([[theToken line] empty])
     {
-        [self setTokenMatched: theToken tokenType: GHTokenTypeEmpty text: nil keyword: nil indent: 0 items: nil];
+        [self setTokenMatched: theToken tokenType: GHTokenTypeEmpty text: nil keyword: nil indent: nil items: nil];
         
         return YES;
     }
@@ -119,8 +118,8 @@
 {
     if ([[theToken line] hasPrefix: GHCommentPrefix])
     {
-        NSString * text = [[theToken line] lineText]; //take the entire line
-        [self setTokenMatched: theToken tokenType: GHTokenTypeComment text: text keyword: nil indent: 0 items: nil];
+        NSString * text = [[theToken line] lineTextByRemovingIndent: 0]; //take the entire line
+        [self setTokenMatched: theToken tokenType: GHTokenTypeComment text: text keyword: nil indent: @(0) items: nil];
         
         return YES;
     }
@@ -137,22 +136,26 @@
 {
     NSRegularExpression * regularExpression = [NSRegularExpression regularExpressionWithPattern: @"^\\s*#\\s*language\\s*:\\s*([a-zA-Z\\-_]+)\\s*$" options: 0 error: nil];
     NSString * lineText = [[theToken line] lineTextByRemovingIndent: 0];
-    NSRange range = [regularExpression rangeOfFirstMatchInString: lineText options: 0 range: NSMakeRange(0, [lineText length])];
-    if (range.location != NSNotFound)
+    NSArray<NSTextCheckingResult *> * matches = [regularExpression matchesInString: lineText options: 0 range: NSMakeRange(0, [lineText length])];
+    if ([matches count])
     {
-        NSString * language = [lineText substringWithRange: range];
-        [self setTokenMatched: theToken tokenType: GHTokenTypeLanguage text: nil keyword: nil indent: nil items: nil];
-
-        @try
+        NSRange range = [[matches firstObject] rangeAtIndex: 1];
+        if (range.location != NSNotFound)
         {
-            currentDialect = [dialectProvider dialectWithLanguage: language location: [theToken location]];
-        }
-        @catch (NSException * exception)
-        {
-            @throw [self matcherExceptionWithToken: theToken message: [exception reason]];
-        }
+            NSString * language = [lineText substringWithRange: range];
+            [self setTokenMatched: theToken tokenType: GHTokenTypeLanguage text: nil keyword: nil indent: nil items: nil];
 
-        return YES;
+            @try
+            {
+                currentDialect = [dialectProvider dialectWithLanguage: language location: [theToken location]];
+            }
+            @catch (NSException * exception)
+            {
+                @throw [self matcherExceptionWithToken: theToken message: [exception reason]];
+            }
+
+            return YES;
+        }
     }
     return NO;
 }
@@ -161,7 +164,7 @@
 {
     if ([[theToken line] hasPrefix: GHTagPrefix])
     {
-        [self setTokenMatched: theToken tokenType: GHTokenTypeTagLine text: nil keyword: nil indent: 0 items: [[theToken line] tags]];
+        [self setTokenMatched: theToken tokenType: GHTokenTypeTagLine text: nil keyword: nil indent: nil items: [[theToken line] tags]];
         
         return YES;
     }
@@ -264,7 +267,7 @@
 {
     if ([[theToken line] hasPrefix: GHTableCellSeparator])
     {
-        [self setTokenMatched: theToken tokenType: GHTokenTypeTableRow text: nil keyword: nil indent: 0 items: [[theToken line] tableCells]];
+        [self setTokenMatched: theToken tokenType: GHTokenTypeTableRow text: nil keyword: nil indent: nil items: [[theToken line] tableCells]];
         
         return YES;
     }

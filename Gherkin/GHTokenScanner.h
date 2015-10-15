@@ -1,9 +1,10 @@
-﻿@protocol GHTokenScannerProtocol;
+﻿#import "GHParser.h"
+
 @class GHToken;
 
 @interface GHTokenScanner : NSObject <GHTokenScannerProtocol>
 
-- (id)initWithContentsOfFile:(NSString *)theFileContent;
+- (id)initWithContentsOfFile:(NSString *)theFilePath;
 - (GHToken *)read;
         
 @end

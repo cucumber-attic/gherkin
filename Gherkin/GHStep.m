@@ -8,7 +8,7 @@
 @property (nonatomic, strong) GHLocation        * location;
 @property (nonatomic, strong) NSString          * keyword;
 @property (nonatomic, strong) NSString          * text;
-@property (nonatomic, strong) GHStepArgument    * stepArgument;
+@property (nonatomic, strong) GHStepArgument    * argument;
 
 @end
 
@@ -17,16 +17,16 @@
 @synthesize location;
 @synthesize keyword;
 @synthesize text;
-@synthesize stepArgument;
+@synthesize argument;
 
-- (id)initWithLocation:(GHLocation *)theLocation keyword:(NSString *)theKeyword text:(NSString *)theText stepArgument:(GHStepArgument *)theStepArgument
+- (id)initWithLocation:(GHLocation *)theLocation keyword:(NSString *)theKeyword text:(NSString *)theText stepArgument:(GHStepArgument *)theArgument
 {
     if (self = [super init])
     {
         location = theLocation;
         keyword = theKeyword;
         text = theText;
-        stepArgument = theStepArgument;
+        argument = theArgument;
     }
     
     return self;

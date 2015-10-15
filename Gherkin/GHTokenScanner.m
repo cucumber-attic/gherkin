@@ -3,7 +3,8 @@
 #import "GHToken.h"
 #import "GHLocation.h"
 #import "GHGherkinLine.h"
-#import "GHParser.m"
+#import "GHParser.h"
+#import "GHLineEndingHelper.h"
 
 @implementation GHTokenScanner
 {
@@ -11,12 +12,13 @@
     NSArray<NSString *> * lines;
 }
 
-- (id)initWithContentsOfFile:(NSString *)theFileContent
+- (id)initWithContentsOfFile:(NSString *)theFilePath
 {
     if (self = [super init])
     {
         lineNumber = 0;
-        lines = [theFileContent componentsSeparatedByString: @"\n"];
+        NSString * fileContent = [GHLineEndingHelper normalizeLineEndings: [NSString stringWithContentsOfFile: theFilePath encoding: NSUTF8StringEncoding error: NULL]];
+        lines = [fileContent componentsSeparatedByString: @"\n"];
     }
     
     return self;
@@ -34,7 +36,7 @@
 /// </summary>
 - (GHToken *)read
 {
-    NSString * line = lines[lineNumber];
+    NSString * line = (lineNumber < [lines count] ? lines[lineNumber] : nil);
     GHLocation * location = [[GHLocation alloc] initWithLine: ++lineNumber];
     GHGherkinLine * gherkinLine = line ? [[GHGherkinLine alloc] initWithLine: line lineNumber: lineNumber] : nil;
     

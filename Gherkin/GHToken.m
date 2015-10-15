@@ -2,7 +2,7 @@
 
 #import "GHGherkinLineProtocol.h"
 
-#import "GHParser.m"
+#import "GHParser.h"
 
 @implementation GHToken
 

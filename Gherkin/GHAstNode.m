@@ -1,7 +1,7 @@
 ﻿#import "GHAstNode.h"
 
 #import "GHToken.h"
-#import "GHParser.m"
+#import "GHParser.h"
 
 @interface GHAstNode ()
 

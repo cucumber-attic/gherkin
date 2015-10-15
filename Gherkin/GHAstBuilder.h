@@ -1,5 +1,6 @@
 ﻿#import "GHAstNode.h"
 
+@protocol GHAstBuilderProtocol;
 @class GHToken;
 
 @interface GHAstBuilder<GHAstBuilderProtocol> : NSObject

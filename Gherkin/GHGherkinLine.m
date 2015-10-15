@@ -139,11 +139,11 @@
     for (NSUInteger i = 0; i < rowLength; i++)
     {
         NSString * stringCharacter = [theRow substringWithRange: NSMakeRange(i, 1)];
-        if (stringCharacter == GHTableCellSeparator)
+        if ([stringCharacter isEqualToString: GHTableCellSeparator])
         {
             [items addObject: @[ cell, @(startPos)]];
             cell = [[NSMutableString alloc] init];
-            startPos = i;
+            startPos = i + 1;
         }
         else if ([stringCharacter isEqualToString: GHTableCellEscape])
         {
@@ -163,11 +163,12 @@
 
 - (NSString *)trim:(NSString *)theString trimmedCharsCount:(NSUInteger *)theTrimmedCharsCount
 {
-    *theTrimmedCharsCount = 0;
+    NSUInteger trimmedCharsCount = 0;
     NSCharacterSet * whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
-    while (*theTrimmedCharsCount < [theString length] && [whitespaceCharacterSet characterIsMember: [theString characterAtIndex: *theTrimmedCharsCount]])
-        theTrimmedCharsCount++;
+    while (trimmedCharsCount < [theString length] && [whitespaceCharacterSet characterIsMember: [theString characterAtIndex: trimmedCharsCount]])
+        trimmedCharsCount++;
 
+    *theTrimmedCharsCount = trimmedCharsCount;
     return [theString stringByTrimmingCharactersInSet: whitespaceCharacterSet];
 }
 

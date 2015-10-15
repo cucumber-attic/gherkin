@@ -18,7 +18,7 @@
 #import "GHTableCell.h"
 #import "GHGherkinLineSpan.h"
 
-#import "GHParser.m"
+#import "GHParser.h"
 
 @interface GHAstBuilder ()
 
@@ -79,6 +79,11 @@
     id transformedNode = [self transformNode: node];
     
     [[stack lastObject] addObject: transformedNode withRuleType: [node ruleType]];
+}
+
+- (id)result
+{
+    return [[stack lastObject] singleWithRuleType: GHRuleTypeFeature];
 }
 
 - (id)transformNode:(GHAstNode *)theNode
@@ -176,10 +181,10 @@
             NSArray<GHToken *> * lineTokens = (NSArray<GHToken *> *)[theNode tokensWithType: GHTokenTypeOther];
 
             // Trim trailing empty lines
-            NSInteger i = [lineTokens count];
+            NSInteger i = [lineTokens count] - 1;
             while (i > 0)
             {
-                if (![[[lineTokens[--i] matchedText] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
+                if (![[[lineTokens[i--] matchedText] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
                     break;
             }
             if (i > 0)
