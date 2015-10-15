@@ -1,5 +1,6 @@
 ﻿
-@protocol GHTokenMatcherProtocol;
+#import "GHParser.h"
+
 @class GHToken;
 @class GHGherkinDialect;
 @class GHGherkinDialectProvider;

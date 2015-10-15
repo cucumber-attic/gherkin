@@ -1,4 +1,6 @@
-﻿#import "GHParser+Extensions.h"
+﻿#import "GHParser.h"
+
+@class GHFeature;
 
 @interface GHParser (Extensions)
 

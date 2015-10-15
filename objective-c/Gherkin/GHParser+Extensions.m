@@ -1,10 +1,14 @@
 ﻿#import "GHParser+Extensions.h"
 
-@implementation GHParser
+#import "GHParser.h"
+#import "GHTokenScanner.h"
+#import "GHFeature.h"
+
+@implementation GHParser (Extensions)
 
 - (GHFeature *)parse:(NSString *)theSourceFile
 {
-    return [self parse: [GHTokenScanner alloc] initWithContentsOfFile: sourceFile];
+    return [self parseWithTokenScanner: [[GHTokenScanner alloc] initWithContentsOfFile: theSourceFile]];
 }
 
 @end
