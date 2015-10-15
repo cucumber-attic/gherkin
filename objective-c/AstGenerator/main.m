@@ -31,7 +31,6 @@ int main(int argc, const char * argv[])
         {
             NSLog(@"%f", [[NSDate date] timeIntervalSinceDate: startDate]);
         }
-        return 0;
     }
     return 0;
 }

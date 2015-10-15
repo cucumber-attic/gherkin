@@ -1,22 +1,24 @@
-#import "GHAstGenerator.h"
+#import "GHTokensGenerator.h"
 
 int main(int argc, const char * argv[])
 {
     @autoreleasepool {
 
+        /*NSString * tokensText = [GHTokensGenerator generateTokensFromFile: @"/Users/julien.curro/Workspaces/gherkin3/objective-c/../testdata/good/i18n_no.feature"];
+        puts([tokensText UTF8String]);*/
+        
         if (argc <= 1)
         {
-            NSLog(@"Usage: ./AstGenerator test-feature-file.feature");
+            NSLog(@"Usage: ./TokensGenerator test-feature-file.feature");
             return 100;
         }
         
-        NSDate * startDate = [NSDate date];
         for (int i = 1; i < argc; i++)
         {
             @try
             {
-                NSString * astText = [GHAstGenerator generateAstFromFile: [NSString stringWithUTF8String: argv[i]]];
-                puts([astText UTF8String]);
+                NSString * tokensText = [GHTokensGenerator generateTokensFromFile: [NSString stringWithUTF8String: argv[i]]];
+                puts([tokensText UTF8String]);
             }
             @catch (NSException * exception)
             {
@@ -26,12 +28,6 @@ int main(int argc, const char * argv[])
                 return 1;
             }
         }
-
-        if (getenv("GHERKIN_PERF") != NULL)
-        {
-            NSLog(@"%f", [[NSDate date] timeIntervalSinceDate: startDate]);
-        }
-        return 0;
     }
     return 0;
 }
