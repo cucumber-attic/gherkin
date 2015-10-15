@@ -143,7 +143,7 @@
         if (range.location != NSNotFound)
         {
             NSString * language = [lineText substringWithRange: range];
-            [self setTokenMatched: theToken tokenType: GHTokenTypeLanguage text: nil keyword: nil indent: nil items: nil];
+            [self setTokenMatched: theToken tokenType: GHTokenTypeLanguage text: language keyword: nil indent: nil items: nil];
 
             @try
             {

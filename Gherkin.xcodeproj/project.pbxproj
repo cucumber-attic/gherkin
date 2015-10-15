@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B0264001BD03E190040F71E /* GHTokensGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0263FF1BD03E190040F71E /* GHTokensGenerator.m */; settings = {ASSET_TAGS = (); }; };
+		5B0264031BD03E510040F71E /* GHTokenFormatterBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0264021BD03E510040F71E /* GHTokenFormatterBuilder.m */; settings = {ASSET_TAGS = (); }; };
+		5B0264061BD03FB00040F71E /* GHTestTokenFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0264051BD03FB00040F71E /* GHTestTokenFormatter.m */; settings = {ASSET_TAGS = (); }; };
 		5B18C88A1BCD35B900D16073 /* GHTokenScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8891BCD35B900D16073 /* GHTokenScanner.m */; settings = {ASSET_TAGS = (); }; };
 		5B18C88E1BCD3D6300D16073 /* GHGherkinLineSpan.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C88D1BCD3D6300D16073 /* GHGherkinLineSpan.m */; settings = {ASSET_TAGS = (); }; };
 		5B18C8901BCD3EA200D16073 /* GHGherkinDialect.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C88F1BCD3EA200D16073 /* GHGherkinDialect.m */; settings = {ASSET_TAGS = (); }; };
@@ -39,6 +42,12 @@
 		5B18C8F01BCE423800D16073 /* GHTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8E01BCE423800D16073 /* GHTag.m */; settings = {ASSET_TAGS = (); }; };
 		5B18C8F51BCE970E00D16073 /* GHParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8F21BCE78C100D16073 /* GHParser.m */; settings = {ASSET_TAGS = (); }; };
 		5B18C8F71BCEB58100D16073 /* GHParserException.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8851BCD34EB00D16073 /* GHParserException.m */; settings = {ASSET_TAGS = (); }; };
+		5B99A5B61BD03CD000233759 /* NSObject+Dictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA18901BCF923700D59664 /* NSObject+Dictionary.m */; settings = {ASSET_TAGS = (); }; };
+		5B99A5B71BD03CD000233759 /* GHAstGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EB1BCEF60600D59664 /* GHAstGenerator.m */; settings = {ASSET_TAGS = (); }; };
+		5B99A5B81BD03CD000233759 /* GHLineEndingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */; settings = {ASSET_TAGS = (); }; };
+		5B99A5BA1BD03CD000233759 /* libGherkinOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BAA18081BCF00DA00D59664 /* libGherkinOSX.a */; };
+		5B99A5BC1BD03CD000233759 /* GherkinLanguages.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5BAA17F81BCEFEA500D59664 /* GherkinLanguages.bundle */; };
+		5B99A5C61BD03D6500233759 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B99A5C51BD03D6500233759 /* main.m */; settings = {ASSET_TAGS = (); }; };
 		5BAA17DE1BCED40600D59664 /* GHGherkinTokenizationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17DD1BCED40600D59664 /* GHGherkinTokenizationTest.m */; settings = {ASSET_TAGS = (); }; };
 		5BAA17E61BCEF4EA00D59664 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17E51BCEF4EA00D59664 /* main.m */; };
 		5BAA17EC1BCEF60600D59664 /* GHAstGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EB1BCEF60600D59664 /* GHAstGenerator.m */; settings = {ASSET_TAGS = (); }; };
@@ -133,6 +142,20 @@
 			remoteGlobalIDString = 5B18C83E1BCD0BD400D16073;
 			remoteInfo = Gherkin;
 		};
+		5B99A5B11BD03CD000233759 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B18C8371BCD0BD400D16073 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5BAA18071BCF00DA00D59664;
+			remoteInfo = GherkinOSX;
+		};
+		5B99A5B31BD03CD000233759 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B18C8371BCD0BD400D16073 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5BAA17F71BCEFEA500D59664;
+			remoteInfo = GherkinLanguages;
+		};
 		5BAA18011BCEFEEA00D59664 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5B18C8371BCD0BD400D16073 /* Project object */;
@@ -166,6 +189,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5B99A5BD1BD03CD000233759 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		5BAA17E11BCEF4E900D59664 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -178,6 +210,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5B0263FE1BD03E190040F71E /* GHTokensGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHTokensGenerator.h; sourceTree = "<group>"; };
+		5B0263FF1BD03E190040F71E /* GHTokensGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHTokensGenerator.m; sourceTree = "<group>"; };
+		5B0264011BD03E510040F71E /* GHTokenFormatterBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHTokenFormatterBuilder.h; sourceTree = "<group>"; };
+		5B0264021BD03E510040F71E /* GHTokenFormatterBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHTokenFormatterBuilder.m; sourceTree = "<group>"; };
+		5B0264041BD03FB00040F71E /* GHTestTokenFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHTestTokenFormatter.h; sourceTree = "<group>"; };
+		5B0264051BD03FB00040F71E /* GHTestTokenFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHTestTokenFormatter.m; sourceTree = "<group>"; };
 		5B18C83F1BCD0BD400D16073 /* libGherkiniOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGherkiniOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B18C87C1BCD34EB00D16073 /* GHAstBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHAstBuilder.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5B18C87E1BCD34EB00D16073 /* GHGherkinDialect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHGherkinDialect.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -252,6 +290,8 @@
 		5B18C8F21BCE78C100D16073 /* GHParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHParser.m; sourceTree = "<group>"; };
 		5B18C8F41BCE944E00D16073 /* GHParserException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHParserException.h; sourceTree = "<group>"; };
 		5B18C8F61BCEACEE00D16073 /* GHParser+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GHParser+Extensions.h"; sourceTree = "<group>"; };
+		5B99A5C11BD03CD000233759 /* TokensGenerator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TokensGenerator; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B99A5C51BD03D6500233759 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5BAA17DD1BCED40600D59664 /* GHGherkinTokenizationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHGherkinTokenizationTest.m; sourceTree = "<group>"; };
 		5BAA17E31BCEF4E900D59664 /* AstGenerator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AstGenerator; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BAA17E51BCEF4EA00D59664 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -282,6 +322,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B18C8AF1BCDBF6300D16073 /* libGherkiniOS.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B99A5B91BD03CD000233759 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B99A5BA1BD03CD000233759 /* libGherkinOSX.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,6 +372,7 @@
 				5B18C8411BCD0BD400D16073 /* Gherkin */,
 				5B18C8AB1BCDBF6300D16073 /* GherkinTests */,
 				5BAA17E41BCEF4EA00D59664 /* AstGenerator */,
+				5B99A5C21BD03CEF00233759 /* TokensGenerator */,
 				5BAA17F91BCEFEA500D59664 /* GherkinLanguages */,
 				5BAA17EE1BCEF81100D59664 /* GHLineEndingHelper.h */,
 				5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */,
@@ -340,6 +389,7 @@
 				5BAA17F81BCEFEA500D59664 /* GherkinLanguages.bundle */,
 				5BAA18081BCF00DA00D59664 /* libGherkinOSX.a */,
 				5BAA189B1BCFF81C00D59664 /* GherkinTestsOSX.xctest */,
+				5B99A5C11BD03CD000233759 /* TokensGenerator */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -438,6 +488,20 @@
 				5B18C8E01BCE423800D16073 /* GHTag.m */,
 			);
 			name = AST;
+			sourceTree = "<group>";
+		};
+		5B99A5C21BD03CEF00233759 /* TokensGenerator */ = {
+			isa = PBXGroup;
+			children = (
+				5B99A5C51BD03D6500233759 /* main.m */,
+				5B0263FE1BD03E190040F71E /* GHTokensGenerator.h */,
+				5B0263FF1BD03E190040F71E /* GHTokensGenerator.m */,
+				5B0264011BD03E510040F71E /* GHTokenFormatterBuilder.h */,
+				5B0264021BD03E510040F71E /* GHTokenFormatterBuilder.m */,
+				5B0264041BD03FB00040F71E /* GHTestTokenFormatter.h */,
+				5B0264051BD03FB00040F71E /* GHTestTokenFormatter.m */,
+			);
+			path = TokensGenerator;
 			sourceTree = "<group>";
 		};
 		5BAA17E41BCEF4EA00D59664 /* AstGenerator */ = {
@@ -547,6 +611,26 @@
 			productName = GherkinTests;
 			productReference = 5B18C8AA1BCDBF6200D16073 /* GherkinTestsiOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		5B99A5AF1BD03CD000233759 /* TokensGenerator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B99A5BE1BD03CD000233759 /* Build configuration list for PBXNativeTarget "TokensGenerator" */;
+			buildPhases = (
+				5B99A5B41BD03CD000233759 /* Sources */,
+				5B99A5B91BD03CD000233759 /* Frameworks */,
+				5B99A5BB1BD03CD000233759 /* Resources */,
+				5B99A5BD1BD03CD000233759 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5B99A5B01BD03CD000233759 /* PBXTargetDependency */,
+				5B99A5B21BD03CD000233759 /* PBXTargetDependency */,
+			);
+			name = TokensGenerator;
+			productName = AstGenerator;
+			productReference = 5B99A5C11BD03CD000233759 /* TokensGenerator */;
+			productType = "com.apple.product-type.tool";
 		};
 		5BAA17E21BCEF4E900D59664 /* AstGenerator */ = {
 			isa = PBXNativeTarget;
@@ -667,6 +751,7 @@
 				5BAA17F71BCEFEA500D59664 /* GherkinLanguages */,
 				5BAA18071BCF00DA00D59664 /* GherkinOSX */,
 				5BAA189A1BCFF81C00D59664 /* GherkinTestsOSX */,
+				5B99A5AF1BD03CD000233759 /* TokensGenerator */,
 			);
 		};
 /* End PBXProject section */
@@ -676,6 +761,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B99A5BB1BD03CD000233759 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B99A5BC1BD03CD000233759 /* GherkinLanguages.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,6 +846,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5B99A5B41BD03CD000233759 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B99A5C61BD03D6500233759 /* main.m in Sources */,
+				5B0264031BD03E510040F71E /* GHTokenFormatterBuilder.m in Sources */,
+				5B99A5B61BD03CD000233759 /* NSObject+Dictionary.m in Sources */,
+				5B99A5B71BD03CD000233759 /* GHAstGenerator.m in Sources */,
+				5B0264061BD03FB00040F71E /* GHTestTokenFormatter.m in Sources */,
+				5B0264001BD03E190040F71E /* GHTokensGenerator.m in Sources */,
+				5B99A5B81BD03CD000233759 /* GHLineEndingHelper.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5BAA17DF1BCEF4E900D59664 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -826,6 +933,16 @@
 			isa = PBXTargetDependency;
 			target = 5B18C83E1BCD0BD400D16073 /* GherkiniOS */;
 			targetProxy = 5B18C8B01BCDBF6300D16073 /* PBXContainerItemProxy */;
+		};
+		5B99A5B01BD03CD000233759 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5BAA18071BCF00DA00D59664 /* GherkinOSX */;
+			targetProxy = 5B99A5B11BD03CD000233759 /* PBXContainerItemProxy */;
+		};
+		5B99A5B21BD03CD000233759 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5BAA17F71BCEFEA500D59664 /* GherkinLanguages */;
+			targetProxy = 5B99A5B31BD03CD000233759 /* PBXContainerItemProxy */;
 		};
 		5BAA18021BCEFEEA00D59664 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -965,6 +1082,28 @@
 			};
 			name = Release;
 		};
+		5B99A5BF1BD03CD000233759 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREFIX_HEADER = Gherkin/Gherkin.pch;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_LDFLAGS = "-all_load";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5B99A5C01BD03CD000233759 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREFIX_HEADER = Gherkin/Gherkin.pch;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_LDFLAGS = "-all_load";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		5BAA17E81BCEF4EA00D59664 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1097,6 +1236,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		5B99A5BE1BD03CD000233759 /* Build configuration list for PBXNativeTarget "TokensGenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B99A5BF1BD03CD000233759 /* Debug */,
+				5B99A5C01BD03CD000233759 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5BAA17E71BCEF4EA00D59664 /* Build configuration list for PBXNativeTarget "AstGenerator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1131,6 +1279,7 @@
 				5BAA18A51BCFF81C00D59664 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -15,26 +15,27 @@ all: .compared
 
 .built: .xcodeproj_built_debug LICENSE
 	xcodebuild -scheme "AstGenerator"
+	xcodebuild -scheme "TokensGenerator"
 #	xcodebuild test -scheme "GherkinTestsOSX"
 	touch $@
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
-#	bin/gherkin-generate-tokens $< > $@
-#	diff --unified $<.tokens $@
-#.DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
+	bin/gherkin-generate-tokens $< > $@
+	diff --unified $<.tokens $@
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
 acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json .built
 	mkdir -p `dirname $@`
 	bin/gherkin-generate-ast $< | jq --sort-keys "." > $@
 	diff --unified $<.ast.json $@
-#.DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
 
 acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors .built
 	mkdir -p `dirname $@`
 	! bin/gherkin-generate-ast $< > $@
 	diff --unified $<.errors $@
-#.DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
 clean:
 	rm -rf .compared .built acceptance Gherkin/GHParser.m Gherkin/GHParser.h Gherkin/gherkin-languages.json
