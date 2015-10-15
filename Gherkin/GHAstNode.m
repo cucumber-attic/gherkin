@@ -52,7 +52,7 @@
 
 - (void)setSingleWithRuleType:(GHRuleType)theRuleType value:(NSObject *)theValue
 {
-    NSMutableArray<NSObject *> * valueArray = [[NSMutableArray<NSObject *> alloc] initWithObjects: theValue, nil];
+    NSMutableArray<NSObject *> * valueArray = [[NSMutableArray<NSObject *> alloc] initWithObjects: theValue ? theValue : [NSNull null], nil];
     
     subitems[@(theRuleType)] = valueArray;
 }
@@ -73,7 +73,7 @@
         items = [[NSMutableArray<NSObject *> alloc] init];
         subitems[@(theRuleType)] = items;
     }
-    [items addObject: theObject];
+    [items addObject: theObject ? theObject : [NSNull null]];
 }
 
 @end

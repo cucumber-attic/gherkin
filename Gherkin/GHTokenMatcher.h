@@ -9,6 +9,7 @@
 
 - (GHGherkinDialect *)currentDialect;
 - (id)initWithDialectProvider:(GHGherkinDialectProvider *)theDialectProvider;
+- (id)initWithLanguage:(NSString *)theLanguage;
 - (void)reset;
 - (BOOL)matchEOFWithToken:(GHToken *)theToken;
 - (BOOL)matchOtherWithToken:(GHToken *)theToken;

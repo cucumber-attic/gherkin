@@ -181,10 +181,10 @@
             NSArray<GHToken *> * lineTokens = (NSArray<GHToken *> *)[theNode tokensWithType: GHTokenTypeOther];
 
             // Trim trailing empty lines
-            NSInteger i = [lineTokens count] - 1;
-            while (i > 0)
+            NSInteger i = [lineTokens count];
+            while (--i > 0)
             {
-                if (![[[lineTokens[i--] matchedText] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
+                if (![[[lineTokens[i] matchedText] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
                     break;
             }
             if (i > 0)

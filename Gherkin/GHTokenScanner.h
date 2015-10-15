@@ -4,6 +4,7 @@
 
 @interface GHTokenScanner : NSObject <GHTokenScannerProtocol>
 
+- (id)initWithText:(NSString *)theFileContent;
 - (id)initWithContentsOfFile:(NSString *)theFilePath;
 - (GHToken *)read;
         

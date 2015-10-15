@@ -16,13 +16,13 @@ int main(int argc, const char * argv[])
             @try
             {
                 NSString * astText = [GHAstGenerator generateAstFromFile: [NSString stringWithUTF8String: argv[i]]];
-                NSLog(@"%@", astText);
+                puts([astText UTF8String]);
             }
             @catch (NSException * exception)
             {
                 // Ideally we'd use Console.Error here, but we can't because
                 // 2> doesn't seem to work properly - at least not on Mono on OS X.
-                NSLog(@"%@", [exception reason]);
+                puts([[exception reason] UTF8String]);
                 return 1;
             }
         }

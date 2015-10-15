@@ -119,7 +119,7 @@
     NSAssert(theReceivedToken != nil, @"receivedToken");
     NSAssert(theExpectedTokenTypes != nil, @"expectedTokenTypes");
 
-    return [NSString stringWithFormat: @"expected: %@, got '%@'", [theExpectedTokenTypes componentsJoinedByString: @", "], [[theReceivedToken tokenValue] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]]];
+    return [NSString stringWithFormat: @"expected: %@, got '%@'", [theExpectedTokenTypes componentsJoinedByString: @", "], [[theReceivedToken tokenValue] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]]];
 }
 
 @end
@@ -186,7 +186,7 @@
     if (!theErrors)
         @throw [NSException exceptionWithName: NSInvalidArgumentException reason: @"errors list should not be null" userInfo: nil];
     
-    return [@"Parser errors: \n" stringByAppendingString: [[theErrors valueForKey: @"message"] componentsJoinedByString: @"\n"]];
+    return [@"Parser errors: \n" stringByAppendingString: [[theErrors valueForKey: @"reason"] componentsJoinedByString: @"\n"]];
 }
 
 @end

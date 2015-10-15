@@ -30,7 +30,7 @@
     {
         lineNumber = theLineNumber;
         lineText = theLine;
-        trimmedLineText = [theLine stringByTrimmingStartWithCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+        trimmedLineText = [theLine stringByTrimmingStartWithCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
     
     return self;
@@ -82,7 +82,7 @@
 
 - (NSString *)trimmedRest:(NSUInteger)theLength
 {
-    return [[trimmedLineText substringFromIndex: theLength] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+    return [[trimmedLineText substringFromIndex: theLength] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 - (NSArray<GHGherkinLineSpan *> *)tags
@@ -90,7 +90,7 @@
     NSInteger position = [self indent];
     NSMutableArray * tags = [[NSMutableArray alloc] init];
     
-    for (NSString * item in [trimmedLineText componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceCharacterSet]])
+    for (NSString * item in [trimmedLineText componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]])
     {
         if ([item length])
         {
@@ -164,12 +164,12 @@
 - (NSString *)trim:(NSString *)theString trimmedCharsCount:(NSUInteger *)theTrimmedCharsCount
 {
     NSUInteger trimmedCharsCount = 0;
-    NSCharacterSet * whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
-    while (trimmedCharsCount < [theString length] && [whitespaceCharacterSet characterIsMember: [theString characterAtIndex: trimmedCharsCount]])
+    NSCharacterSet * whitespaceAndNewLineCharacterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    while (trimmedCharsCount < [theString length] && [whitespaceAndNewLineCharacterSet characterIsMember: [theString characterAtIndex: trimmedCharsCount]])
         trimmedCharsCount++;
 
     *theTrimmedCharsCount = trimmedCharsCount;
-    return [theString stringByTrimmingCharactersInSet: whitespaceCharacterSet];
+    return [theString stringByTrimmingCharactersInSet: whitespaceAndNewLineCharacterSet];
 }
 
 @end
