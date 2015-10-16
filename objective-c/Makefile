@@ -39,8 +39,8 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 
 clean:
 	rm -rf .compared .built acceptance Gherkin/GHParser.m Gherkin/GHParser.h gherkin-languages.json
-	rm -rf */bin
-	rm -rf */obj
+	rm -rf build/
+	rm -rf *~
 	xcodebuild clean -scheme "GherkinOSX" CONFIGURATION_BUILD_DIR=build/
 .PHONY: clean
 
