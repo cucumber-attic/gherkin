@@ -145,14 +145,14 @@
             NSString * language = [lineText substringWithRange: range];
             [self setTokenMatched: theToken tokenType: GHTokenTypeLanguage text: language keyword: nil indent: nil items: nil];
 
-            @try
-            {
+            //@try
+            //{
                 currentDialect = [dialectProvider dialectWithLanguage: language location: [theToken location]];
-            }
-            @catch (NSException * exception)
-            {
-                @throw [self matcherExceptionWithToken: theToken message: [exception reason]];
-            }
+            //}
+            //@catch (NSException * exception)
+            //{
+            //    @throw [self matcherExceptionWithToken: theToken message: [exception reason]];
+            //}
 
             return YES;
         }

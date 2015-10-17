@@ -186,7 +186,7 @@
     if (!theErrors)
         @throw [NSException exceptionWithName: NSInvalidArgumentException reason: @"errors list should not be null" userInfo: nil];
     
-    return [@"Parser errors: \n" stringByAppendingString: [[theErrors valueForKey: @"reason"] componentsJoinedByString: @"\n"]];
+    return [@"Parser errors:\n" stringByAppendingString: [[theErrors valueForKey: @"reason"] componentsJoinedByString: @"\n"]];
 }
 
 @end
