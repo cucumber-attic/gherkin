@@ -8,8 +8,10 @@
 
 @implementation GHTokenScanner
 {
-    NSUInteger          lineNumber;
-    NSArray<NSString *> * lines;
+    NSUInteger                  lineNumber;
+//    NSArray<NSString *> * lines;
+    NSMutableArray<NSString *>  * lines;
+    NSMutableString             * fileContent;
 }
 
 - (id)initWithText:(NSString *)theFileContent
@@ -17,8 +19,13 @@
     if (self = [super init])
     {
         lineNumber = 0;
-        NSString * fileContent = [GHLineEndingHelper normalizeLineEndings: theFileContent];
-        lines = [fileContent componentsSeparatedByString: @"\n"];
+        if ([theFileContent length])
+        {
+            lines = [[NSMutableArray<NSString *> alloc] init];
+            [theFileContent enumerateLinesUsingBlock:^(NSString * _Nonnull line, BOOL * _Nonnull stop) {
+                [lines addObject: line];
+            }];
+        }
     }
     
     return self;
