@@ -89,7 +89,7 @@ I wrote up a summary [here](https://groups.google.com/d/msg/cukes/YLKsqbBMBoI/DY
 The following diagram outlines the architecture:
 
     ╔════════════╗   ┌───────┐   ╔══════╗   ┌──────┐   ╔═══╗
-    ║Feature file║──▶│Scanner│──▶║Tokens║──▶│Parser│──▶║AST║
+    ║Feature file║──>│Scanner│──>║Tokens║──>│Parser│──>║AST║
     ╚════════════╝   └───────┘   ╚══════╝   └──────┘   ╚═══╝
 
 The *scanner* reads a gherkin doc (typically read from a `.feature` file) and creates
@@ -107,10 +107,10 @@ Berp takes a grammar file (`gherkin.berp`) and a template file (`gherkin-X.razor
 and outputs a parser in language *X*:
 
     ╔════════════╗   ┌────────┐   ╔═══════════════╗
-    ║gherkin.berp║──▶│berp.exe│◀──║gherkin-X.razor║
+    ║gherkin.berp║──>│berp.exe│<──║gherkin-X.razor║
     ╚════════════╝   └────────┘   ╚═══════════════╝
                           │
-                          ▼
+                          V
                      ╔════════╗
                      ║Parser.x║
                      ╚════════╝
@@ -148,7 +148,7 @@ The compiler compiles the AST produced by the parser
 into a simpler form - *Pickles*.
 
     ╔═══╗   ┌────────┐   ╔═══════╗
-    ║AST║──▶│Compiler│──▶║Pickles║
+    ║AST║──>│Compiler│──>║Pickles║
     ╚═══╝   └────────┘   ╚═══════╝
 
 The rationale is to decouple Gherkin from Cucumber so that Cucumber is open to
@@ -234,10 +234,10 @@ codebase until it settles:
             │             │             │                   │
     ┌───────┼─────────────┼─────────────┼───────┐           │
     │       │             │             │       │           │
-    │       ▼             ▼             ▼       │           ▼
+    │       V             V             V       │           V
     │  ┌─────────┐   ┌─────────┐   ┌─────────┐  │      ┌─────────┐
     │  │Gherkin3 │   │Gherkin3 │   │ Pickles │  │      │Markdown │
-    │  │ Parser  │   │Compiler │──▶│         │◀─┼──────│Parser / │
+    │  │ Parser  │   │Compiler │──>│         │<─┼──────│Parser / │
     │  └─────────┘   └─────────┘   └─────────┘  │      │Compiler │
     └───────────────────────────────────────────┘      └─────────┘
                      Gherkin3 lib
