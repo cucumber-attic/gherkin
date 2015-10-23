@@ -11,11 +11,17 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ## [Unreleased][unreleased]
 
 ### Removed
+
 ### Added
+* (Objective C) New implementation
+  ([#110](https://github.com/cucumber/gherkin3/pull/110))
+  (by [LiohAu](https://github.com/LiohAu))
+
 ### Changed
 * (All) the AST's `DocString` `contentType` property is not defined rather than
   an empty string when the Gherkin doc doesn't specify the type after three backticks.
   (by [aslakhellesoy](https://github.com/aslakhellesoy))
+
 ### Fixed
 * (JavaScript) interpolate replaces globally
   ([#108](https://github.com/cucumber/gherkin3/pull/108))
