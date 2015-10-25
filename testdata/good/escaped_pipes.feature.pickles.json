@@ -3,7 +3,7 @@
     "locations": [
       {
         "column": 3,
-        "line": 2
+        "line": 5
       }
     ],
     "name": "Scenario: They are the future",
@@ -18,14 +18,14 @@
                   {
                     "location": {
                       "column": 9,
-                      "line": 4
+                      "line": 7
                     },
                     "value": "æ"
                   },
                   {
                     "location": {
                       "column": 13,
-                      "line": 4
+                      "line": 7
                     },
                     "value": "o"
                   }
@@ -36,14 +36,14 @@
                   {
                     "location": {
                       "column": 9,
-                      "line": 5
+                      "line": 8
                     },
                     "value": "a"
                   },
                   {
                     "location": {
                       "column": 13,
-                      "line": 5
+                      "line": 8
                     },
                     "value": "ø"
                   }
@@ -55,7 +55,7 @@
         "locations": [
           {
             "column": 11,
-            "line": 3
+            "line": 6
           }
         ],
         "text": "they have arrived"
@@ -69,16 +69,16 @@
                   {
                     "location": {
                       "column": 9,
-                      "line": 7
+                      "line": 10
                     },
-                    "value": "æ"
+                    "value": "|æ\\n"
                   },
                   {
                     "location": {
-                      "column": 15,
-                      "line": 7
+                      "column": 22,
+                      "line": 10
                     },
-                    "value": "|o"
+                    "value": "\\o\no\\"
                   }
                 ]
               },
@@ -87,16 +87,16 @@
                   {
                     "location": {
                       "column": 9,
-                      "line": 8
+                      "line": 11
                     },
-                    "value": "|a"
+                    "value": "\\|a\\\\n"
                   },
                   {
                     "location": {
-                      "column": 15,
-                      "line": 8
+                      "column": 22,
+                      "line": 11
                     },
-                    "value": "ø\\"
+                    "value": "ø\\\nø\\"
                   }
                 ]
               }
@@ -106,7 +106,7 @@
         "locations": [
           {
             "column": 11,
-            "line": 6
+            "line": 9
           }
         ],
         "text": "they have arrived"

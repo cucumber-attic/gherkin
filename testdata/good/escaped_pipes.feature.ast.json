@@ -1,5 +1,6 @@
 {
   "comments": [],
+  "description": "    The \\-character will be considered as an escape in table cell\n    iff it is followed by a |-character, a \\-character or an n.",
   "keyword": "Feature",
   "language": "en",
   "location": {
@@ -12,78 +13,10 @@
       "keyword": "Scenario",
       "location": {
         "column": 3,
-        "line": 2
+        "line": 5
       },
       "name": "They are the future",
       "steps": [
-        {
-          "argument": {
-            "location": {
-              "column": 7,
-              "line": 4
-            },
-            "rows": [
-              {
-                "cells": [
-                  {
-                    "location": {
-                      "column": 9,
-                      "line": 4
-                    },
-                    "type": "TableCell",
-                    "value": "æ"
-                  },
-                  {
-                    "location": {
-                      "column": 13,
-                      "line": 4
-                    },
-                    "type": "TableCell",
-                    "value": "o"
-                  }
-                ],
-                "location": {
-                  "column": 7,
-                  "line": 4
-                },
-                "type": "TableRow"
-              },
-              {
-                "cells": [
-                  {
-                    "location": {
-                      "column": 9,
-                      "line": 5
-                    },
-                    "type": "TableCell",
-                    "value": "a"
-                  },
-                  {
-                    "location": {
-                      "column": 13,
-                      "line": 5
-                    },
-                    "type": "TableCell",
-                    "value": "ø"
-                  }
-                ],
-                "location": {
-                  "column": 7,
-                  "line": 5
-                },
-                "type": "TableRow"
-              }
-            ],
-            "type": "DataTable"
-          },
-          "keyword": "Given ",
-          "location": {
-            "column": 5,
-            "line": 3
-          },
-          "text": "they have arrived",
-          "type": "Step"
-        },
         {
           "argument": {
             "location": {
@@ -103,11 +36,11 @@
                   },
                   {
                     "location": {
-                      "column": 15,
+                      "column": 13,
                       "line": 7
                     },
                     "type": "TableCell",
-                    "value": "|o"
+                    "value": "o"
                   }
                 ],
                 "location": {
@@ -124,15 +57,15 @@
                       "line": 8
                     },
                     "type": "TableCell",
-                    "value": "|a"
+                    "value": "a"
                   },
                   {
                     "location": {
-                      "column": 15,
+                      "column": 13,
                       "line": 8
                     },
                     "type": "TableCell",
-                    "value": "ø\\"
+                    "value": "ø"
                   }
                 ],
                 "location": {
@@ -148,6 +81,74 @@
           "location": {
             "column": 5,
             "line": 6
+          },
+          "text": "they have arrived",
+          "type": "Step"
+        },
+        {
+          "argument": {
+            "location": {
+              "column": 7,
+              "line": 10
+            },
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "location": {
+                      "column": 9,
+                      "line": 10
+                    },
+                    "type": "TableCell",
+                    "value": "|æ\\n"
+                  },
+                  {
+                    "location": {
+                      "column": 22,
+                      "line": 10
+                    },
+                    "type": "TableCell",
+                    "value": "\\o\no\\"
+                  }
+                ],
+                "location": {
+                  "column": 7,
+                  "line": 10
+                },
+                "type": "TableRow"
+              },
+              {
+                "cells": [
+                  {
+                    "location": {
+                      "column": 9,
+                      "line": 11
+                    },
+                    "type": "TableCell",
+                    "value": "\\|a\\\\n"
+                  },
+                  {
+                    "location": {
+                      "column": 22,
+                      "line": 11
+                    },
+                    "type": "TableCell",
+                    "value": "ø\\\nø\\"
+                  }
+                ],
+                "location": {
+                  "column": 7,
+                  "line": 11
+                },
+                "type": "TableRow"
+              }
+            ],
+            "type": "DataTable"
+          },
+          "keyword": "Given ",
+          "location": {
+            "column": 5,
+            "line": 9
           },
           "text": "they have arrived",
           "type": "Step"
