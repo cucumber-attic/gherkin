@@ -117,6 +117,9 @@ namespace Gherkin
                     if (c == GherkinLanguageConstants.TABLE_CELL_NEWLINE_ESCAPE) {
                         cell += "\n";
                     } else {
+                        if (c.ToString() != GherkinLanguageConstants.TABLE_CELL_SEPARATOR && c != GherkinLanguageConstants.TABLE_CELL_ESCAPE_CHAR) {
+                            cell += GherkinLanguageConstants.TABLE_CELL_ESCAPE_CHAR;
+                        }
                         cell += c;
                     }
                 } else {

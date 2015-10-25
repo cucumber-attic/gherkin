@@ -66,8 +66,9 @@ module Gherkin3
           char = row[col]
           col += 1
           if char == 'n'
-            cell += '\n'
+            cell += "\n"
           else
+            cell += '\\' unless ['|', '\\'].include?(char)
             cell += char
           end
         else

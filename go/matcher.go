@@ -12,6 +12,7 @@ const (
 	TAG_PREFIX                      = "@"
 	TITLE_KEYWORD_SEPARATOR         = ":"
 	TABLE_CELL_SEPARATOR            = '|'
+	ESCAPE_CHAR                     = '\\'
 	ESCAPED_NEWLINE                 = 'n'
 	DOCSTRING_SEPARATOR             = "\"\"\""
 	DOCSTRING_ALTERNATIVE_SEPARATOR = "```"
@@ -200,7 +201,7 @@ func (m *matcher) MatchTableRow(line *Line) (ok bool, token *Token, err error) {
 				// start building next
 				cell = make([]rune, 0)
 				startCol = col + 1
-			} else if char == '\\' {
+			} else if char == ESCAPE_CHAR {
 				// skip this character but count the column
 				i += w
 				col++
@@ -208,6 +209,9 @@ func (m *matcher) MatchTableRow(line *Line) (ok bool, token *Token, err error) {
 				if char == ESCAPED_NEWLINE {
 					cell = append(cell, '\n')
 				} else {
+					if char != TABLE_CELL_SEPARATOR && char != ESCAPE_CHAR {
+						cell = append(cell, ESCAPE_CHAR)
+					}
 					cell = append(cell, char)
 				}
 			} else {

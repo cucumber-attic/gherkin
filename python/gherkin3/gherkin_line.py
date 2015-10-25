@@ -59,6 +59,8 @@ class GherkinLine(object):
                 if char == 'n':
                     cell += '\n'
                 else:
+                    if char not in ['|', '\\']:
+                        cell += '\\'
                     cell += char
             elif char:
                 cell += char

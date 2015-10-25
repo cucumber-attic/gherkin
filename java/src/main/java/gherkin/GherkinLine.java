@@ -93,6 +93,9 @@ public class GherkinLine implements IGherkinLine {
                 if (c == 'n') {
                     cell.append('\n');
                 } else {
+                    if (c != '|' && c != '\\') {
+                        cell.append('\\');
+                    }
                     cell.append(c);
                 }
             } else {
