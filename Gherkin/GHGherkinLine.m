@@ -151,6 +151,8 @@
             if ([stringCharacter isEqualToString: GHTableCellNewlineEscape])
                 [cell appendString: @"\n"];
             else if (stringCharacter)
+                if (![stringCharacter isEqualToString: GHTableCellSeparator] && ![stringCharacter isEqualToString: GHTableCellEscape])
+                    [cell appendString: GHTableCellEscape];
                 [cell appendString: stringCharacter];
         }
         else
