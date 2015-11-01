@@ -184,6 +184,6 @@ module.exports = function TokenMatcher(defaultDialectName) {
   }
 
   function unescapeDocString(text) {
-    return text.replace("\\\"\\\"\\\"", "\"\"\"");
+    return activeDocStringSeparator != null ? text.replace("\\\"\\\"\\\"", "\"\"\"") : text;
   }
 };

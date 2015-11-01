@@ -159,6 +159,28 @@
       "type": "Scenario"
     },
     {
+      "description": "  This description has an \\\"\\\"\\\" (escaped docstring sparator)",
+      "keyword": "Scenario",
+      "location": {
+        "column": 3,
+        "line": 40
+      },
+      "name": "description with escaped docstring separator",
+      "steps": [
+        {
+          "keyword": "Given ",
+          "location": {
+            "column": 5,
+            "line": 43
+          },
+          "text": "the minimalism",
+          "type": "Step"
+        }
+      ],
+      "tags": [],
+      "type": "Scenario"
+    },
+    {
       "description": "This is a scenario outline description",
       "examples": [
         {
@@ -166,7 +188,7 @@
           "keyword": "Examples",
           "location": {
             "column": 3,
-            "line": 44
+            "line": 49
           },
           "name": "examples with description",
           "tableBody": [
@@ -175,7 +197,7 @@
                 {
                   "location": {
                     "column": 7,
-                    "line": 47
+                    "line": 52
                   },
                   "type": "TableCell",
                   "value": "bar"
@@ -183,7 +205,7 @@
               ],
               "location": {
                 "column": 5,
-                "line": 47
+                "line": 52
               },
               "type": "TableRow"
             }
@@ -193,7 +215,7 @@
               {
                 "location": {
                   "column": 7,
-                  "line": 46
+                  "line": 51
                 },
                 "type": "TableCell",
                 "value": "foo"
@@ -201,7 +223,7 @@
             ],
             "location": {
               "column": 5,
-              "line": 46
+              "line": 51
             },
             "type": "TableRow"
           },
@@ -212,7 +234,7 @@
       "keyword": "Scenario Outline",
       "location": {
         "column": 3,
-        "line": 40
+        "line": 45
       },
       "name": "scenario outline with a description",
       "steps": [
@@ -220,7 +242,7 @@
           "keyword": "Given ",
           "location": {
             "column": 5,
-            "line": 42
+            "line": 47
           },
           "text": "the minimalism",
           "type": "Step"
