@@ -155,4 +155,4 @@ class TokenMatcher(object):
         self.dialect = dialect
 
     def _unescaped_docstring(self, text):
-        return text.replace('\\"\\"\\"', '"""')
+        return text.replace('\\"\\"\\"', '"""') if self._active_doc_string_separator else text
