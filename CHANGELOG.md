@@ -23,6 +23,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
   (by [aslakhellesoy](https://github.com/aslakhellesoy))
 
 ### Fixed
+* (All) Do not change escaped docstring separators in descriptions
+  ([#115](https://github.com/cucumber/gherkin3/pull/115)
+   by [brasmusson](https://github.com/brasmusson))
 * (JavaScript) interpolate replaces globally
   ([#108](https://github.com/cucumber/gherkin3/pull/108))
   (by [charlierudolph](https://github.com/charlierudolph))

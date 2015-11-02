@@ -140,12 +140,35 @@
   {
     "locations": [
       {
+        "column": 3,
+        "line": 40
+      }
+    ],
+    "name": "Scenario: description with escaped docstring separator",
+    "path": "../testdata/good/descriptions.feature",
+    "steps": [
+      {
+        "arguments": [],
+        "locations": [
+          {
+            "column": 11,
+            "line": 43
+          }
+        ],
+        "text": "the minimalism"
+      }
+    ],
+    "tags": []
+  },
+  {
+    "locations": [
+      {
         "column": 5,
-        "line": 47
+        "line": 52
       },
       {
         "column": 3,
-        "line": 40
+        "line": 45
       }
     ],
     "name": "Scenario: scenario outline with a description",
@@ -156,11 +179,11 @@
         "locations": [
           {
             "column": 5,
-            "line": 47
+            "line": 52
           },
           {
             "column": 11,
-            "line": 42
+            "line": 47
           }
         ],
         "text": "the minimalism"

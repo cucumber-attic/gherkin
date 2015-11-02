@@ -163,7 +163,7 @@ module Gherkin3
     end
 
     def unescape_docstring(text)
-      text.gsub("\\\"\\\"\\\"", "\"\"\"")
+      @active_doc_string_separator ? text.gsub("\\\"\\\"\\\"", "\"\"\"") : text
     end
   end
 end

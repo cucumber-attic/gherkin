@@ -193,7 +193,7 @@ public class TokenMatcher implements ITokenMatcher {
         return false;
     }
 
-    private static String unescapeDocString(String text) {
-        return text.replace("\\\"\\\"\\\"", "\"\"\"");
+    private String unescapeDocString(String text) {
+        return activeDocStringSeparator != null ? text.replace("\\\"\\\"\\\"", "\"\"\"") : text;
     }
 }

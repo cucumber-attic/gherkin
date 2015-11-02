@@ -37,12 +37,17 @@
 (37:1)Empty://
 (38:5)StepLine:Given /the minimalism/
 (39:1)Empty://
-(40:3)ScenarioOutlineLine:Scenario Outline/scenario outline with a description/
-(41:1)Other:/This is a scenario outline description/
-(42:5)StepLine:Given /the minimalism/
-(43:1)Empty://
-(44:3)ExamplesLine:Examples/examples with description/
-(45:1)Other:/This is an examples description/
-(46:5)TableRow://7:foo
-(47:5)TableRow://7:bar
+(40:3)ScenarioLine:Scenario/description with escaped docstring separator/
+(41:1)Other:/  This description has an \"\"\" (escaped docstring sparator)/
+(42:1)Other://
+(43:5)StepLine:Given /the minimalism/
+(44:1)Empty://
+(45:3)ScenarioOutlineLine:Scenario Outline/scenario outline with a description/
+(46:1)Other:/This is a scenario outline description/
+(47:5)StepLine:Given /the minimalism/
+(48:1)Empty://
+(49:3)ExamplesLine:Examples/examples with description/
+(50:1)Other:/This is an examples description/
+(51:5)TableRow://7:foo
+(52:5)TableRow://7:bar
 EOF
