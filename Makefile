@@ -14,6 +14,7 @@ all: .compared
 	touch $@
 
 .built: show-version-info gherkin3/parser.py gherkin3/gherkin-languages.json $(PYTHON_FILES) LICENSE.txt
+	nosetests
 	touch $@
 
 show-version-info:
