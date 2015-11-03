@@ -277,7 +277,7 @@
 
 - (NSString *)unescapeDocString:(NSString *)theText
 {
-  return activeDocStringSeparator != nil ? [theText stringByReplacingOccurrencesOfString: @"\\\"\\\"\\\"" withString: @"\"\"\""] : [theText];
+  return activeDocStringSeparator != nil ? [theText stringByReplacingOccurrencesOfString: @"\\\"\\\"\\\"" withString: @"\"\"\""] : theText;
 }
 
 @end
