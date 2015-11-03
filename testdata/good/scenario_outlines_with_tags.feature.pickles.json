@@ -1,5 +1,6 @@
 [
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 5,
@@ -10,11 +11,12 @@
         "line": 4
       }
     ],
-    "name": "Scenario: ",
+    "name": "",
     "path": "../testdata/good/scenario_outlines_with_tags.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 5,
@@ -46,6 +48,7 @@
     ]
   },
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 5,
@@ -56,11 +59,12 @@
         "line": 11
       }
     ],
-    "name": "Scenario: ",
+    "name": "",
     "path": "../testdata/good/scenario_outlines_with_tags.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 5,

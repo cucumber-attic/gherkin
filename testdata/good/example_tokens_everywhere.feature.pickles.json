@@ -1,5 +1,6 @@
 [
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 7,
@@ -10,7 +11,7 @@
         "line": 3
       }
     ],
-    "name": "Scenario: the un",
+    "name": "the un",
     "path": "../testdata/good/example_tokens_everywhere.feature",
     "steps": [
       {
@@ -23,6 +24,7 @@
             }
           }
         ],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 7,
@@ -53,6 +55,7 @@
             ]
           }
         ],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 7,
@@ -69,6 +72,7 @@
     "tags": []
   },
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 7,
@@ -79,7 +83,7 @@
         "line": 3
       }
     ],
-    "name": "Scenario: the uno",
+    "name": "the uno",
     "path": "../testdata/good/example_tokens_everywhere.feature",
     "steps": [
       {
@@ -92,6 +96,7 @@
             }
           }
         ],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 7,
@@ -122,6 +127,7 @@
             ]
           }
         ],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 7,

@@ -1,16 +1,18 @@
 [
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 3,
         "line": 5
       }
     ],
-    "name": "Scenario: minimalistic",
+    "name": "minimalistic",
     "path": "../testdata/good/language.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 11,

@@ -1,5 +1,6 @@
 [
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 7,
@@ -10,11 +11,12 @@
         "line": 3
       }
     ],
-    "name": "Scenario: minimalistic",
+    "name": "minimalistic",
     "path": "../testdata/good/several_examples.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 7,
@@ -39,6 +41,7 @@
     ]
   },
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 7,
@@ -49,11 +52,12 @@
         "line": 3
       }
     ],
-    "name": "Scenario: minimalistic",
+    "name": "minimalistic",
     "path": "../testdata/good/several_examples.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 7,
@@ -78,13 +82,14 @@
     ]
   },
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 3,
         "line": 17
       }
     ],
-    "name": "Scenario: ha ok",
+    "name": "ha ok",
     "path": "../testdata/good/several_examples.feature",
     "steps": [],
     "tags": [

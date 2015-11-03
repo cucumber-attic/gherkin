@@ -1,12 +1,13 @@
 [
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 3,
         "line": 3
       }
     ],
-    "name": "Scenario: minimalistic",
+    "name": "minimalistic",
     "path": "../testdata/good/datatables.feature",
     "steps": [
       {
@@ -52,6 +53,7 @@
             ]
           }
         ],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 11,
@@ -78,6 +80,7 @@
             ]
           }
         ],
+        "keyword": "And ",
         "locations": [
           {
             "column": 9,
@@ -118,6 +121,7 @@
             ]
           }
         ],
+        "keyword": "And ",
         "locations": [
           {
             "column": 9,
@@ -158,6 +162,7 @@
             ]
           }
         ],
+        "keyword": "And ",
         "locations": [
           {
             "column": 9,
@@ -227,6 +232,7 @@
             ]
           }
         ],
+        "keyword": "And ",
         "locations": [
           {
             "column": 9,

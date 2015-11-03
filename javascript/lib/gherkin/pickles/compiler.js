@@ -30,7 +30,8 @@ function Compiler() {
     var pickle = {
       path: path,
       tags: pickleTags(tags),
-      name: scenario.keyword + ": " + scenario.name,
+      keyword: scenario.keyword,
+      name: scenario.name,
       locations: [pickleLocation(scenario.location)],
       steps: steps
     };
@@ -50,6 +51,7 @@ function Compiler() {
           var stepText = interpolate(scenarioOutlineStep.text, variableCells, valueCells);
           var arguments = createPickleArguments(scenarioOutlineStep.argument, variableCells, valueCells);
           var pickleStep = {
+            keyword: scenarioOutlineStep.keyword,
             text: stepText,
             arguments: arguments,
             locations: [
@@ -62,7 +64,8 @@ function Compiler() {
 
         var pickle = {
           path: path,
-          name: keyword + ": " + interpolate(scenarioOutline.name, variableCells, valueCells),
+          keyword: keyword,
+          name: interpolate(scenarioOutline.name, variableCells, valueCells),
           steps: steps,
           tags: pickleTags(tags),
           locations: [
@@ -126,6 +129,7 @@ function Compiler() {
 
   function pickleStep(step) {
     return {
+      keyword: step.keyword,
       text: step.text,
       arguments: createPickleArguments(step.argument, [], []),
       locations: [pickleStepLocation(step)]
