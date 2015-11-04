@@ -1,9 +1,11 @@
+GOOD_MD_FILES = $(shell find ../testdata/good -name "*.md")
 GOOD_FEATURE_FILES = $(shell find ../testdata/good -name "*.feature")
 BAD_FEATURE_FILES  = $(shell find ../testdata/bad -name "*.feature")
 
 TOKENS     = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.tokens,$(GOOD_FEATURE_FILES))
 ASTS       = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.ast.json,$(GOOD_FEATURE_FILES))
 PICKLES    = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.pickles.json,$(GOOD_FEATURE_FILES))
+MD_PICKLES = $(patsubst ../testdata/%.md,acceptance/testdata/%.md.pickles.json,$(GOOD_MD_FILES))
 ERRORS     = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.errors,$(BAD_FEATURE_FILES))
 
 JAVA_FILES = $(shell find . -name "*.java")
@@ -11,16 +13,12 @@ JAVA_FILES = $(shell find . -name "*.java")
 all: .compared
 .PHONY: all
 
-.compared: .built $(TOKENS) $(ASTS) $(PICKLES) $(ERRORS)
+.compared: .built $(TOKENS) $(ASTS) $(PICKLES) $(MD_PICKLES) $(ERRORS)
 	touch $@
 
-.built: show-version-info src/main/java/gherkin/Parser.java src/main/resources/gherkin/gherkin-languages.json $(JAVA_FILES) LICENSE
+.built: src/main/java/gherkin/Parser.java src/main/resources/gherkin/gherkin-languages.json $(JAVA_FILES) LICENSE
 	mvn test
 	touch $@
-
-show-version-info:
-	java -version
-.PHONY: show-version-info
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
@@ -44,6 +42,12 @@ acceptance/testdata/%.feature.pickles.json: ../testdata/%.feature ../testdata/%.
 	bin/gherkin-generate-pickles $< | jq --sort-keys "." > $@
 	diff --unified $<.pickles.json $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.pickles.json
+
+acceptance/testdata/%.md.pickles.json: ../testdata/%.md ../testdata/%.md.pickles.json .built
+	mkdir -p `dirname $@`
+	bin/gherkin-generate-pickles $< | jq --sort-keys "." > $@
+	diff --unified $<.pickles.json $@
+.DELETE_ON_ERROR: acceptance/testdata/%.md.pickles.json
 
 acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors .built
 	mkdir -p `dirname $@`
