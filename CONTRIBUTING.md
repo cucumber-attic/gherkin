@@ -1,7 +1,10 @@
 # Contributing to Gherkin 3
 
-Gherkin3 is implemented in several different languages, and each language implementation
-lives in a separate git repository.
+Gherkin3 is implemented in several different languages. Each implementation is
+in a separate sub directory in this repository.
+
+A copy of each implementation also exists in a separate git repository,
+under `https://github.com/cucumber/gherkin-DIRNAME`.
 
 The code in each of those git repositories can be built and used independently.
 This is useful for people who only want to *use* Gherkin without *contributing*
