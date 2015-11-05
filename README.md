@@ -9,6 +9,9 @@ Gherkin 3 is a parser and compiler for the Gherkin language.
 It is intended to replace [Gherkin 2](https://github.com/cucumber/gherkin) and be used by
 all [Cucumber](https://cukes.info) implementations to parse `.feature` files.
 
+If you want a reference implementation of Cucumber (based on Gherkin3), take a
+look at [microcuke](https://github.com/cucumber/microcuke).
+
 Gherkin 3 is currently implemented for the following platforms:
 
 * [.NET](https://github.com/cucumber/gherkin-dotnet)
