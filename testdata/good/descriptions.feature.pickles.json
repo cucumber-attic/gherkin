@@ -1,16 +1,18 @@
 [
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 3,
         "line": 4
       }
     ],
-    "name": "Scenario: two lines",
+    "name": "two lines",
     "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 11,
@@ -23,17 +25,19 @@
     "tags": []
   },
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 1,
         "line": 9
       }
     ],
-    "name": "Scenario: without indentation",
+    "name": "without indentation",
     "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 9,
@@ -46,17 +50,19 @@
     "tags": []
   },
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 3,
         "line": 13
       }
     ],
-    "name": "Scenario: empty lines in the middle",
+    "name": "empty lines in the middle",
     "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 11,
@@ -69,17 +75,19 @@
     "tags": []
   },
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 3,
         "line": 19
       }
     ],
-    "name": "Scenario: empty lines around",
+    "name": "empty lines around",
     "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 11,
@@ -92,17 +100,19 @@
     "tags": []
   },
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 3,
         "line": 26
       }
     ],
-    "name": "Scenario: comment after description",
+    "name": "comment after description",
     "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 11,
@@ -115,17 +125,19 @@
     "tags": []
   },
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 3,
         "line": 33
       }
     ],
-    "name": "Scenario: comment right after description",
+    "name": "comment right after description",
     "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 11,
@@ -138,17 +150,19 @@
     "tags": []
   },
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 3,
         "line": 40
       }
     ],
-    "name": "Scenario: description with escaped docstring separator",
+    "name": "description with escaped docstring separator",
     "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 11,
@@ -161,6 +175,7 @@
     "tags": []
   },
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 5,
@@ -171,11 +186,12 @@
         "line": 45
       }
     ],
-    "name": "Scenario: scenario outline with a description",
+    "name": "scenario outline with a description",
     "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 5,

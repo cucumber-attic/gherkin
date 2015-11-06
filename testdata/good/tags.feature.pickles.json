@@ -1,16 +1,18 @@
 [
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 1,
         "line": 7
       }
     ],
-    "name": "Scenario: minimalistic",
+    "name": "minimalistic",
     "path": "../testdata/good/tags.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 11,
@@ -66,6 +68,7 @@
     ]
   },
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 3,
@@ -76,11 +79,12 @@
         "line": 12
       }
     ],
-    "name": "Scenario: minimalistic outline",
+    "name": "minimalistic outline",
     "path": "../testdata/good/tags.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 3,
@@ -161,6 +165,7 @@
     ]
   },
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 3,
@@ -171,11 +176,12 @@
         "line": 12
       }
     ],
-    "name": "Scenario: minimalistic outline",
+    "name": "minimalistic outline",
     "path": "../testdata/good/tags.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 3,

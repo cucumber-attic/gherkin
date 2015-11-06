@@ -1,5 +1,6 @@
 [
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 3,
@@ -10,11 +11,12 @@
         "line": 3
       }
     ],
-    "name": "Scenario: minimalistic",
+    "name": "minimalistic",
     "path": "../testdata/good/scenario_outline.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 3,

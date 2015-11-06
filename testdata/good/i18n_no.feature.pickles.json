@@ -1,16 +1,18 @@
 [
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 3,
         "line": 4
       }
     ],
-    "name": "Scenario: Parsing many languages",
+    "name": "Parsing many languages",
     "path": "../testdata/good/i18n_no.feature",
     "steps": [
       {
         "arguments": [],
+        "keyword": "Gitt ",
         "locations": [
           {
             "column": 10,
@@ -21,6 +23,7 @@
       },
       {
         "arguments": [],
+        "keyword": "Når ",
         "locations": [
           {
             "column": 9,
@@ -31,6 +34,7 @@
       },
       {
         "arguments": [],
+        "keyword": "Så ",
         "locations": [
           {
             "column": 8,

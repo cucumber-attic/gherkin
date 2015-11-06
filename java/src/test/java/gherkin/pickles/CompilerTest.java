@@ -29,9 +29,11 @@ public class CompilerTest {
                         "[\n" +
                         "  {\n" +
                         "    \"path\": \"features/hello.feature\",\n" +
-                        "    \"name\": \"Scenario: s\",\n" +
+                        "    \"keyword\": \"Scenario\",\n" +
+                        "    \"name\": \"s\",\n" +
                         "    \"steps\": [\n" +
                         "      {\n" +
+                        "        \"keyword\": \"Given \",\n" +
                         "        \"text\": \"passing\",\n" +
                         "        \"arguments\": [],\n" +
                         "        \"locations\": [\n" +

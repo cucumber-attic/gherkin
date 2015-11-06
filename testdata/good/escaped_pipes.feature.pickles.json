@@ -1,12 +1,13 @@
 [
   {
+    "keyword": "Scenario",
     "locations": [
       {
         "column": 3,
         "line": 2
       }
     ],
-    "name": "Scenario: They are the future",
+    "name": "They are the future",
     "path": "../testdata/good/escaped_pipes.feature",
     "steps": [
       {
@@ -52,6 +53,7 @@
             ]
           }
         ],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 11,
@@ -103,6 +105,7 @@
             ]
           }
         ],
+        "keyword": "Given ",
         "locations": [
           {
             "column": 11,

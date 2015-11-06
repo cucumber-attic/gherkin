@@ -34,7 +34,8 @@ module Gherkin3
         pickle = {
           path: path,
           tags: pickle_tags(tags),
-          name: scenario[:keyword] + ": " + scenario[:name],
+          keyword: scenario[:keyword],
+          name: scenario[:name],
           locations: [pickle_location(scenario[:location])],
           steps: steps
         }
@@ -54,6 +55,7 @@ module Gherkin3
               step_text = interpolate(scenario_outline_step[:text], variable_cells, value_cells);
               arguments = create_pickle_arguments(scenario_outline_step[:argument], variable_cells, value_cells)
               pickle_step = {
+                keyword: scenario_outline_step[:keyword],
                 text: step_text,
                 arguments: arguments,
                 locations: [
@@ -66,7 +68,8 @@ module Gherkin3
 
             pickle = {
               path: path,
-              name: keyword + ": " + interpolate(scenario_outline[:name], variable_cells, value_cells),
+              keyword: keyword,
+              name: interpolate(scenario_outline[:name], variable_cells, value_cells),
               steps: steps,
               tags: pickle_tags(tags),
               locations: [
@@ -129,6 +132,7 @@ module Gherkin3
 
       def pickle_step(step)
         {
+          keyword: step[:keyword],
           text: step[:text],
           arguments: create_pickle_arguments(step[:argument], [], []),
           locations: [pickle_step_location(step)]
