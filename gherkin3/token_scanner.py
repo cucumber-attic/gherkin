@@ -1,12 +1,13 @@
 import io
 import os
+import sys
 from .token import Token
 from .gherkin_line import GherkinLine
 
-try:
+if sys.version_info < (3, 0):
     from cStringIO import StringIO
-except ImportError:
-    StringIO = io.StringIO
+else:
+    from io import StringIO
 
 
 class TokenScanner(object):
