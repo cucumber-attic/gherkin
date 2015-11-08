@@ -13,7 +13,8 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: show-version-info gherkin3/parser.py gherkin3/gherkin-languages.json $(PYTHON_FILES) LICENSE.txt
+.built: gherkin3/parser.py gherkin3/gherkin-languages.json $(PYTHON_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast LICENSE.txt
+	@$(MAKE) --no-print-directory show-version-info
 	nosetests
 	touch $@
 
