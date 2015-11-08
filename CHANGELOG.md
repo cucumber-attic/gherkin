@@ -23,6 +23,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
   (by [aslakhellesoy](https://github.com/aslakhellesoy))
 
 ### Fixed
+* (Python) Prevent token_scanner.py from (recklessly) monkey-patching io.StringIO.
+  ([#121](https://github.com/cucumber/gherkin3/pull/121),
+   by [zbmott](https://github.com/zbmott))
 * (Travis CI) Build objective-c on Travis. Fix Travis language settings.
   ([#122](https://github.com/cucumber/gherkin3/pull/122),
    [#118](https://github.com/cucumber/gherkin3/issues/118)
