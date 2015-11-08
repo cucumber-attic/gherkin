@@ -43,7 +43,8 @@ RULE_TYPE = [
     'Examples_Description',  # Examples_Description := Description_Helper
     'Description_Helper',  # Description_Helper := #Empty* Description? #Comment*
     'Description',  # Description! := #Other+
-  ]
+]
+
 
 class ParserContext(object):
     def __init__(self, token_scanner, token_matcher, token_queue, errors):
@@ -51,6 +52,7 @@ class ParserContext(object):
         self.token_matcher = token_matcher
         self.token_queue = token_queue
         self.errors = errors
+
 
 class Parser(object):
     def __init__(self, ast_builder=AstBuilder()):
@@ -65,8 +67,7 @@ class Parser(object):
             token_scanner,
             token_matcher,
             deque(),
-            []
-            )
+            [])
 
         self.start_rule(context, 'Feature')
         state = 0
@@ -177,40 +178,40 @@ class Parser(object):
 
     def match_token(self, state, token, context):
         state_map = {
-           0: self.match_token_at_0,
-           1: self.match_token_at_1,
-           2: self.match_token_at_2,
-           3: self.match_token_at_3,
-           4: self.match_token_at_4,
-           5: self.match_token_at_5,
-           6: self.match_token_at_6,
-           7: self.match_token_at_7,
-           8: self.match_token_at_8,
-           9: self.match_token_at_9,
-           10: self.match_token_at_10,
-           11: self.match_token_at_11,
-           12: self.match_token_at_12,
-           13: self.match_token_at_13,
-           14: self.match_token_at_14,
-           15: self.match_token_at_15,
-           16: self.match_token_at_16,
-           17: self.match_token_at_17,
-           18: self.match_token_at_18,
-           19: self.match_token_at_19,
-           20: self.match_token_at_20,
-           21: self.match_token_at_21,
-           22: self.match_token_at_22,
-           23: self.match_token_at_23,
-           24: self.match_token_at_24,
-           25: self.match_token_at_25,
-           26: self.match_token_at_26,
-           27: self.match_token_at_27,
-           29: self.match_token_at_29,
-           30: self.match_token_at_30,
-           31: self.match_token_at_31,
-           32: self.match_token_at_32,
-           33: self.match_token_at_33,
-           34: self.match_token_at_34,
+            0: self.match_token_at_0,
+            1: self.match_token_at_1,
+            2: self.match_token_at_2,
+            3: self.match_token_at_3,
+            4: self.match_token_at_4,
+            5: self.match_token_at_5,
+            6: self.match_token_at_6,
+            7: self.match_token_at_7,
+            8: self.match_token_at_8,
+            9: self.match_token_at_9,
+            10: self.match_token_at_10,
+            11: self.match_token_at_11,
+            12: self.match_token_at_12,
+            13: self.match_token_at_13,
+            14: self.match_token_at_14,
+            15: self.match_token_at_15,
+            16: self.match_token_at_16,
+            17: self.match_token_at_17,
+            18: self.match_token_at_18,
+            19: self.match_token_at_19,
+            20: self.match_token_at_20,
+            21: self.match_token_at_21,
+            22: self.match_token_at_22,
+            23: self.match_token_at_23,
+            24: self.match_token_at_24,
+            25: self.match_token_at_25,
+            26: self.match_token_at_26,
+            27: self.match_token_at_27,
+            29: self.match_token_at_29,
+            30: self.match_token_at_30,
+            31: self.match_token_at_31,
+            32: self.match_token_at_32,
+            33: self.match_token_at_33,
+            34: self.match_token_at_34,
         }
         if state in state_map:
             return state_map[state](token, context)

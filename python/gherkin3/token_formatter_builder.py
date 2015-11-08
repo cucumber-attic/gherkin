@@ -25,15 +25,14 @@ class TokenFormatterBuilder(AstBuilder):
             return "EOF"
 
         return ''.join([
-            '(', 
-            str(token.location['line']), ':', str(token.location['column']), 
+            '(',
+            str(token.location['line']), ':', str(token.location['column']),
             ')',
-            token.matched_type, 
-            ':', 
+            token.matched_type,
+            ':',
             (token.matched_keyword if token.matched_keyword else ''),
-            '/', 
+            '/',
             (token.matched_text if token.matched_text else ""),
             '/',
             ','.join([str(item['column']) + ':' + item['text'] for item in token.matched_items])
         ])
-
