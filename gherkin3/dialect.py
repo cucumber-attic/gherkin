@@ -5,8 +5,7 @@ import json
 
 DIALECT_FILE_PATH = os.path.join(
     os.path.dirname(__file__),
-    'gherkin-languages.json'
-    )
+    'gherkin-languages.json')
 
 with io.open(DIALECT_FILE_PATH, 'r', encoding='utf-8') as file:
     DIALECTS = json.load(file)
