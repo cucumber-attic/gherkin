@@ -1,12 +1,13 @@
 import io
 import os
+import sys
 from .token import Token
 from .gherkin_line import GherkinLine
-try:
+
+if sys.version_info < (3, 0):
     from cStringIO import StringIO
-    io.StringIO = StringIO
-except ImportError:
-    pass
+else:
+    from io import StringIO
 
 
 class TokenScanner(object):
@@ -26,7 +27,7 @@ class TokenScanner(object):
             if os.path.exists(path_or_str):
                 self.io = io.open(path_or_str, 'rU', encoding='utf8')
             else:
-                self.io = io.StringIO(path_or_str)
+                self.io = StringIO(path_or_str)
         self.line_number = 0
 
     def read(self):
