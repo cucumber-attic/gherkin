@@ -12,14 +12,20 @@ from gherkin3.pickles.compiler import compile
 from gherkin3.parser import Parser
 from gherkin3.errors import ParserError
 
+if sys.version_info < (3, 0) and os.name != 'nt':  # for Python2 unless on Windows native
+    UTF8Writer = codecs.getwriter('utf8')
+    sys.stdout = UTF8Writer(sys.stdout)
 parser = Parser()
 parser.stop_at_first_error = False
 files = sys.argv[1:]
 for file in files:
     try:
-        feature  = parser.parse(file)
-        pickles  = compile(feature, file)
-        print(json.dumps(pickles))
+        feature = parser.parse(file)
+        pickles = compile(feature, file)
+        if sys.version_info > (3, 0):
+            print(json.dumps(pickles, sort_keys=True, indent=2, separators=(',', ': '), ensure_ascii=False))
+        else:
+            print(json.dumps(pickles, sort_keys=True, indent=2, separators=(',', ': '), ensure_ascii=False, encoding='utf8'))
     except ParserError as e:
         print(e.args[0], file=sys.stderr)
         sys.exit(1)
