@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+from __future__ import print_function
+
+import json
+import os
+import sys
+if sys.version_info < (3, 0):
+    import codecs
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+
+from gherkin3.pickles.compiler import compile
+from gherkin3.parser import Parser
+from gherkin3.errors import ParserError
+
+parser = Parser()
+parser.stop_at_first_error = False
+files = sys.argv[1:]
+for file in files:
+    try:
+        feature  = parser.parse(file)
+        pickles  = compile(feature, file)
+        print(json.dumps(pickles))
+    except ParserError as e:
+        print(e.args[0], file=sys.stderr)
+        sys.exit(1)
