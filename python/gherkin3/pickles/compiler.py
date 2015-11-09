@@ -85,7 +85,7 @@ def _create_pickle_arguments(argument, variables, values, path):
                     'value':    _interpolate(cell['value'], variables, values) 
                 } for cell in row['cells']
             ]
-            table['rows'].append(cells)
+            table['rows'].append({'cells': cells})
         result.append(table)
     
     elif argument['type'] is 'DocString':
