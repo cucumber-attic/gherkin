@@ -3,11 +3,11 @@
     "locations": [
       {
         "column": 3,
-        "line": 3
+        "line": 3,
+        "path": "../testdata/good/docstrings.feature"
       }
     ],
     "name": "Scenario: minimalistic",
-    "path": "../testdata/good/docstrings.feature",
     "steps": [
       {
         "arguments": [
@@ -15,14 +15,16 @@
             "content": "first line (no indent)\n  second line (indented with two spaces)\n\nthird line was empty",
             "location": {
               "column": 7,
-              "line": 5
+              "line": 5,
+              "path": "../testdata/good/docstrings.feature"
             }
           }
         ],
         "locations": [
           {
             "column": 11,
-            "line": 4
+            "line": 4,
+            "path": "../testdata/good/docstrings.feature"
           }
         ],
         "text": "a simple DocString"
@@ -33,14 +35,16 @@
             "content": "<foo>\n  <bar />\n</foo>",
             "location": {
               "column": 7,
-              "line": 12
+              "line": 12,
+              "path": "../testdata/good/docstrings.feature"
             }
           }
         ],
         "locations": [
           {
             "column": 11,
-            "line": 11
+            "line": 11,
+            "path": "../testdata/good/docstrings.feature"
           }
         ],
         "text": "a DocString with content type"
@@ -51,14 +55,16 @@
             "content": "wrongly indented line",
             "location": {
               "column": 7,
-              "line": 18
+              "line": 18,
+              "path": "../testdata/good/docstrings.feature"
             }
           }
         ],
         "locations": [
           {
             "column": 9,
-            "line": 17
+            "line": 17,
+            "path": "../testdata/good/docstrings.feature"
           }
         ],
         "text": "a DocString with wrong indentation"
@@ -69,14 +75,16 @@
             "content": "first line\nsecond line",
             "location": {
               "column": 7,
-              "line": 22
+              "line": 22,
+              "path": "../testdata/good/docstrings.feature"
             }
           }
         ],
         "locations": [
           {
             "column": 9,
-            "line": 21
+            "line": 21,
+            "path": "../testdata/good/docstrings.feature"
           }
         ],
         "text": "a DocString with alternative separator"
@@ -87,14 +95,16 @@
             "content": "first line\n\"\"\"\nthird line",
             "location": {
               "column": 7,
-              "line": 27
+              "line": 27,
+              "path": "../testdata/good/docstrings.feature"
             }
           }
         ],
         "locations": [
           {
             "column": 9,
-            "line": 26
+            "line": 26,
+            "path": "../testdata/good/docstrings.feature"
           }
         ],
         "text": "a DocString with normal separator inside"
@@ -105,14 +115,16 @@
             "content": "first line\n```\nthird line",
             "location": {
               "column": 7,
-              "line": 33
+              "line": 33,
+              "path": "../testdata/good/docstrings.feature"
             }
           }
         ],
         "locations": [
           {
             "column": 9,
-            "line": 32
+            "line": 32,
+            "path": "../testdata/good/docstrings.feature"
           }
         ],
         "text": "a DocString with alternative separator inside"
@@ -123,14 +135,16 @@
             "content": "first line\n\"\"\"\nthird line",
             "location": {
               "column": 7,
-              "line": 39
+              "line": 39,
+              "path": "../testdata/good/docstrings.feature"
             }
           }
         ],
         "locations": [
           {
             "column": 9,
-            "line": 38
+            "line": 38,
+            "path": "../testdata/good/docstrings.feature"
           }
         ],
         "text": "a DocString with escaped separator inside"

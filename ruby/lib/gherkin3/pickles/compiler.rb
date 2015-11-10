@@ -8,7 +8,7 @@ module Gherkin3
         dialect = Dialect.for(feature[:language])
 
         feature_tags = feature[:tags]
-        background_steps = get_background_steps(feature[:background])
+        background_steps = get_background_steps(feature[:background], path)
 
         feature[:scenarioDefinitions].each do |scenario_definition|
           if(scenario_definition[:type] == :Scenario)
@@ -28,14 +28,13 @@ module Gherkin3
         tags = [].concat(feature_tags).concat(scenario[:tags])
 
         scenario[:steps].each do |step|
-          steps.push(pickle_step(step))
+          steps.push(pickle_step(step, path))
         end
 
         pickle = {
-          path: path,
-          tags: pickle_tags(tags),
+          tags: pickle_tags(tags, path),
           name: scenario[:keyword] + ": " + scenario[:name],
-          locations: [pickle_location(scenario[:location])],
+          locations: [pickle_location(scenario[:location], path)],
           steps: steps
         }
         pickles.push(pickle)
@@ -52,26 +51,25 @@ module Gherkin3
 
             scenario_outline[:steps].each do |scenario_outline_step|
               step_text = interpolate(scenario_outline_step[:text], variable_cells, value_cells);
-              arguments = create_pickle_arguments(scenario_outline_step[:argument], variable_cells, value_cells)
+              arguments = create_pickle_arguments(scenario_outline_step[:argument], variable_cells, value_cells, path)
               pickle_step = {
                 text: step_text,
                 arguments: arguments,
                 locations: [
-                  pickle_location(values[:location]),
-                  pickle_step_location(scenario_outline_step)
+                  pickle_location(values[:location], path),
+                  pickle_step_location(scenario_outline_step, path)
                 ]
               }
               steps.push(pickle_step)
             end
 
             pickle = {
-              path: path,
               name: keyword + ": " + interpolate(scenario_outline[:name], variable_cells, value_cells),
               steps: steps,
-              tags: pickle_tags(tags),
+              tags: pickle_tags(tags, path),
               locations: [
-                pickle_location(values[:location]),
-                pickle_location(scenario_outline[:location])
+                pickle_location(values[:location], path),
+                pickle_location(scenario_outline[:location], path)
               ]
             }
             pickles.push(pickle);
@@ -80,7 +78,7 @@ module Gherkin3
         end
       end
 
-      def create_pickle_arguments(argument, variables, values)
+      def create_pickle_arguments(argument, variable_cells, value_cells, path)
         result = []
         return result if argument.nil?
         if (argument[:type] == :DataTable)
@@ -89,8 +87,8 @@ module Gherkin3
               {
                 cells: row[:cells].map do |cell|
                   {
-                    location: pickle_location(cell[:location]),
-                    value: interpolate(cell[:value], variables, values)
+                    location: pickle_location(cell[:location], path),
+                    value: interpolate(cell[:value], variable_cells, value_cells)
                   }
                 end
               }
@@ -99,8 +97,8 @@ module Gherkin3
           result.push(table)
         elsif (argument[:type] == :DocString)
           doc_string = {
-            location: pickle_location(argument[:location]),
-            content: interpolate(argument[:content], variables, values)
+            location: pickle_location(argument[:location], path),
+            content: interpolate(argument[:content], variable_cells, value_cells)
           }
           result.push(doc_string)
         else
@@ -117,46 +115,48 @@ module Gherkin3
         name
       end
 
-      def get_background_steps(background)
+      def get_background_steps(background, path)
         if(background)
           background[:steps].map do |step|
-            pickle_step(step)
+            pickle_step(step, path)
           end
         else
           []
         end
       end
 
-      def pickle_step(step)
+      def pickle_step(step, path)
         {
           text: step[:text],
-          arguments: create_pickle_arguments(step[:argument], [], []),
-          locations: [pickle_step_location(step)]
+          arguments: create_pickle_arguments(step[:argument], [], [], path),
+          locations: [pickle_step_location(step, path)]
         }
       end
 
-      def pickle_step_location(step)
+      def pickle_step_location(step, path)
         {
+          path: path,
           line: step[:location][:line],
           column: step[:location][:column] + (step[:keyword] ? step[:keyword].length : 0)
         }
       end
 
-      def pickle_location(location)
+      def pickle_location(location, path)
         {
+          path: path,
           line: location[:line],
           column: location[:column]
         }
       end
 
-      def pickle_tags(tags)
-        tags.map {|tag| pickle_tag(tag)}
+      def pickle_tags(tags, path)
+        tags.map {|tag| pickle_tag(tag, path)}
       end
 
-      def pickle_tag(tag)
+      def pickle_tag(tag, path)
         {
           name: tag[:name],
-          location: pickle_location(tag[:location])
+          location: pickle_location(tag[:location], path)
         }
       end
     end

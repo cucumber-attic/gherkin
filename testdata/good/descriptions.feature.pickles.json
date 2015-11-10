@@ -3,18 +3,19 @@
     "locations": [
       {
         "column": 3,
-        "line": 4
+        "line": 4,
+        "path": "../testdata/good/descriptions.feature"
       }
     ],
     "name": "Scenario: two lines",
-    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
         "locations": [
           {
             "column": 11,
-            "line": 7
+            "line": 7,
+            "path": "../testdata/good/descriptions.feature"
           }
         ],
         "text": "the minimalism"
@@ -26,18 +27,19 @@
     "locations": [
       {
         "column": 1,
-        "line": 9
+        "line": 9,
+        "path": "../testdata/good/descriptions.feature"
       }
     ],
     "name": "Scenario: without indentation",
-    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
         "locations": [
           {
             "column": 9,
-            "line": 11
+            "line": 11,
+            "path": "../testdata/good/descriptions.feature"
           }
         ],
         "text": "the minimalism"
@@ -49,18 +51,19 @@
     "locations": [
       {
         "column": 3,
-        "line": 13
+        "line": 13,
+        "path": "../testdata/good/descriptions.feature"
       }
     ],
     "name": "Scenario: empty lines in the middle",
-    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
         "locations": [
           {
             "column": 11,
-            "line": 17
+            "line": 17,
+            "path": "../testdata/good/descriptions.feature"
           }
         ],
         "text": "the minimalism"
@@ -72,18 +75,19 @@
     "locations": [
       {
         "column": 3,
-        "line": 19
+        "line": 19,
+        "path": "../testdata/good/descriptions.feature"
       }
     ],
     "name": "Scenario: empty lines around",
-    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
         "locations": [
           {
             "column": 11,
-            "line": 24
+            "line": 24,
+            "path": "../testdata/good/descriptions.feature"
           }
         ],
         "text": "the minimalism"
@@ -95,18 +99,19 @@
     "locations": [
       {
         "column": 3,
-        "line": 26
+        "line": 26,
+        "path": "../testdata/good/descriptions.feature"
       }
     ],
     "name": "Scenario: comment after description",
-    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
         "locations": [
           {
             "column": 11,
-            "line": 31
+            "line": 31,
+            "path": "../testdata/good/descriptions.feature"
           }
         ],
         "text": "the minimalism"
@@ -118,18 +123,19 @@
     "locations": [
       {
         "column": 3,
-        "line": 33
+        "line": 33,
+        "path": "../testdata/good/descriptions.feature"
       }
     ],
     "name": "Scenario: comment right after description",
-    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
         "locations": [
           {
             "column": 11,
-            "line": 38
+            "line": 38,
+            "path": "../testdata/good/descriptions.feature"
           }
         ],
         "text": "the minimalism"
@@ -141,18 +147,19 @@
     "locations": [
       {
         "column": 3,
-        "line": 40
+        "line": 40,
+        "path": "../testdata/good/descriptions.feature"
       }
     ],
     "name": "Scenario: description with escaped docstring separator",
-    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
         "locations": [
           {
             "column": 11,
-            "line": 43
+            "line": 43,
+            "path": "../testdata/good/descriptions.feature"
           }
         ],
         "text": "the minimalism"
@@ -164,26 +171,29 @@
     "locations": [
       {
         "column": 5,
-        "line": 52
+        "line": 52,
+        "path": "../testdata/good/descriptions.feature"
       },
       {
         "column": 3,
-        "line": 45
+        "line": 45,
+        "path": "../testdata/good/descriptions.feature"
       }
     ],
     "name": "Scenario: scenario outline with a description",
-    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
         "locations": [
           {
             "column": 5,
-            "line": 52
+            "line": 52,
+            "path": "../testdata/good/descriptions.feature"
           },
           {
             "column": 11,
-            "line": 47
+            "line": 47,
+            "path": "../testdata/good/descriptions.feature"
           }
         ],
         "text": "the minimalism"

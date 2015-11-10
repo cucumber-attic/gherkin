@@ -3,26 +3,29 @@
     "locations": [
       {
         "column": 5,
-        "line": 8
+        "line": 8,
+        "path": "../testdata/good/scenario_outlines_with_tags.feature"
       },
       {
         "column": 3,
-        "line": 4
+        "line": 4,
+        "path": "../testdata/good/scenario_outlines_with_tags.feature"
       }
     ],
     "name": "Scenario: ",
-    "path": "../testdata/good/scenario_outlines_with_tags.feature",
     "steps": [
       {
         "arguments": [],
         "locations": [
           {
             "column": 5,
-            "line": 8
+            "line": 8,
+            "path": "../testdata/good/scenario_outlines_with_tags.feature"
           },
           {
             "column": 11,
-            "line": 5
+            "line": 5,
+            "path": "../testdata/good/scenario_outlines_with_tags.feature"
           }
         ],
         "text": "y"
@@ -32,14 +35,16 @@
       {
         "location": {
           "column": 3,
-          "line": 2
+          "line": 2,
+          "path": "../testdata/good/scenario_outlines_with_tags.feature"
         },
         "name": "@foo1"
       },
       {
         "location": {
           "column": 3,
-          "line": 3
+          "line": 3,
+          "path": "../testdata/good/scenario_outlines_with_tags.feature"
         },
         "name": "@foo2"
       }
@@ -49,26 +54,29 @@
     "locations": [
       {
         "column": 5,
-        "line": 15
+        "line": 15,
+        "path": "../testdata/good/scenario_outlines_with_tags.feature"
       },
       {
         "column": 3,
-        "line": 11
+        "line": 11,
+        "path": "../testdata/good/scenario_outlines_with_tags.feature"
       }
     ],
     "name": "Scenario: ",
-    "path": "../testdata/good/scenario_outlines_with_tags.feature",
     "steps": [
       {
         "arguments": [],
         "locations": [
           {
             "column": 5,
-            "line": 15
+            "line": 15,
+            "path": "../testdata/good/scenario_outlines_with_tags.feature"
           },
           {
             "column": 11,
-            "line": 12
+            "line": 12,
+            "path": "../testdata/good/scenario_outlines_with_tags.feature"
           }
         ],
         "text": "n"
@@ -78,14 +86,16 @@
       {
         "location": {
           "column": 3,
-          "line": 9
+          "line": 9,
+          "path": "../testdata/good/scenario_outlines_with_tags.feature"
         },
         "name": "@bar1"
       },
       {
         "location": {
           "column": 3,
-          "line": 10
+          "line": 10,
+          "path": "../testdata/good/scenario_outlines_with_tags.feature"
         },
         "name": "@bar2"
       }
