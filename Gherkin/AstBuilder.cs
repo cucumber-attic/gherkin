@@ -27,7 +27,7 @@ namespace Gherkin
         {
             if (token.MatchedType == TokenType.Comment)
             {
-                comments.Add(new Comment(GetLocation(token), token.MatchedText));
+                comments.Add(CreateComment(GetLocation(token), token.MatchedText));
             }
             else
             {
@@ -62,7 +62,7 @@ namespace Gherkin
                     var stepArg = node.GetSingle<StepArgument>(RuleType.DataTable) ??
                                   node.GetSingle<StepArgument>(RuleType.DocString) ??
                                   null; // empty arg
-                    return new Step(GetLocation(stepLine), stepLine.MatchedKeyword, stepLine.MatchedText, stepArg);
+                    return CreateStep(GetLocation(stepLine), stepLine.MatchedKeyword, stepLine.MatchedText, stepArg, node);
                 }
                 case RuleType.DocString:
                 {
@@ -71,19 +71,19 @@ namespace Gherkin
                     var lineTokens = node.GetTokens(TokenType.Other);
                     var content = string.Join(Environment.NewLine, lineTokens.Select(lt => lt.MatchedText));
 
-                    return new DocString(GetLocation(separatorToken), contentType, content);
+                    return CreateDocString(GetLocation(separatorToken), contentType, content, node);
                 }
                 case RuleType.DataTable:
                 {
                     var rows = GetTableRows(node);
-                    return new DataTable(rows);
+                    return CreateDataTable(rows, node);
                 }
                 case RuleType.Background:
                 {
                     var backgroundLine = node.GetToken(TokenType.BackgroundLine);
                     var description = GetDescription(node);
                     var steps = GetSteps(node);
-                    return new Background(GetLocation(backgroundLine), backgroundLine.MatchedKeyword, backgroundLine.MatchedText, description, steps);
+                    return CreateBackground(GetLocation(backgroundLine), backgroundLine.MatchedKeyword, backgroundLine.MatchedText, description, steps, node);
                 }
                 case RuleType.Scenario_Definition:
                 {
@@ -97,7 +97,7 @@ namespace Gherkin
                         var description = GetDescription(scenarioNode);
                         var steps = GetSteps(scenarioNode);
 
-                        return new Scenario(tags, GetLocation(scenarioLine), scenarioLine.MatchedKeyword, scenarioLine.MatchedText, description, steps);
+                        return CreateScenario(tags, GetLocation(scenarioLine), scenarioLine.MatchedKeyword, scenarioLine.MatchedText, description, steps, node);
                     }
                     else
                     {
@@ -110,7 +110,7 @@ namespace Gherkin
                         var steps = GetSteps(scenarioOutlineNode);
                         var examples = scenarioOutlineNode.GetItems<Examples>(RuleType.Examples_Definition).ToArray();
 
-                        return new ScenarioOutline(tags, GetLocation(scenarioOutlineLine), scenarioOutlineLine.MatchedKeyword, scenarioOutlineLine.MatchedText, description, steps, examples);
+                        return CreateScenarioOutline(tags, GetLocation(scenarioOutlineLine), scenarioOutlineLine.MatchedKeyword, scenarioOutlineLine.MatchedText, description, steps, examples, node);
                     }
                 }
                 case RuleType.Examples_Definition:
@@ -123,7 +123,7 @@ namespace Gherkin
                     var allRows = GetTableRows(examplesNode);
                     var header = allRows.First();
                     var rows = allRows.Skip(1).ToArray();
-                    return new Examples(tags, GetLocation(examplesLine), examplesLine.MatchedKeyword, examplesLine.MatchedText, description, header, rows);
+                    return CreateExamples(tags, GetLocation(examplesLine), examplesLine.MatchedKeyword, examplesLine.MatchedText, description, header, rows, node);
                 }
                 case RuleType.Description:
                 {
@@ -147,16 +147,80 @@ namespace Gherkin
                     if(featureLine.MatchedGherkinDialect == null) return null;
                     var language = featureLine.MatchedGherkinDialect.Language;
 
-                    return new Feature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.MatchedText, description, background, scenariodefinitions, comments.ToArray());
+                    return CreateFeature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.MatchedText, description, background, scenariodefinitions, comments.ToArray(), node);
                 }
             }
 
             return node;
         }
 
+        protected virtual Background CreateBackground(Location location, string keyword, string name, string description, Step[] steps, AstNode node)
+        {
+            return new Background(location, keyword, name, description, steps);
+        }
+
+        protected virtual DataTable CreateDataTable(TableRow[] rows, AstNode node)
+        {
+            return new DataTable(rows);
+        }
+
+        protected virtual Comment CreateComment(Location location, string text)
+        {
+            return new Comment(location, text);
+        }
+
+        protected virtual ScenarioOutline CreateScenarioOutline(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, Examples[] examples, AstNode node)
+        {
+            return new ScenarioOutline(tags, location, keyword, name, description, steps, examples);
+        }
+
+        protected virtual Examples CreateExamples(Tag[] tags, Location location, string keyword, string name, string description, TableRow header, TableRow[] body, AstNode node)
+        {
+            return new Examples(tags, location, keyword, name, description, header, body);
+        }
+
+        protected virtual Scenario CreateScenario(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, AstNode node)
+        {
+            return new Scenario(tags, location, keyword, name, description, steps);
+        }
+
+        protected virtual DocString CreateDocString(Location location, string contentType, string content, AstNode node)
+        {
+            return new DocString(location, contentType, content);
+        }
+
+        protected virtual Step CreateStep(Location location, string keyword, string text, StepArgument argument, AstNode node)
+        {
+            return new Step(location, keyword, text, argument);
+        }
+
+        protected virtual Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description, Background background, ScenarioDefinition[] scenariodefinitions, Comment[] featureFileComments, AstNode node)
+        {
+            return new Feature(tags, location, language, keyword, name, description, background, scenariodefinitions, featureFileComments);
+        }
+        protected virtual Tag CreateTag(Location location, string name, AstNode node)
+        {
+            return new Tag(location, name);
+        }
+
+        protected virtual Location CreateLocation(int line, int column)
+        {
+            return new Location(line, column);
+        }
+
+        protected virtual TableRow CreateTableRow(Location location, TableCell[] cells, AstNode node)
+        {
+            return new TableRow(location, cells);
+        }
+
+        protected virtual TableCell CreateTableCell(Location location, string value)
+        {
+            return new TableCell(location, value);
+        }
+
         private Location GetLocation(Token token, int column = 0)
         {
-            return column == 0 ? token.Location : new Location(token.Location.Line, column);
+            return column == 0 ? token.Location : CreateLocation(token.Location.Line, column);
         }
 
         private Tag[] GetTags(AstNode node)
@@ -167,13 +231,13 @@ namespace Gherkin
 
             return tagsNode.GetTokens(TokenType.TagLine)
                 .SelectMany(t => t.MatchedItems, (t, tagItem) =>
-                    new Tag(GetLocation(t, tagItem.Column), tagItem.Text))
+                    CreateTag(GetLocation(t, tagItem.Column), tagItem.Text, tagsNode))
                 .ToArray();
         }
 
         private TableRow[] GetTableRows(AstNode node)
         {
-            var rows = node.GetTokens(TokenType.TableRow).Select(token => new TableRow(GetLocation(token), GetCells(token))).ToArray();
+            var rows = node.GetTokens(TokenType.TableRow).Select(token => CreateTableRow(GetLocation(token), GetCells(token), node)).ToArray();
             EnsureCellCount(rows);
             return rows;
         }
@@ -196,7 +260,7 @@ namespace Gherkin
         private TableCell[] GetCells(Token tableRowToken)
         {
             return tableRowToken.MatchedItems
-                .Select(cellItem => new TableCell(GetLocation(tableRowToken, cellItem.Column), cellItem.Text))
+                .Select(cellItem => CreateTableCell(GetLocation(tableRowToken, cellItem.Column), cellItem.Text))
                 .ToArray();
         }
 
