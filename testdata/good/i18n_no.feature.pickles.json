@@ -8,6 +8,7 @@
       }
     ],
     "name": "Scenario: Parsing many languages",
+    "path": "../testdata/good/i18n_no.feature",
     "steps": [
       {
         "arguments": [],

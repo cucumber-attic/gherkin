@@ -8,6 +8,7 @@
       }
     ],
     "name": "Scenario: minimalistic",
+    "path": "../testdata/good/docstrings.feature",
     "steps": [
       {
         "arguments": [

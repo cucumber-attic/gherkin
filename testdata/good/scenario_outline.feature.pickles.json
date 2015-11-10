@@ -13,6 +13,7 @@
       }
     ],
     "name": "Scenario: minimalistic",
+    "path": "../testdata/good/scenario_outline.feature",
     "steps": [
       {
         "arguments": [],
