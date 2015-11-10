@@ -13,6 +13,7 @@
       }
     ],
     "name": "Scenario: minimalistic",
+    "path": "../testdata/good/several_examples.feature",
     "steps": [
       {
         "arguments": [],
@@ -56,6 +57,7 @@
       }
     ],
     "name": "Scenario: minimalistic",
+    "path": "../testdata/good/several_examples.feature",
     "steps": [
       {
         "arguments": [],
@@ -94,6 +96,7 @@
       }
     ],
     "name": "Scenario: ha ok",
+    "path": "../testdata/good/several_examples.feature",
     "steps": [],
     "tags": [
       {

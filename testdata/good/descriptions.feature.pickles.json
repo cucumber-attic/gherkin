@@ -8,6 +8,7 @@
       }
     ],
     "name": "Scenario: two lines",
+    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
@@ -32,6 +33,7 @@
       }
     ],
     "name": "Scenario: without indentation",
+    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
@@ -56,6 +58,7 @@
       }
     ],
     "name": "Scenario: empty lines in the middle",
+    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
@@ -80,6 +83,7 @@
       }
     ],
     "name": "Scenario: empty lines around",
+    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
@@ -104,6 +108,7 @@
       }
     ],
     "name": "Scenario: comment after description",
+    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
@@ -128,6 +133,7 @@
       }
     ],
     "name": "Scenario: comment right after description",
+    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
@@ -152,6 +158,7 @@
       }
     ],
     "name": "Scenario: description with escaped docstring separator",
+    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],
@@ -181,6 +188,7 @@
       }
     ],
     "name": "Scenario: scenario outline with a description",
+    "path": "../testdata/good/descriptions.feature",
     "steps": [
       {
         "arguments": [],

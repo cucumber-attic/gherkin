@@ -13,6 +13,7 @@
       }
     ],
     "name": "Scenario: ",
+    "path": "../testdata/good/scenario_outlines_with_tags.feature",
     "steps": [
       {
         "arguments": [],
@@ -64,6 +65,7 @@
       }
     ],
     "name": "Scenario: ",
+    "path": "../testdata/good/scenario_outlines_with_tags.feature",
     "steps": [
       {
         "arguments": [],

@@ -8,6 +8,7 @@
       }
     ],
     "name": "Scenario: minimalistic",
+    "path": "../testdata/good/tags.feature",
     "steps": [
       {
         "arguments": [],
@@ -86,6 +87,7 @@
       }
     ],
     "name": "Scenario: minimalistic outline",
+    "path": "../testdata/good/tags.feature",
     "steps": [
       {
         "arguments": [],
@@ -193,6 +195,7 @@
       }
     ],
     "name": "Scenario: minimalistic outline",
+    "path": "../testdata/good/tags.feature",
     "steps": [
       {
         "arguments": [],
