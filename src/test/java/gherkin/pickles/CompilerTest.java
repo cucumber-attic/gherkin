@@ -28,7 +28,6 @@ public class CompilerTest {
         assertEquals("" +
                         "[\n" +
                         "  {\n" +
-                        "    \"path\": \"features/hello.feature\",\n" +
                         "    \"name\": \"Scenario: s\",\n" +
                         "    \"steps\": [\n" +
                         "      {\n" +
@@ -36,6 +35,7 @@ public class CompilerTest {
                         "        \"arguments\": [],\n" +
                         "        \"locations\": [\n" +
                         "          {\n" +
+                        "            \"path\": \"features/hello.feature\",\n" +
                         "            \"line\": 3,\n" +
                         "            \"column\": 11\n" +
                         "          }\n" +
@@ -45,6 +45,7 @@ public class CompilerTest {
                         "    \"tags\": [],\n" +
                         "    \"locations\": [\n" +
                         "      {\n" +
+                        "        \"path\": \"features/hello.feature\",\n" +
                         "        \"line\": 2,\n" +
                         "        \"column\": 3\n" +
                         "      }\n" +
