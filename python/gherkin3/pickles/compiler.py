@@ -30,7 +30,6 @@ def _compile_scenario(feature_tags, background_steps, scenario, dialect, path,
         steps.append(_pickle_step(step, path))
 
     pickle = {
-        'path': path,
         'tags': _pickle_tags(tags, path),
         'name': '{0[keyword]}: {0[name]}'.format(scenario),
         'locations': [_pickle_location(scenario['location'], path)],
@@ -74,7 +73,6 @@ def _compile_scenario_outline(feature_tags, background_steps,
                 steps.append(_pickle_step)
 
             pickle = {
-                'path': path,
                 'name': '{0}: {1}'.format(
                     keyword,
                     _interpolate(
