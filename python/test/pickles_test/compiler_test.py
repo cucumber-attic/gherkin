@@ -23,7 +23,6 @@ def test_compiles_a_scenario():
         """\
         [
           {
-            "path": "features/hello.feature",
             "name": "Scenario: s",
             "steps": [
               {
