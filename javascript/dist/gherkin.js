@@ -5457,7 +5457,7 @@ function Compiler() {
             cells: row.cells.map(function (cell) {
               return {
                 location: pickleLocation(cell.location, path),
-                value: interpolate(cell.value, variableCells, valueCells, path)
+                value: interpolate(cell.value, variableCells, valueCells)
               };
             })
           };
