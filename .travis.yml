@@ -34,6 +34,8 @@ matrix:
       rvm: jruby-1.7.22
       before_install:
         - gem install bundler -v 1.7.9
+        # tins >= 1.7 requires Ruby 2
+        - gem install tins -v 1.6 
 
     - env: TARGET_LANG=javascript
       language: javascript
