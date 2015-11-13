@@ -1,6 +1,3 @@
-import io
-import os
-import json
 import re
 
 from ..dialect import Dialect
