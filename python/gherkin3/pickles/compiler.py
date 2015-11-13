@@ -12,8 +12,8 @@ def compile(feature, path):
     feature_tags = feature['tags']
     background_steps = _get_background_steps(feature, path)
     for scenario_definition in feature['scenarioDefinitions']:
-        args = (feature_tags, background_steps, scenario_definition, dialect,
-                path, pickles)
+        args = (feature_tags, background_steps, scenario_definition,
+                dialect, path, pickles)
         if scenario_definition['type'] is 'Scenario':
             _compile_scenario(*args)
         else:
@@ -21,8 +21,8 @@ def compile(feature, path):
     return pickles
 
 
-def _compile_scenario(feature_tags, background_steps, scenario, dialect, path,
-                      pickles):
+def _compile_scenario(feature_tags, background_steps, scenario,
+                      dialect, path, pickles):
     steps = list(background_steps)
     tags = list(feature_tags) + list(scenario['tags'])
 
@@ -38,8 +38,8 @@ def _compile_scenario(feature_tags, background_steps, scenario, dialect, path,
     pickles.append(pickle)
 
 
-def _compile_scenario_outline(feature_tags, background_steps,
-                              scenario_outline, dialect, path, pickles):
+def _compile_scenario_outline(feature_tags, background_steps, scenario_outline,
+                              dialect, path, pickles):
     keyword = Dialect.for_name(dialect).scenario_keywords[0]
 
     for examples in scenario_outline['examples']:
