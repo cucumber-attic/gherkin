@@ -13,6 +13,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (Python) Implemented compiler
+  ([#124](https://github.com/cucumber/gherkin3/pull/124))
+  (by [Zearin](https://github.com/Zearin))
 * (Objective C) New implementation
   ([#110](https://github.com/cucumber/gherkin3/pull/110))
   (by [LiohAu](https://github.com/LiohAu))
