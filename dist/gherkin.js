@@ -586,7 +586,7 @@ module.exports={
       "Kerangka Senario",
       "Kerangka Situasi",
       "Kerangka Keadaan",
-      "Garisan Senario"
+      "Garis Panduan Senario"
     ],
     "then": [
       "* ",
