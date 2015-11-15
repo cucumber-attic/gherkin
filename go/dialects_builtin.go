@@ -215,7 +215,7 @@ var buildinDialects = gherkinDialectMap{
 				"Kerangka Senario",
 				"Kerangka Situasi",
 				"Kerangka Keadaan",
-				"Garisan Senario",
+				"Garis Panduan Senario",
 			},
 			then: []string{
 				"* ",
