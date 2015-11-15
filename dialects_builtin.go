@@ -208,14 +208,14 @@ var buildinDialects = gherkinDialectMap{
 			},
 			scenario: []string{
 				"Senario",
-				"Situai",
+				"Situasi",
 				"Keadaan",
 			},
 			scenarioOutline: []string{
-				"Template Senario",
-				"Template Situai",
-				"Template Keadaan",
-				"Menggariskan Senario",
+				"Kerangka Senario",
+				"Kerangka Situasi",
+				"Kerangka Keadaan",
+				"Garisan Senario",
 			},
 			then: []string{
 				"* ",
