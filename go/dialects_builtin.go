@@ -981,6 +981,8 @@ var buildinDialects = gherkinDialectMap{
 		"fr", "French", "français", map[string][]string{
 			and: []string{
 				"* ",
+				"Et que ",
+				"Et qu'",
 				"Et ",
 			},
 			background: []string{
@@ -988,6 +990,8 @@ var buildinDialects = gherkinDialectMap{
 			},
 			but: []string{
 				"* ",
+				"Mais que ",
+				"Mais qu'",
 				"Mais ",
 			},
 			examples: []string{
@@ -999,10 +1003,14 @@ var buildinDialects = gherkinDialectMap{
 			given: []string{
 				"* ",
 				"Soit ",
+				"Etant donné que ",
+				"Etant donné qu'",
 				"Etant donné ",
 				"Etant donnée ",
 				"Etant donnés ",
 				"Etant données ",
+				"Étant donné que ",
+				"Étant donné qu'",
 				"Étant donné ",
 				"Étant donnée ",
 				"Étant donnés ",

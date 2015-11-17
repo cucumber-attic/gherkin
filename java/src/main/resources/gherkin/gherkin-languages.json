@@ -960,6 +960,8 @@
   "fr": {
     "and": [
       "* ",
+      "Et que ",
+      "Et qu'",
       "Et "
     ],
     "background": [
@@ -967,6 +969,8 @@
     ],
     "but": [
       "* ",
+      "Mais que ",
+      "Mais qu'",
       "Mais "
     ],
     "examples": [
@@ -978,10 +982,14 @@
     "given": [
       "* ",
       "Soit ",
+      "Etant donné que ",
+      "Etant donné qu'",
       "Etant donné ",
       "Etant donnée ",
       "Etant donnés ",
       "Etant données ",
+      "Étant donné que ",
+      "Étant donné qu'",
       "Étant donné ",
       "Étant donnée ",
       "Étant donnés ",
