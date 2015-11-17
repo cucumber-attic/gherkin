@@ -1350,6 +1350,8 @@ module.exports={
   "fr": {
     "and": [
       "* ",
+      "Et que ",
+      "Et qu'",
       "Et "
     ],
     "background": [
@@ -1357,6 +1359,8 @@ module.exports={
     ],
     "but": [
       "* ",
+      "Mais que ",
+      "Mais qu'",
       "Mais "
     ],
     "examples": [
@@ -1368,10 +1372,14 @@ module.exports={
     "given": [
       "* ",
       "Soit ",
+      "Etant donné que ",
+      "Etant donné qu'",
       "Etant donné ",
       "Etant donnée ",
       "Etant donnés ",
       "Etant données ",
+      "Étant donné que ",
+      "Étant donné qu'",
       "Étant donné ",
       "Étant donnée ",
       "Étant donnés ",
