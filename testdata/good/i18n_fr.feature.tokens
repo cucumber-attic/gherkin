@@ -1,0 +1,8 @@
+(1:1)Language:/fr/
+(2:1)FeatureLine:Fonctionnalité/i18n support/
+(3:1)Empty://
+(4:3)ScenarioLine:Scénario/Support des caractères spéciaux/
+(5:5)StepLine:Soit /un exemple de scénario en français/
+(6:5)StepLine:Quand /j'ai 1 gâteau/
+(7:5)StepLine:Alors /je suis heureux/
+EOF
