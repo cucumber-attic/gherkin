@@ -123,7 +123,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 
 * First release
 
-[unreleased]: https://github.com/cucumber/gherkin3/compare/v3.1.1...HEAD
+[unreleased]: https://github.com/cucumber/gherkin3/compare/v3.1.2...HEAD
 [3.1.2]:      https://github.com/cucumber/gherkin3/compare/v3.1.1...v3.1.2
 [3.1.1]:      https://github.com/cucumber/gherkin3/compare/v3.1.0...v3.1.1
 [3.1.0]:      https://github.com/cucumber/gherkin3/compare/v3.0.0...v3.1.0
