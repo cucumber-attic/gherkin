@@ -65,6 +65,16 @@ With all this installed, just run `make` from the root directory.
 * If you change code, please make sure all implementations are changed accordingly.
   * If you don't to do this, we might reject your patch because the burden to keep parsers in sync is now on us.
 
+## Adding or updating an i18n language
+
+1) Edit the file gherkin-lanauges.json.
+
+2) Distribute the changes to the different parser implementations, this requires `make`, `jq`, `diff`, but no compiler/interpreters:
+
+    make update-gherkin-languages
+
+3) Make a pull request with the changed files.
+ 
 ## Building individual parsers
 
 It's possible to build the parser for a single language too. Please refer to

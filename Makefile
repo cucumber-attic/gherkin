@@ -28,7 +28,15 @@ pull-subtrees: $(patsubst %/Makefile,pull-subtree-%,$(MAKEFILES))
 pull-subtree-%: % add-remote-%
 	git subtree pull --prefix=$< gherkin-$< master
 
-format-gherkin-languages:
-	cat gherkin-languages.json | jq "." --sort-keys > gherkin-languages.json.tmp
-	mv gherkin-languages.json.tmp gherkin-languages.json
+format-gherkin-languages: gherkin-languages.json.tmp
+	diff -q gherkin-languages.json.tmp gherkin-languages.json || mv gherkin-languages.json.tmp gherkin-languages.json
 .PHONY: format-gherkin-languages
+
+gherkin-languages.json.tmp:
+	cat gherkin-languages.json | jq "." --sort-keys > gherkin-languages.json.tmp
+.INTERMEDIATE: gherkin-languages.json.tmp
+
+update-gherkin-languages: format-gherkin-languages $(patsubst %/Makefile,update-gherkin-languages-%,$(MAKEFILES))
+.PHONY: update-gherkin-languages
+update-gherkin-languages-%: %
+	cd $< && make update-gherkin-languages

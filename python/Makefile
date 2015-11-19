@@ -62,3 +62,6 @@ gherkin3/parser.py: ../gherkin.berp gherkin-python.razor ../bin/berp.exe
 
 LICENSE.txt: ../LICENSE
 	cp $< $@
+
+update-gherkin-languages: gherkin3/gherkin-languages.json
+.PHONY: update-gherkin-languages
