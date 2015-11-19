@@ -71,3 +71,6 @@ GherkinLanguages/gherkin-languages.json: ../gherkin-languages.json
 
 LICENSE: ../LICENSE
 	cp $< $@
+
+update-gherkin-languages: GherkinLanguages/gherkin-languages.json
+.PHONY: update-gherkin-languages
