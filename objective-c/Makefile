@@ -50,23 +50,23 @@ Gherkin/GHParser.h: ../gherkin.berp gherkin-objective-c-header.razor ../bin/berp
 Gherkin/GHParser.m: ../gherkin.berp gherkin-objective-c-implementation.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-objective-c-implementation.razor -o $@
 
-.xcodeproj_built_debug: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) gherkin-languages.json
+.xcodeproj_built_debug: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) GherkinLanguages/gherkin-languages.json
 	rm -f $@
 	xcodebuild -version
 	xcodebuild -scheme "GherkinOSX" -configuration Debug CONFIGURATION_BUILD_DIR=build/
 	touch $@
 
-Gherkin/bin/Debug/Gherkin.a: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) gherkin-languages.json
+Gherkin/bin/Debug/Gherkin.a: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) GherkinLanguages/gherkin-languages.json
 	rm -f $@
 	xcodebuild -scheme "GherkinOSX" -configuration Debug CONFIGURATION_BUILD_DIR=build/
 	touch $@
 
-Gherkin/bin/Release/Gherkin.a: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) gherkin-languages.json
+Gherkin/bin/Release/Gherkin.a: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) GherkinLanguages/gherkin-languages.json
 	rm -f $@
 	xcodebuild -scheme "GherkinOSX" -configuration Release CONFIGURATION_BUILD_DIR=build/
 	touch $@
 
-gherkin-languages.json: ../gherkin-languages.json
+GherkinLanguages/gherkin-languages.json: ../gherkin-languages.json
 	cp $< $@
 
 LICENSE: ../LICENSE
