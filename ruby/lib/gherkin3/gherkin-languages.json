@@ -228,19 +228,19 @@
       "Karakteristika"
     ],
     "given": [
-       "* ",
-       "Dato "
+      "* ",
+      "Dato "
     ],
     "name": "Bosnian",
     "native": "Bosanski",
     "scenario": [
-       "Scenariju",
-       "Scenario"
+      "Scenariju",
+      "Scenario"
     ],
     "scenarioOutline": [
-       "Scenariju-obris",
-       "Scenario-outline"
-    ], 
+      "Scenariju-obris",
+      "Scenario-outline"
+    ],
     "then": [
       "* ",
       "Zatim "
