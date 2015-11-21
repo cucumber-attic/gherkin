@@ -1,3 +1,4 @@
+# coding=utf-8
 from gherkin3.token_scanner import TokenScanner
 from gherkin3.token_matcher import TokenMatcher
 from gherkin3.parser import Parser
@@ -67,13 +68,13 @@ def test_parse_feature_after_parser_error():
 def test_change_the_default_language():
     parser = Parser()
     matcher = TokenMatcher('no')
-    feature = parser.parse(TokenScanner("Egenskap: i18n support"), matcher)
+    feature = parser.parse(TokenScanner("Egenskap: i18n support - åæø"), matcher)
     expected = {
         'comments': [],
         'keyword': u'Egenskap',
         'language': 'no',
         'location': {'column': 1, 'line': 1},
-        'name': u'i18n support',
+        'name': u'i18n support - åæø',
         'scenarioDefinitions': [],
         'tags': [],
         'type': 'Feature'}

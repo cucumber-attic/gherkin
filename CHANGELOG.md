@@ -26,6 +26,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
   (by [aslakhellesoy](https://github.com/aslakhellesoy))
 
 ### Fixed
+* (Python) Fix i18n support when parsing features from strings.
+  (by [brasmusson](https://github.com/brasmusson))
 * (Python) Prevent token_scanner.py from (recklessly) monkey-patching io.StringIO.
   ([#121](https://github.com/cucumber/gherkin3/pull/121),
    by [zbmott](https://github.com/zbmott))
