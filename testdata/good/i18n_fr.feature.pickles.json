@@ -1,0 +1,48 @@
+[
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 4,
+        "path": "../testdata/good/i18n_fr.feature"
+      }
+    ],
+    "name": "Scénario: Support des caractères spéciaux",
+    "steps": [
+      {
+        "arguments": [],
+        "locations": [
+          {
+            "column": 10,
+            "line": 5,
+            "path": "../testdata/good/i18n_fr.feature"
+          }
+        ],
+        "text": "un exemple de scénario en français"
+      },
+      {
+        "arguments": [],
+        "locations": [
+          {
+            "column": 11,
+            "line": 6,
+            "path": "../testdata/good/i18n_fr.feature"
+          }
+        ],
+        "text": "j'ai 1 gâteau"
+      },
+      {
+        "arguments": [],
+        "locations": [
+          {
+            "column": 11,
+            "line": 7,
+            "path": "../testdata/good/i18n_fr.feature"
+          }
+        ],
+        "text": "je suis heureux"
+      }
+    ],
+    "tags": []
+  }
+]

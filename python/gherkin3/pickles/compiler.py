@@ -28,7 +28,7 @@ def _compile_scenario(feature_tags, background_steps, scenario,
 
     pickle = {
         'tags': _pickle_tags(tags, path),
-        'name': '{0[keyword]}: {0[name]}'.format(scenario),
+        'name': u'{0[keyword]}: {0[name]}'.format(scenario),
         'locations': [_pickle_location(scenario['location'], path)],
         'steps': steps
     }
@@ -70,7 +70,7 @@ def _compile_scenario_outline(feature_tags, background_steps, scenario_outline,
                 steps.append(_pickle_step)
 
             pickle = {
-                'name': '{0}: {1}'.format(
+                'name': u'{0}: {1}'.format(
                     keyword,
                     _interpolate(
                         scenario_outline['name'],
@@ -122,7 +122,7 @@ def _interpolate(name, variable_cells, value_cells):
     for n, variable_cell in enumerate(variable_cells):
         value_cell = value_cells[n]
         name = re.sub(
-            '<{0[value]}>'.format(variable_cell),
+            u'<{0[value]}>'.format(variable_cell),
             value_cell['value'],
             name
             )
