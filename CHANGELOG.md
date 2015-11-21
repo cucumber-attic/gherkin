@@ -21,6 +21,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
   (by [LiohAu](https://github.com/LiohAu))
 
 ### Changed
+* (I18n) Support stricter French grammar
+  ([#134](https://github.com/cucumber/gherkin3/pull/134)
+   by [moreau-nicolas](https://github.com/moreau-nicolas))
 * (All) the AST's `DocString` `contentType` property is not defined rather than
   an empty string when the Gherkin doc doesn't specify the type after three backticks.
   (by [aslakhellesoy](https://github.com/aslakhellesoy))
@@ -29,7 +32,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 * (Python) Fix i18n support when parsing features from strings.
   (by [brasmusson](https://github.com/brasmusson))
 * (Python) Prevent token_scanner.py from (recklessly) monkey-patching io.StringIO.
-  ([#121](https://github.com/cucumber/gherkin3/pull/121),
+  ([#121](https://github.com/cucumber/gherkin3/pull/121)
    by [zbmott](https://github.com/zbmott))
 * (Travis CI) Build objective-c on Travis. Fix Travis language settings.
   ([#122](https://github.com/cucumber/gherkin3/pull/122),
