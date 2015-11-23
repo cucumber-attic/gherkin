@@ -62,3 +62,6 @@ LICENSE: ../LICENSE
 clean:
 	rm -rf .compared .built acceptance bin/ parser.go dialects_builtin.go
 .PHONY: clean show-version-info
+
+update-gherkin-languages: dialects_builtin.go
+.PHONY: update-gherkin-languages
