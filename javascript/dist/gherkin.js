@@ -43,7 +43,7 @@ THE SOFTWARE.
   };
 }));
 
-},{"./lib/gherkin/ast_builder":2,"./lib/gherkin/parser":7,"./lib/gherkin/pickles/compiler":8,"./lib/gherkin/token_matcher":10,"./lib/gherkin/token_scanner":11}],2:[function(require,module,exports){
+},{"./lib/gherkin/ast_builder":2,"./lib/gherkin/parser":8,"./lib/gherkin/pickles/compiler":9,"./lib/gherkin/token_matcher":11,"./lib/gherkin/token_scanner":12}],2:[function(require,module,exports){
 var AstNode = require('./ast_node');
 var Errors = require('./errors');
 
@@ -294,7 +294,7 @@ module.exports = function AstBuilder () {
 
 };
 
-},{"./ast_node":3,"./errors":4}],3:[function(require,module,exports){
+},{"./ast_node":3,"./errors":5}],3:[function(require,module,exports){
 function AstNode (ruleType) {
   this.ruleType = ruleType;
   this._subItems = {};
@@ -325,6 +325,14 @@ AstNode.prototype.getTokens = function (tokenType) {
 module.exports = AstNode;
 
 },{}],4:[function(require,module,exports){
+// https://mathiasbynens.be/notes/javascript-unicode
+var regexAstralSymbols = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
+
+module.exports = function countSymbols(string) {
+  return string.replace(regexAstralSymbols, '_').length;
+}
+
+},{}],5:[function(require,module,exports){
 var Errors = {};
 
 [
@@ -387,7 +395,7 @@ function createError(Ctor, message, location) {
 
 module.exports = Errors;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports={
   "af": {
     "and": [
@@ -618,19 +626,19 @@ module.exports={
       "Karakteristika"
     ],
     "given": [
-       "* ",
-       "Dato "
+      "* ",
+      "Dato "
     ],
     "name": "Bosnian",
     "native": "Bosanski",
     "scenario": [
-       "Scenariju",
-       "Scenario"
+      "Scenariju",
+      "Scenario"
     ],
     "scenarioOutline": [
-       "Scenariju-obris",
-       "Scenario-outline"
-    ], 
+      "Scenariju-obris",
+      "Scenario-outline"
+    ],
     "then": [
       "* ",
       "Zatim "
@@ -886,6 +894,45 @@ module.exports={
     "when": [
       "* ",
       "Όταν "
+    ]
+  },
+  "em": {
+    "and": [
+      "* ",
+      "😂"
+    ],
+    "background": [
+      "💤"
+    ],
+    "but": [
+      "* ",
+      "😔"
+    ],
+    "examples": [
+      "📓"
+    ],
+    "feature": [
+      "📚"
+    ],
+    "given": [
+      "* ",
+      "😐"
+    ],
+    "name": "Emoji",
+    "native": "😀",
+    "scenario": [
+      "📕"
+    ],
+    "scenarioOutline": [
+      "📖"
+    ],
+    "then": [
+      "* ",
+      "🙏"
+    ],
+    "when": [
+      "* ",
+      "🎬"
     ]
   },
   "en": {
@@ -3274,13 +3321,15 @@ module.exports={
   }
 }
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
+var countSymbols = require('./count_symbols')
+
 function GherkinLine(lineText, lineNumber) {
   this.lineText = lineText;
   this.lineNumber = lineNumber;
   this.trimmedLineText = lineText.replace(/^\s+/g, ''); // ltrim
   this.isEmpty = this.trimmedLineText.length == 0;
-  this.indent = lineText.length - this.trimmedLineText.length;
+  this.indent = countSymbols(lineText) - countSymbols(this.trimmedLineText);
 };
 
 GherkinLine.prototype.startsWith = function startsWith(prefix) {
@@ -3354,7 +3403,7 @@ GherkinLine.prototype.getTags = function getTags() {
 
 module.exports = GherkinLine;
 
-},{}],7:[function(require,module,exports){
+},{"./count_symbols":4}],8:[function(require,module,exports){
 // This file is generated. Do not edit! Edit gherkin-javascript.razor instead.
 var Errors = require('./errors');
 var AstBuilder = require('./ast_builder');
@@ -5378,8 +5427,9 @@ module.exports = function Parser(builder) {
 
 }
 
-},{"./ast_builder":2,"./errors":4,"./token_matcher":10,"./token_scanner":11}],8:[function(require,module,exports){
+},{"./ast_builder":2,"./errors":5,"./token_matcher":11,"./token_scanner":12}],9:[function(require,module,exports){
 var dialects = require('../gherkin-languages.json');
+var countSymbols = require('../count_symbols')
 
 function Compiler() {
   this.compile = function (feature, path) {
@@ -5515,7 +5565,7 @@ function Compiler() {
     return {
       path: path,
       line: step.location.line,
-      column: step.location.column + (step.keyword ? step.keyword.length : 0)
+      column: step.location.column + (step.keyword ? countSymbols(step.keyword) : 0)
     };
   }
 
@@ -5543,7 +5593,7 @@ function Compiler() {
 
 module.exports = Compiler;
 
-},{"../gherkin-languages.json":5}],9:[function(require,module,exports){
+},{"../count_symbols":4,"../gherkin-languages.json":6}],10:[function(require,module,exports){
 function Token(line, location) {
   this.line = line;
   this.location = location;
@@ -5560,7 +5610,7 @@ Token.prototype.detach = function () {
 
 module.exports = Token;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var dialects = require('./gherkin-languages.json');
 var Errors = require('./errors');
 var LANGUAGE_PATTERN = /^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$/;
@@ -5751,7 +5801,7 @@ module.exports = function TokenMatcher(defaultDialectName) {
   }
 };
 
-},{"./errors":4,"./gherkin-languages.json":5}],11:[function(require,module,exports){
+},{"./errors":5,"./gherkin-languages.json":6}],12:[function(require,module,exports){
 var Token = require('./token');
 var GherkinLine = require('./gherkin_line');
 
@@ -5776,4 +5826,4 @@ module.exports = function TokenScanner(source) {
   }
 };
 
-},{"./gherkin_line":6,"./token":9}]},{},[1]);
+},{"./gherkin_line":7,"./token":10}]},{},[1]);

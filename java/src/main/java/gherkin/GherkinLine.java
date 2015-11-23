@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static gherkin.SymbolCounter.countSymbols;
 import static gherkin.StringUtils.ltrim;
 
 public class GherkinLine implements IGherkinLine {
@@ -17,7 +18,7 @@ public class GherkinLine implements IGherkinLine {
 
     @Override
     public Integer indent() {
-        return lineText.length() - trimmedLineText.length();
+        return countSymbols(lineText) - countSymbols(trimmedLineText);
     }
 
     @Override

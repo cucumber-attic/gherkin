@@ -13,6 +13,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (All) Emoji translation of Gherkin
+  (by [aslakhellesoy](https://github.com/aslakhellesoy))
 * (Python) Implemented compiler
   ([#124](https://github.com/cucumber/gherkin3/pull/124))
   (by [Zearin](https://github.com/Zearin))

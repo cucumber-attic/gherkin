@@ -1,0 +1,26 @@
+[
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 4,
+        "path": "../testdata/good/minimal-emoji.feature"
+      }
+    ],
+    "name": "📕: 💃",
+    "steps": [
+      {
+        "arguments": [],
+        "locations": [
+          {
+            "column": 6,
+            "line": 5,
+            "path": "../testdata/good/minimal-emoji.feature"
+          }
+        ],
+        "text": "🎸"
+      }
+    ],
+    "tags": []
+  }
+]
