@@ -1,5 +1,6 @@
 package gherkin.pickles;
 
+import gherkin.SymbolCounter;
 import gherkin.GherkinDialect;
 import gherkin.GherkinDialectProvider;
 import gherkin.ast.Background;
@@ -186,7 +187,7 @@ public class Compiler {
         return new PickleLocation(
                 path,
                 step.getLocation().getLine(),
-                step.getLocation().getColumn() + (step.getKeyword() != null ? step.getKeyword().length() : 0)
+                step.getLocation().getColumn() + (step.getKeyword() != null ? SymbolCounter.countSymbols(step.getKeyword()) : 0)
         );
     }
 
