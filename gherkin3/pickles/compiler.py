@@ -1,7 +1,7 @@
 import re
 
 from ..dialect import Dialect
-
+from ..count_symbols import count_symbols
 
 def compile(feature, path):
     pickles = []
@@ -152,7 +152,7 @@ def _pickle_step_location(step, path):
     return {
         'path': path,
         'line': step['location']['line'],
-        'column': step['location']['column'] + len(step.get('keyword', 0))
+        'column': step['location']['column'] + count_symbols(step.get('keyword', 0))
     }
 
 
