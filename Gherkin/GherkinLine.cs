@@ -40,10 +40,8 @@ namespace Gherkin
 
         public bool StartsWithTitleKeyword(string text)
         {
-            int textLength = text.Length;
-            return trimmedLineText.Length > textLength &&
-                   trimmedLineText.StartsWith(text) &&
-                   StartsWithFrom(trimmedLineText, textLength, GherkinLanguageConstants.TITLE_KEYWORD_SEPARATOR);
+            return StringUtils.StartsWith(trimmedLineText, text) &&
+                StartsWithFrom(trimmedLineText, text.Length, GherkinLanguageConstants.TITLE_KEYWORD_SEPARATOR);
         }
 
         private static bool StartsWithFrom(string text, int textIndex, string value)
