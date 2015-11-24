@@ -1,6 +1,6 @@
-import re
+import sys
 
-REGEX_ASTRAL_SYMBOLS = re.compile(ur'[\uD800-\uDBFF][\uDC00-\uDFFF]', re.UNICODE)
-
-def count_symbols(string):
-    return len(REGEX_ASTRAL_SYMBOLS.sub('_', string))
+if sys.version_info[0] == 3:
+    from .count_symbols_py3_plus import count_symbols
+else:
+    from .count_symbols_py2 import count_symbols
