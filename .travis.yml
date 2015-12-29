@@ -6,34 +6,64 @@ sudo: false
 matrix:
   include:
     - env: TARGET_LANG=java
+      language: java
       jdk: oraclejdk8
+      before_install:
+        # https://github.com/travis-ci/travis-ci/issues/2839
+        - export JAVA_HOME="$(/usr/libexec/java_home)"
 
     - env: TARGET_LANG=ruby
+      language: ruby
       rvm: 2.0.0
+      before_install:
+        # for some ruby version the bunlder version becomes
+        # 1.6.9 if not installed explicitly
+        - gem install bundler -v 1.7.9
     - env: TARGET_LANG=ruby
+      language: ruby
       rvm: 2.1.0
+      before_install:
+        - gem install bundler -v 1.7.9
     - env: TARGET_LANG=ruby
+      language: ruby
       rvm: 2.2.0
+      before_install:
+        - gem install bundler -v 1.7.9
     - env: TARGET_LANG=ruby
-      rvm: jruby-head
+      language: ruby
+      rvm: jruby-1.7.22
+      before_install:
+        - gem install bundler -v 1.7.9
 
     - env: TARGET_LANG=javascript
+      language: javascript
       node_js: 0.10.40
     - env: TARGET_LANG=javascript
+      language: javascript
       node_js: 4.1.2
 
     - env: TARGET_LANG=go
+      language: go
       go: latest
 
     - env: TARGET_LANG=python
+      language: python
       python: "2.7"
+      install: "pip install -r $TARGET_LANG/requirements.txt"
     - env: TARGET_LANG=python
+      language: python
       python: "3.4"
+      install: "pip install -r $TARGET_LANG/requirements.txt"
+
+    - env: TARGET_LANG=objective-c
+      language: objective-c
+      os: osx
+      osx_image: xcode7
+      before_script:
+        - brew install jq
 
 before_install:
   - export EnableNuGetPackageRestore=true
-  # https://github.com/travis-ci/travis-ci/issues/2839
-  - export JAVA_HOME="$(/usr/libexec/java_home)"
 
 addons:
   apt:

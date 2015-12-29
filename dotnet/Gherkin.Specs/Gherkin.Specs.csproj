@@ -63,6 +63,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GherkinDialectTests.cs" />
+    <Compile Include="ParserErrorSerializationTests.cs" />
     <Compile Include="ParserErrorsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AstBuildingTests.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="TestFileProvider.cs" />
     <Compile Include="TestFolders.cs" />
     <Compile Include="TokenizationTests.cs" />
+    <Compile Include="StringUtilsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -92,7 +95,7 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

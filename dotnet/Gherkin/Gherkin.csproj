@@ -80,6 +80,7 @@
     <Compile Include="Token.cs" />
     <Compile Include="TokenMatcher.cs" />
     <Compile Include="TokenScanner.cs" />
+    <Compile Include="StringUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parser.Extensions.cs" />
@@ -88,7 +89,7 @@
   <PropertyGroup>
     <PreBuildEvent Condition=" '$(OS)' == 'Windows_NT'">$(SolutionDir)generate_parser.cmd</PreBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

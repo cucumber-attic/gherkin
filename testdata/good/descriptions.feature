@@ -37,6 +37,11 @@ This is a description without indentation
 
     Given the minimalism
 
+  Scenario: description with escaped docstring separator
+  This description has an \"\"\" (escaped docstring sparator)
+
+    Given the minimalism
+
   Scenario Outline: scenario outline with a description
 This is a scenario outline description
     Given the minimalism

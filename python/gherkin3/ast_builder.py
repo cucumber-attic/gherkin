@@ -97,7 +97,8 @@ class AstBuilder(object):
             })
         elif node.rule_type == 'DocString':
             separator_token = node.get_tokens('DocStringSeparator')[0]
-            content_type = separator_token.matched_text if len(separator_token.matched_text) > 0 else None 
+            content_type = (separator_token.matched_text if len(separator_token.matched_text) > 0
+                            else None)
             line_tokens = node.get_tokens('Other')
             content = '\n'.join([t.matched_text for t in line_tokens])
 

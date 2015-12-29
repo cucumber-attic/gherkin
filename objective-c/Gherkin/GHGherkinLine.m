@@ -150,10 +150,12 @@
             stringCharacter = i + 1 < rowLength ? [theRow substringWithRange: NSMakeRange(++i, 1)] : nil;
             if ([stringCharacter isEqualToString: GHTableCellNewlineEscape])
                 [cell appendString: @"\n"];
-            else if (stringCharacter)
+            else
+            {
                 if (![stringCharacter isEqualToString: GHTableCellSeparator] && ![stringCharacter isEqualToString: GHTableCellEscape])
                     [cell appendString: GHTableCellEscape];
                 [cell appendString: stringCharacter];
+            }
         }
         else
             [cell appendString: stringCharacter];

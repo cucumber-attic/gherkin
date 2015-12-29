@@ -112,7 +112,8 @@ class TokenMatcher(object):
         return True
 
     def match_Other(self, token):
-        text = token.line.get_line_text(self._indent_to_remove)  # take the entire line, except removing DocString indents
+        # take the entire line, except removing DocString indents
+        text = token.line.get_line_text(self._indent_to_remove)
         self._set_token_matched(token, 'Other', self._unescaped_docstring(text), indent=0)
         return True
 
@@ -136,7 +137,8 @@ class TokenMatcher(object):
         if items is None:
             items = []
         token.matched_type = matched_type
-        token.matched_text = text.rstrip('\r\n') if text is not None else None  # text == '' should not result in None
+        # text == '' should not result in None
+        token.matched_text = text.rstrip('\r\n') if text is not None else None
         token.matched_keyword = keyword
         if indent is not None:
             token.matched_indent = indent
@@ -155,4 +157,4 @@ class TokenMatcher(object):
         self.dialect = dialect
 
     def _unescaped_docstring(self, text):
-        return text.replace('\\"\\"\\"', '"""')
+        return text.replace('\\"\\"\\"', '"""') if self._active_doc_string_separator else text

@@ -13,16 +13,36 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (All) Emoji translation of Gherkin
+  (by [aslakhellesoy](https://github.com/aslakhellesoy))
+* (Python) Implemented compiler
+  ([#124](https://github.com/cucumber/gherkin3/pull/124))
+  (by [Zearin](https://github.com/Zearin))
 * (Objective C) New implementation
   ([#110](https://github.com/cucumber/gherkin3/pull/110))
   (by [LiohAu](https://github.com/LiohAu))
 
 ### Changed
+* (I18n) Support stricter French grammar
+  ([#134](https://github.com/cucumber/gherkin3/pull/134)
+   by [moreau-nicolas](https://github.com/moreau-nicolas))
 * (All) the AST's `DocString` `contentType` property is not defined rather than
   an empty string when the Gherkin doc doesn't specify the type after three backticks.
   (by [aslakhellesoy](https://github.com/aslakhellesoy))
 
 ### Fixed
+* (Python) Fix i18n support when parsing features from strings.
+  (by [brasmusson](https://github.com/brasmusson))
+* (Python) Prevent token_scanner.py from (recklessly) monkey-patching io.StringIO.
+  ([#121](https://github.com/cucumber/gherkin3/pull/121)
+   by [zbmott](https://github.com/zbmott))
+* (Travis CI) Build objective-c on Travis. Fix Travis language settings.
+  ([#122](https://github.com/cucumber/gherkin3/pull/122),
+   [#118](https://github.com/cucumber/gherkin3/issues/118)
+   by [brasmusson](https://github.com/brasmusson))
+* (All) Do not change escaped docstring separators in descriptions
+  ([#115](https://github.com/cucumber/gherkin3/pull/115)
+   by [brasmusson](https://github.com/brasmusson))
 * (JavaScript) interpolate replaces globally
   ([#108](https://github.com/cucumber/gherkin3/pull/108))
   (by [charlierudolph](https://github.com/charlierudolph))
@@ -110,7 +130,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 
 * First release
 
-[unreleased]: https://github.com/cucumber/gherkin3/compare/v3.1.1...HEAD
+[unreleased]: https://github.com/cucumber/gherkin3/compare/v3.1.2...HEAD
 [3.1.2]:      https://github.com/cucumber/gherkin3/compare/v3.1.1...v3.1.2
 [3.1.1]:      https://github.com/cucumber/gherkin3/compare/v3.1.0...v3.1.1
 [3.1.0]:      https://github.com/cucumber/gherkin3/compare/v3.0.0...v3.1.0

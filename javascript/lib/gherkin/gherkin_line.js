@@ -1,9 +1,11 @@
+var countSymbols = require('./count_symbols')
+
 function GherkinLine(lineText, lineNumber) {
   this.lineText = lineText;
   this.lineNumber = lineNumber;
   this.trimmedLineText = lineText.replace(/^\s+/g, ''); // ltrim
   this.isEmpty = this.trimmedLineText.length == 0;
-  this.indent = lineText.length - this.trimmedLineText.length;
+  this.indent = countSymbols(lineText) - countSymbols(this.trimmedLineText);
 };
 
 GherkinLine.prototype.startsWith = function startsWith(prefix) {

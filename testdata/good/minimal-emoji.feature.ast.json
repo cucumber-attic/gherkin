@@ -1,0 +1,35 @@
+{
+  "comments": [],
+  "keyword": "📚",
+  "language": "em",
+  "location": {
+    "column": 1,
+    "line": 2
+  },
+  "name": "🙈🙉🙊",
+  "scenarioDefinitions": [
+    {
+      "keyword": "📕",
+      "location": {
+        "column": 3,
+        "line": 4
+      },
+      "name": "💃",
+      "steps": [
+        {
+          "keyword": "😐",
+          "location": {
+            "column": 5,
+            "line": 5
+          },
+          "text": "🎸",
+          "type": "Step"
+        }
+      ],
+      "tags": [],
+      "type": "Scenario"
+    }
+  ],
+  "tags": [],
+  "type": "Feature"
+}

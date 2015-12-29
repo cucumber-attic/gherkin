@@ -43,7 +43,7 @@ THE SOFTWARE.
   };
 }));
 
-},{"./lib/gherkin/ast_builder":2,"./lib/gherkin/parser":7,"./lib/gherkin/pickles/compiler":8,"./lib/gherkin/token_matcher":10,"./lib/gherkin/token_scanner":11}],2:[function(require,module,exports){
+},{"./lib/gherkin/ast_builder":2,"./lib/gherkin/parser":8,"./lib/gherkin/pickles/compiler":9,"./lib/gherkin/token_matcher":11,"./lib/gherkin/token_scanner":12}],2:[function(require,module,exports){
 var AstNode = require('./ast_node');
 var Errors = require('./errors');
 
@@ -294,7 +294,7 @@ module.exports = function AstBuilder () {
 
 };
 
-},{"./ast_node":3,"./errors":4}],3:[function(require,module,exports){
+},{"./ast_node":3,"./errors":5}],3:[function(require,module,exports){
 function AstNode (ruleType) {
   this.ruleType = ruleType;
   this._subItems = {};
@@ -325,6 +325,14 @@ AstNode.prototype.getTokens = function (tokenType) {
 module.exports = AstNode;
 
 },{}],4:[function(require,module,exports){
+// https://mathiasbynens.be/notes/javascript-unicode
+var regexAstralSymbols = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
+
+module.exports = function countSymbols(string) {
+  return string.replace(regexAstralSymbols, '_').length;
+}
+
+},{}],5:[function(require,module,exports){
 var Errors = {};
 
 [
@@ -387,7 +395,7 @@ function createError(Ctor, message, location) {
 
 module.exports = Errors;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports={
   "af": {
     "and": [
@@ -618,19 +626,19 @@ module.exports={
       "Karakteristika"
     ],
     "given": [
-       "* ",
-       "Dato "
+      "* ",
+      "Dato "
     ],
     "name": "Bosnian",
     "native": "Bosanski",
     "scenario": [
-       "Scenariju",
-       "Scenario"
+      "Scenariju",
+      "Scenario"
     ],
     "scenarioOutline": [
-       "Scenariju-obris",
-       "Scenario-outline"
-    ], 
+      "Scenariju-obris",
+      "Scenario-outline"
+    ],
     "then": [
       "* ",
       "Zatim "
@@ -886,6 +894,45 @@ module.exports={
     "when": [
       "* ",
       "Όταν "
+    ]
+  },
+  "em": {
+    "and": [
+      "* ",
+      "😂"
+    ],
+    "background": [
+      "💤"
+    ],
+    "but": [
+      "* ",
+      "😔"
+    ],
+    "examples": [
+      "📓"
+    ],
+    "feature": [
+      "📚"
+    ],
+    "given": [
+      "* ",
+      "😐"
+    ],
+    "name": "Emoji",
+    "native": "😀",
+    "scenario": [
+      "📕"
+    ],
+    "scenarioOutline": [
+      "📖"
+    ],
+    "then": [
+      "* ",
+      "🙏"
+    ],
+    "when": [
+      "* ",
+      "🎬"
     ]
   },
   "en": {
@@ -1350,6 +1397,8 @@ module.exports={
   "fr": {
     "and": [
       "* ",
+      "Et que ",
+      "Et qu'",
       "Et "
     ],
     "background": [
@@ -1357,6 +1406,8 @@ module.exports={
     ],
     "but": [
       "* ",
+      "Mais que ",
+      "Mais qu'",
       "Mais "
     ],
     "examples": [
@@ -1368,10 +1419,14 @@ module.exports={
     "given": [
       "* ",
       "Soit ",
+      "Etant donné que ",
+      "Etant donné qu'",
       "Etant donné ",
       "Etant donnée ",
       "Etant donnés ",
       "Etant données ",
+      "Étant donné que ",
+      "Étant donné qu'",
       "Étant donné ",
       "Étant donnée ",
       "Étant donnés ",
@@ -3266,13 +3321,15 @@ module.exports={
   }
 }
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
+var countSymbols = require('./count_symbols')
+
 function GherkinLine(lineText, lineNumber) {
   this.lineText = lineText;
   this.lineNumber = lineNumber;
   this.trimmedLineText = lineText.replace(/^\s+/g, ''); // ltrim
   this.isEmpty = this.trimmedLineText.length == 0;
-  this.indent = lineText.length - this.trimmedLineText.length;
+  this.indent = countSymbols(lineText) - countSymbols(this.trimmedLineText);
 };
 
 GherkinLine.prototype.startsWith = function startsWith(prefix) {
@@ -3322,6 +3379,9 @@ GherkinLine.prototype.getTableCells = function getTableCells() {
       if (chr == 'n') {
         cell += '\n';
       } else {
+        if (chr != '|' && chr != '\\') {
+          cell += '\\';
+        }
         cell += chr;
       }
     } else {
@@ -3346,7 +3406,7 @@ GherkinLine.prototype.getTags = function getTags() {
 
 module.exports = GherkinLine;
 
-},{}],7:[function(require,module,exports){
+},{"./count_symbols":4}],8:[function(require,module,exports){
 // This file is generated. Do not edit! Edit gherkin-javascript.razor instead.
 var Errors = require('./errors');
 var AstBuilder = require('./ast_builder');
@@ -5370,8 +5430,9 @@ module.exports = function Parser(builder) {
 
 }
 
-},{"./ast_builder":2,"./errors":4,"./token_matcher":10,"./token_scanner":11}],8:[function(require,module,exports){
+},{"./ast_builder":2,"./errors":5,"./token_matcher":11,"./token_scanner":12}],9:[function(require,module,exports){
 var dialects = require('../gherkin-languages.json');
+var countSymbols = require('../count_symbols')
 
 function Compiler() {
   this.compile = function (feature, path) {
@@ -5379,7 +5440,7 @@ function Compiler() {
     var dialect = dialects[feature.language];
 
     var featureTags = feature.tags;
-    var backgroundSteps = getBackgroundSteps(feature.background);
+    var backgroundSteps = getBackgroundSteps(feature.background, path);
 
     feature.scenarioDefinitions.forEach(function (scenarioDefinition) {
       if(scenarioDefinition.type === 'Scenario') {
@@ -5397,14 +5458,13 @@ function Compiler() {
     var tags = [].concat(featureTags).concat(scenario.tags);
 
     scenario.steps.forEach(function (step) {
-      steps.push(pickleStep(step));
+      steps.push(pickleStep(step, path));
     });
 
     var pickle = {
-      path: path,
-      tags: pickleTags(tags),
+      tags: pickleTags(tags, path),
       name: scenario.keyword + ": " + scenario.name,
-      locations: [pickleLocation(scenario.location)],
+      locations: [pickleLocation(scenario.location, path)],
       steps: steps
     };
     pickles.push(pickle);
@@ -5421,26 +5481,25 @@ function Compiler() {
 
         scenarioOutline.steps.forEach(function (scenarioOutlineStep) {
           var stepText = interpolate(scenarioOutlineStep.text, variableCells, valueCells);
-          var arguments = createPickleArguments(scenarioOutlineStep.argument, variableCells, valueCells);
+          var arguments = createPickleArguments(scenarioOutlineStep.argument, variableCells, valueCells, path);
           var pickleStep = {
             text: stepText,
             arguments: arguments,
             locations: [
-              pickleLocation(values.location),
-              pickleStepLocation(scenarioOutlineStep)
+              pickleLocation(values.location, path),
+              pickleStepLocation(scenarioOutlineStep, path)
             ]
           };
           steps.push(pickleStep);
         });
 
         var pickle = {
-          path: path,
           name: keyword + ": " + interpolate(scenarioOutline.name, variableCells, valueCells),
           steps: steps,
-          tags: pickleTags(tags),
+          tags: pickleTags(tags, path),
           locations: [
-            pickleLocation(values.location),
-            pickleLocation(scenarioOutline.location)
+            pickleLocation(values.location, path),
+            pickleLocation(scenarioOutline.location, path)
           ]
         };
         pickles.push(pickle);
@@ -5449,7 +5508,7 @@ function Compiler() {
     });
   }
 
-  function createPickleArguments(argument, variables, values) {
+  function createPickleArguments(argument, variableCells, valueCells, path) {
     var result = [];
     if (!argument) return result;
     if (argument.type === 'DataTable') {
@@ -5458,8 +5517,8 @@ function Compiler() {
           return {
             cells: row.cells.map(function (cell) {
               return {
-                location: pickleLocation(cell.location),
-                value: interpolate(cell.value, variables, values)
+                location: pickleLocation(cell.location, path),
+                value: interpolate(cell.value, variableCells, valueCells)
               };
             })
           };
@@ -5468,8 +5527,8 @@ function Compiler() {
       result.push(table);
     } else if (argument.type === 'DocString') {
       var docString = {
-        location: pickleLocation(argument.location),
-        content: interpolate(argument.content, variables, values)
+        location: pickleLocation(argument.location, path),
+        content: interpolate(argument.content, variableCells, valueCells)
       }
       result.push(docString);
     } else {
@@ -5487,53 +5546,57 @@ function Compiler() {
     return name;
   }
 
-  function getBackgroundSteps(background) {
+  function getBackgroundSteps(background, path) {
     if(background) {
       return background.steps.map(function (step) {
-        return pickleStep(step);
+        return pickleStep(step, path);
       });
     } else {
       return [];
     }
   }
 
-  function pickleStep(step) {
+  function pickleStep(step, path) {
     return {
       text: step.text,
-      arguments: createPickleArguments(step.argument, [], []),
-      locations: [pickleStepLocation(step)]
+      arguments: createPickleArguments(step.argument, [], [], path),
+      locations: [pickleStepLocation(step, path)]
     }
   }
 
-  function pickleStepLocation(step) {
+  function pickleStepLocation(step, path) {
     return {
+      path: path,
       line: step.location.line,
-      column: step.location.column + (step.keyword ? step.keyword.length : 0)
+      column: step.location.column + (step.keyword ? countSymbols(step.keyword) : 0)
     };
   }
 
-  function pickleLocation(location) {
+  function pickleLocation(location, path) {
     return {
+      path: path,
       line: location.line,
       column: location.column
     }
   }
 
-  function pickleTags(tags) {
-    return tags.map(pickleTag);
+  function pickleTags(tags, path) {
+    return tags.map(function (tag) {
+      return pickleTag(tag, path);
+    });
   }
 
-  function pickleTag(tag) {
+  function pickleTag(tag, path) {
     return {
       name: tag.name,
-      location: pickleLocation(tag.location)
+      location: pickleLocation(tag.location, path)
     };
   }
 }
 
 module.exports = Compiler;
 
-},{"../gherkin-languages.json":5}],9:[function(require,module,exports){
+},{"../count_symbols":4,"../gherkin-languages.json":6}],10:[function(require,module,exports){
 function Token(line, location) {
   this.line = line;
   this.location = location;
@@ -5550,7 +5613,7 @@ Token.prototype.detach = function () {
 
 module.exports = Token;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var dialects = require('./gherkin-languages.json');
 var Errors = require('./errors');
 var LANGUAGE_PATTERN = /^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$/;
@@ -5737,11 +5800,11 @@ module.exports = function TokenMatcher(defaultDialectName) {
   }
 
   function unescapeDocString(text) {
-    return text.replace("\\\"\\\"\\\"", "\"\"\"");
+    return activeDocStringSeparator != null ? text.replace("\\\"\\\"\\\"", "\"\"\"") : text;
   }
 };
 
-},{"./errors":4,"./gherkin-languages.json":5}],11:[function(require,module,exports){
+},{"./errors":5,"./gherkin-languages.json":6}],12:[function(require,module,exports){
 var Token = require('./token');
 var GherkinLine = require('./gherkin_line');
 
@@ -5766,4 +5829,4 @@ module.exports = function TokenScanner(source) {
   }
 };
 
-},{"./gherkin_line":6,"./token":9}]},{},[1]);
+},{"./gherkin_line":7,"./token":10}]},{},[1]);

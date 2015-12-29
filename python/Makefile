@@ -3,6 +3,7 @@ BAD_FEATURE_FILES  = $(shell find ../testdata/bad -name "*.feature")
 
 TOKENS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.tokens,$(GOOD_FEATURE_FILES))
 ASTS     = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.ast.json,$(GOOD_FEATURE_FILES))
+PICKLES  = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.pickles.json,$(GOOD_FEATURE_FILES))
 ERRORS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.errors,$(BAD_FEATURE_FILES))
 
 PYTHON_FILES = $(shell find . -name "*.py")
@@ -10,10 +11,12 @@ PYTHON_FILES = $(shell find . -name "*.py")
 all: .compared
 .PHONY: all
 
-.compared: .built $(TOKENS) $(ASTS) $(ERRORS)
+.compared: .built $(TOKENS) $(ASTS) $(PICKLES) $(ERRORS)
 	touch $@
 
-.built: show-version-info gherkin3/parser.py gherkin3/gherkin-languages.json $(PYTHON_FILES) LICENSE.txt
+.built: gherkin3/parser.py gherkin3/gherkin-languages.json $(PYTHON_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast LICENSE.txt
+	@$(MAKE) --no-print-directory show-version-info
+	nosetests
 	touch $@
 
 show-version-info:
@@ -31,6 +34,12 @@ acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feat
 	bin/gherkin-generate-ast $< > $@
 	diff --unified $<.ast.json $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
+
+acceptance/testdata/%.feature.pickles.json: ../testdata/%.feature ../testdata/%.feature.pickles.json .built
+	mkdir -p `dirname $@`
+	bin/gherkin-generate-pickles $< > $@
+	diff --unified $<.pickles.json $@
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.pickles.json
 
 acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors .built
 	mkdir -p `dirname $@`
@@ -53,3 +62,6 @@ gherkin3/parser.py: ../gherkin.berp gherkin-python.razor ../bin/berp.exe
 
 LICENSE.txt: ../LICENSE
 	cp $< $@
+
+update-gherkin-languages: gherkin3/gherkin-languages.json
+.PHONY: update-gherkin-languages

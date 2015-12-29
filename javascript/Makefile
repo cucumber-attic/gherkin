@@ -80,3 +80,6 @@ LICENSE: ../LICENSE
 clean:
 	rm -rf .compared .built acceptance lib/gherkin/parser.js lib/gherkin/gherkin-languages.json dist
 .PHONY: clean
+
+update-gherkin-languages: lib/gherkin/gherkin-languages.json
+.PHONY: update-gherkin-languages

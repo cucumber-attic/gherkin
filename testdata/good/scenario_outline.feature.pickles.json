@@ -3,26 +3,29 @@
     "locations": [
       {
         "column": 3,
-        "line": 8
+        "line": 8,
+        "path": "../testdata/good/scenario_outline.feature"
       },
       {
         "column": 1,
-        "line": 3
+        "line": 3,
+        "path": "../testdata/good/scenario_outline.feature"
       }
     ],
     "name": "Scenario: minimalistic",
-    "path": "../testdata/good/scenario_outline.feature",
     "steps": [
       {
         "arguments": [],
         "locations": [
           {
             "column": 3,
-            "line": 8
+            "line": 8,
+            "path": "../testdata/good/scenario_outline.feature"
           },
           {
             "column": 11,
-            "line": 4
+            "line": 4,
+            "path": "../testdata/good/scenario_outline.feature"
           }
         ],
         "text": "the minimalism"

@@ -9,14 +9,18 @@ Gherkin 3 is a parser and compiler for the Gherkin language.
 It is intended to replace [Gherkin 2](https://github.com/cucumber/gherkin) and be used by
 all [Cucumber](https://cukes.info) implementations to parse `.feature` files.
 
+If you want a reference implementation of Cucumber (based on Gherkin3), take a
+look at [microcuke](https://github.com/cucumber/microcuke).
+
 Gherkin 3 is currently implemented for the following platforms:
 
-* .NET (C#)
-* JVM (Java)
-* JavaScript (Browser or Node.js/IO.js)
-* Ruby (MRI, JRuby or any other Ruby implementation)
-* Go
-* Python
+* [.NET](https://github.com/cucumber/gherkin-dotnet)
+* [Java](https://github.com/cucumber/gherkin-java)
+* [JavaScript](https://github.com/cucumber/gherkin-javascript)
+* [Ruby](https://github.com/cucumber/gherkin-ruby)
+* [Go](https://github.com/cucumber/gherkin-go)
+* [Python](https://github.com/cucumber/gherkin-python)
+* [Objective-C](https://github.com/cucumber/gherkin-objective-c)
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) if you want to contribute a parser for a new language.
 Our wish-list is (in no particular order):
@@ -25,7 +29,7 @@ Our wish-list is (in no particular order):
 * Perl
 * PHP
 * Rust
-* Swift
+* Elixir
 
 ## Example
 

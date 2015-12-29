@@ -1,7 +1,10 @@
 # Contributing to Gherkin 3
 
-Gherkin3 is implemented in several different languages, and each language implementation
-lives in a separate git repository.
+Gherkin3 is implemented in several different languages. Each implementation is
+in a separate sub directory in this repository.
+
+A copy of each implementation also exists in a separate git repository,
+under `https://github.com/cucumber/gherkin-DIRNAME`.
 
 The code in each of those git repositories can be built and used independently.
 This is useful for people who only want to *use* Gherkin without *contributing*
@@ -62,6 +65,16 @@ With all this installed, just run `make` from the root directory.
 * If you change code, please make sure all implementations are changed accordingly.
   * If you don't to do this, we might reject your patch because the burden to keep parsers in sync is now on us.
 
+## Adding or updating an i18n language
+
+1) Edit the file gherkin-lanauges.json.
+
+2) Distribute the changes to the different parser implementations, this requires `make`, `jq`, `diff`, but no compiler/interpreters:
+
+    make update-gherkin-languages
+
+3) Make a pull request with the changed files.
+ 
 ## Building individual parsers
 
 It's possible to build the parser for a single language too. Please refer to

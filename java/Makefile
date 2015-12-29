@@ -37,7 +37,6 @@ acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feat
 # acceptance/testdata/%.feature.pickles.json: ../testdata/%.feature .built
 # 	mkdir -p `dirname $@`
 # 	bin/gherkin-generate-pickles $< | jq --sort-keys "." > $<.pickles.json
-# .DELETE_ON_ERROR: ../testdata/%.feature.pickles.json
 
 acceptance/testdata/%.feature.pickles.json: ../testdata/%.feature ../testdata/%.feature.pickles.json .built
 	mkdir -p `dirname $@`
@@ -67,3 +66,6 @@ LICENSE: ../LICENSE
 clean:
 	rm -rf .compared .built acceptance target src/main/resources/gherkin/gherkin-languages.json
 .PHONY: clean
+
+update-gherkin-languages: src/main/resources/gherkin/gherkin-languages.json
+.PHONY: update-gherkin-languages

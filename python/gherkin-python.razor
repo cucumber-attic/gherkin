@@ -37,7 +37,8 @@ RULE_TYPE = [
     @foreach(var rule in Model.RuleSet.Where(r => !r.TempRule))
     {<text>    '@rule.Name.Replace("#", "_")',  # @rule.ToString(true)
 </text>}
-  ]
+]
+
 
 class ParserContext(object):
     def __init__(self, token_scanner, token_matcher, token_queue, errors):
@@ -45,6 +46,7 @@ class ParserContext(object):
         self.token_matcher = token_matcher
         self.token_queue = token_queue
         self.errors = errors
+
 
 class @(Model.ParserClassName)(object):
     def __init__(self, ast_builder=AstBuilder()):
@@ -59,8 +61,7 @@ class @(Model.ParserClassName)(object):
             token_scanner,
             token_matcher,
             deque(),
-            []
-            )
+            [])
 
         self.start_rule(context, 'Feature')
         state = 0
@@ -115,7 +116,7 @@ class @(Model.ParserClassName)(object):
         state_map = {
         @foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
         {
-        @:   @state.Id: self.match_token_at_@(state.Id),
+        @:    @state.Id: self.match_token_at_@(state.Id),
         }
         }
         if state in state_map:
