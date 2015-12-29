@@ -13,7 +13,10 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
-* (All) Emoji translation of Gherkin
+* (I18n) Mongolian translation of Gherkin
+  ([#140](https://github.com/cucumber/gherkin3/pull/140))
+  (by [jargalan](https://github.com/jargalan))
+* (I18n) Emoji translation of Gherkin
   (by [aslakhellesoy](https://github.com/aslakhellesoy))
 * (Python) Implemented compiler
   ([#124](https://github.com/cucumber/gherkin3/pull/124))
