@@ -1,6 +1,14 @@
 var AstNode = require('./ast_node');
 var Errors = require('./errors');
 
+/**
+ * The `AstBuilder` (used by the `Parser`) builds the AST (Abstract Syntax Tree).
+ * The AST is comprised of `AstNode` objects (or “nodes”).
+ * 
+ * The implementation is simple objects without behaviour, only data. 
+ * It's up to the implementation to decide whether to use classes or just basic collections, 
+ * but the AST must have a JSON representation (this is used for testing).
+ */
 module.exports = function AstBuilder () {
 
   var stack = [new AstNode('None')];
