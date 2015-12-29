@@ -13,6 +13,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (I18n) Improved Irish translation of Gherkin
+  ([#135](https://github.com/cucumber/gherkin3/pull/135))
+  (by [merrua](https://github.com/merrua))
 * (I18n) Mongolian translation of Gherkin
   ([#140](https://github.com/cucumber/gherkin3/pull/140))
   (by [jargalan](https://github.com/jargalan))
