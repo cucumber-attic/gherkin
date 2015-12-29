@@ -51,12 +51,21 @@ Prerequisites:
   * Maven
 * Node.js or IO.js
 * Ruby
+* Python (both python2 & python3)
 * `make`
-* `jq`
+* `jq` (>= 1.4 for `--sort-keys` option)
 * `diff`
 * `git`
 
 With all this installed, just run `make` from the root directory.
+
+Notes:
+* Mono might complain about NuGet.CommandLine authentication or decryption failing, you can type
+```
+mozroots --import --sync
+```
+to import Mozilla certificates & solve the problem
+* on Ubuntu you need to create a symbolic link from `/usr/bin/nodejs` to `/usr/bin/node`
 
 ## Contributing changes
 
@@ -226,4 +235,14 @@ With the parser:
 
 5) Inspect the generated `.feature.ast.json` file manually to see if it's good.
 
-6) Run `make` from the root directory to verify that all parsers parse it ok.
+6) Generate the pickles:
+
+    cd [LANGUAGE]
+    ./bin/gherkin-generate-pickles \
+    ../testdata/good/newfile.feature | \
+    jq --sort-keys "." > \
+    ../testdata/good/newfile.feature.pickles.json
+
+7) Inspect the generated `.feature.pickles.json` file manually to see if it's good.
+
+8) Run `make` from the root directory to verify that all parsers parse it ok.
