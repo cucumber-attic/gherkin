@@ -3379,6 +3379,9 @@ GherkinLine.prototype.getTableCells = function getTableCells() {
       if (chr == 'n') {
         cell += '\n';
       } else {
+        if (chr != '|' && chr != '\\') {
+          cell += '\\';
+        }
         cell += chr;
       }
     } else {
