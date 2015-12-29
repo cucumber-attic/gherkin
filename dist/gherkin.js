@@ -587,14 +587,14 @@ module.exports={
     "native": "Bahasa Melayu",
     "scenario": [
       "Senario",
-      "Situai",
+      "Situasi",
       "Keadaan"
     ],
     "scenarioOutline": [
-      "Template Senario",
-      "Template Situai",
-      "Template Keadaan",
-      "Menggariskan Senario"
+      "Kerangka Senario",
+      "Kerangka Situasi",
+      "Kerangka Keadaan",
+      "Garis Panduan Senario"
     ],
     "then": [
       "* ",
