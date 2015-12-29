@@ -23,6 +23,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
   (by [LiohAu](https://github.com/LiohAu))
 
 ### Changed
+* (All) Escape only '|', 'n' and '\' in table cells
+  ([#114](https://github.com/cucumber/gherkin3/pull/114)
+   by [brasmusson](https://github.com/brasmusson))
 * (I18n) Support stricter French grammar
   ([#134](https://github.com/cucumber/gherkin3/pull/134)
    by [moreau-nicolas](https://github.com/moreau-nicolas))
