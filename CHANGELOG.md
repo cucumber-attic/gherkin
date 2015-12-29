@@ -8,112 +8,113 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 
 ----
 
-## [Unreleased][unreleased]
+## [Unreleased]
 
 ### Removed
 
 ### Added
 * (I18n) Improved Irish translation of Gherkin
-  ([#135](https://github.com/cucumber/gherkin3/pull/135))
-  (by [merrua](https://github.com/merrua))
+  ([#135](https://github.com/cucumber/gherkin3/pull/135)
+   by [merrua])
 * (I18n) Mongolian translation of Gherkin
-  ([#140](https://github.com/cucumber/gherkin3/pull/140))
-  (by [jargalan](https://github.com/jargalan))
+  ([#140](https://github.com/cucumber/gherkin3/pull/140)
+   by [jargalan])
 * (I18n) Emoji translation of Gherkin
-  (by [aslakhellesoy](https://github.com/aslakhellesoy))
+  (by [aslakhellesoy])
 * (Python) Implemented compiler
-  ([#124](https://github.com/cucumber/gherkin3/pull/124))
-  (by [Zearin](https://github.com/Zearin))
+  ([#124](https://github.com/cucumber/gherkin3/pull/124)
+   by [Zearin])
 * (Objective C) New implementation
-  ([#110](https://github.com/cucumber/gherkin3/pull/110))
-  (by [LiohAu](https://github.com/LiohAu))
+  ([#110](https://github.com/cucumber/gherkin3/pull/110)
+   by [LiohAu])
 
 ### Changed
 * (All) Escape only '|', 'n' and '\' in table cells
   ([#114](https://github.com/cucumber/gherkin3/pull/114)
-   by [brasmusson](https://github.com/brasmusson))
+   by [brasmusson])
 * (I18n) Support stricter French grammar
   ([#134](https://github.com/cucumber/gherkin3/pull/134)
-   by [moreau-nicolas](https://github.com/moreau-nicolas))
+   by [moreau-nicolas])
 * (All) the AST's `DocString` `contentType` property is not defined rather than
   an empty string when the Gherkin doc doesn't specify the type after three backticks.
-  (by [aslakhellesoy](https://github.com/aslakhellesoy))
+  (by [aslakhellesoy])
 
 ### Fixed
 * (Python) Fix i18n support when parsing features from strings.
-  (by [brasmusson](https://github.com/brasmusson))
-* (Python) Prevent token_scanner.py from (recklessly) monkey-patching io.StringIO.
-  ([#121](https://github.com/cucumber/gherkin3/pull/121)
-   by [zbmott](https://github.com/zbmott))
-* (Travis CI) Build objective-c on Travis. Fix Travis language settings.
-  ([#122](https://github.com/cucumber/gherkin3/pull/122),
-   [#118](https://github.com/cucumber/gherkin3/issues/118)
-   by [brasmusson](https://github.com/brasmusson))
+  (by [brasmusson])
 * (All) Do not change escaped docstring separators in descriptions
   ([#115](https://github.com/cucumber/gherkin3/pull/115)
-   by [brasmusson](https://github.com/brasmusson))
-* (JavaScript) interpolate replaces globally
-  ([#108](https://github.com/cucumber/gherkin3/pull/108))
-  (by [charlierudolph](https://github.com/charlierudolph))
-* (JavaScript) make parser work on Node 0.10 (as well as 4.1)
-  (by [aslakhellesoy](https://github.com/aslakhellesoy))
-* (Go) Fixed bug in the parser's lookahead
-  (by [brasmusson](https://github.com/brasmusson))
+   by [brasmusson])
+* (Travis CI) Build Objective-C on Travis. Fix Travis language settings.
+  ([#122](https://github.com/cucumber/gherkin3/pull/122),
+   [#118](https://github.com/cucumber/gherkin3/issues/118),
+   by [brasmusson])
+* (Python) Don't monkey-patch `io.StringIO` in `token_scanner.py`
+  ([#121](https://github.com/cucumber/gherkin3/pull/121)
+   by [zbmott])
+* (JavaScript) Interpolate replaces globally
+  ([#108](https://github.com/cucumber/gherkin3/pull/108)
+   by [charlierudolph])
+* (JavaScript)  Make parser work on Node 0.10 and 4.1
+  (by [aslakhellesoy])
+* (Go) Fix lookahead bug in the parser
+  (by [brasmusson])
 
 ## [3.1.2] - 2015-10-04
 
-### Removed
-* (Ruby) `Parser.parse` no longer treats `String` as a file path (only as source).
-
 ### Added
-* (Ruby) `Parser.parse` now accepts a `String`, `StringIO`, `IO` or `TokenScanner`.
-  ([#100](https://github.com/cucumber/gherkin3/pull/100)
-  by [maxmeyer](https://github.com/maxmeyer))
-* (All)         It's now possible to pass a default language to the TokenMatcher.
-                Previously it only worked in Javascript.
+* (All) `TokenMatcher` now accepts a default language
+  (previously, only JavaScript had this behavior)
   ([#78](https://github.com/cucumber/gherkin3/issues/78)
-   by [brasmusson](https://github.com/brasmusson))
-* (JavaScript) Added browserified `dist/gherkin.js` and `dist/gherkin.min.js` by [aslakhellesoy](https://github.com/aslakhellesoy)
+   by [brasmusson])
+* (Ruby) `Parser.parse` now accepts a `String`, `StringIO`, `IO` or `TokenScanner`
+  ([#100](https://github.com/cucumber/gherkin3/pull/100)
+   by [maxmeyer])
+* (JavaScript) Add browserified `dist/gherkin.js` and `dist/gherkin.min.js`
+  (by [aslakhellesoy])
 
 ### Changed
-* (Python) Use `@properties` in Dialect class
+* (Python) Use `@properties` in `Dialect` class
   ([#86](https://github.com/cucumber/gherkin3/pull/86)
-   by [Zearin](https://github.com/Zearin))
+   by [Zearin])
+* (Ruby) `Parser.parse` now treats `String` as source (not a file path)
 
 ### Fixed
-* (Ruby) Fixed bug in the parser's lookahead
+* (Ruby) Fix lookahead bug in the parser
   ([#104](https://github.com/cucumber/gherkin3/issues/104)
-  by [brasmusson](https://github.com/brasmusson)
-  and [aslakhellesoy](https://github.com/aslakhellesoy))
-* (Python) Fix file parsing on Windows.
+   by [brasmusson]
+   and [aslakhellesoy])
+* (Python) Fix file parsing on Windows
   ([#93](https://github.com/cucumber/gherkin3/issues/93)
-   by [brasmusson](https://github.com/brasmusson))
+   by [brasmusson])
 
 ## [3.1.1] - 2015-09-03
 
 ### Added
-* (All)         Added Bosnian
+* (All) Add Bosnian
   ([#48](https://github.com/cucumber/gherkin3/pull/48)
-   by [10-io](https://github.com/10-io))
-* (All)         Added support for `\n`, '\|' and '\\' in table cells
+   by [10-io])
+* (All) Add support for `\n`, '\|', and '\\' in table cells
   ([#40](https://github.com/cucumber/gherkin3/issues/40),
-   [#71](https://github.com/cucumber/gherkin3/pull/71)
-   by [koterpillar](https://github.com/koterpillar))
+   [#71](https://github.com/cucumber/gherkin3/pull/71),
+   by [koterpillar])
 * (JavaScript)  Default arguments for `Parser(builder)` and `Parser.parse(scanner, matcher)`
-  (by [aslakhellesoy](https://github.com/aslakhellesoy))
-* (JavaScript)  It's now possible to pass a string directly to `Parser.parse()`
-* (Python)      It's now possible to pass a string directly to `Parser.parse()`
-  (by [aslakhellesoy](https://github.com/aslakhellesoy))
+  (by [aslakhellesoy])
+* (JavaScript) It's now possible to pass a string directly to `Parser.parse()`
+* (Python) It's now possible to pass a string directly to `Parser.parse()`
+  (by [aslakhellesoy])
 
 
 ### Changed
-* (Java)        Improvements to the build process
-* (Python)      Use new-style classes
-  ([#72](https://github.com/cucumber/gherkin3/pull/72))
+* (Java) Improved build process
+* (Python) Use new-style classes
+  ([#72](https://github.com/cucumber/gherkin3/pull/72)
+   by [Zearin])
 
 ### Fixed
-* (Python) File descriptors are now excplicitly closed
-  ([#74](https://github.com/cucumber/gherkin3/pull/74))
+* (Python) File descriptors are now explicitly closed
+  ([#74](https://github.com/cucumber/gherkin3/pull/74)
+   by [Zearin])
 
 ## [3.1.0] - 2015-08-16
 
@@ -126,7 +127,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
    [#58](https://github.com/cucumber/gherkin3/issues/58))
 
 ### Changed
-* (Java) Maven `groupId` artifact changed from `info.cukes` to `io.cucumber`
+* (Java) Change Maven `groupId` artifact from `info.cukes` to `io.cucumber`
 
 ### Fixed
 * (All) Multiple calls to `parse()` cannot use the same instance of `AstBuilder`
@@ -139,7 +140,22 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 
 * First release
 
-[unreleased]: https://github.com/cucumber/gherkin3/compare/v3.1.2...HEAD
+<!-- Releases -->
+[Unreleased]: https://github.com/cucumber/gherkin3/compare/v3.1.2...HEAD
 [3.1.2]:      https://github.com/cucumber/gherkin3/compare/v3.1.1...v3.1.2
 [3.1.1]:      https://github.com/cucumber/gherkin3/compare/v3.1.0...v3.1.1
 [3.1.0]:      https://github.com/cucumber/gherkin3/compare/v3.0.0...v3.1.0
+
+<!-- Contributors -->
+[10-io]:            https://github.com/10-io
+[aslakhellesoy]:    https://github.com/aslakhellesoy
+[brasmusson]:       https://github.com/brasmusson
+[charlierudolph]:   https://github.com/charlierudolph
+[jargalan]:         https://github.com/jargalan
+[koterpillar]:      https://github.com/koterpillar
+[LiohAu]:           https://github.com/LiohAu
+[maxmeyer]:         https://github.com/maxmeyer
+[merrua]:           https://github.com/merrua
+[moreau-nicolas]:   https://github.com/moreau-nicolas
+[zbmott]:           https://github.com/zbmott
+[Zearin]:           https://github.com/Zearin
