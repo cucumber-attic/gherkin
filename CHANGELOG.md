@@ -13,9 +13,6 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
-* (I18n) Improved Irish translation of Gherkin
-  ([#135](https://github.com/cucumber/gherkin3/pull/135)
-   by [merrua])
 * (I18n) Mongolian translation of Gherkin
   ([#140](https://github.com/cucumber/gherkin3/pull/140)
    by [jargalan])
@@ -29,6 +26,12 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
    by [LiohAu])
 
 ### Changed
+* (I18n) Improved Malay translation of Gherkin
+  ([#132](https://github.com/cucumber/gherkin3/pull/132)
+   by [gabanz])
+* (I18n) Improved Irish translation of Gherkin
+  ([#135](https://github.com/cucumber/gherkin3/pull/135)
+   by [merrua])
 * (All) Escape only '|', 'n' and '\' in table cells
   ([#114](https://github.com/cucumber/gherkin3/pull/114)
    by [brasmusson])
@@ -151,6 +154,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 [aslakhellesoy]:    https://github.com/aslakhellesoy
 [brasmusson]:       https://github.com/brasmusson
 [charlierudolph]:   https://github.com/charlierudolph
+[gabanz]:           https://github.com/gabanz
 [jargalan]:         https://github.com/jargalan
 [koterpillar]:      https://github.com/koterpillar
 [LiohAu]:           https://github.com/LiohAu
