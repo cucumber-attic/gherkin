@@ -32,7 +32,7 @@
         lineText = theLine;
         trimmedLineText = [theLine stringByTrimmingStartWithCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
-    
+
     return self;
 }
 
@@ -89,7 +89,7 @@
 {
     NSInteger position = [self indent];
     NSMutableArray * tags = [[NSMutableArray alloc] init];
-    
+
     for (NSString * item in [trimmedLineText componentsSeparatedByCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]])
     {
         if ([item length])
@@ -99,7 +99,7 @@
         }
         position++; // separator
     }
-    
+
     return [[NSArray alloc] initWithArray: tags];
 }
 
@@ -107,7 +107,7 @@
 {
     NSMutableArray<NSArray<NSObject *> *> * items = [self splitCellsFromRow: trimmedLineText];
     [items removeLastObject];
-    
+
     NSMutableArray * tableCells = [[NSMutableArray alloc] init];
     BOOL isBeforeFirst = YES;
     for (NSArray * item in items)
@@ -126,7 +126,7 @@
 
         isBeforeFirst = NO;
     }
-    
+
     return tableCells;
 }
 
@@ -150,16 +150,18 @@
             stringCharacter = i + 1 < rowLength ? [theRow substringWithRange: NSMakeRange(++i, 1)] : nil;
             if ([stringCharacter isEqualToString: GHTableCellNewlineEscape])
                 [cell appendString: @"\n"];
-            else if (stringCharacter)
+            else
+            {
                 if (![stringCharacter isEqualToString: GHTableCellSeparator] && ![stringCharacter isEqualToString: GHTableCellEscape])
                     [cell appendString: GHTableCellEscape];
                 [cell appendString: stringCharacter];
+            }
         }
         else
             [cell appendString: stringCharacter];
     }
     [items addObject: @[ cell, @(startPos)]];
-    
+
     return items;
 }
 
