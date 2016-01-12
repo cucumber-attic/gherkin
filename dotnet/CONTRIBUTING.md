@@ -29,7 +29,7 @@ If this is your first time, read through NuGet's guidelines for
     xbuild /p:Configuration=Release
     mono .nuget/NuGet.exe pack Gherkin.NuGetPackages/Gherkin.nuspec
     mono .nuget/NuGet.exe push Gherkin.X.Y.Z.nupkg
-    git commit -m "Release X.Y.Z"
+    git commit -am "Release X.Y.Z"
     git tag -a -m "Version X.Y.Z" vX.Y.Z
     git push
     git push --tags
