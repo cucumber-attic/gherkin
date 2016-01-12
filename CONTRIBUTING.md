@@ -184,6 +184,9 @@ When all components are released, update the master repo:
 
     make pull-subtrees
 
+This might cause some trivial merge conflicts. If that happens, resolve them manually,
+commit and pull subtrees again.
+
 Now, update `CHANGELOG.md` with the new release number and date, while keeping
 a section for the upcoming changes. Also update the links at the bottom of the file.
 
@@ -194,6 +197,9 @@ Then finally create a tag in this master repo and push.
     git push
     git push --tags
     make push-subtrees
+
+The last step might cause some conflicts. If that happens, force push the failing
+subtree (see Troubleshooting section) and run `make push-subtrees` again.
 
 ## Benchmarking
 
