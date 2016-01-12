@@ -21,3 +21,5 @@ run when you build with `make`.
     mvn release:clean
   	mvn --batch-mode -P release-sign-artifacts release:prepare -DdevelopmentVersion=X.Y.Z+1-SNAPSHOT
   	mvn --batch-mode -P release-sign-artifacts release:perform
+
+Log in to https://oss.sonatype.org/, close and release the project. 
