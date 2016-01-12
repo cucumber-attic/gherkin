@@ -19,5 +19,5 @@ run when you build with `make`.
 
 ## Make a release
 
-    # Change version in `gherkin.gemspec`
+    # Change version in `gherkin.gemspec` and commit
     bundle exec rake build release
