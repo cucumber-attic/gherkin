@@ -8,7 +8,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 
 ----
 
-## [Unreleased]
+## [3.2.0]
 
 ### Removed
 
@@ -26,7 +26,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
    by [LiohAu])
 
 ### Changed
-* (All) changed package/module name from `gherkin3` to `gherkin`. (Python is called `gherkin-official`)
+* (All) changed package/module/repo name from `gherkin3` to `gherkin`. (Python package is called `gherkin-official`)
 * (I18n) Improved Malay translation of Gherkin
   ([#132](https://github.com/cucumber/gherkin/pull/132)
    by [gabanz])
@@ -145,7 +145,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 * First release
 
 <!-- Releases -->
-[Unreleased]: https://github.com/cucumber/gherkin/compare/v3.1.2...HEAD
+[Unreleased]: https://github.com/cucumber/gherkin/compare/v3.2.0...HEAD
+[3.2.0]:      https://github.com/cucumber/gherkin/compare/v3.1.2...v3.2.0
 [3.1.2]:      https://github.com/cucumber/gherkin/compare/v3.1.1...v3.1.2
 [3.1.1]:      https://github.com/cucumber/gherkin/compare/v3.1.0...v3.1.1
 [3.1.0]:      https://github.com/cucumber/gherkin/compare/v3.0.0...v3.1.0
