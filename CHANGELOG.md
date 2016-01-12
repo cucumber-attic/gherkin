@@ -8,7 +8,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 
 ----
 
-## [3.2.0]
+## [3.2.0] - 2016-01-12
 
 ### Removed
 
