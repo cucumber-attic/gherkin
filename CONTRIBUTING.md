@@ -17,7 +17,7 @@ run when you build with `make`.
 
 ## Make a release
 
-    # Verify that version in `pom.xml` has the right SNAPSHOT release
+    # Verify that version in `pom.xml` has the right SNAPSHOT release. Commit it.
     mvn release:clean
   	mvn --batch-mode -P release-sign-artifacts release:prepare -DdevelopmentVersion=X.Y.Z+1-SNAPSHOT
   	mvn --batch-mode -P release-sign-artifacts release:perform
