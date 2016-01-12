@@ -34,6 +34,7 @@ This is based on [How to submit a package to PyPI](http://peterdowns.com/posts/f
     # Replace X.Y.Z with the version
 
     python setup.py sdist upload -r pypi
+    git add .
     git commit -m "Release X.Y.Z"
     git tag -a -m "Version X.Y.Z" vX.Y.Z
     git push
