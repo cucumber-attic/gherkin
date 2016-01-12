@@ -12,11 +12,11 @@ type Parser interface {
 	Parse(s Scanner, m Matcher) (err error)
 }
 
-/* 
-The scanner reads a gherkin doc (typically read from a .feature file) and creates a token for 
+/*
+The scanner reads a gherkin doc (typically read from a .feature file) and creates a token for
 each line. The tokens are passed to the parser, which outputs an AST (Abstract Syntax Tree).
 
-If the scanner sees a # language header, it will reconfigure itself dynamically to look for 
+If the scanner sees a # language header, it will reconfigure itself dynamically to look for
 Gherkin keywords for the associated language. The keywords are defined in gherkin-languages.json.
 */
 type Scanner interface {
