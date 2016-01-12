@@ -5,9 +5,9 @@ import sys
 if sys.version_info < (3, 0):
     import codecs
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-from gherkin3.token_scanner import TokenScanner
-from gherkin3.token_formatter_builder import TokenFormatterBuilder
-from gherkin3.parser import Parser
+from gherkin.token_scanner import TokenScanner
+from gherkin.token_formatter_builder import TokenFormatterBuilder
+from gherkin.parser import Parser
 
 files = sys.argv[1:]
 if sys.version_info < (3, 0) and os.name != 'nt':  # for Python2 unless on Windows native

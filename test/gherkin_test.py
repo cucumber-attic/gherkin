@@ -1,8 +1,8 @@
 # coding=utf-8
-from gherkin3.token_scanner import TokenScanner
-from gherkin3.token_matcher import TokenMatcher
-from gherkin3.parser import Parser
-from gherkin3.errors import ParserError
+from gherkin.token_scanner import TokenScanner
+from gherkin.token_matcher import TokenMatcher
+from gherkin.parser import Parser
+from gherkin.errors import ParserError
 from nose.tools import assert_equals, assert_raises
 
 

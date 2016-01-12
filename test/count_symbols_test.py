@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from nose.tools import assert_equals
-from gherkin3.count_symbols import count_symbols
+from gherkin.count_symbols import count_symbols
 
 def test_count_length_of_astral_point_symbols_correctly():
     string = u'\U0001f63b'

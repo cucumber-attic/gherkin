@@ -8,9 +8,9 @@ if sys.version_info < (3, 0):
     import codecs
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
-from gherkin3.pickles.compiler import compile
-from gherkin3.parser import Parser
-from gherkin3.errors import ParserError
+from gherkin.pickles.compiler import compile
+from gherkin.parser import Parser
+from gherkin.errors import ParserError
 
 if sys.version_info < (3, 0) and os.name != 'nt':  # for Python2 unless on Windows native
     UTF8Writer = codecs.getwriter('utf8')
