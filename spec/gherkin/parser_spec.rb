@@ -1,11 +1,11 @@
-require 'gherkin3/parser'
-require 'gherkin3/token_scanner'
-require 'gherkin3/token_matcher'
-require 'gherkin3/ast_builder'
-require 'gherkin3/errors'
+require 'gherkin/parser'
+require 'gherkin/token_scanner'
+require 'gherkin/token_matcher'
+require 'gherkin/ast_builder'
+require 'gherkin/errors'
 require 'rspec'
 
-module Gherkin3
+module Gherkin
   describe Parser do
     it "parses a simple feature" do
       parser = Parser.new

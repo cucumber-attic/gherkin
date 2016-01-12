@@ -1,12 +1,12 @@
 # encoding: utf-8
 Gem::Specification.new do |s|
-  s.name        = 'gherkin3'
+  s.name        = 'gherkin'
   s.version     = '3.1.2'
   s.authors     = ["Gáspár Nagy", "Aslak Hellesøy", "Steve Tooke"]
   s.description = 'Gherkin parser'
   s.summary     = "gherkin-#{s.version}"
   s.email       = 'cukes@googlegroups.com'
-  s.homepage    = "https://github.com/cucumber/gherkin3"
+  s.homepage    = "https://github.com/cucumber/gherkin"
   s.platform    = Gem::Platform::RUBY
   s.license     = "MIT"
   s.required_ruby_version = ">= 1.9.3"

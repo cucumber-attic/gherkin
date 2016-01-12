@@ -1,4 +1,4 @@
-module Gherkin3
+module Gherkin
   class TokenFormatterBuilder
     def initialize
       reset

@@ -1,5 +1,5 @@
-Please read [CONTRIBUTING](https://github.com/cucumber/gherkin3/blob/master/CONTRIBUTING.md) first.
-You should clone the [cucumber/gherkin3](https://github.com/cucumber/gherkin3) repo if you want
+Please read [CONTRIBUTING](https://github.com/cucumber/gherkin/blob/master/CONTRIBUTING.md) first.
+You should clone the [cucumber/gherkin](https://github.com/cucumber/gherkin) repo if you want
 to contribute.
 
 ## Run tests
@@ -19,5 +19,5 @@ run when you build with `make`.
 
 ## Make a release
 
-    # Change version in `gherkin3.gemspec`
+    # Change version in `gherkin.gemspec`
     bundle exec rake build release

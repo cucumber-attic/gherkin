@@ -1,6 +1,6 @@
 require_relative '../dialect'
 
-module Gherkin3
+module Gherkin
   module Pickles
     class Compiler
       def compile(feature, path)

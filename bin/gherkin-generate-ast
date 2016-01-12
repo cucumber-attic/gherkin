@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__),"../lib"))
-require 'gherkin3/parser'
+require 'gherkin/parser'
 require 'json'
 
-parser = Gherkin3::Parser.new
+parser = Gherkin::Parser.new
 parser.stop_at_first_error = false
 files = ARGV.any? ? ARGV : (STDIN.tty? ? [] : [STDIN])
 start_time = Time.now
@@ -12,7 +12,7 @@ files.each do |file|
     File.open(file) do |io|
       puts JSON.generate(parser.parse(io))
     end
-  rescue Gherkin3::ParserError => e
+  rescue Gherkin::ParserError => e
     STDERR.puts e.message
     exit 1
   end
