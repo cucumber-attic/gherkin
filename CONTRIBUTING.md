@@ -7,3 +7,7 @@ to contribute.
 ### OS X/Linux
 
 Just run `make` from this directory.
+
+## Make a release
+
+    git tag -a -m "Version X.Y.Z" vX.Y.Z
