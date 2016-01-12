@@ -2,8 +2,8 @@
   {
     "locations": [
       {
-        "column": 5,
-        "line": 8,
+        "column": 7,
+        "line": 9,
         "path": "../testdata/good/scenario_outlines_with_tags.feature"
       },
       {
@@ -18,8 +18,8 @@
         "arguments": [],
         "locations": [
           {
-            "column": 5,
-            "line": 8,
+            "column": 7,
+            "line": 9,
             "path": "../testdata/good/scenario_outlines_with_tags.feature"
           },
           {
@@ -34,11 +34,11 @@
     "tags": [
       {
         "location": {
-          "column": 3,
-          "line": 2,
+          "column": 1,
+          "line": 1,
           "path": "../testdata/good/scenario_outlines_with_tags.feature"
         },
-        "name": "@foo1"
+        "name": "@a"
       },
       {
         "location": {
@@ -46,20 +46,28 @@
           "line": 3,
           "path": "../testdata/good/scenario_outlines_with_tags.feature"
         },
-        "name": "@foo2"
+        "name": "@b"
+      },
+      {
+        "location": {
+          "column": 6,
+          "line": 3,
+          "path": "../testdata/good/scenario_outlines_with_tags.feature"
+        },
+        "name": "@c"
       }
     ]
   },
   {
     "locations": [
       {
-        "column": 5,
-        "line": 15,
+        "column": 7,
+        "line": 18,
         "path": "../testdata/good/scenario_outlines_with_tags.feature"
       },
       {
         "column": 3,
-        "line": 11,
+        "line": 12,
         "path": "../testdata/good/scenario_outlines_with_tags.feature"
       }
     ],
@@ -69,13 +77,13 @@
         "arguments": [],
         "locations": [
           {
-            "column": 5,
-            "line": 15,
+            "column": 7,
+            "line": 18,
             "path": "../testdata/good/scenario_outlines_with_tags.feature"
           },
           {
             "column": 11,
-            "line": 12,
+            "line": 13,
             "path": "../testdata/good/scenario_outlines_with_tags.feature"
           }
         ],
@@ -85,19 +93,35 @@
     "tags": [
       {
         "location": {
-          "column": 3,
-          "line": 9,
+          "column": 1,
+          "line": 1,
           "path": "../testdata/good/scenario_outlines_with_tags.feature"
         },
-        "name": "@bar1"
+        "name": "@a"
       },
       {
         "location": {
           "column": 3,
-          "line": 10,
+          "line": 11,
           "path": "../testdata/good/scenario_outlines_with_tags.feature"
         },
-        "name": "@bar2"
+        "name": "@d"
+      },
+      {
+        "location": {
+          "column": 6,
+          "line": 11,
+          "path": "../testdata/good/scenario_outlines_with_tags.feature"
+        },
+        "name": "@e"
+      },
+      {
+        "location": {
+          "column": 5,
+          "line": 15,
+          "path": "../testdata/good/scenario_outlines_with_tags.feature"
+        },
+        "name": "@f"
       }
     ]
   }

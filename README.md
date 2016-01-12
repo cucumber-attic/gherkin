@@ -36,6 +36,7 @@ Our wish-list is (in no particular order):
 // Java
 Parser<Feature> parser = new Parser<>(new AstBuilder());
 Feature feature = parser.parse("Feature: ...");
+List<Pickle> pickles = new Compiler().compile(feature, "path/to/the.feature")
 ```
 
 ```csharp
@@ -49,6 +50,7 @@ var feature = parser.Parse("Feature: ...");
 require 'gherkin3/parser'
 parser = Gherkin3::Parser.new
 feature = parser.parse("Feature: ...")
+pickles = Gherkin3::Compiler.new.compile(feature, "path/to/the.feature")
 ```
 
 ```javascript
@@ -56,6 +58,7 @@ feature = parser.parse("Feature: ...")
 var Gherkin = require('gherkin');
 var parser = new Gherkin.Parser();
 var feature = parser.parse("Feature: ...");
+var pickles = new Gherkin.Compiler().compile(feature, "path/to/the.feature");
 ```
 
 ```go
@@ -72,9 +75,11 @@ feature, err := gherkin.ParseFeature(reader)
 ```python
 # Python
 from gherkin3.parser import Parser
+from gherkin3.pickles.compiler import compile
 
 parser = Parser()
 feature = parser.parse("Feature: ...")
+pickles = compile(feature, "path/to/the.feature")
 ```
 
 ## Table cell escaping
@@ -145,8 +150,6 @@ directory.
 
 ### Compiler
 
-(Work in progress)
-
 The compiler compiles the AST produced by the parser
 into a simpler form - *Pickles*.
 
@@ -158,6 +161,9 @@ The rationale is to decouple Gherkin from Cucumber so that Cucumber is open to
 support alternative formats to Gherkin (for example Markdown).
 
 The simpler *Pickles* data structure also simplifies the internals of Cucumber.
+With the compilation logic maintained in the Gherkin3 library
+we can easily use the same test suite for all implementations to verify that
+compilation is behaving consistently between implementations.
 
 Each `Scenario` will be compiled into a `Pickle`. A `Pickle` has a list of
 `PickleStep`, derived from steps in a `Scenario`.
@@ -166,90 +172,170 @@ Each `Examples` row under `Scenario Outline` will also be compiled into a `Pickl
 
 Any `Background` steps will also be compiled into each `Pickle`.
 
-Tags will be compiled into the `Pickle` as well (inheriting tags from parent elements
+Tags are compiled into the `Pickle` as well (inheriting tags from parent elements
 in the Gherkin AST).
 
 Example:
 
 ```gherkin
-@foo
+@a
 Feature:
-  Background:
-    Given a
-
-  Scenario: b
-    Given c
-
-  @bar
-  Scenario Outline: c
+  @b @c
+  Scenario Outline:
     Given <x>
-    When y
 
-    @zap
     Examples:
       | x |
-      | d |
-      | e |
+      | y |
+
+  @d @e
+  Scenario Outline:
+    Given <m>
+
+    @f
+    Examples:
+      | m |
+      | n |
 ```
 
-This will be compiled into several `Pickle` objects (here represented as YAML
-for simplicity):
+This will be compiled into several `Pickle` objects (here represented as JSON):
 
+```json
+[
+  {
+    "locations": [
+      {
+        "column": 7,
+        "line": 9,
+        "path": "../testdata/good/scenario_outlines_with_tags.feature"
+      },
+      {
+        "column": 3,
+        "line": 4,
+        "path": "../testdata/good/scenario_outlines_with_tags.feature"
+      }
+    ],
+    "name": "Scenario: ",
+    "steps": [
+      {
+        "arguments": [],
+        "locations": [
+          {
+            "column": 7,
+            "line": 9,
+            "path": "../testdata/good/scenario_outlines_with_tags.feature"
+          },
+          {
+            "column": 11,
+            "line": 5,
+            "path": "../testdata/good/scenario_outlines_with_tags.feature"
+          }
+        ],
+        "text": "y"
+      }
+    ],
+    "tags": [
+      {
+        "location": {
+          "column": 1,
+          "line": 1,
+          "path": "../testdata/good/scenario_outlines_with_tags.feature"
+        },
+        "name": "@a"
+      },
+      {
+        "location": {
+          "column": 3,
+          "line": 3,
+          "path": "../testdata/good/scenario_outlines_with_tags.feature"
+        },
+        "name": "@b"
+      },
+      {
+        "location": {
+          "column": 6,
+          "line": 3,
+          "path": "../testdata/good/scenario_outlines_with_tags.feature"
+        },
+        "name": "@c"
+      }
+    ]
+  },
+  {
+    "locations": [
+      {
+        "column": 7,
+        "line": 18,
+        "path": "../testdata/good/scenario_outlines_with_tags.feature"
+      },
+      {
+        "column": 3,
+        "line": 12,
+        "path": "../testdata/good/scenario_outlines_with_tags.feature"
+      }
+    ],
+    "name": "Scenario: ",
+    "steps": [
+      {
+        "arguments": [],
+        "locations": [
+          {
+            "column": 7,
+            "line": 18,
+            "path": "../testdata/good/scenario_outlines_with_tags.feature"
+          },
+          {
+            "column": 11,
+            "line": 13,
+            "path": "../testdata/good/scenario_outlines_with_tags.feature"
+          }
+        ],
+        "text": "n"
+      }
+    ],
+    "tags": [
+      {
+        "location": {
+          "column": 1,
+          "line": 1,
+          "path": "../testdata/good/scenario_outlines_with_tags.feature"
+        },
+        "name": "@a"
+      },
+      {
+        "location": {
+          "column": 3,
+          "line": 11,
+          "path": "../testdata/good/scenario_outlines_with_tags.feature"
+        },
+        "name": "@d"
+      },
+      {
+        "location": {
+          "column": 6,
+          "line": 11,
+          "path": "../testdata/good/scenario_outlines_with_tags.feature"
+        },
+        "name": "@e"
+      },
+      {
+        "location": {
+          "column": 5,
+          "line": 15,
+          "path": "../testdata/good/scenario_outlines_with_tags.feature"
+        },
+        "name": "@f"
+      }
+    ]
+  }
+]
 ```
-- tags:
-  - @foo
-  steps:
-  - text: Given a
-  - text: Given c
-- tags:
-  - @foo
-  - @bar
-  - @zap
-  steps:
-  - text: Given a
-  - text: Given d
-  - text: When y
-- tags:
-  - @foo
-  - @bar
-  - @zap
-  steps:
-  - text: Given a
-  - text: Given e
-  - text: When y
-```
 
-Each `Pickle` will also keep a reference back to the original AST nodes for
-rendering and error reporting (stack traces).
+Each `Pickle` keeps a pointer back to the original source. This is useful for
+generating reports and stack traces when a Scenario fails.
 
-Cucumber will further transform this list of `Pickle` to a list of `TestCase`.
-This structure will link runtime information such as Hooks and Step Definitions.
-
-In the short term, the pickle struct definitions will live alongside the Gherkin3
-codebase until it settles:
-
-                                   ┌─────────┐
-            ┌─────────────┬────────│Cucumber │──────────────┐
-            │             │        └─────────┘              │
-            │             │             │                   │
-            │             │             │                   │
-            │             │             │                   │
-            │             │             │                   │
-    ┌───────┼─────────────┼─────────────┼───────┐           │
-    │       │             │             │       │           │
-    │       V             V             V       │           V
-    │  ┌─────────┐   ┌─────────┐   ┌─────────┐  │      ┌─────────┐
-    │  │Gherkin3 │   │Gherkin3 │   │ Pickles │  │      │Markdown │
-    │  │ Parser  │   │Compiler │──>│         │<─┼──────│Parser / │
-    │  └─────────┘   └─────────┘   └─────────┘  │      │Compiler │
-    └───────────────────────────────────────────┘      └─────────┘
-                     Gherkin3 lib
-
-The long term plan is to implement more compilers that can produce `Pickles`, for
-example from Markdown.
-
-When the Pickles/Cucumber seam stabilises we might move Pickles to a separate project.
-The various compilers producing pickles might move to a separate project too.
+Cucumber will further transform this list of `Pickle` structs to a list of `TestCase`
+objects. `TestCase` objects link user code such as Hooks and Step Definitions.
 
 ## Building Gherkin 3
 

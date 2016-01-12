@@ -1,15 +1,18 @@
+@a
 Feature:
-  @foo1
-  @foo2
+  @b @c
   Scenario Outline:
     Given <x>
+
     Examples:
-    | x |
-    | y |
-  @bar1
-  @bar2
+      | x |
+      | y |
+
+  @d @e
   Scenario Outline:
     Given <m>
+
+    @f
     Examples:
-    | m |
-    | n |
+      | m |
+      | n |
