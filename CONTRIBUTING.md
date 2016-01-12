@@ -1,6 +1,6 @@
-# Contributing to Gherkin 3
+# Contributing to Gherkin
 
-Gherkin3 is implemented in several different languages. Each implementation is
+Gherkin is implemented in several different languages. Each implementation is
 in a separate sub directory in this repository.
 
 A copy of each implementation also exists in a separate git repository,
@@ -83,7 +83,7 @@ to import Mozilla certificates & solve the problem
     make update-gherkin-languages
 
 3) Make a pull request with the changed files.
- 
+
 ## Building individual parsers
 
 It's possible to build the parser for a single language too. Please refer to
@@ -114,7 +114,7 @@ TL;DR anyone who only knows one of the supported programming languages should be
 able to fix a bug or add a feature in all the other implementations. -Simply by
 finding their way around a consistently organised codebase.
 
-As of Sept 2015 Gherkin3 is implemented in 6 languages. This number is likely to
+As of Sept 2015 Gherkin is implemented in 6 languages. This number is likely to
 increase to a dozen within a year or two. Very few programmers are intimate with
 all those languages. Therefore, in order to make it as easy as possible to refactor,
 fix bugs, add features and release packages it is essential that all implementations
@@ -168,7 +168,7 @@ pass!
 Then send us a pull-request :-)
 
 And if you're stuck - please shoot an email to the *cukes-devs* Google Group
-or find us on [Gitter](https://gitter.im/cucumber/gherkin3).
+or find us on [Gitter](https://gitter.im/cucumber/gherkin).
 
 ## Make a release
 
@@ -203,7 +203,7 @@ how many milliseconds it takes to parse all the files under `testdata/good`
 ## Verify all of Cucumber's i18n examples
 
 If you have [cucumber-ruby](https://github.com/cucumber/cucumber-ruby) cloned
-next to the gherkin3 directory, try processing all of the files.
+next to the gherkin directory, try processing all of the files.
 
 With just the scanner:
 

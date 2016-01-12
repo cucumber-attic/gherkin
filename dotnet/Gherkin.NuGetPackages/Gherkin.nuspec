@@ -9,9 +9,9 @@
     <summary>Cross-platform parser for the Gherkin language</summary>
     <description>Cross-platform parser for the Gherkin language, used by Cucumber, SpecFlow and other Cucumber-based tools to parse feature files.</description>
     <language>en-US</language>
-    <projectUrl>https://github.com/cucumber/gherkin3</projectUrl>
+    <projectUrl>https://github.com/cucumber/gherkin</projectUrl>
     <iconUrl>https://cucumber.io/images/cucumber-mark-32x32.png</iconUrl>
-    <licenseUrl>https://github.com/cucumber/gherkin3/blob/master/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/cucumber/gherkin/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <copyright>Copyright © 2014-2015 Cucumber Ltd, Gaspar Nagy</copyright>
     <tags>specflow gherkin cucumber</tags>

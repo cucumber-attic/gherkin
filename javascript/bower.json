@@ -2,7 +2,7 @@
   "name": "gherkin",
   "main": "dist/gherkin.js",
   "version": "3.0.0",
-  "homepage": "https://github.com/cucumber/gherkin3",
+  "homepage": "https://github.com/cucumber/gherkin-javascript",
   "authors": [
     "Aslak Hellesøy <aslak@cucumber.io>"
   ],

@@ -4,7 +4,7 @@ require_relative 'token_matcher'
 require_relative 'token_scanner'
 require_relative 'errors'
 
-module Gherkin3
+module Gherkin
 
   RULE_TYPE = [
     :None,

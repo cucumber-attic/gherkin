@@ -1,14 +1,14 @@
 # Gherkin 3
 
-[![Join the chat at https://gitter.im/cucumber/gherkin3](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cucumber/gherkin3?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/cucumber/gherkin3.svg)](https://travis-ci.org/cucumber/gherkin3)
+[![Join the chat at https://gitter.im/cucumber/gherkin](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cucumber/gherkin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/cucumber/gherkin.svg)](https://travis-ci.org/cucumber/gherkin)
 
-Gherkin 3 is a parser and compiler for the Gherkin language.
+Gherkin is a parser and compiler for the Gherkin language.
 
 It is intended to replace [Gherkin 2](https://github.com/cucumber/gherkin) and be used by
 all [Cucumber](https://cukes.info) implementations to parse `.feature` files.
 
-If you want a reference implementation of Cucumber (based on Gherkin3), take a
+If you want a reference implementation of Cucumber, take a
 look at [microcuke](https://github.com/cucumber/microcuke).
 
 Gherkin 3 is currently implemented for the following platforms:
@@ -47,10 +47,10 @@ var feature = parser.Parse("Feature: ...");
 
 ```ruby
 # Ruby
-require 'gherkin3/parser'
-parser = Gherkin3::Parser.new
+require 'gherkin/parser'
+parser = Gherkin::Parser.new
 feature = parser.parse("Feature: ...")
-pickles = Gherkin3::Compiler.new.compile(feature, "path/to/the.feature")
+pickles = Gherkin::Compiler.new.compile(feature, "path/to/the.feature")
 ```
 
 ```javascript
@@ -74,8 +74,8 @@ feature, err := gherkin.ParseFeature(reader)
 
 ```python
 # Python
-from gherkin3.parser import Parser
-from gherkin3.pickles.compiler import compile
+from gherkin.parser import Parser
+from gherkin.pickles.compiler import compile
 
 parser = Parser()
 feature = parser.parse("Feature: ...")
@@ -123,14 +123,14 @@ and outputs a parser in language *X*:
                      ║Parser.x║
                      ╚════════╝
 
-Also see the [wiki](https://github.com/cucumber/gherkin3/wiki) for some early
+Also see the [wiki](https://github.com/cucumber/gherkin/wiki) for some early
 design docs (which might be a little outdated, but mostly OK).
 
 ### AST
 
 The AST produced by the parser can be described with the following class diagram:
 
-![](https://github.com/cucumber/gherkin3/blob/master/docs/ast.png)
+![](https://github.com/cucumber/gherkin/blob/master/docs/ast.png)
 
 Every class represents a node in the AST. Every node has a `Location` that describes
 the line number and column number in the input file. These numbers are 1-indexed.
@@ -145,7 +145,7 @@ Each node in the JSON representation also has a `type` property with the name
 of the node type.
 
 You can see some examples in the
-[testdata/good](https://github.com/cucumber/gherkin3/tree/master/testdata/good)
+[testdata/good](https://github.com/cucumber/gherkin/tree/master/testdata/good)
 directory.
 
 ### Compiler
@@ -161,7 +161,7 @@ The rationale is to decouple Gherkin from Cucumber so that Cucumber is open to
 support alternative formats to Gherkin (for example Markdown).
 
 The simpler *Pickles* data structure also simplifies the internals of Cucumber.
-With the compilation logic maintained in the Gherkin3 library
+With the compilation logic maintained in the Gherkin library
 we can easily use the same test suite for all implementations to verify that
 compilation is behaving consistently between implementations.
 

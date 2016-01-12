@@ -1,5 +1,5 @@
 .idea/
-gherkin3.iml
+gherkin.iml
 target/
 acceptance/
 .built

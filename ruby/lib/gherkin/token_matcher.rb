@@ -1,7 +1,7 @@
 require_relative 'dialect'
 require_relative 'errors'
 
-module Gherkin3
+module Gherkin
   class TokenMatcher
     LANGUAGE_PATTERN = /^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$/
 

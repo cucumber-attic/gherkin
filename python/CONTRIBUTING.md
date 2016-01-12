@@ -1,5 +1,5 @@
-Please read [CONTRIBUTING](https://github.com/cucumber/gherkin3/blob/master/CONTRIBUTING.md) first.
-You should clone the [cucumber/gherkin3](https://github.com/cucumber/gherkin3) repo if you want
+Please read [CONTRIBUTING](https://github.com/cucumber/gherkin/blob/master/CONTRIBUTING.md) first.
+You should clone the [cucumber/gherkin](https://github.com/cucumber/gherkin) repo if you want
 to contribute.
 
 ## Basic style guide
@@ -9,7 +9,7 @@ Use the command:
 
     pep8 --max-line-length=99
 
-The exception is [parser.py](https://github.com/cucumber/gherkin3/blob/master/python/gherkin3/parser.py), as it is generated longer lines are allowed there, so to check it use: 
+The exception is [parser.py](https://github.com/cucumber/gherkin/blob/master/python/gherkin/parser.py), as it is generated longer lines are allowed there, so to check it use:
 
     pep8 --ignore=E501
 

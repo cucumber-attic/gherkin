@@ -3,11 +3,11 @@ from __future__ import print_function
 import json
 import textwrap
 
-from gherkin3.token_scanner import TokenScanner
-from gherkin3.token_matcher import TokenMatcher
-from gherkin3.parser import Parser
-from gherkin3.errors import ParserError
-from gherkin3.pickles import compiler
+from gherkin.token_scanner import TokenScanner
+from gherkin.token_matcher import TokenMatcher
+from gherkin.parser import Parser
+from gherkin.errors import ParserError
+from gherkin.pickles import compiler
 
 from nose.tools import assert_equals, assert_raises
 

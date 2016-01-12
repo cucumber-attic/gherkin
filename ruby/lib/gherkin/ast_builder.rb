@@ -1,6 +1,6 @@
 require_relative 'ast_node'
 
-module Gherkin3
+module Gherkin
   class AstBuilder
     def initialize
       reset
