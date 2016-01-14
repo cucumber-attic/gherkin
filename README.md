@@ -48,9 +48,10 @@ var feature = parser.Parse("Feature: ...");
 ```ruby
 # Ruby
 require 'gherkin/parser'
+require 'gherkin/pickles/compiler'
 parser = Gherkin::Parser.new
 feature = parser.parse("Feature: ...")
-pickles = Gherkin::Compiler.new.compile(feature, "path/to/the.feature")
+pickles = Gherkin::Pickles::Compiler.new.compile(feature, "path/to/the.feature")
 ```
 
 ```javascript
