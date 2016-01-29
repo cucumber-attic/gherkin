@@ -70,7 +70,8 @@ addons:
     packages:
     - jq
 
-script: "cd $TARGET_LANG; make"
+# Simulate non-UTF-8 standard encoding on OS. Should still work
+script: "cd $TARGET_LANG; LANG=ISO-8859-1 make"
 
 branches:
   only:
