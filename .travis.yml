@@ -16,31 +16,39 @@ matrix:
       language: ruby
       rvm: 2.0.0
       before_install:
-        # for some ruby version the bunlder version becomes
-        # 1.6.9 if not installed explicitly
-        - gem install bundler -v 1.7.9
+        - gem install bundler -v 1.11.2
     - env: TARGET_LANG=ruby
       language: ruby
-      rvm: 2.1.0
+      rvm: 2.1.8
       before_install:
-        - gem install bundler -v 1.7.9
+        - gem install bundler -v 1.11.2
     - env: TARGET_LANG=ruby
       language: ruby
-      rvm: 2.2.0
+      rvm: 2.2.4
       before_install:
-        - gem install bundler -v 1.7.9
+        - gem install bundler -v 1.11.2
     - env: TARGET_LANG=ruby
       language: ruby
-      rvm: jruby-1.7.22
+      rvm: 2.3.0
       before_install:
-        - gem install bundler -v 1.7.9
+        - gem install bundler -v 1.11.2
+    - env: TARGET_LANG=ruby
+      language: ruby
+      rvm: jruby-1.7.24
+      before_install:
+        - gem install bundler -v 1.11.2
+    - env: TARGET_LANG=ruby
+      language: ruby
+      rvm: jruby-9.0.5.0
+      before_install:
+        - gem install bundler -v 1.11.2
 
     - env: TARGET_LANG=javascript
       language: javascript
-      node_js: 0.10.40
+      node_js: 4.2.6
     - env: TARGET_LANG=javascript
       language: javascript
-      node_js: 4.1.2
+      node_js: 5.5.0
 
     - env: TARGET_LANG=go
       language: go
