@@ -19,15 +19,15 @@ public class GenerateAst {
             Reader in = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
             try {
                 Feature feature = parser.parse(in, matcher);
-                System.out.println(gson.toJson(feature));
+                Stdio.out.println(gson.toJson(feature));
             } catch (ParserException e) {
-                System.err.println(e.getMessage());
+                Stdio.err.println(e.getMessage());
                 System.exit(1);
             }
         }
         long endTime = System.currentTimeMillis();
         if(System.getenv("GHERKIN_PERF") != null) {
-            System.err.println(endTime - startTime);
+            Stdio.err.println(endTime - startTime);
         }
     }
 

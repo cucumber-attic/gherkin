@@ -27,10 +27,10 @@ public class GeneratePickles {
                 Feature feature = parser.parse(in, matcher);
                 pickles.addAll(compiler.compile(feature, fileName));
             } catch (ParserException e) {
-                System.err.println(e.getMessage());
+                Stdio.err.println(e.getMessage());
                 System.exit(1);
             }
         }
-        System.out.println(gson.toJson(pickles));
+        Stdio.out.println(gson.toJson(pickles));
     }
 }
