@@ -8,6 +8,19 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 
 ----
 
+## [Unreleased] - TBD
+
+### Removed
+
+### Added
+
+### Changed
+
+### Fixed
+* (Ruby, Java) Make parser work even when system encoding ($LANG) is not UTF-8.
+  ([#151](https://github.com/cucumber/gherkin/issues/151)
+   by [aslakhellesoy])
+
 ## [3.2.0] - 2016-01-12
 
 ### Removed

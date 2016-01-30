@@ -13,7 +13,8 @@ public class GenerateTokens {
         for (String fileName : args) {
             InputStreamReader in = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
             String result = parser.parse(in, matcher);
-            System.out.print(result);
+            Stdio.out.print(result);
+            Stdio.out.flush(); // print doesn't autoflush
         }
     }
 }
