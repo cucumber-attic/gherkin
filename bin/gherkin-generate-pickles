@@ -11,7 +11,7 @@ files = ARGV.any? ? ARGV : (STDIN.tty? ? [] : [STDIN])
 start_time = Time.now
 files.each do |file|
   begin
-    File.open(file) do |io|
+    File.open(file, 'r:UTF-8') do |io|
       feature = parser.parse(io)
       pickles = compiler.compile(feature, file);
       puts JSON.generate(pickles)

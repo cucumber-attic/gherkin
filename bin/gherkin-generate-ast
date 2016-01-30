@@ -9,7 +9,7 @@ files = ARGV.any? ? ARGV : (STDIN.tty? ? [] : [STDIN])
 start_time = Time.now
 files.each do |file|
   begin
-    File.open(file) do |io|
+    File.open(file, 'r:UTF-8') do |io|
       puts JSON.generate(parser.parse(io))
     end
   rescue Gherkin::ParserError => e
