@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+$VERBOSE=nil # Shut up JRuby warnings on Travis
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__),"../lib"))
 require 'gherkin/pickles/compiler'
 require 'gherkin/parser'
