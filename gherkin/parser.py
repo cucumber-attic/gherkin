@@ -26,9 +26,10 @@ RULE_TYPE = [
     'Background',  # Background! := #BackgroundLine Background_Description Scenario_Step*
     'Scenario_Definition',  # Scenario_Definition! := Tags? (Scenario | ScenarioOutline)
     'Scenario',  # Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
-    'ScenarioOutline',  # ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples_Definition+
+    'ScenarioOutline',  # ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples_Definition*
     'Examples_Definition',  # Examples_Definition! [#Empty|#Comment|#TagLine-&gt;#ExamplesLine] := Tags? Examples
-    'Examples',  # Examples! := #ExamplesLine Examples_Description #TableRow #TableRow+
+    'Examples',  # Examples! := #ExamplesLine Examples_Description Examples_Table?
+    'Examples_Table',  # Examples_Table! := #TableRow #TableRow*
     'Scenario_Step',  # Scenario_Step := Step
     'ScenarioOutline_Step',  # ScenarioOutline_Step := Step
     'Step',  # Step! := #StepLine Step_Arg?
@@ -205,13 +206,12 @@ class Parser(object):
             24: self.match_token_at_24,
             25: self.match_token_at_25,
             26: self.match_token_at_26,
-            27: self.match_token_at_27,
+            28: self.match_token_at_28,
             29: self.match_token_at_29,
             30: self.match_token_at_30,
             31: self.match_token_at_31,
             32: self.match_token_at_32,
             33: self.match_token_at_33,
-            34: self.match_token_at_34,
         }
         if state in state_map:
             return state_map[state](token, context)
@@ -304,7 +304,7 @@ class Parser(object):
         if self.match_EOF(context, token):
                 self.end_rule(context, 'Feature_Header')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_Empty(context, token):
                 self.build(context, token)
                 return 3
@@ -354,7 +354,7 @@ class Parser(object):
                 self.end_rule(context, 'Description')
                 self.end_rule(context, 'Feature_Header')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_Comment(context, token):
                 self.end_rule(context, 'Description')
                 self.build(context, token)
@@ -404,7 +404,7 @@ class Parser(object):
         if self.match_EOF(context, token):
                 self.end_rule(context, 'Feature_Header')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_Comment(context, token):
                 self.build(context, token)
                 return 5
@@ -449,7 +449,7 @@ class Parser(object):
         if self.match_EOF(context, token):
                 self.end_rule(context, 'Background')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_Empty(context, token):
                 self.build(context, token)
                 return 6
@@ -498,7 +498,7 @@ class Parser(object):
                 self.end_rule(context, 'Description')
                 self.end_rule(context, 'Background')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_Comment(context, token):
                 self.end_rule(context, 'Description')
                 self.build(context, token)
@@ -547,7 +547,7 @@ class Parser(object):
         if self.match_EOF(context, token):
                 self.end_rule(context, 'Background')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_Comment(context, token):
                 self.build(context, token)
                 return 8
@@ -592,7 +592,7 @@ class Parser(object):
                 self.end_rule(context, 'Step')
                 self.end_rule(context, 'Background')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_TableRow(context, token):
                 self.start_rule(context, 'DataTable')
                 self.build(context, token)
@@ -600,7 +600,7 @@ class Parser(object):
         if self.match_DocStringSeparator(context, token):
                 self.start_rule(context, 'DocString')
                 self.build(context, token)
-                return 33
+                return 32
         if self.match_StepLine(context, token):
                 self.end_rule(context, 'Step')
                 self.start_rule(context, 'Step')
@@ -650,7 +650,7 @@ class Parser(object):
                 self.end_rule(context, 'Step')
                 self.end_rule(context, 'Background')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_TableRow(context, token):
                 self.build(context, token)
                 return 10
@@ -737,7 +737,7 @@ class Parser(object):
                 self.end_rule(context, 'Scenario')
                 self.end_rule(context, 'Scenario_Definition')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_Empty(context, token):
                 self.build(context, token)
                 return 12
@@ -790,7 +790,7 @@ class Parser(object):
                 self.end_rule(context, 'Scenario')
                 self.end_rule(context, 'Scenario_Definition')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_Comment(context, token):
                 self.end_rule(context, 'Description')
                 self.build(context, token)
@@ -843,7 +843,7 @@ class Parser(object):
                 self.end_rule(context, 'Scenario')
                 self.end_rule(context, 'Scenario_Definition')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_Comment(context, token):
                 self.build(context, token)
                 return 14
@@ -892,7 +892,7 @@ class Parser(object):
                 self.end_rule(context, 'Scenario')
                 self.end_rule(context, 'Scenario_Definition')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_TableRow(context, token):
                 self.start_rule(context, 'DataTable')
                 self.build(context, token)
@@ -900,7 +900,7 @@ class Parser(object):
         if self.match_DocStringSeparator(context, token):
                 self.start_rule(context, 'DocString')
                 self.build(context, token)
-                return 31
+                return 30
         if self.match_StepLine(context, token):
                 self.end_rule(context, 'Step')
                 self.start_rule(context, 'Step')
@@ -954,7 +954,7 @@ class Parser(object):
                 self.end_rule(context, 'Scenario')
                 self.end_rule(context, 'Scenario_Definition')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_TableRow(context, token):
                 self.build(context, token)
                 return 16
@@ -1009,6 +1009,11 @@ class Parser(object):
 
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
     def match_token_at_17(self, token, context):
+        if self.match_EOF(context, token):
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.build(context, token)
+                return 27
         if self.match_Empty(context, token):
                 self.build(context, token)
                 return 17
@@ -1020,15 +1025,37 @@ class Parser(object):
                 self.build(context, token)
                 return 20
         if self.match_TagLine(context, token):
+            if self.lookahead_0(context, token):
                 self.start_rule(context, 'Examples_Definition')
                 self.start_rule(context, 'Tags')
                 self.build(context, token)
                 return 22
+        if self.match_TagLine(context, token):
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Tags')
+                self.build(context, token)
+                return 11
         if self.match_ExamplesLine(context, token):
                 self.start_rule(context, 'Examples_Definition')
                 self.start_rule(context, 'Examples')
                 self.build(context, token)
                 return 23
+        if self.match_ScenarioLine(context, token):
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario')
+                self.build(context, token)
+                return 12
+        if self.match_ScenarioOutlineLine(context, token):
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'ScenarioOutline')
+                self.build(context, token)
+                return 17
         if self.match_Other(context, token):
                 self.start_rule(context, 'Description')
                 self.build(context, token)
@@ -1036,7 +1063,7 @@ class Parser(object):
 
         state_comment = "State: 17 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0"
         token.detach
-        expected_tokens = ["#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"]
+        expected_tokens = ["#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"]
         error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
         if (self.stop_at_first_error):
             raise error
@@ -1045,6 +1072,12 @@ class Parser(object):
 
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
     def match_token_at_18(self, token, context):
+        if self.match_EOF(context, token):
+                self.end_rule(context, 'Description')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.build(context, token)
+                return 27
         if self.match_Comment(context, token):
                 self.end_rule(context, 'Description')
                 self.build(context, token)
@@ -1055,24 +1088,49 @@ class Parser(object):
                 self.build(context, token)
                 return 20
         if self.match_TagLine(context, token):
+            if self.lookahead_0(context, token):
                 self.end_rule(context, 'Description')
                 self.start_rule(context, 'Examples_Definition')
                 self.start_rule(context, 'Tags')
                 self.build(context, token)
                 return 22
+        if self.match_TagLine(context, token):
+                self.end_rule(context, 'Description')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Tags')
+                self.build(context, token)
+                return 11
         if self.match_ExamplesLine(context, token):
                 self.end_rule(context, 'Description')
                 self.start_rule(context, 'Examples_Definition')
                 self.start_rule(context, 'Examples')
                 self.build(context, token)
                 return 23
+        if self.match_ScenarioLine(context, token):
+                self.end_rule(context, 'Description')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario')
+                self.build(context, token)
+                return 12
+        if self.match_ScenarioOutlineLine(context, token):
+                self.end_rule(context, 'Description')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'ScenarioOutline')
+                self.build(context, token)
+                return 17
         if self.match_Other(context, token):
                 self.build(context, token)
                 return 18
 
         state_comment = "State: 18 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0"
         token.detach
-        expected_tokens = ["#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"]
+        expected_tokens = ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"]
         error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
         if (self.stop_at_first_error):
             raise error
@@ -1081,6 +1139,11 @@ class Parser(object):
 
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
     def match_token_at_19(self, token, context):
+        if self.match_EOF(context, token):
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.build(context, token)
+                return 27
         if self.match_Comment(context, token):
                 self.build(context, token)
                 return 19
@@ -1089,22 +1152,44 @@ class Parser(object):
                 self.build(context, token)
                 return 20
         if self.match_TagLine(context, token):
+            if self.lookahead_0(context, token):
                 self.start_rule(context, 'Examples_Definition')
                 self.start_rule(context, 'Tags')
                 self.build(context, token)
                 return 22
+        if self.match_TagLine(context, token):
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Tags')
+                self.build(context, token)
+                return 11
         if self.match_ExamplesLine(context, token):
                 self.start_rule(context, 'Examples_Definition')
                 self.start_rule(context, 'Examples')
                 self.build(context, token)
                 return 23
+        if self.match_ScenarioLine(context, token):
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario')
+                self.build(context, token)
+                return 12
+        if self.match_ScenarioOutlineLine(context, token):
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'ScenarioOutline')
+                self.build(context, token)
+                return 17
         if self.match_Empty(context, token):
                 self.build(context, token)
                 return 19
 
         state_comment = "State: 19 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0"
         token.detach
-        expected_tokens = ["#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Empty"]
+        expected_tokens = ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"]
         error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
         if (self.stop_at_first_error):
             raise error
@@ -1113,6 +1198,12 @@ class Parser(object):
 
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
     def match_token_at_20(self, token, context):
+        if self.match_EOF(context, token):
+                self.end_rule(context, 'Step')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.build(context, token)
+                return 27
         if self.match_TableRow(context, token):
                 self.start_rule(context, 'DataTable')
                 self.build(context, token)
@@ -1120,24 +1211,49 @@ class Parser(object):
         if self.match_DocStringSeparator(context, token):
                 self.start_rule(context, 'DocString')
                 self.build(context, token)
-                return 29
+                return 28
         if self.match_StepLine(context, token):
                 self.end_rule(context, 'Step')
                 self.start_rule(context, 'Step')
                 self.build(context, token)
                 return 20
         if self.match_TagLine(context, token):
+            if self.lookahead_0(context, token):
                 self.end_rule(context, 'Step')
                 self.start_rule(context, 'Examples_Definition')
                 self.start_rule(context, 'Tags')
                 self.build(context, token)
                 return 22
+        if self.match_TagLine(context, token):
+                self.end_rule(context, 'Step')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Tags')
+                self.build(context, token)
+                return 11
         if self.match_ExamplesLine(context, token):
                 self.end_rule(context, 'Step')
                 self.start_rule(context, 'Examples_Definition')
                 self.start_rule(context, 'Examples')
                 self.build(context, token)
                 return 23
+        if self.match_ScenarioLine(context, token):
+                self.end_rule(context, 'Step')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario')
+                self.build(context, token)
+                return 12
+        if self.match_ScenarioOutlineLine(context, token):
+                self.end_rule(context, 'Step')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'ScenarioOutline')
+                self.build(context, token)
+                return 17
         if self.match_Comment(context, token):
                 self.build(context, token)
                 return 20
@@ -1147,7 +1263,7 @@ class Parser(object):
 
         state_comment = "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0"
         token.detach
-        expected_tokens = ["#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"]
+        expected_tokens = ["#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
         error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
         if (self.stop_at_first_error):
             raise error
@@ -1156,6 +1272,13 @@ class Parser(object):
 
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
     def match_token_at_21(self, token, context):
+        if self.match_EOF(context, token):
+                self.end_rule(context, 'DataTable')
+                self.end_rule(context, 'Step')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.build(context, token)
+                return 27
         if self.match_TableRow(context, token):
                 self.build(context, token)
                 return 21
@@ -1166,12 +1289,22 @@ class Parser(object):
                 self.build(context, token)
                 return 20
         if self.match_TagLine(context, token):
+            if self.lookahead_0(context, token):
                 self.end_rule(context, 'DataTable')
                 self.end_rule(context, 'Step')
                 self.start_rule(context, 'Examples_Definition')
                 self.start_rule(context, 'Tags')
                 self.build(context, token)
                 return 22
+        if self.match_TagLine(context, token):
+                self.end_rule(context, 'DataTable')
+                self.end_rule(context, 'Step')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Tags')
+                self.build(context, token)
+                return 11
         if self.match_ExamplesLine(context, token):
                 self.end_rule(context, 'DataTable')
                 self.end_rule(context, 'Step')
@@ -1179,6 +1312,24 @@ class Parser(object):
                 self.start_rule(context, 'Examples')
                 self.build(context, token)
                 return 23
+        if self.match_ScenarioLine(context, token):
+                self.end_rule(context, 'DataTable')
+                self.end_rule(context, 'Step')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario')
+                self.build(context, token)
+                return 12
+        if self.match_ScenarioOutlineLine(context, token):
+                self.end_rule(context, 'DataTable')
+                self.end_rule(context, 'Step')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'ScenarioOutline')
+                self.build(context, token)
+                return 17
         if self.match_Comment(context, token):
                 self.build(context, token)
                 return 21
@@ -1188,7 +1339,7 @@ class Parser(object):
 
         state_comment = "State: 21 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0"
         token.detach
-        expected_tokens = ["#TableRow", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"]
+        expected_tokens = ["#EOF", "#TableRow", "#StepLine", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
         error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
         if (self.stop_at_first_error):
             raise error
@@ -1223,6 +1374,13 @@ class Parser(object):
 
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0
     def match_token_at_23(self, token, context):
+        if self.match_EOF(context, token):
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.build(context, token)
+                return 27
         if self.match_Empty(context, token):
                 self.build(context, token)
                 return 23
@@ -1230,99 +1388,9 @@ class Parser(object):
                 self.build(context, token)
                 return 25
         if self.match_TableRow(context, token):
+                self.start_rule(context, 'Examples_Table')
                 self.build(context, token)
                 return 26
-        if self.match_Other(context, token):
-                self.start_rule(context, 'Description')
-                self.build(context, token)
-                return 24
-
-        state_comment = "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0"
-        token.detach
-        expected_tokens = ["#Empty", "#Comment", "#TableRow", "#Other"]
-        error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
-        if (self.stop_at_first_error):
-            raise error
-        self.add_error(context, error)
-        return 23
-
-    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
-    def match_token_at_24(self, token, context):
-        if self.match_Comment(context, token):
-                self.end_rule(context, 'Description')
-                self.build(context, token)
-                return 25
-        if self.match_TableRow(context, token):
-                self.end_rule(context, 'Description')
-                self.build(context, token)
-                return 26
-        if self.match_Other(context, token):
-                self.build(context, token)
-                return 24
-
-        state_comment = "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0"
-        token.detach
-        expected_tokens = ["#Comment", "#TableRow", "#Other"]
-        error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
-        if (self.stop_at_first_error):
-            raise error
-        self.add_error(context, error)
-        return 24
-
-    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0
-    def match_token_at_25(self, token, context):
-        if self.match_Comment(context, token):
-                self.build(context, token)
-                return 25
-        if self.match_TableRow(context, token):
-                self.build(context, token)
-                return 26
-        if self.match_Empty(context, token):
-                self.build(context, token)
-                return 25
-
-        state_comment = "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0"
-        token.detach
-        expected_tokens = ["#Comment", "#TableRow", "#Empty"]
-        error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
-        if (self.stop_at_first_error):
-            raise error
-        self.add_error(context, error)
-        return 25
-
-    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>#TableRow:0
-    def match_token_at_26(self, token, context):
-        if self.match_TableRow(context, token):
-                self.build(context, token)
-                return 27
-        if self.match_Comment(context, token):
-                self.build(context, token)
-                return 26
-        if self.match_Empty(context, token):
-                self.build(context, token)
-                return 26
-
-        state_comment = "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>#TableRow:0"
-        token.detach
-        expected_tokens = ["#TableRow", "#Comment", "#Empty"]
-        error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
-        if (self.stop_at_first_error):
-            raise error
-        self.add_error(context, error)
-        return 26
-
-    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:3>#TableRow:0
-    def match_token_at_27(self, token, context):
-        if self.match_EOF(context, token):
-                self.end_rule(context, 'Examples')
-                self.end_rule(context, 'Examples_Definition')
-                self.end_rule(context, 'ScenarioOutline')
-                self.end_rule(context, 'Scenario_Definition')
-                self.build(context, token)
-                return 28
-        if self.match_TableRow(context, token):
-                self.build(context, token)
-                return 27
         if self.match_TagLine(context, token):
             if self.lookahead_0(context, token):
                 self.end_rule(context, 'Examples')
@@ -1365,42 +1433,273 @@ class Parser(object):
                 self.start_rule(context, 'ScenarioOutline')
                 self.build(context, token)
                 return 17
+        if self.match_Other(context, token):
+                self.start_rule(context, 'Description')
+                self.build(context, token)
+                return 24
+
+        state_comment = "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0"
+        token.detach
+        expected_tokens = ["#EOF", "#Empty", "#Comment", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"]
+        error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
+        if (self.stop_at_first_error):
+            raise error
+        self.add_error(context, error)
+        return 23
+
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
+    def match_token_at_24(self, token, context):
+        if self.match_EOF(context, token):
+                self.end_rule(context, 'Description')
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.build(context, token)
+                return 27
+        if self.match_Comment(context, token):
+                self.end_rule(context, 'Description')
+                self.build(context, token)
+                return 25
+        if self.match_TableRow(context, token):
+                self.end_rule(context, 'Description')
+                self.start_rule(context, 'Examples_Table')
+                self.build(context, token)
+                return 26
+        if self.match_TagLine(context, token):
+            if self.lookahead_0(context, token):
+                self.end_rule(context, 'Description')
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.start_rule(context, 'Examples_Definition')
+                self.start_rule(context, 'Tags')
+                self.build(context, token)
+                return 22
+        if self.match_TagLine(context, token):
+                self.end_rule(context, 'Description')
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Tags')
+                self.build(context, token)
+                return 11
+        if self.match_ExamplesLine(context, token):
+                self.end_rule(context, 'Description')
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.start_rule(context, 'Examples_Definition')
+                self.start_rule(context, 'Examples')
+                self.build(context, token)
+                return 23
+        if self.match_ScenarioLine(context, token):
+                self.end_rule(context, 'Description')
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario')
+                self.build(context, token)
+                return 12
+        if self.match_ScenarioOutlineLine(context, token):
+                self.end_rule(context, 'Description')
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'ScenarioOutline')
+                self.build(context, token)
+                return 17
+        if self.match_Other(context, token):
+                self.build(context, token)
+                return 24
+
+        state_comment = "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0"
+        token.detach
+        expected_tokens = ["#EOF", "#Comment", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"]
+        error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
+        if (self.stop_at_first_error):
+            raise error
+        self.add_error(context, error)
+        return 24
+
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0
+    def match_token_at_25(self, token, context):
+        if self.match_EOF(context, token):
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.build(context, token)
+                return 27
         if self.match_Comment(context, token):
                 self.build(context, token)
-                return 27
+                return 25
+        if self.match_TableRow(context, token):
+                self.start_rule(context, 'Examples_Table')
+                self.build(context, token)
+                return 26
+        if self.match_TagLine(context, token):
+            if self.lookahead_0(context, token):
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.start_rule(context, 'Examples_Definition')
+                self.start_rule(context, 'Tags')
+                self.build(context, token)
+                return 22
+        if self.match_TagLine(context, token):
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Tags')
+                self.build(context, token)
+                return 11
+        if self.match_ExamplesLine(context, token):
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.start_rule(context, 'Examples_Definition')
+                self.start_rule(context, 'Examples')
+                self.build(context, token)
+                return 23
+        if self.match_ScenarioLine(context, token):
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario')
+                self.build(context, token)
+                return 12
+        if self.match_ScenarioOutlineLine(context, token):
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'ScenarioOutline')
+                self.build(context, token)
+                return 17
         if self.match_Empty(context, token):
                 self.build(context, token)
-                return 27
+                return 25
 
-        state_comment = "State: 27 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:3>#TableRow:0"
+        state_comment = "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0"
+        token.detach
+        expected_tokens = ["#EOF", "#Comment", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"]
+        error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
+        if (self.stop_at_first_error):
+            raise error
+        self.add_error(context, error)
+        return 25
+
+    # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>Examples_Table:0>#TableRow:0
+    def match_token_at_26(self, token, context):
+        if self.match_EOF(context, token):
+                self.end_rule(context, 'Examples_Table')
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.build(context, token)
+                return 27
+        if self.match_TableRow(context, token):
+                self.build(context, token)
+                return 26
+        if self.match_TagLine(context, token):
+            if self.lookahead_0(context, token):
+                self.end_rule(context, 'Examples_Table')
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.start_rule(context, 'Examples_Definition')
+                self.start_rule(context, 'Tags')
+                self.build(context, token)
+                return 22
+        if self.match_TagLine(context, token):
+                self.end_rule(context, 'Examples_Table')
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Tags')
+                self.build(context, token)
+                return 11
+        if self.match_ExamplesLine(context, token):
+                self.end_rule(context, 'Examples_Table')
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.start_rule(context, 'Examples_Definition')
+                self.start_rule(context, 'Examples')
+                self.build(context, token)
+                return 23
+        if self.match_ScenarioLine(context, token):
+                self.end_rule(context, 'Examples_Table')
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario')
+                self.build(context, token)
+                return 12
+        if self.match_ScenarioOutlineLine(context, token):
+                self.end_rule(context, 'Examples_Table')
+                self.end_rule(context, 'Examples')
+                self.end_rule(context, 'Examples_Definition')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'ScenarioOutline')
+                self.build(context, token)
+                return 17
+        if self.match_Comment(context, token):
+                self.build(context, token)
+                return 26
+        if self.match_Empty(context, token):
+                self.build(context, token)
+                return 26
+
+        state_comment = "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>Examples_Table:0>#TableRow:0"
         token.detach
         expected_tokens = ["#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
         error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
         if (self.stop_at_first_error):
             raise error
         self.add_error(context, error)
-        return 27
+        return 26
 
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-    def match_token_at_29(self, token, context):
+    def match_token_at_28(self, token, context):
         if self.match_DocStringSeparator(context, token):
                 self.build(context, token)
-                return 30
+                return 29
         if self.match_Other(context, token):
                 self.build(context, token)
-                return 29
+                return 28
 
-        state_comment = "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
+        state_comment = "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
         token.detach
         expected_tokens = ["#DocStringSeparator", "#Other"]
         error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
         if (self.stop_at_first_error):
             raise error
         self.add_error(context, error)
-        return 29
+        return 28
 
     # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-    def match_token_at_30(self, token, context):
+    def match_token_at_29(self, token, context):
+        if self.match_EOF(context, token):
+                self.end_rule(context, 'DocString')
+                self.end_rule(context, 'Step')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.build(context, token)
+                return 27
         if self.match_StepLine(context, token):
                 self.end_rule(context, 'DocString')
                 self.end_rule(context, 'Step')
@@ -1408,12 +1707,22 @@ class Parser(object):
                 self.build(context, token)
                 return 20
         if self.match_TagLine(context, token):
+            if self.lookahead_0(context, token):
                 self.end_rule(context, 'DocString')
                 self.end_rule(context, 'Step')
                 self.start_rule(context, 'Examples_Definition')
                 self.start_rule(context, 'Tags')
                 self.build(context, token)
                 return 22
+        if self.match_TagLine(context, token):
+                self.end_rule(context, 'DocString')
+                self.end_rule(context, 'Step')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Tags')
+                self.build(context, token)
+                return 11
         if self.match_ExamplesLine(context, token):
                 self.end_rule(context, 'DocString')
                 self.end_rule(context, 'Step')
@@ -1421,49 +1730,67 @@ class Parser(object):
                 self.start_rule(context, 'Examples')
                 self.build(context, token)
                 return 23
+        if self.match_ScenarioLine(context, token):
+                self.end_rule(context, 'DocString')
+                self.end_rule(context, 'Step')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario')
+                self.build(context, token)
+                return 12
+        if self.match_ScenarioOutlineLine(context, token):
+                self.end_rule(context, 'DocString')
+                self.end_rule(context, 'Step')
+                self.end_rule(context, 'ScenarioOutline')
+                self.end_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'Scenario_Definition')
+                self.start_rule(context, 'ScenarioOutline')
+                self.build(context, token)
+                return 17
         if self.match_Comment(context, token):
                 self.build(context, token)
-                return 30
+                return 29
         if self.match_Empty(context, token):
                 self.build(context, token)
-                return 30
+                return 29
 
-        state_comment = "State: 30 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
+        state_comment = "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
         token.detach
-        expected_tokens = ["#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"]
+        expected_tokens = ["#EOF", "#StepLine", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
         error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
         if (self.stop_at_first_error):
             raise error
         self.add_error(context, error)
-        return 30
+        return 29
 
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-    def match_token_at_31(self, token, context):
+    def match_token_at_30(self, token, context):
         if self.match_DocStringSeparator(context, token):
                 self.build(context, token)
-                return 32
+                return 31
         if self.match_Other(context, token):
                 self.build(context, token)
-                return 31
+                return 30
 
-        state_comment = "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
+        state_comment = "State: 30 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
         token.detach
         expected_tokens = ["#DocStringSeparator", "#Other"]
         error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
         if (self.stop_at_first_error):
             raise error
         self.add_error(context, error)
-        return 31
+        return 30
 
     # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-    def match_token_at_32(self, token, context):
+    def match_token_at_31(self, token, context):
         if self.match_EOF(context, token):
                 self.end_rule(context, 'DocString')
                 self.end_rule(context, 'Step')
                 self.end_rule(context, 'Scenario')
                 self.end_rule(context, 'Scenario_Definition')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_StepLine(context, token):
                 self.end_rule(context, 'DocString')
                 self.end_rule(context, 'Step')
@@ -1499,46 +1826,46 @@ class Parser(object):
                 return 17
         if self.match_Comment(context, token):
                 self.build(context, token)
-                return 32
+                return 31
         if self.match_Empty(context, token):
                 self.build(context, token)
-                return 32
+                return 31
 
-        state_comment = "State: 32 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
+        state_comment = "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
         token.detach
         expected_tokens = ["#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
         error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
         if (self.stop_at_first_error):
             raise error
         self.add_error(context, error)
-        return 32
+        return 31
 
     # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-    def match_token_at_33(self, token, context):
+    def match_token_at_32(self, token, context):
         if self.match_DocStringSeparator(context, token):
                 self.build(context, token)
-                return 34
+                return 33
         if self.match_Other(context, token):
                 self.build(context, token)
-                return 33
+                return 32
 
-        state_comment = "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
+        state_comment = "State: 32 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0"
         token.detach
         expected_tokens = ["#DocStringSeparator", "#Other"]
         error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
         if (self.stop_at_first_error):
             raise error
         self.add_error(context, error)
-        return 33
+        return 32
 
     # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-    def match_token_at_34(self, token, context):
+    def match_token_at_33(self, token, context):
         if self.match_EOF(context, token):
                 self.end_rule(context, 'DocString')
                 self.end_rule(context, 'Step')
                 self.end_rule(context, 'Background')
                 self.build(context, token)
-                return 28
+                return 27
         if self.match_StepLine(context, token):
                 self.end_rule(context, 'DocString')
                 self.end_rule(context, 'Step')
@@ -1571,19 +1898,19 @@ class Parser(object):
                 return 17
         if self.match_Comment(context, token):
                 self.build(context, token)
-                return 34
+                return 33
         if self.match_Empty(context, token):
                 self.build(context, token)
-                return 34
+                return 33
 
-        state_comment = "State: 34 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
+        state_comment = "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0"
         token.detach
         expected_tokens = ["#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"]
         error = UnexpectedEOFException(token, expected_tokens, state_comment) if token.eof() else UnexpectedTokenException(token, expected_tokens, state_comment)
         if (self.stop_at_first_error):
             raise error
         self.add_error(context, error)
-        return 34
+        return 33
 
     def lookahead_0(self, context, currentToken):
         currentToken.detach

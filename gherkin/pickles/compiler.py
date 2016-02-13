@@ -3,6 +3,7 @@ import re
 from ..dialect import Dialect
 from ..count_symbols import count_symbols
 
+
 def compile(feature, path):
     pickles = []
     dialect = feature['language']
@@ -39,7 +40,7 @@ def _compile_scenario_outline(feature_tags, background_steps, scenario_outline,
                               dialect, path, pickles):
     keyword = Dialect.for_name(dialect).scenario_keywords[0]
 
-    for examples in scenario_outline['examples']:
+    for examples in (e for e in scenario_outline['examples'] if 'tableHeader' in e):
         variable_cells = examples['tableHeader']['cells']
 
         for values in examples['tableBody']:
