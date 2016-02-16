@@ -1,7 +1,7 @@
 # coding: utf-8
 from distutils.core import setup
 setup(name='gherkin-official',
-      packages=['gherkin'],
+      packages=['gherkin', 'gherkin.pickles'],
       version='3.2.0',
       description='Gherkin parser (official, by Cucumber team)',
       author='Cucumber Ltd and Björn Rasmusson',

@@ -17,6 +17,10 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Changed
 
 ### Fixed
+* (Python) Add the `gherkin.pickles` package to the Python installation
+  ([#157](https://github.com/cucumber/gherkin/pull/157),
+   [#156](https://github.com/cucumber/gherkin/issues/156)
+   by [Zearin])
 * (Ruby, Java) Make parser work even when system encoding ($LANG) is not UTF-8.
   ([#151](https://github.com/cucumber/gherkin/issues/151)
    by [aslakhellesoy])
