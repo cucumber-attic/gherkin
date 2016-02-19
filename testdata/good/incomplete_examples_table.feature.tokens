@@ -1,0 +1,8 @@
+(1:1)FeatureLine:Feature/Empty examples table/
+(2:1)Empty://
+(3:3)ScenarioOutlineLine:Scenario Outline/minimalistic/
+(4:5)StepLine:Given /the <what>/
+(5:1)Empty://
+(6:3)ExamplesLine:Examples//
+(7:5)TableRow://7:what
+EOF

@@ -1,4 +1,4 @@
-Feature: Inconsistent examples table
+Feature: Empty examples table
 
   Scenario Outline: minimalistic
     Given the <what>

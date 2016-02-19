@@ -51,7 +51,7 @@ typedef enum    GHRuleType
             GHRuleTypeScenario, // Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
             GHRuleTypeScenarioOutline, // ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples_Definition+
             GHRuleTypeExamples_Definition, // Examples_Definition! [#Empty|#Comment|#TagLine-&gt;#ExamplesLine] := Tags? Examples
-            GHRuleTypeExamples, // Examples! := #ExamplesLine Examples_Description #TableRow #TableRow+
+            GHRuleTypeExamples, // Examples! := #ExamplesLine Examples_Description #TableRow #TableRow*
             GHRuleTypeScenario_Step, // Scenario_Step := Step
             GHRuleTypeScenarioOutline_Step, // ScenarioOutline_Step := Step
             GHRuleTypeStep, // Step! := #StepLine Step_Arg?
