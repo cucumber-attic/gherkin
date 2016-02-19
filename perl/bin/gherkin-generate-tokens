@@ -1,0 +1,18 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use FindBin::libs;
+use IO::Interactive qw/is_interactive/;
+
+use Gherkin::Parser;
+use Gherkin::TokenFormatterBuilder;
+
+my @file_list = @ARGV;
+
+my $parser = Gherkin::Parser->new(
+    { ast_builder => Gherkin::TokenFormatterBuilder->new() } );
+
+print join "\n", @{$parser->parse( $_ )} for @file_list;
+print "\n";
