@@ -3,8 +3,14 @@ package Gherkin::AstBuilder;
 use Moose;
 use Gherkin::AstNode;
 
-has 'stack'    => ( is => 'rw', traits => ['Array'] );
-has 'comments' => ( is => 'rw', traits => ['Array'] );
+has 'stack'    => ( is => 'rw', traits => ['Array'], handles => {
+    stack_push => 'push',
+    stack_pop => 'pop',
+    stack_get => 'get',
+    } );
+has 'comments' => ( is => 'rw', traits => ['Array'], handles => {
+    add_comment => 'push',
+    } );
 
 sub ast_node { Gherkin::AstNode->new( $_[0] ) }
 
@@ -18,17 +24,17 @@ sub reset {
 
 sub current_node {
     my $self = shift;
-    return $self->stack->get(-1);
+    return $self->stack_get(-1);
 }
 
 sub start_rule {
     my ( $self, $rule_type ) = @_;
-    $self->stack->push( ast_node($rule_type) );
+    $self->stack_push( ast_node($rule_type) );
 }
 
 sub end_rule {
     my ( $self, $rule_type ) = @_;
-    my $node = $self->stack->pop();
+    my $node = $self->stack_pop();
     $self->current_node->add( $node->rule_type,
         $self->transform_node($node) );
 }
@@ -36,7 +42,7 @@ sub end_rule {
 sub build {
     my ( $self, $token ) = @_;
     if ( $token->matched_type eq 'Comment' ) {
-        $self->comments->push(
+        $self->add_comment(
             {   type     => 'Comment',
                 location => $self->get_location($token),
                 text     => $token->matched_text,
@@ -56,6 +62,9 @@ sub get_result {
 sub get_location {
     my ( $self, $token, $column ) = @_;
 
+    use Carp qw/confess/;
+    confess "What no token?" unless $token;
+
     if ( !defined $column ) {
         return $token->location;
     }
@@ -73,7 +82,7 @@ sub get_tags {
     my $tags_node = $node->get_single('Tags') || return [];
     my @tags;
 
-    for my $token ( $tags_node->get_tokens('TagLine') ) {
+    for my $token ( @{ $tags_node->get_tokens('TagLine') } ) {
         for my $item ( @{ $token->matched_items } ) {
             push(
                 @tags,
@@ -92,7 +101,8 @@ sub get_tags {
 sub get_table_rows {
     my ( $self, $node ) = @_;
     my @rows;
-    for my $token ( $node->get_tokens('Table_Row') ) {
+
+    for my $token ( @{ $node->get_tokens('TableRow') } ) {
         push(
             @rows,
             {   type     => 'TableRow',
@@ -103,7 +113,6 @@ sub get_table_rows {
     }
 
     $self->ensure_cell_count( \@rows );
-
     return \@rows;
 }
 
@@ -114,7 +123,7 @@ sub ensure_cell_count {
     my $cell_count;
 
     for my $row (@$rows) {
-        my $this_row_count = @{ $row->['cells'] };
+        my $this_row_count = @{ $row->{'cells'} };
         $cell_count = $this_row_count unless defined $cell_count;
         unless ( $cell_count == $this_row_count ) {
             die Gherkin::AstBuilderException->new(
@@ -127,13 +136,14 @@ sub ensure_cell_count {
 sub get_cells {
     my ( $self, $table_row_token ) = @_;
     my @cells;
-    for my $cell_item ( $table_row_token->matched_items ) {
+    for my $cell_item ( @{ $table_row_token->matched_items } ) {
         push(
             @cells,
             {   type     => 'TableCell',
                 location => $self->get_location(
                     $table_row_token, $cell_item->{'column'}
                 ),
+                value => $cell_item->{'text'},
             }
         );
     }
@@ -142,13 +152,13 @@ sub get_cells {
 }
 
 sub get_description { return $_[1]->get_single('Description') }
-sub get_step        { return $_[1]->get_items('Step') }
+sub get_steps        { return $_[1]->get_items('Step') }
 
 sub reject_nones {
     my ( $self, $values ) = @_;
 
     my $defined_only = {};
-    for my $key (%$values) {
+    for my $key (keys %$values) {
         my $value = $values->{$key};
         $defined_only->{$key} = $value if defined $value;
     }
@@ -159,7 +169,7 @@ sub reject_nones {
 sub transform_node {
     my ( $self, $node ) = @_;
     if ( $node->rule_type eq 'Step' ) {
-        my $step_line = node->get_token('StepLine');
+        my $step_line = $node->get_token('StepLine');
         my $step_argument
             = $node->get_single('DataTable')
             || $node->get_single('DocString')
@@ -185,124 +195,115 @@ sub transform_node {
             contentType => $content_type,
             content => $content,
         });
+    } elsif ( $node->rule_type eq 'DataTable' ) {
+        my $rows = $self->get_table_rows( $node );
+        return $self->reject_nones({
+            type => $node->rule_type,
+            location => $rows->[0]->{'location'},
+            rows => $rows,
+        });
+    } elsif ( $node->rule_type eq 'Background') {
+        my $background_line = $node->get_token('BackgroundLine');
+        my $description = $self->get_description( $node );
+        my $steps = $self->get_steps( $node );
+
+        return $self->reject_nones({
+            type => $node->rule_type,
+            location => $self->get_location( $background_line ),
+            keyword => $background_line->matched_keyword,
+            name => $background_line->matched_text,
+            description => $description,
+            steps => $steps,
+        });
+    } elsif ( $node->rule_type eq 'Scenario_Definition') {
+        my $tags = $self->get_tags( $node );
+        my $scenario_node = $node->get_single('Scenario');
+        if ( $scenario_node ) {
+            my $scenario_line = $scenario_node->get_token('ScenarioLine');
+            my $description = $self->get_description( $scenario_node );
+            my $steps = $self->get_steps( $scenario_node );
+
+            return $self->reject_nones({
+                type => $scenario_node->rule_type,
+                tags => $tags,
+                location => $self->get_location( $scenario_line ),
+                keyword => $scenario_line->matched_keyword,
+                name => $scenario_line->matched_text,
+                description => $description,
+                steps => $steps,
+                });
+        } else {
+            my $scenario_outline_node = $node->get_single('ScenarioOutline');
+
+                die "Internal grammar error" unless $scenario_outline_node;
+            my $scenario_outline_line = $scenario_outline_node->get_token('ScenarioOutlineLine');
+            my $description = $self->get_description( $scenario_outline_node );
+            my $steps = $self->get_steps( $scenario_outline_node );
+            my $examples = $scenario_outline_node->get_items('Examples_Definition');
+
+            return $self->reject_nones({
+                type => $scenario_outline_node->rule_type,
+                tags => $tags,
+                location => $self->get_location( $scenario_outline_line ),
+                keyword => $scenario_outline_line->matched_keyword,
+                name => $scenario_outline_line->matched_text,
+                description => $description,
+                steps => $steps,
+                examples => $examples,
+                });
+        }
+    } elsif ( $node->rule_type eq 'Examples_Definition' ){
+        my $tags = $self->get_tags( $node );
+        my $examples_node = $node->get_single('Examples');
+        my $examples_line = $examples_node->get_token('ExamplesLine');
+        my $description = $self->get_description( $examples_node );
+        my $rows = $self->get_table_rows( $examples_node );
+
+        my $table_header = shift( @$rows );
+
+        return $self->reject_nones({
+            type => $examples_node->rule_type,
+            tags => $tags,
+            location => $self->get_location( $examples_line ),
+            keyword => $examples_line->matched_keyword,
+            name => $examples_line->matched_text,
+            description => $description,
+            tableHeader => $table_header,
+            tableBody => $rows,
+        });
+    } elsif ( $node->rule_type eq 'Description' ) {
+        my @description = @{$node->get_tokens('Other')};
+        # Trim trailing empty lines
+        pop @description while ( @description && ! $description[-1]->matched_text );
+
+        return join "\n", map { $_->matched_text } @description;
+    } elsif ( $node->rule_type eq 'Feature' ) {
+        my $header = $node->get_single('Feature_Header');
+        return unless $header;
+        my $feature_line = $header->get_token('FeatureLine');
+        return unless $feature_line;
+        my $tags = $self->get_tags( $header );
+
+        my $background = $node->get_single('Background');
+        my $scenario_definitions = $node->get_items('Scenario_Definition');
+        my $description = $self->get_description( $header );
+        my $language = $feature_line->matched_gherkin_dialect;
+
+        return $self->reject_nones({
+            type => $node->rule_type,
+            tags => $tags,
+            location => $self->get_location( $feature_line ),
+            language => $language,
+            keyword => $feature_line->matched_keyword,
+            name => $feature_line->matched_text,
+            description => $description,
+            background => $background,
+            scenarioDefinitions => $scenario_definitions,
+            comments => $self->comments,
+            });
+    } else {
+        return $node;
     }
 }
 
 1;
-
-__DATA__
-
-
-        elif node.rule_type == 'DataTable':
-            rows = self.get_table_rows(node)
-            return self.reject_nones({
-                'type': node.rule_type,
-                'location': rows[0]['location'],
-                'rows': rows,
-            })
-        elif node.rule_type == 'Background':
-            background_line = node.get_token('BackgroundLine')
-            description = self.get_description(node)
-            steps = self.get_steps(node)
-
-            return self.reject_nones({
-                'type': node.rule_type,
-                'location': self.get_location(background_line),
-                'keyword': background_line.matched_keyword,
-                'name': background_line.matched_text,
-                'description': description,
-                'steps': steps
-            })
-        elif node.rule_type == 'Scenario_Definition':
-            tags = self.get_tags(node)
-            scenario_node = node.get_single('Scenario')
-            if scenario_node:
-                scenario_line = scenario_node.get_token('ScenarioLine')
-                description = self.get_description(scenario_node)
-                steps = self.get_steps(scenario_node)
-
-                return self.reject_nones({
-                    'type': scenario_node.rule_type,
-                    'tags': tags,
-                    'location': self.get_location(scenario_line),
-                    'keyword': scenario_line.matched_keyword,
-                    'name': scenario_line.matched_text,
-                    'description': description,
-                    'steps': steps
-                })
-            else:
-                scenario_outline_node = node.get_single('ScenarioOutline')
-                if not scenario_outline_node:
-                    raise RuntimeError('Internal grammar error')
-
-                scenario_outline_line = scenario_outline_node.get_token('ScenarioOutlineLine')
-                description = self.get_description(scenario_outline_node)
-                steps = self.get_steps(scenario_outline_node)
-                examples = scenario_outline_node.get_items('Examples_Definition')
-
-                return self.reject_nones({
-                    'type': scenario_outline_node.rule_type,
-                    'tags': tags,
-                    'location': self.get_location(scenario_outline_line),
-                    'keyword': scenario_outline_line.matched_keyword,
-                    'name': scenario_outline_line.matched_text,
-                    'description': description,
-                    'steps': steps,
-                    'examples': examples
-                })
-        elif node.rule_type == 'Examples_Definition':
-            tags = self.get_tags(node)
-            examples_node = node.get_single('Examples')
-            examples_line = examples_node.get_token('ExamplesLine')
-            description = self.get_description(examples_node)
-            rows = self.get_table_rows(examples_node)
-
-            return self.reject_nones({
-                'type': examples_node.rule_type,
-                'tags': tags,
-                'location': self.get_location(examples_line),
-                'keyword': examples_line.matched_keyword,
-                'name': examples_line.matched_text,
-                'description': description,
-                'tableHeader': rows[0],
-                'tableBody': rows[1:]
-            })
-        elif node.rule_type == 'Description':
-            line_tokens = node.get_tokens('Other')
-            # Trim trailing empty lines
-            last_non_empty = next(i for i, j in reversed(list(enumerate(line_tokens)))
-                                  if j.matched_text)
-            description = '\n'.join([token.matched_text for token in
-                                     line_tokens[:last_non_empty + 1]])
-
-            return description
-        elif node.rule_type == 'Feature':
-            header = node.get_single('Feature_Header')
-            if not header:
-                return
-
-            tags = self.get_tags(header)
-            feature_line = header.get_token('FeatureLine')
-            if not feature_line:
-                return
-
-            background = node.get_single('Background')
-            scenario_definitions = node.get_items('Scenario_Definition')
-            description = self.get_description(header)
-            language = feature_line.matched_gherkin_dialect
-
-            return self.reject_nones({
-                'type': node.rule_type,
-                'tags': tags,
-                'location': self.get_location(feature_line),
-                'language': language,
-                'keyword': feature_line.matched_keyword,
-                'name': feature_line.matched_text,
-                'description': description,
-                'background': background,
-                'scenarioDefinitions': scenario_definitions,
-                'comments': self.comments
-            })
-        else:
-            return node
-

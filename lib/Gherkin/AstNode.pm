@@ -26,7 +26,7 @@ sub get_single {
 
 sub get_items {
     my ( $self, $rule_type ) = @_;
-    return $self->_sub_items->{$rule_type};
+    return $self->_sub_items->{$rule_type} || [];
 }
 
 sub get_token {
@@ -36,7 +36,7 @@ sub get_token {
 
 sub get_tokens {
     my ( $self, $token_type ) = @_;
-    return $self->_sub_items->{$token_type};
+    return $self->_sub_items->{$token_type} || [];
 }
 
 1;
