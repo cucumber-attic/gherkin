@@ -1,55 +1,54 @@
 package Gherkin::Dialect;
+use strict;
+use warnings;
 
-use Moo;
-use Types::Standard qw(Str HashRef);
-
-use FindBin qw($Bin);
-use Path::Class qw/file/;
-use JSON::MaybeXS qw/decode_json/;
 use Gherkin::Exceptions;
 
-has 'dialect' => (
-    is     => 'rw',
-    isa    => Str,
-    writer => 'set_dialect',
-);
+use Class::XSAccessor accessors =>
+    [ qw/dialect dictionary_location dictionary/, ];
+
+sub new {
+    my ( $class, $options ) = @_;
+    $options->{'dialect'} ||= 'en';
+
+    unless ( $options->{'dictionary'} ) {
+
+        # Load from a file if one was given
+        if ( my $filename = $options->{'dictionary_location'} ) {
+            require JSON::MaybeXS;
+            open( my $fh, '<', $filename ) || die "Can't open [$filename]";
+            my $input = join '', (<$fh>);
+            close $fh;
+            $options->{'dictionary'} = JSON::MaybeXS::decode_json($input);
+        }
+        else {
+            require Gherkin::Generated::Languages;
+            $options->{'dictionary'} = $Gherkin::Generated::Languages::data;
+        }
+    }
+
+    bless $options, $class;
+}
 
 sub change_dialect {
     my ( $self, $name, $location ) = @_;
     Gherkin::Exceptions::NoSuchLanguage->throw( $name, $location )
         unless $self->dictionary->{$name};
-    $self->set_dialect($name);
+    $self->{'dialect'} = $name;
 }
 
-has 'dictionary_location' => (
-    is      => 'ro',
-    isa     => Str,
-    default => sub {
-        '' . file($Bin)->parent->file('gherkin-languages.json');
-    },
-);
+sub Feature    { $_[0]->dictionary->{ $_[0]->dialect }->{'feature'}; }
+sub Scenario   { $_[0]->dictionary->{ $_[0]->dialect }->{'scenario'}; }
+sub Background { $_[0]->dictionary->{ $_[0]->dialect }->{'background'}; }
+sub Examples   { $_[0]->dictionary->{ $_[0]->dialect }->{'examples'}; }
+sub Given      { $_[0]->dictionary->{ $_[0]->dialect }->{'given'}; }
+sub When       { $_[0]->dictionary->{ $_[0]->dialect }->{'when'}; }
+sub Then       { $_[0]->dictionary->{ $_[0]->dialect }->{'then'}; }
+sub And        { $_[0]->dictionary->{ $_[0]->dialect }->{'and'}; }
+sub But        { $_[0]->dictionary->{ $_[0]->dialect }->{'but'}; }
 
-has 'dictionary' => (
-    is         => 'lazy',
-    isa        => HashRef,
-);
-
-sub _build_dictionary {
-    my $self = shift;
-    decode_json scalar file( $self->dictionary_location )->slurp;
-}
-
-for my $key_name (
-    qw/feature scenario scenarioOutline background examples
-    given when then and but /
-    )
-{
-    __PACKAGE__->meta->add_method(
-        ucfirst($key_name) => sub {
-            my $self = shift;
-            return $self->dictionary->{ $self->dialect }->{$key_name};
-        }
-    );
+sub ScenarioOutline {
+    $_[0]->dictionary->{ $_[0]->dialect }->{'scenarioOutline'};
 }
 
 1;

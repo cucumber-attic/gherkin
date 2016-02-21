@@ -1,8 +1,10 @@
 package Gherkin::Generated::Parser;
 # This file is generated. Do not edit! Edit gherkin-perl.razor instead.
 
-use Moo;
-extends 'Gherkin::ParserBase';
+use strict;
+use warnings;
+
+use base 'Gherkin::ParserBase';
 
 our @RULE_TYPES = [
     'None',

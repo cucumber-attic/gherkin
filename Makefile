@@ -18,7 +18,7 @@ all: .compared
 	cpanm --installdeps .
 	touch $@
 
-.built: lib/Gherkin/Generated/Parser.pm gherkin/gherkin-languages.json $(PERL_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast .cpanfile_dependencies LICENSE.txt
+.built: lib/Gherkin/Generated/Parser.pm lib/Gherkin/Generated/Languages.pm $(PERL_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast .cpanfile_dependencies LICENSE.txt
 	@$(MAKE) --no-print-directory show-version-info
 	# add Perl-level unit tests
 	touch $@
@@ -57,6 +57,9 @@ gherkin/gherkin-languages.json: ../gherkin-languages.json
 clean:
 	rm -rf .compared .built acceptance lib/Gherkin/Generated/Parser.pm gherkin/gherkin-languages.json
 .PHONY: clean
+
+lib/Gherkin/Generated/Languages.pm: gherkin/gherkin-languages.json
+	perl build_languages.pl > $@
 
 lib/Gherkin/Generated/Parser.pm: ../gherkin.berp gherkin-perl.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-perl.razor -o $@

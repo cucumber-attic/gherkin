@@ -1,8 +1,10 @@
 package Gherkin::ParserBase;
-use Moo;
-use Types::Standard qw(Bool Int InstanceOf);
 
-use TryCatch;
+use strict;
+use warnings;
+
+use Class::XSAccessor accessors =>
+    [ qw/ast_builder stop_at_first_error max_errors/, ];
 
 use Gherkin::ParserContext;
 use Gherkin::Exceptions;
@@ -11,38 +13,41 @@ use Gherkin::AstBuilder;
 use Gherkin::TokenMatcher;
 use Gherkin::TokenScanner;
 
-has 'ast_builder' => ( is => 'rw', isa => InstanceOf['Gherkin::AstBuilder'],
-    default => sub { Gherkin::AstBuilder->new() },
-    handles => {
-        get_result => 'get_result',
-    }
-);
+sub new {
+    my ( $class, $ast_builder ) = @_;
+    bless {
+        ast_builder => $ast_builder || Gherkin::AstBuilder->new(),
+        stop_at_first_error => 0,
+        max_errors          => 10,
+        },
+        $class;
+}
 
-has 'stop_at_first_error' => ( is => 'rw', isa => Bool, default => 0 );
-has 'max_errors' => ( is => 'rw', isa => Int, default => 10 );
+sub get_result { return $_[0]->ast_builder->get_result }
 
 sub parse {
     my ( $self, $token_scanner, $token_matcher ) = @_;
 
     $token_matcher ||= Gherkin::TokenMatcher->new();
-    $token_scanner = Gherkin::TokenScanner->new( $token_scanner )
+    $token_scanner = Gherkin::TokenScanner->new($token_scanner)
         unless ref $token_scanner;
 
     $self->ast_builder->reset();
     $token_matcher->reset();
 
-    my $context = Gherkin::ParserContext->new({
-        token_scanner => $token_scanner,
-        token_matcher => $token_matcher,
-    });
+    my $context = Gherkin::ParserContext->new(
+        {   token_scanner => $token_scanner,
+            token_matcher => $token_matcher,
+        }
+    );
 
     $self->_start_rule( $context, 'Feature' );
 
     my $state = 0;
     my $token;
 
-    while ( 1 ) {
-        $token = $context->read_token( $context );
+    while (1) {
+        $token = $context->read_token($context);
         $state = $self->match_token( $state, $token, $context );
 
         last if $token->is_eof();
@@ -51,7 +56,7 @@ sub parse {
     $self->_end_rule( $context, 'Feature' );
 
     if ( my @errors = $context->errors ) {
-        Gherkin::Exceptions::CompositeParser->throw( @errors );
+        Gherkin::Exceptions::CompositeParser->throw(@errors);
     }
 
     return $self->get_result();
@@ -60,10 +65,10 @@ sub parse {
 sub add_error {
     my ( $self, $context, $error ) = @_;
 
-    $context->add_errors( $error );
+    $context->add_errors($error);
 
     my @errors = $context->errors;
-    Gherkin::Exceptions::CompositeParser->throw( @errors )
+    Gherkin::Exceptions::CompositeParser->throw(@errors)
         if @errors > $self->max_errors;
 }
 
@@ -85,7 +90,7 @@ sub _build {
 sub _handle_ast_error {
     my ( $self, $context, $method_name, $arg ) = @_;
     my $action = sub {
-        $self->ast_builder->$method_name( $arg );
+        $self->ast_builder->$method_name($arg);
     };
 
     $self->handle_external_error( $context, 1, $action );
@@ -95,18 +100,20 @@ sub handle_external_error {
     my ( $self, $context, $default_value, $action ) = @_;
     return $action->() if $self->stop_at_first_error;
 
-    try {
-        return $action->();
-    }
-    catch (Gherkin::Exceptions::CompositeParser $e) {
-        $self->add_error( $context, $_ ) for @{ $e->errors };
+    my $result = eval { $action->() };
+    return $result unless $@;
+
+    # Non-structured exceptions
+    die $@ unless ref $@;
+
+    if ( ref $@ eq 'Gherkin::Exceptions::CompositeParser' ) {
+        $self->add_error( $context, $_ ) for @{ $@->errors };
         return $default_value;
     }
-    catch (Gherkin::Exceptions::SingleParser $e) {
-        $self->add_error( $context, $e );
+    else {
+        $self->add_error( $context, $@ );
         return $default_value;
     }
 }
-
 
 1;
