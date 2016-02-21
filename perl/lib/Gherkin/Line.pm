@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Class::XSAccessor accessors =>
-    [ qw/line_text line_number indent _trimmed_line_text/, ];
+  [ qw/line_text line_number indent _trimmed_line_text/, ];
 
 sub new {
     my ( $class, $options ) = @_;
@@ -42,8 +42,7 @@ sub get_line_text {
 
     if ( $indent_to_remove < 0 or $indent_to_remove > $self->indent ) {
         return $self->_trimmed_line_text;
-    }
-    else {
+    } else {
         return substr( $self->line_text, $indent_to_remove );
     }
 }
@@ -81,33 +80,28 @@ sub _split_table_cells_iterator {
             if ( $char eq '|' ) {
                 if ($first_cell) {
                     $first_cell = 0;
-                }
-                else {
+                } else {
                     return ( $cell, $start_col );
                 }
-            }
-            elsif ( $char eq "\\" ) {
+            } elsif ( $char eq "\\" ) {
                 $row =~ s/^(.)// || die "Unpossible";
                 $col += 1;
                 $char = $1;
                 if ( $char eq 'n' ) {
                     $cell .= "\n";
-                }
-                else {
+                } else {
                     if ( $char ne '|' && $char ne '\\' ) {
                         $cell .= '\\';
                     }
                     $cell .= $char;
                 }
-            }
-            elsif ( defined $char ) {
+            } elsif ( defined $char ) {
                 $cell .= $char;
-            }
-            else {
+            } else {
                 die "WHAT?";
             }
         }
-        }
+      }
 }
 
 sub table_cells {
@@ -128,7 +122,8 @@ sub table_cells {
         $stripped_cell =~ s/\s*$//;
         push(
             @$cells,
-            {   column => $col + $self->indent + $cell_indent,
+            {
+                column => $col + $self->indent + $cell_indent,
                 text   => $stripped_cell
             }
         );
@@ -154,7 +149,8 @@ sub tags {
 
         push(
             @tags,
-            {   column => $column,
+            {
+                column => $column,
                 text   => '@' . $item,
             }
         );
