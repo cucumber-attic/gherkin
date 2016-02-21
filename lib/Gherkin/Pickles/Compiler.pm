@@ -160,8 +160,9 @@ sub _create_pickle_arguments {
     elsif ( $argument->{'type'} eq 'DocString' ) {
         push(
             @$result,
-            {   location =>
-                    $class->_pickle_location( $argument->{'location'}, $path ),
+            {   location => $class->_pickle_location(
+                    $argument->{'location'}, $path
+                ),
                 content => $class->_interpolate(
                     $argument->{'content'},
                     $variables, $values
@@ -193,8 +194,7 @@ sub _pickle_step {
     return {
         text      => $step->{'text'},
         arguments => $class->_create_pickle_arguments(
-            $step->{'argument'},
-            [], [], $path,
+            $step->{'argument'}, [], [], $path,
         ),
         locations => [ $class->_pickle_step_location( $step, $path ) ],
     };

@@ -21,17 +21,16 @@
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @@args = (
         $token,
         ["@Raw(string.Join("\", \"", expectedTokens))"], #"
         "State: @state.Id - @Raw(state.Comment)",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @@args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @@args )};
+    $self->add_error( $context, $@@ );
 
     return @state.Id;
 } </text>}
