@@ -1,0 +1,6 @@
+acceptance/
+.built
+.cpanfile_dependencies
+.compared
+Gherkin-*
+gherkin/gherkin-languages.json

@@ -1,6 +1,6 @@
 package Gherkin::Generated::Parser;
-# This file is generated. Do not edit! Edit gherkin-perl.razor instead.
 
+# This file is generated. Do not edit! Edit gherkin-perl.razor instead.
 use strict;
 use warnings;
 

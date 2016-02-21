@@ -22,6 +22,7 @@ print $template;
 
 __DATA__
 package Gherkin::Generated::Languages;
+
 use utf8;
 our $data = DATA;
 1;
