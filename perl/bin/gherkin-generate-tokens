@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use FindBin::libs;
-use IO::Interactive qw/is_interactive/;
 
 use Gherkin::Parser;
 use Gherkin::TokenFormatterBuilder;

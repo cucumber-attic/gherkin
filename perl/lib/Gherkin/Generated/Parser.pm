@@ -277,17 +277,16 @@ sub match_token_at_0 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#Language", "#TagLine", "#FeatureLine", "#Comment", "#Empty"], #"
         "State: 0 - Start",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 0;
 } 
@@ -319,17 +318,16 @@ sub match_token_at_1 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#TagLine", "#FeatureLine", "#Comment", "#Empty"], #"
         "State: 1 - Feature:0>Feature_Header:0>#Language:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 1;
 } 
@@ -361,17 +359,16 @@ sub match_token_at_2 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#TagLine", "#FeatureLine", "#Comment", "#Empty"], #"
         "State: 2 - Feature:0>Feature_Header:1>Tags:0>#TagLine:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 2;
 } 
@@ -431,17 +428,16 @@ sub match_token_at_3 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#Empty", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"], #"
         "State: 3 - Feature:0>Feature_Header:2>#FeatureLine:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 3;
 } 
@@ -502,17 +498,16 @@ sub match_token_at_4 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"], #"
         "State: 4 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 4;
 } 
@@ -567,17 +562,16 @@ sub match_token_at_5 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#Comment", "#BackgroundLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"], #"
         "State: 5 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 5;
 } 
@@ -636,17 +630,16 @@ sub match_token_at_6 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"], #"
         "State: 6 - Feature:1>Background:0>#BackgroundLine:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 6;
 } 
@@ -706,17 +699,16 @@ sub match_token_at_7 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"], #"
         "State: 7 - Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 7;
 } 
@@ -770,17 +762,16 @@ sub match_token_at_8 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"], #"
         "State: 8 - Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 8;
 } 
@@ -849,17 +840,16 @@ sub match_token_at_9 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"], #"
         "State: 9 - Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 9;
 } 
@@ -927,17 +917,16 @@ sub match_token_at_10 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"], #"
         "State: 10 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 10;
 } 
@@ -976,17 +965,16 @@ sub match_token_at_11 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"], #"
         "State: 11 - Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 11;
 } 
@@ -1049,17 +1037,16 @@ sub match_token_at_12 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"], #"
         "State: 12 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 12;
 } 
@@ -1123,17 +1110,16 @@ sub match_token_at_13 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"], #"
         "State: 13 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 13;
 } 
@@ -1191,17 +1177,16 @@ sub match_token_at_14 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"], #"
         "State: 14 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 14;
 } 
@@ -1274,17 +1259,16 @@ sub match_token_at_15 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"], #"
         "State: 15 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 15;
 } 
@@ -1356,17 +1340,16 @@ sub match_token_at_16 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#TableRow", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"], #"
         "State: 16 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 16;
 } 
@@ -1411,17 +1394,16 @@ sub match_token_at_17 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"], #"
         "State: 17 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 17;
 } 
@@ -1465,17 +1447,16 @@ sub match_token_at_18 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"], #"
         "State: 18 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 18;
 } 
@@ -1515,17 +1496,16 @@ sub match_token_at_19 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Empty"], #"
         "State: 19 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 19;
 } 
@@ -1578,17 +1558,16 @@ sub match_token_at_20 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"], #"
         "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 20;
 } 
@@ -1638,17 +1617,16 @@ sub match_token_at_21 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#TableRow", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"], #"
         "State: 21 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 21;
 } 
@@ -1681,17 +1659,16 @@ sub match_token_at_22 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#TagLine", "#ExamplesLine", "#Comment", "#Empty"], #"
         "State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:0>Tags:0>#TagLine:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 22;
 } 
@@ -1723,17 +1700,16 @@ sub match_token_at_23 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#Empty", "#Comment", "#TableRow", "#Other"], #"
         "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 23;
 } 
@@ -1762,17 +1738,16 @@ sub match_token_at_24 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#Comment", "#TableRow", "#Other"], #"
         "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 24;
 } 
@@ -1799,17 +1774,16 @@ sub match_token_at_25 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#Comment", "#TableRow", "#Empty"], #"
         "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 25;
 } 
@@ -1836,17 +1810,16 @@ sub match_token_at_26 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#TableRow", "#Comment", "#Empty"], #"
         "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>#TableRow:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 26;
 } 
@@ -1929,17 +1902,16 @@ sub match_token_at_27 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"], #"
         "State: 27 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:3>#TableRow:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 27;
 } 
@@ -1962,17 +1934,16 @@ sub match_token_at_29 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#DocStringSeparator", "#Other"], #"
         "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 29;
 } 
@@ -2018,17 +1989,16 @@ sub match_token_at_30 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"], #"
         "State: 30 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 30;
 } 
@@ -2051,17 +2021,16 @@ sub match_token_at_31 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#DocStringSeparator", "#Other"], #"
         "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 31;
 } 
@@ -2129,17 +2098,16 @@ sub match_token_at_32 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"], #"
         "State: 32 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 32;
 } 
@@ -2162,17 +2130,16 @@ sub match_token_at_33 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#DocStringSeparator", "#Other"], #"
         "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 33;
 } 
@@ -2236,17 +2203,16 @@ sub match_token_at_34 {
     my $error_class = "Gherkin::Exceptions::" . (
         $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
 
-    use Data::Dumper; die Dumper($token); exit;
-
-    my $error = $error_class->new(
+    my @args = (
         $token,
         ["#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"], #"
         "State: 34 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0",
     );
 
-    # Throw or add it to the queue
-    die $error if $self->stop_at_first_error;
-    $self->add_error( $error );
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
 
     return 34;
 } 
