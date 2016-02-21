@@ -1,6 +1,7 @@
 package Gherkin::Dialect;
 
-use Moose;
+use Moo;
+use Types::Standard qw(Str HashRef);
 
 use FindBin qw($Bin);
 use Path::Class qw/file/;
@@ -9,7 +10,7 @@ use Gherkin::Exceptions;
 
 has 'dialect' => (
     is     => 'rw',
-    isa    => 'Str',
+    isa    => Str,
     writer => 'set_dialect',
 );
 
@@ -22,15 +23,15 @@ sub change_dialect {
 
 has 'dictionary_location' => (
     is      => 'ro',
-    isa     => 'Str',
+    isa     => Str,
     default => sub {
         '' . file($Bin)->parent->file('gherkin-languages.json');
     },
 );
 
 has 'dictionary' => (
-    is         => 'rw',
-    lazy_build => 1
+    is         => 'lazy',
+    isa        => HashRef,
 );
 
 sub _build_dictionary {

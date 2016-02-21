@@ -1,13 +1,14 @@
 package Gherkin::Line;
 
-use Moose;
+use Moo;
+use Types::Standard qw(Str Int Maybe);
 
-has 'line_text'   => ( is => 'ro', isa => 'Str|Undef', required => 1 );
-has 'line_number' => ( is => 'ro', isa => 'Int',       required => 1 );
+has 'line_text'   => ( is => 'ro', isa => Str, required => 1 );
+has 'line_number' => ( is => 'ro', isa => Int, required => 1 );
 
 has '_trimmed_line_text' =>
-    ( is => 'ro', isa => 'Str|Undef', lazy_build => 1 );
-has 'indent' => ( is => 'ro', isa => 'Int', lazy_build => 1 );
+    ( is => 'lazy', isa => Maybe [Str] );
+has 'indent' => ( is => 'lazy', isa => Int );
 
 sub _build__trimmed_line_text {
     my $self    = shift;
@@ -131,26 +132,28 @@ sub table_cells {
 }
 
 sub tags {
-    my $self = shift;
-    my $column = $self->indent + 1;
+    my $self       = shift;
+    my $column     = $self->indent + 1;
     my $items_line = $self->_trimmed_line_text;
     $items_line =~ s/\s+$//;
 
     my @tags;
-    my @items = split(/@/, $items_line);
-    shift( @items ); # Blank first item
+    my @items = split( /@/, $items_line );
+    shift(@items);    # Blank first item
 
-    for my $item ( @items ) {
+    for my $item (@items) {
         my $original_item = $item;
         $item =~ s/^\s*//;
         $item =~ s/\s*$//;
 
-        push( @tags, {
-            column => $column,
-            text => '@' . $item,
-        });
+        push(
+            @tags,
+            {   column => $column,
+                text   => '@' . $item,
+            }
+        );
 
-        $column += length( $original_item ) + 1;
+        $column += length($original_item) + 1;
     }
 
     return \@tags;
