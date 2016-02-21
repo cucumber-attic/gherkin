@@ -26,37 +26,36 @@ sub change_dialect { my $self = shift; $self->dialect->change_dialect(@_) }
 sub reset {
     my $self = shift;
     $self->change_dialect( $self->_default_dialect_name )
-        unless $self->dialect_name eq $self->_default_dialect_name;
+      unless $self->dialect_name eq $self->_default_dialect_name;
     $self->_indent_to_remove(0);
     $self->_active_doc_string_separator(undef);
 }
 
 sub match_FeatureLine {
-    my ($self, $token) = @_;
-    $self->_match_title_line( $token,
-        FeatureLine => $self->dialect->Feature );
+    my ( $self, $token ) = @_;
+    $self->_match_title_line( $token, FeatureLine => $self->dialect->Feature );
 }
 
 sub match_ScenarioLine {
-    my ($self, $token) = @_;
+    my ( $self, $token ) = @_;
     $self->_match_title_line( $token,
         ScenarioLine => $self->dialect->Scenario );
 }
 
 sub match_ScenarioOutlineLine {
-    my ($self, $token) = @_;
+    my ( $self, $token ) = @_;
     $self->_match_title_line( $token,
         ScenarioOutlineLine => $self->dialect->ScenarioOutline );
 }
 
 sub match_BackgroundLine {
-    my ($self, $token) = @_;
+    my ( $self, $token ) = @_;
     $self->_match_title_line( $token,
         BackgroundLine => $self->dialect->Background );
 }
 
 sub match_ExamplesLine {
-    my ($self, $token) = @_;
+    my ( $self, $token ) = @_;
     $self->_match_title_line( $token,
         ExamplesLine => $self->dialect->Examples );
 }
@@ -69,8 +68,7 @@ sub match_Language {
             Language => { text => $dialect_name } );
         $self->change_dialect( $dialect_name, $token->location );
         return 1;
-    }
-    else {
+    } else {
         return;
     }
 }
@@ -88,8 +86,8 @@ sub _match_title_line {
 
     for my $keyword (@$keywords) {
         if ( $token->line->startswith_title_keyword($keyword) ) {
-            my $title
-                = $token->line->get_rest_trimmed( length( $keyword . ': ' ) );
+            my $title =
+              $token->line->get_rest_trimmed( length( $keyword . ': ' ) );
             $self->_set_token_matched( $token, $token_type,
                 { text => $title, keyword => $keyword } );
             return 1;
@@ -110,17 +108,16 @@ sub _set_token_matched {
     }
 
     $token->matched_keyword( $options->{'keyword'} )
-        if defined $options->{'keyword'};
+      if defined $options->{'keyword'};
 
     if ( defined $options->{'indent'} ) {
         $token->matched_indent( $options->{'indent'} );
-    }
-    else {
+    } else {
         $token->matched_indent( $token->line ? $token->line->indent : 0 );
     }
 
     $token->matched_items( $options->{'items'} )
-        if defined $options->{'items'};
+      if defined $options->{'items'};
 
     $token->location->{'column'} = $token->matched_indent + 1;
     $token->matched_gherkin_dialect( $self->dialect_name );
@@ -158,8 +155,7 @@ sub match_Other {
     # take the entire line, except removing DocString indents
     my $text = $token->line->get_line_text( $self->_indent_to_remove );
     $self->_set_token_matched( $token,
-        Other => { indent => 0, text => $self->_unescaped_docstring($text) }
-    );
+        Other => { indent => 0, text => $self->_unescaped_docstring($text) } );
     return 1;
 }
 
@@ -168,16 +164,14 @@ sub _unescaped_docstring {
     if ( $self->_active_doc_string_separator ) {
         $text =~ s!\\"\\"\\"!"""!;
         return $text;
-    }
-    else {
+    } else {
         return $text;
     }
 }
 
 sub match_StepLine {
     my ( $self, $token ) = @_;
-    my @keywords
-        = map { @{ $self->dialect->$_ } } qw/Given When Then And But/;
+    my @keywords = map { @{ $self->dialect->$_ } } qw/Given When Then And But/;
 
     for my $keyword (@keywords) {
         if ( $token->line->startswith($keyword) ) {
@@ -194,9 +188,8 @@ sub match_DocStringSeparator {
     my ( $self, $token ) = @_;
     if ( !$self->_active_doc_string_separator ) {
         return $self->_match_DocStringSeparator( $token, '"""', 1 )
-            || $self->_match_DocStringSeparator( $token, '```', 1 );
-    }
-    else {
+          || $self->_match_DocStringSeparator( $token, '```', 1 );
+    } else {
         return $self->_match_DocStringSeparator( $token,
             $self->_active_doc_string_separator, 0 );
     }
@@ -211,8 +204,7 @@ sub _match_DocStringSeparator {
         $content_type = $token->line->get_rest_trimmed( length($separator) );
         $self->_active_doc_string_separator($separator);
         $self->_indent_to_remove( $token->line->indent );
-    }
-    else {
+    } else {
         $self->_active_doc_string_separator(undef);
         $self->_indent_to_remove(0);
     }

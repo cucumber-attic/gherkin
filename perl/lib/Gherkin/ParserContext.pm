@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Class::XSAccessor accessors =>
-    [ qw/token_scanner token_matcher token_queue _errors/, ];
+  [ qw/token_scanner token_matcher token_queue _errors/, ];
 
 sub new {
     my ( $class, $options ) = @_;

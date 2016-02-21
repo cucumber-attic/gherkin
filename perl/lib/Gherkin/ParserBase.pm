@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Class::XSAccessor accessors =>
-    [ qw/ast_builder stop_at_first_error max_errors/, ];
+  [ qw/ast_builder stop_at_first_error max_errors/, ];
 
 use Gherkin::ParserContext;
 use Gherkin::Exceptions;
@@ -19,8 +19,8 @@ sub new {
         ast_builder => $ast_builder || Gherkin::AstBuilder->new(),
         stop_at_first_error => 0,
         max_errors          => 10,
-        },
-        $class;
+      },
+      $class;
 }
 
 sub get_result { return $_[0]->ast_builder->get_result }
@@ -30,13 +30,14 @@ sub parse {
 
     $token_matcher ||= Gherkin::TokenMatcher->new();
     $token_scanner = Gherkin::TokenScanner->new($token_scanner)
-        unless ref $token_scanner;
+      unless ref $token_scanner;
 
     $self->ast_builder->reset();
     $token_matcher->reset();
 
     my $context = Gherkin::ParserContext->new(
-        {   token_scanner => $token_scanner,
+        {
+            token_scanner => $token_scanner,
             token_matcher => $token_matcher,
         }
     );
@@ -69,7 +70,7 @@ sub add_error {
 
     my @errors = $context->errors;
     Gherkin::Exceptions::CompositeParser->throw(@errors)
-        if @errors > $self->max_errors;
+      if @errors > $self->max_errors;
 }
 
 sub _start_rule {
@@ -109,8 +110,7 @@ sub handle_external_error {
     if ( ref $@ eq 'Gherkin::Exceptions::CompositeParser' ) {
         $self->add_error( $context, $_ ) for @{ $@->errors };
         return $default_value;
-    }
-    else {
+    } else {
         $self->add_error( $context, $@ );
         return $default_value;
     }

@@ -6,10 +6,10 @@ use Cpanel::JSON::XS;
 use Data::Dumper;
 
 my $json = Cpanel::JSON::XS->new->utf8->space_before(0)->space_after(1)
-    ->indent->canonical;
+  ->indent->canonical;
 
 open( my $fh, '<', 'gherkin-languages.json' )
-    || die "Can't open [gherkin-languages.json]";
+  || die "Can't open [gherkin-languages.json]";
 my $input = join '', (<$fh>);
 close $fh;
 
