@@ -1,6 +1,7 @@
 package Gherkin::AstBuilder;
 
 use Moose;
+use Gherkin::Exceptions;
 use Gherkin::AstNode;
 
 has 'stack'    => ( is => 'rw', traits => ['Array'], handles => {
@@ -126,7 +127,7 @@ sub ensure_cell_count {
         my $this_row_count = @{ $row->{'cells'} };
         $cell_count = $this_row_count unless defined $cell_count;
         unless ( $cell_count == $this_row_count ) {
-            die Gherkin::AstBuilderException->new(
+            Gherkin::Exceptions::AstBuilder->throw(
                 "inconsistent cell count within the table",
                 $row->{'location'} );
         }

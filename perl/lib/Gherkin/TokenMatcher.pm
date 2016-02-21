@@ -11,7 +11,7 @@ has 'dialect' => (
     default => sub {
         Gherkin::Dialect->new( { dialect => 'en' } );
     },
-    handles => { dialect_name => 'dialect', }
+    handles => { dialect_name => 'dialect', change_dialect => 'change_dialect' }
 );
 
 has '_default_dialect_name' => ( is => 'rw', isa => 'Str' );
@@ -27,7 +27,7 @@ sub BUILD {
 
 sub reset {
     my $self = shift;
-    $self->dialect_name( $self->_default_dialect_name )
+    $self->change_dialect( $self->_default_dialect_name )
         unless $self->dialect_name eq $self->_default_dialect_name;
     $self->_indent_to_remove(0);
     $self->_active_doc_string_separator(undef);
@@ -52,7 +52,7 @@ sub match_Language {
         my $dialect_name = $1;
         $self->_set_token_matched( $token,
             Language => { text => $dialect_name } );
-        $self->dialect_name( $dialect_name, $token->location );
+        $self->change_dialect( $dialect_name, $token->location );
         return 1;
     }
     else {

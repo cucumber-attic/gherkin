@@ -5,16 +5,20 @@ use Moose;
 use FindBin qw($Bin);
 use Path::Class qw/file/;
 use JSON::MaybeXS qw/decode_json/;
+use Gherkin::Exceptions;
 
 has 'dialect' => (
-    is      => 'rw',
-    isa     => 'Str',
-    trigger => sub {
-        my ( $self, $name, $location ) = @_;
-        die Gherkin::Exceptions::NoSuchLanguage->new( $name, $location )
-            unless $self->dictionary->{$name};
-    }
+    is     => 'rw',
+    isa    => 'Str',
+    writer => 'set_dialect',
 );
+
+sub change_dialect {
+    my ( $self, $name, $location ) = @_;
+    Gherkin::Exceptions::NoSuchLanguage->throw( $name, $location )
+        unless $self->dictionary->{$name};
+    $self->set_dialect($name);
+}
 
 has 'dictionary_location' => (
     is      => 'ro',

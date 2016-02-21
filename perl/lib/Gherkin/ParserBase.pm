@@ -50,19 +50,19 @@ sub parse {
     $self->_end_rule( $context, 'Feature' );
 
     if ( my @errors = $context->errors ) {
-        die Gherkin::Exceptions::CompositeParserException->new( @errors );
+        Gherkin::Exceptions::CompositeParser->throw( @errors );
     }
 
     return $self->get_result();
 }
 
 sub add_error {
-    my ( $self, $context, $error );
+    my ( $self, $context, $error ) = @_;
 
-    $context->add_error( $error );
+    $context->add_errors( $error );
 
     my @errors = $context->errors;
-    die Gherkin::Exceptions::CompositeParserException->new( @errors )
+    Gherkin::Exceptions::CompositeParser->throw( @errors )
         if @errors > $self->max_errors;
 }
 
@@ -97,12 +97,12 @@ sub handle_external_error {
     try {
         return $action->();
     }
-    catch (Gherkin::Exceptions::CompositeParserException $e) {
-        $self->add_error( $_ ) for @{ $e->errors };
+    catch (Gherkin::Exceptions::CompositeParser $e) {
+        $self->add_error( $context, $_ ) for @{ $e->errors };
         return $default_value;
     }
-    catch (Gherkin::Exceptions::ParserException $e) {
-        $self->add_error( $e );
+    catch (Gherkin::Exceptions::SingleParser $e) {
+        $self->add_error( $context, $e );
         return $default_value;
     }
 }
