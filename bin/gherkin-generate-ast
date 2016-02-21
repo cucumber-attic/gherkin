@@ -9,8 +9,8 @@ use Gherkin::Parser;
 
 my @file_list = @ARGV;
 
-my $json = Cpanel::JSON::XS->new->utf8->space_before(0)->space_after(1)->indent
-    ->canonical;
+my $json = Cpanel::JSON::XS->new->utf8->space_before(0)->space_after(1)
+  ->indent->canonical;
 
 my $parser = Gherkin::Parser->new();
 

@@ -20,8 +20,7 @@ sub compile {
         );
         if ( $scenario_definition->{'type'} eq 'Scenario' ) {
             $class->_compile_scenario(@args);
-        }
-        else {
+        } else {
             $class->_compile_scenario_outline(@args);
         }
     }
@@ -34,7 +33,7 @@ sub _get_background_steps {
     my @steps;
     if ( $feature->{'background'} ) {
         @steps = map { $class->_pickle_step( $_, $path ) }
-            @{ $feature->{'background'}->{'steps'} };
+          @{ $feature->{'background'}->{'steps'} };
     }
     return \@steps;
 }
@@ -42,24 +41,23 @@ sub _get_background_steps {
 sub _compile_scenario {
     my ( $class, $feature_tags, $background_steps, $scenario,
         $dialect, $path, $pickles )
-        = @_;
+      = @_;
     my @tags = ( @$feature_tags, @{ $scenario->{'tags'} || [] } );
 
     my @steps = (
         @$background_steps,
         map { $class->_pickle_step( $_, $path ) }
-            @{ $scenario->{'steps'} || [] }
+          @{ $scenario->{'steps'} || [] }
     );
 
     push(
         @$pickles,
-        {   tags => $class->_pickle_tags( \@tags, $path ),
-            name => sprintf( '%s: %s',
-                $scenario->{'keyword'},
-                $scenario->{'name'} ),
-            locations => [
-                $class->_pickle_location( $scenario->{'location'}, $path )
-            ],
+        {
+            tags => $class->_pickle_tags( \@tags, $path ),
+            name =>
+              sprintf( '%s: %s', $scenario->{'keyword'}, $scenario->{'name'} ),
+            locations =>
+              [ $class->_pickle_location( $scenario->{'location'}, $path ) ],
             steps => \@steps,
         }
     );
@@ -68,7 +66,7 @@ sub _compile_scenario {
 sub _compile_scenario_outline {
     my ( $class, $feature_tags, $background_steps, $scenario_outline,
         $dialect, $path, $pickles )
-        = @_;
+      = @_;
 
     my $dialect_object = Gherkin::Dialect->new( { dialect => $dialect } );
     my $keyword = $dialect_object->Scenario->[0];
@@ -85,19 +83,19 @@ sub _compile_scenario_outline {
                 @{ $examples->{'tags'} || [] }
             );
 
-            for my $scenario_outline_step (
-                @{ $scenario_outline->{'steps'} } )
+            for my $scenario_outline_step ( @{ $scenario_outline->{'steps'} } )
             {
-                my $step_text
-                    = $class->_interpolate( $scenario_outline_step->{'text'},
+                my $step_text =
+                  $class->_interpolate( $scenario_outline_step->{'text'},
                     $variable_cells, $value_cells, );
-                my $arguments
-                    = $class->_create_pickle_arguments(
+                my $arguments =
+                  $class->_create_pickle_arguments(
                     $scenario_outline_step->{'argument'},
                     $variable_cells, $value_cells, $path, );
                 push(
                     @steps,
-                    {   text      => $step_text,
+                    {
+                        text      => $step_text,
                         arguments => $arguments,
                         locations => [
                             $class->_pickle_location(
@@ -113,7 +111,8 @@ sub _compile_scenario_outline {
 
             push(
                 @$pickles,
-                {   name => sprintf(
+                {
+                    name => sprintf(
                         "%s: %s", $keyword,
                         $class->_interpolate(
                             $scenario_outline->{'name'}, $variable_cells,
@@ -146,8 +145,9 @@ sub _create_pickle_arguments {
         my $table = { rows => [] };
         for my $row ( @{ $argument->{'rows'} || [] } ) {
             my @cells = map {
-                {   location =>
-                        $class->_pickle_location( $_->{'location'}, $path ),
+                {
+                    location =>
+                      $class->_pickle_location( $_->{'location'}, $path ),
                     value => $class->_interpolate(
                         $_->{'value'}, $variables, $values
                     )
@@ -156,21 +156,19 @@ sub _create_pickle_arguments {
             push( @{ $table->{'rows'} }, { cells => \@cells } );
         }
         push( @$result, $table );
-    }
-    elsif ( $argument->{'type'} eq 'DocString' ) {
+    } elsif ( $argument->{'type'} eq 'DocString' ) {
         push(
             @$result,
-            {   location => $class->_pickle_location(
-                    $argument->{'location'}, $path
-                ),
+            {
+                location =>
+                  $class->_pickle_location( $argument->{'location'}, $path ),
                 content => $class->_interpolate(
                     $argument->{'content'},
                     $variables, $values
                 ),
             }
         );
-    }
-    else {
+    } else {
         die "Internal error";
     }
 
@@ -192,10 +190,10 @@ sub _pickle_step {
     my ( $class, $step, $path ) = @_;
 
     return {
-        text      => $step->{'text'},
-        arguments => $class->_create_pickle_arguments(
-            $step->{'argument'}, [], [], $path,
-        ),
+        text => $step->{'text'},
+        arguments =>
+          $class->_create_pickle_arguments( $step->{'argument'}, [], [], $path,
+          ),
         locations => [ $class->_pickle_step_location( $step, $path ) ],
     };
 }
@@ -205,8 +203,8 @@ sub _pickle_step_location {
     return {
         path   => $path,
         line   => $step->{'location'}->{'line'},
-        column => $step->{'location'}->{'column'}
-            + length( $step->{'keyword'} ),
+        column => $step->{'location'}->{'column'} +
+          length( $step->{'keyword'} ),
     };
 }
 

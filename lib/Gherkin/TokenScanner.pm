@@ -16,17 +16,16 @@ use Gherkin::TokenMatcher;
 sub new {
     my ( $class, $path_or_str ) = @_;
 
-   # Perl convention is that a string reference is the string itself, but that
-   # a straight string is a path
+    # Perl convention is that a string reference is the string itself, but that
+    # a straight string is a path
     my $fh;
     if ( ref $path_or_str eq 'SCALAR' ) {
         my $data = $path_or_str;
         $fh = new IO::Scalar \$path_or_str;
-    }
-    else {
+    } else {
         $fh = IO::File->new();
         $fh->open( $path_or_str, '<' )
-            || croak "Can't open [$path_or_str] for reading";
+          || croak "Can't open [$path_or_str] for reading";
         $fh->binmode(':utf8');
     }
 
@@ -44,10 +43,11 @@ sub read {
     my $line = $self->fh->getline;
     return Gherkin::Token->new(
         line => $line
-        ? ( Gherkin::Line->new(
+        ? (
+            Gherkin::Line->new(
                 { line_text => $line, line_number => $self->line_number }
             )
-            )
+          )
         : undef,
         location => { line => $self->line_number }
     );

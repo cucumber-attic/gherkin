@@ -6,7 +6,7 @@ use warnings;
 use Gherkin::Exceptions;
 
 use Class::XSAccessor accessors =>
-    [ qw/dialect dictionary_location dictionary/, ];
+  [ qw/dialect dictionary_location dictionary/, ];
 
 sub new {
     my ( $class, $options ) = @_;
@@ -21,8 +21,7 @@ sub new {
             my $input = join '', (<$fh>);
             close $fh;
             $options->{'dictionary'} = Cpanel::JSON::XS::decode_json($input);
-        }
-        else {
+        } else {
             require Gherkin::Generated::Languages;
             $options->{'dictionary'} = $Gherkin::Generated::Languages::data;
         }
@@ -34,7 +33,7 @@ sub new {
 sub change_dialect {
     my ( $self, $name, $location ) = @_;
     Gherkin::Exceptions::NoSuchLanguage->throw( $name, $location )
-        unless $self->dictionary->{$name};
+      unless $self->dictionary->{$name};
     $self->{'dialect'} = $name;
 }
 

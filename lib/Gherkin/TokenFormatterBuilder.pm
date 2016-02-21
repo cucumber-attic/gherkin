@@ -39,7 +39,7 @@ sub format_token {
         $token->matched_text    || '',
         join( ',',
             map { $_->{'column'} . ':' . $_->{'text'} }
-                @{ $token->matched_items } )
+              @{ $token->matched_items } )
     );
     utf8::encode($v);
     return $v;
