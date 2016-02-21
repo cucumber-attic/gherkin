@@ -1,0 +1,31 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use FindBin::libs;
+use JSON::MaybeXS;
+
+use Gherkin::Parser;
+use Gherkin::Pickles::Compiler;
+
+my @file_list = @ARGV;
+
+my $json = JSON::MaybeXS->new(
+    {   utf8         => 1,
+        space_before => 0,
+        space_after  => 1,
+        indent       => 1,
+        canonical    => 1
+    }
+);
+my $parser = Gherkin::Parser->new();
+
+for my $file (@file_list) {
+    my $base = $json->encode(
+        Gherkin::Pickles::Compiler->compile( $parser->parse($file), $file ) );
+
+    # JSON::XS uses a triple indent(?!)
+    $base =~ s!^(\s+)!'  ' x ((length $1) / 3)!meg;
+    print $base;
+}
