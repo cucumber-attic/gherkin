@@ -1,9 +1,10 @@
 package Gherkin::AstNode;
 
-use Moose;
+use Moo;
+use Types::Standard qw(Str HashRef);
 
-has 'rule_type' => ( is => 'ro', isa => 'Str', required => 1 );
-has '_sub_items' => ( is => 'ro', isa => 'HashRef', default => sub { {} } );
+has 'rule_type' => ( is => 'ro', isa => Str, required => 1 );
+has '_sub_items' => ( is => 'ro', isa => HashRef, default => sub { {} } );
 
 around BUILDARGS => sub {
     my $orig  = shift;

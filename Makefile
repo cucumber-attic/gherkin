@@ -14,11 +14,13 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(PICKLES) $(ERRORS)
 	touch $@
 
-#.built: lib/Gherkin/Generated/Parser.pm gherkin/gherkin-languages.json $(PERL_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast LICENSE.txt
-# ADD AST BUIL BACK IN
-.built: lib/Gherkin/Generated/Parser.pm gherkin/gherkin-languages.json $(PERL_FILES) bin/gherkin-generate-tokens LICENSE.txt
+.cpanfile_dependencies:
+	cpanm --installdeps .
+	touch $@
+
+.built: lib/Gherkin/Generated/Parser.pm gherkin/gherkin-languages.json $(PERL_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast .cpanfile_dependencies LICENSE.txt
 	@$(MAKE) --no-print-directory show-version-info
-	#nosetests
+	# add Perl-level unit tests
 	touch $@
 
 show-version-info:
@@ -53,7 +55,7 @@ gherkin/gherkin-languages.json: ../gherkin-languages.json
 	cp $^ $@
 
 clean:
-	rm -rf .compared .built acceptance gherkin/parser.py gherkin/gherkin-languages.json
+	rm -rf .compared .built acceptance lib/Gherkin/Generated/Parser.pm gherkin/gherkin-languages.json
 .PHONY: clean
 
 lib/Gherkin/Generated/Parser.pm: ../gherkin.berp gherkin-perl.razor ../bin/berp.exe

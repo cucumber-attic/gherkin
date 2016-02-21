@@ -1,23 +1,24 @@
 package Gherkin::TokenMatcher;
 
-use Moose;
+use Moo;
+use Types::Standard qw( Str Int InstanceOf Maybe );
 use Gherkin::Dialect;
 
 our $LANGUAGE_RE = qr/^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$/o;
 
 has 'dialect' => (
     is      => 'ro',
-    isa     => 'Gherkin::Dialect',
+    isa     => InstanceOf['Gherkin::Dialect'],
     default => sub {
         Gherkin::Dialect->new( { dialect => 'en' } );
     },
     handles => { dialect_name => 'dialect', change_dialect => 'change_dialect' }
 );
 
-has '_default_dialect_name' => ( is => 'rw', isa => 'Str' );
+has '_default_dialect_name' => ( is => 'rw', isa => Str );
 
-has '_indent_to_remove' => ( is => 'rw', isa => 'Int', default => 0 );
-has '_active_doc_string_separator' => ( is => 'rw', isa => 'Str|Undef' );
+has '_indent_to_remove' => ( is => 'rw', isa => Int, default => 0 );
+has '_active_doc_string_separator' => ( is => 'rw', isa => Maybe[Str] );
 
 sub BUILD {
     my $self = shift;

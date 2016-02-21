@@ -1,6 +1,6 @@
 package Gherkin::Parser;
 
-use Moose;
+use Moo;
 extends 'Gherkin::Generated::Parser';
 
 1;

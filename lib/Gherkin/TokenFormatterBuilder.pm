@@ -1,12 +1,14 @@
 package Gherkin::TokenFormatterBuilder;
 
-use Moose;
+use Moo;
 extends 'Gherkin::AstBuilder';
+use Types::Standard qw(ArrayRef);
 
-has 'formatted_tokens' =>
-    ( is => 'rw', traits => ['Array'], default => sub { [] }, handles => {
-        add_formatted_token => 'push',
-        } );
+has 'formatted_tokens' => (
+    is      => 'rw',
+    isa     => ArrayRef,
+    default => sub { [] },
+);
 
 after 'reset' => sub {
     my $self = shift;
@@ -15,7 +17,7 @@ after 'reset' => sub {
 
 sub build {
     my ( $self, $token ) = @_;
-    $self->add_formatted_token( $self->format_token($token) );
+    push( @{ $self->formatted_tokens }, $self->format_token($token) );
 }
 
 sub start_rule { }
@@ -37,12 +39,12 @@ sub format_token {
         $token->location->{'column'},
         $token->matched_type,
         $token->matched_keyword || '',
-        $token->matched_text || '',
+        $token->matched_text    || '',
         join( ',',
             map { $_->{'column'} . ':' . $_->{'text'} }
                 @{ $token->matched_items } )
     );
-    utf8::encode( $v );
+    utf8::encode($v);
     return $v;
 }
 

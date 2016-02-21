@@ -1,6 +1,7 @@
 package Gherkin::TokenScanner;
 
-use Moose;
+use Moo;
+use Types::Standard qw(Int InstanceOf);
 
 use IO::File;
 use IO::Scalar;
@@ -10,14 +11,15 @@ use Gherkin::Line;
 use Gherkin::Token;
 use Gherkin::TokenMatcher;
 
-has 'fh' => ( is => 'ro', isa => 'IO::Handle', required => 1 );
+has 'fh' => ( is => 'ro', isa => InstanceOf['IO::Handle'], required => 1 );
 has 'line_number' => (
     is      => 'rw',
-    isa     => 'Int',
-    traits  => ['Counter'],
+    isa     => Int,
     default => 0,
-    handles => { next_line => 'inc' }
 );
+
+# Would be traits, but not with Moo
+sub next_line { my $self = shift; $self->line_number( $self->line_number + 1 ); }
 
 around BUILDARGS => sub {
     my ( $orig, $class, $path_or_str ) = @_;
