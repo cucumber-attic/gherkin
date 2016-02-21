@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-package Gherkin::Exceptions {
+package Gherkin::Exceptions;
     use overload
         q{""}    => 'stringify',
         fallback => 1;
@@ -9,15 +9,13 @@ package Gherkin::Exceptions {
     sub stringify { my $self  = shift; $self->{'message'} . "\n" }
     sub message   { my $self  = shift; $self->{'message'} }
     sub throw     { my $class = shift; die $class->new(@_) }
-}
 
 # Parent of single and composite exceptions
-package Gherkin::Exceptions::Parser {
+package Gherkin::Exceptions::Parser;
     use base 'Gherkin::Exceptions';
-}
 
 # Composite exceptions
-package Gherkin::Exceptions::CompositeParser {
+package Gherkin::Exceptions::CompositeParser;
     use base 'Gherkin::Exceptions::Parser';
 
     sub new {
@@ -29,12 +27,11 @@ package Gherkin::Exceptions::CompositeParser {
     }
 
     sub throw { my $class = shift; die $class->new(@_) }
-}
 
 #
 # Various non-composite exceptions
 #
-package Gherkin::Exceptions::SingleParser {
+package Gherkin::Exceptions::SingleParser;
     use base 'Gherkin::Exceptions::Parser';
 
     sub new {
@@ -45,9 +42,8 @@ package Gherkin::Exceptions::SingleParser {
                 $message ),
         }, $class;
     }
-}
 
-package Gherkin::Exceptions::NoSuchLanguage {
+package Gherkin::Exceptions::NoSuchLanguage;
     use base 'Gherkin::Exceptions::SingleParser';
 
     sub new {
@@ -55,13 +51,12 @@ package Gherkin::Exceptions::NoSuchLanguage {
         return $class->SUPER::new( "Language not supported: $language",
             $location, );
     }
-}
 
-package Gherkin::Exceptions::AstBuilder {
+
+package Gherkin::Exceptions::AstBuilder;
     use base 'Gherkin::Exceptions::SingleParser';
-}
 
-package Gherkin::Exceptions::UnexpectedEOF {
+package Gherkin::Exceptions::UnexpectedEOF;
     use base 'Gherkin::Exceptions::SingleParser';
 
     sub new {
@@ -72,9 +67,8 @@ package Gherkin::Exceptions::UnexpectedEOF {
             $received_token->location,
         );
     }
-}
 
-package Gherkin::Exceptions::UnexpectedToken {
+package Gherkin::Exceptions::UnexpectedToken;
     use base 'Gherkin::Exceptions::SingleParser';
 
     sub new {
@@ -96,6 +90,5 @@ package Gherkin::Exceptions::UnexpectedToken {
 
         return $class->SUPER::new( $message, \%location );
     }
-}
 
 1;
