@@ -1,5 +1,6 @@
 package Gherkin::ParserBase;
-use Moose;
+use Moo;
+use Types::Standard qw(Bool Int InstanceOf);
 
 use TryCatch;
 
@@ -10,15 +11,15 @@ use Gherkin::AstBuilder;
 use Gherkin::TokenMatcher;
 use Gherkin::TokenScanner;
 
-has 'ast_builder' => ( is => 'rw', isa => 'Gherkin::AstBuilder',
+has 'ast_builder' => ( is => 'rw', isa => InstanceOf['Gherkin::AstBuilder'],
     default => sub { Gherkin::AstBuilder->new() },
     handles => {
         get_result => 'get_result',
     }
 );
 
-has 'stop_at_first_error' => ( is => 'rw', isa => 'Bool', default => 0 );
-has 'max_errors' => ( is => 'rw', isa => 'Int', default => 10 );
+has 'stop_at_first_error' => ( is => 'rw', isa => Bool, default => 0 );
+has 'max_errors' => ( is => 'rw', isa => Int, default => 10 );
 
 sub parse {
     my ( $self, $token_scanner, $token_matcher ) = @_;
