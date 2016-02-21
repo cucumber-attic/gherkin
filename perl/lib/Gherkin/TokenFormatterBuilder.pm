@@ -1,19 +1,16 @@
 package Gherkin::TokenFormatterBuilder;
 
-use Moo;
-extends 'Gherkin::AstBuilder';
-use Types::Standard qw(ArrayRef);
+use strict;
+use warnings;
+use base 'Gherkin::AstBuilder';
 
-has 'formatted_tokens' => (
-    is      => 'rw',
-    isa     => ArrayRef,
-    default => sub { [] },
-);
-
-after 'reset' => sub {
+sub reset {
     my $self = shift;
-    $self->formatted_tokens( [] );
-};
+    $self->SUPER::reset();
+    $self->{'formatted_tokens'} = [];
+}
+
+sub formatted_tokens { return $_[0]->{'formatted_tokens'} }
 
 sub build {
     my ( $self, $token ) = @_;

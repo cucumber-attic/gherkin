@@ -2,8 +2,8 @@
 
 use strict;
 use warnings;
+use lib 'lib';
 
-use FindBin::libs;
 use JSON::MaybeXS;
 
 use Gherkin::Parser;

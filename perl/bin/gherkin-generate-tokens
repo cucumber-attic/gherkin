@@ -2,16 +2,14 @@
 
 use strict;
 use warnings;
-
-use FindBin::libs;
+use lib 'lib';
 
 use Gherkin::Parser;
 use Gherkin::TokenFormatterBuilder;
 
 my @file_list = @ARGV;
 
-my $parser = Gherkin::Parser->new(
-    { ast_builder => Gherkin::TokenFormatterBuilder->new() } );
+my $parser = Gherkin::Parser->new( Gherkin::TokenFormatterBuilder->new() );
 
-print join "\n", @{$parser->parse( $_ )} for @file_list;
+print join "\n", @{ $parser->parse($_) } for @file_list;
 print "\n";

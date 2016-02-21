@@ -1,18 +1,16 @@
 package Gherkin::Token;
 
-use Moo;
-use Types::Standard qw(Str HashRef Int Maybe InstanceOf);
+use strict;
+use warnings;
 
-has 'line' =>
-    ( is => 'ro', isa => Maybe [ InstanceOf ['Gherkin::Line'] ] );
-has 'location' => ( is => 'ro', isa => HashRef, required => 1 );
+use Class::XSAccessor
+    constructor => 'new',
+    accessors   => [
+    qw/line location/,
+    map {"matched_$_"} qw/type keyword indent items text gherkin_dialect/
+    ],
+    ;
 
-has 'matched_type'            => ( is => 'rw', isa => Str );
-has 'matched_keyword'         => ( is => 'rw', isa => Str );
-has 'matched_indent'          => ( is => 'rw', isa => Int );
-has 'matched_items'           => ( is => 'rw' );
-has 'matched_text'            => ( is => 'rw', isa => Str );
-has 'matched_gherkin_dialect' => ( is => 'rw', isa => Str );
 
 sub is_eof { my $self = shift; return !$self->line }
 sub detach { }
