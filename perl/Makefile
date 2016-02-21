@@ -54,8 +54,12 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 gherkin/gherkin-languages.json: ../gherkin-languages.json
 	cp $^ $@
 
+release: .built
+	cpanm --installdeps --with-develop .
+	dzil test --release && dzil build
+
 clean:
-	rm -rf .compared .cpanfile_dependencies .built acceptance lib/Gherkin/Generated/Parser.pm gherkin/gherkin-languages.json
+	rm -rf Gherkin-* .compared .cpanfile_dependencies .built acceptance lib/Gherkin/Generated/Parser.pm gherkin/gherkin-languages.json
 .PHONY: clean
 
 lib/Gherkin/Generated/Languages.pm: gherkin/gherkin-languages.json

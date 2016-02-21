@@ -1,4 +1,5 @@
 package Gherkin::Dialect;
+
 use strict;
 use warnings;
 

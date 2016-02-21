@@ -1,4 +1,5 @@
 package Gherkin::Line;
+
 use strict;
 use warnings;
 
