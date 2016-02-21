@@ -2,26 +2,26 @@
 
 use strict;
 use warnings;
+use lib 'lib';
 
-use TryCatch;
-use FindBin::libs;
 use JSON::MaybeXS;
 use Gherkin::Parser;
 
 my @file_list = @ARGV;
 
 my $json = JSON::MaybeXS->new(
-    { utf8 => 1, space_before => 0, space_after => 1, indent => 1, canonical => 1 } );
+    {   utf8         => 1,
+        space_before => 0,
+        space_after  => 1,
+        indent       => 1,
+        canonical    => 1
+    }
+);
 my $parser = Gherkin::Parser->new();
 
 for my $file (@file_list) {
     my $base;
-    try {
-        $base = $json->encode( $parser->parse($file) );
-    }
-    catch (Gherkin::Exceptions $e) {
-        die $e->message . "\n";
-    }
+    $base = $json->encode( $parser->parse($file) );
 
     # JSON::XS uses a triple indent(?!)
     $base =~ s!^(\s+)!'  ' x ((length $1) / 3)!meg;

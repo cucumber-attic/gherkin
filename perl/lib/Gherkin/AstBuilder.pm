@@ -1,54 +1,43 @@
 package Gherkin::AstBuilder;
 
-use Moo;
+use strict;
+use warnings;
+
 use Gherkin::Exceptions;
 use Gherkin::AstNode;
-use Types::Standard qw(ArrayRef);
 
-has 'stack' => (
-    is      => 'rw',
-    default => sub { [] },
-    isa     => ArrayRef,
-);
-
-# Would be traits, but not with Moo
-sub stack_push { my $self = shift; push( @{ $self->stack }, @_ ) }
-sub stack_pop  { my $self = shift; pop( @{ $self->stack } ) }
-sub stack_get  { my $self = shift; $self->stack->[ $_[0] ] }
-
-has 'comments' => (
-    is      => 'rw',
-    default => sub { [] },
-    isa     => ArrayRef,
-);
-
-# Would be traits, but not with Moo
-sub add_comment { my $self = shift; push( @{ $self->comments }, @_ ) }
+sub new {
+    my $class = shift;
+    my $self  = bless {
+        stack    => [],
+        comments => [],
+    }, $class;
+    $self->reset;
+    return $self;
+}
 
 # Simple builder sugar
 sub ast_node { Gherkin::AstNode->new( $_[0] ) }
 
-sub BUILD { $_[0]->reset() }
-
 sub reset {
     my $self = shift;
-    $self->stack( [ ast_node('None') ] );
-    $self->comments( [] );
+    $self->{'stack'}    = [ ast_node('None') ];
+    $self->{'comments'} = [];
 }
 
 sub current_node {
     my $self = shift;
-    return $self->stack_get(-1);
+    return $self->{'stack'}->[-1];
 }
 
 sub start_rule {
     my ( $self, $rule_type ) = @_;
-    $self->stack_push( ast_node($rule_type) );
+    push( @{ $self->{'stack'} }, ast_node($rule_type) );
 }
 
 sub end_rule {
     my ( $self, $rule_type ) = @_;
-    my $node = $self->stack_pop();
+    my $node = pop( @{ $self->{'stack'} } );
     $self->current_node->add( $node->rule_type,
         $self->transform_node($node) );
 }
@@ -56,7 +45,8 @@ sub end_rule {
 sub build {
     my ( $self, $token ) = @_;
     if ( $token->matched_type eq 'Comment' ) {
-        $self->add_comment(
+        push(
+            @{ $self->{'comments'} },
             {   type     => 'Comment',
                 location => $self->get_location($token),
                 text     => $token->matched_text,
@@ -332,7 +322,7 @@ sub transform_node {
                 description         => $description,
                 background          => $background,
                 scenarioDefinitions => $scenario_definitions,
-                comments            => $self->comments,
+                comments            => $self->{'comments'},
             }
         );
     }

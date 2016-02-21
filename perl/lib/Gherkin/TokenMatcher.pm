@@ -1,30 +1,26 @@
 package Gherkin::TokenMatcher;
-
-use Moo;
-use Types::Standard qw( Str Int InstanceOf Maybe );
-use Gherkin::Dialect;
+use strict;
+use warnings;
 
 our $LANGUAGE_RE = qr/^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$/o;
 
-has 'dialect' => (
-    is      => 'ro',
-    isa     => InstanceOf['Gherkin::Dialect'],
-    default => sub {
-        Gherkin::Dialect->new( { dialect => 'en' } );
-    },
-    handles => { dialect_name => 'dialect', change_dialect => 'change_dialect' }
-);
+use Class::XSAccessor accessors => [
+    qw/dialect _default_dialect_name _indent_to_remove _active_doc_string_separator/,
+];
 
-has '_default_dialect_name' => ( is => 'rw', isa => Str );
+use Gherkin::Dialect;
 
-has '_indent_to_remove' => ( is => 'rw', isa => Int, default => 0 );
-has '_active_doc_string_separator' => ( is => 'rw', isa => Maybe[Str] );
-
-sub BUILD {
-    my $self = shift;
+sub new {
+    my ( $class, $options ) = @_;
+    $options->{'dialect'} ||= Gherkin::Dialect->new( { dialect => 'en' } );
+    my $self = bless $options, $class;
     $self->_default_dialect_name( $self->dialect_name );
     $self->reset();
+    return $self;
 }
+
+sub dialect_name { $_[0]->dialect->dialect }
+sub change_dialect { my $self = shift; $self->dialect->change_dialect(@_) }
 
 sub reset {
     my $self = shift;
@@ -34,17 +30,34 @@ sub reset {
     $self->_active_doc_string_separator(undef);
 }
 
-for my $keyword (qw/Feature Scenario ScenarioOutline Background Examples/) {
-    __PACKAGE__->meta->add_method(
-        'match_' . $keyword . 'Line' => sub {
-            my ( $self, $token ) = @_;
-            return $self->_match_title_line(
-                $token,
-                $keyword . 'Line',
-                $self->dialect->$keyword,
-            );
-        }
-    );
+sub match_FeatureLine {
+    my ($self, $token) = @_;
+    $self->_match_title_line( $token,
+        FeatureLine => $self->dialect->Feature );
+}
+
+sub match_ScenarioLine {
+    my ($self, $token) = @_;
+    $self->_match_title_line( $token,
+        ScenarioLine => $self->dialect->Scenario );
+}
+
+sub match_ScenarioOutlineLine {
+    my ($self, $token) = @_;
+    $self->_match_title_line( $token,
+        ScenarioOutlineLine => $self->dialect->ScenarioOutline );
+}
+
+sub match_BackgroundLine {
+    my ($self, $token) = @_;
+    $self->_match_title_line( $token,
+        BackgroundLine => $self->dialect->Background );
+}
+
+sub match_ExamplesLine {
+    my ($self, $token) = @_;
+    $self->_match_title_line( $token,
+        ExamplesLine => $self->dialect->Examples );
 }
 
 sub match_Language {
@@ -131,7 +144,7 @@ sub match_Comment {
     return unless $token->line->startswith('#');
 
     my $comment_text = $token->line->line_text;
-    $comment_text =~ s/\r\n$//; # Why?
+    $comment_text =~ s/\r\n$//;    # Why?
 
     $self->_set_token_matched( $token,
         Comment => { text => $comment_text, indent => 0 } );
@@ -144,7 +157,8 @@ sub match_Other {
     # take the entire line, except removing DocString indents
     my $text = $token->line->get_line_text( $self->_indent_to_remove );
     $self->_set_token_matched( $token,
-        Other => { indent => 0, text => $self->_unescaped_docstring( $text ) } );
+        Other => { indent => 0, text => $self->_unescaped_docstring($text) }
+    );
     return 1;
 }
 

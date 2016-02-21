@@ -1,14 +1,19 @@
 package Gherkin::Line;
+use strict;
+use warnings;
 
-use Moo;
-use Types::Standard qw(Str Int Maybe);
+use Class::XSAccessor accessors =>
+    [ qw/line_text line_number indent _trimmed_line_text/, ];
 
-has 'line_text'   => ( is => 'ro', isa => Str, required => 1 );
-has 'line_number' => ( is => 'ro', isa => Int, required => 1 );
+sub new {
+    my ( $class, $options ) = @_;
+    my $self = bless $options, $class;
 
-has '_trimmed_line_text' =>
-    ( is => 'lazy', isa => Maybe [Str] );
-has 'indent' => ( is => 'lazy', isa => Int );
+    $self->{'_trimmed_line_text'} ||= $self->_build__trimmed_line_text;
+    $self->{'indent'}             ||= $self->_build_indent;
+
+    return $self;
+}
 
 sub _build__trimmed_line_text {
     my $self    = shift;

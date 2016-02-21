@@ -1,33 +1,30 @@
 package Gherkin::AstNode;
 
-use Moo;
-use Types::Standard qw(Str HashRef);
+use strict;
+use warnings;
 
-has 'rule_type' => ( is => 'ro', isa => Str, required => 1 );
-has '_sub_items' => ( is => 'ro', isa => HashRef, default => sub { {} } );
+use Class::XSAccessor accessors => [ qw/rule_type/, ];
 
-around BUILDARGS => sub {
-    my $orig  = shift;
-    my $class = shift;
-
-    $class->$orig( { rule_type => $_[0] } );
-};
+sub new {
+    my ( $class, $rule_type ) = @_;
+    bless { rule_type => $rule_type, _sub_items => {} }, $class;
+}
 
 sub add {
     my ( $self, $rule_type, $obj ) = @_;
-    push( @{ ( $self->_sub_items->{$rule_type} ||= [] ) }, $obj );
+    push( @{ ( $self->{'_sub_items'}->{$rule_type} ||= [] ) }, $obj );
 }
 
 sub get_single {
     my ( $self, $rule_type ) = @_;
-    my $items = $self->_sub_items->{$rule_type};
+    my $items = $self->{'_sub_items'}->{$rule_type};
     return $items unless $items;
     return $items->[0];
 }
 
 sub get_items {
     my ( $self, $rule_type ) = @_;
-    return $self->_sub_items->{$rule_type} || [];
+    return $self->{'_sub_items'}->{$rule_type} || [];
 }
 
 sub get_token {
@@ -37,7 +34,7 @@ sub get_token {
 
 sub get_tokens {
     my ( $self, $token_type ) = @_;
-    return $self->_sub_items->{$token_type} || [];
+    return $self->{'_sub_items'}->{$token_type} || [];
 }
 
 1;

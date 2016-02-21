@@ -1,115 +1,84 @@
+use strict;
+use warnings;
+
 package Gherkin::Exceptions {
-    use Moo;
-    extends 'Throwable::Error';
+    use overload
+        q{""}    => 'stringify',
+        fallback => 1;
+
+    sub stringify { my $self  = shift; $self->{'message'} . "\n" }
+    sub message   { my $self  = shift; $self->{'message'} }
+    sub throw     { my $class = shift; die $class->new(@_) }
 }
 
 # Parent of single and composite exceptions
 package Gherkin::Exceptions::Parser {
-    use Moo;
-    extends 'Gherkin::Exceptions';
+    use base 'Gherkin::Exceptions';
 }
 
 # Composite exceptions
 package Gherkin::Exceptions::CompositeParser {
-    use Moo;
-    use Types::Standard qw(ArrayRef InstanceOf);
+    use base 'Gherkin::Exceptions::Parser';
 
-    extends 'Gherkin::Exceptions::Parser';
-
-    has '+message' => (
-        is       => 'lazy',
-        required => 0,
-    );
-
-    has 'errors' => (
-        is  => 'ro',
-        isa => ArrayRef [ InstanceOf ['Gherkin::Exceptions::Parser'] ],
-        default => sub { [] },
-    );
-
-    around BUILDARGS => sub {
-        my ( $orig, $class, @errors ) = @_;
-        $class->$orig( { errors => \@errors } );
-    };
-
-    sub _build_message {
-        my $self = shift;
-        return join "\n",
-            ( 'Parser errors:', map { $_->message } @{ $self->errors } );
+    sub new {
+        my $class = shift;
+        bless {
+            message => join "\n",
+            ( 'Parser errors:', map { $_->{'message'} } @_ )
+        }, $class;
     }
+
+    sub throw { my $class = shift; die $class->new(@_) }
 }
 
 #
 # Various non-composite exceptions
 #
 package Gherkin::Exceptions::SingleParser {
-    use Moo;
-    use Types::Standard qw(Str HashRef);
-    use Type::Tiny;
-    extends 'Gherkin::Exceptions::Parser';
+    use base 'Gherkin::Exceptions::Parser';
 
-    has 'original_message' => ( is => 'ro', isa => Str,     required => 1 );
-    has 'location'         => ( is => 'ro', isa => HashRef, required => 1 );
-
-    has '+message' => (
-        is         => 'lazy',
-        required   => 0,
-    );
-
-    around throw => sub {
-        my ( $orig, $class, $message, $location ) = @_;
-        $class->$orig(
-            {   location         => $location,
-                original_message => $message,
-            }
-        );
-    };
-
-    sub _build_message {
-        my $self = shift;
-        return sprintf( '(%i:%i): %s',
-            $self->location->{'line'},
-            $self->location->{'column'} || '0',
-            $self->original_message, );
+    sub new {
+        my ( $class, $message, $location ) = @_;
+        bless {
+            message => sprintf( '(%i:%i): %s',
+                $location->{'line'}, $location->{'column'} || '0',
+                $message ),
+        }, $class;
     }
 }
 
 package Gherkin::Exceptions::NoSuchLanguage {
-    use Moo;
-    extends 'Gherkin::Exceptions::SingleParser';
+    use base 'Gherkin::Exceptions::SingleParser';
 
-    around throw => sub {
-        my ( $orig, $class, $language, $location ) = @_;
-        $class->$orig( 'Language not supported: ' . $language, $location );
-    };
+    sub new {
+        my ( $class, $language, $location ) = @_;
+        return $class->SUPER::new( "Language not supported: $language",
+            $location, );
+    }
 }
 
 package Gherkin::Exceptions::AstBuilder {
-    use Moo;
-    extends 'Gherkin::Exceptions::SingleParser';
+    use base 'Gherkin::Exceptions::SingleParser';
 }
 
 package Gherkin::Exceptions::UnexpectedEOF {
-    use Moo;
-    extends 'Gherkin::Exceptions::SingleParser';
+    use base 'Gherkin::Exceptions::SingleParser';
 
-    around throw => sub {
-        my ( $orig, $class, $received_token, $expected_token_types ) = @_;
-        $class->$orig(
+    sub new {
+        my ( $class, $received_token, $expected_token_types ) = @_;
+        return $class->SUPER::new(
             'unexpected end of file, expected: '
                 . ( join ', ', @$expected_token_types ),
-            $received_token->location
+            $received_token->location,
         );
-    };
+    }
 }
 
 package Gherkin::Exceptions::UnexpectedToken {
-    use Moo;
-    extends 'Gherkin::Exceptions::SingleParser';
+    use base 'Gherkin::Exceptions::SingleParser';
 
-    around throw => sub {
-        my ( $orig, $class, $received_token, $expected_token_types,
-            $state_comment )
+    sub new {
+        my ( $class, $received_token, $expected_token_types, $state_comment )
             = @_;
 
         my $received_token_value = $received_token->token_value;
@@ -125,8 +94,8 @@ package Gherkin::Exceptions::UnexpectedToken {
         $location{'column'} = $received_token->line->indent + 1
             unless defined $location{'column'};
 
-        $class->$orig( $message, \%location );
-    };
+        return $class->SUPER::new( $message, \%location );
+    }
 }
 
 1;
