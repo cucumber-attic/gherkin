@@ -2,6 +2,7 @@ use strict;
 use warnings;
 
 package Gherkin::Exceptions;
+
     use overload
         q{""}    => 'stringify',
         fallback => 1;
@@ -12,10 +13,12 @@ package Gherkin::Exceptions;
 
 # Parent of single and composite exceptions
 package Gherkin::Exceptions::Parser;
+
     use base 'Gherkin::Exceptions';
 
 # Composite exceptions
 package Gherkin::Exceptions::CompositeParser;
+
     use base 'Gherkin::Exceptions::Parser';
 
     sub new {
@@ -32,6 +35,7 @@ package Gherkin::Exceptions::CompositeParser;
 # Various non-composite exceptions
 #
 package Gherkin::Exceptions::SingleParser;
+
     use base 'Gherkin::Exceptions::Parser';
 
     sub new {
@@ -44,6 +48,7 @@ package Gherkin::Exceptions::SingleParser;
     }
 
 package Gherkin::Exceptions::NoSuchLanguage;
+
     use base 'Gherkin::Exceptions::SingleParser';
 
     sub new {
@@ -54,9 +59,11 @@ package Gherkin::Exceptions::NoSuchLanguage;
 
 
 package Gherkin::Exceptions::AstBuilder;
+
     use base 'Gherkin::Exceptions::SingleParser';
 
 package Gherkin::Exceptions::UnexpectedEOF;
+
     use base 'Gherkin::Exceptions::SingleParser';
 
     sub new {
@@ -69,6 +76,7 @@ package Gherkin::Exceptions::UnexpectedEOF;
     }
 
 package Gherkin::Exceptions::UnexpectedToken;
+
     use base 'Gherkin::Exceptions::SingleParser';
 
     sub new {

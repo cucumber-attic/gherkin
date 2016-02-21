@@ -1,4 +1,5 @@
 package Gherkin::TokenMatcher;
+
 use strict;
 use warnings;
 
