@@ -15,11 +15,11 @@ sub new {
 
         # Load from a file if one was given
         if ( my $filename = $options->{'dictionary_location'} ) {
-            require JSON::MaybeXS;
+            require Cpanel::JSON::XS;
             open( my $fh, '<', $filename ) || die "Can't open [$filename]";
             my $input = join '', (<$fh>);
             close $fh;
-            $options->{'dictionary'} = JSON::MaybeXS::decode_json($input);
+            $options->{'dictionary'} = Cpanel::JSON::XS::decode_json($input);
         }
         else {
             require Gherkin::Generated::Languages;

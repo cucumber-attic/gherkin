@@ -2,15 +2,18 @@
 use strict;
 use warnings;
 
-use JSON::XS qw/decode_json/;
+use Cpanel::JSON::XS;
 use Data::Dumper;
 
-open( my $fh, '<', 'gherkin-languages.json' ) ||
-    die "Can't open [gherkin-languages.json]";
+my $json = Cpanel::JSON::XS->new->utf8->space_before(0)->space_after(1)
+    ->indent->canonical;
+
+open( my $fh, '<', 'gherkin-languages.json' )
+    || die "Can't open [gherkin-languages.json]";
 my $input = join '', (<$fh>);
 close $fh;
 
-my $output = Data::Dumper->Dump([decode_json $input], ['$data']);
+my $output = Data::Dumper->Dump( [ $json->decode($input) ], ['$data'] );
 
 my $template = join '', (<DATA>);
 $template =~ s/DATA/$output/;
