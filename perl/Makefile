@@ -54,7 +54,9 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 gherkin/gherkin-languages.json: ../gherkin-languages.json
 	cp $^ $@
 
-release: .built
+release: clean .compared
+	cp ../testdata/good/*.feature acceptance/testdata/good/
+	cp ../testdata/bad/*.feature acceptance/testdata/bad/
 	cpanm --installdeps --with-develop .
 	dzil test --release && dzil build
 

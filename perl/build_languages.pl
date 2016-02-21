@@ -13,6 +13,7 @@ open( my $fh, '<', 'gherkin-languages.json' )
 my $input = join '', (<$fh>);
 close $fh;
 
+$Data::Dumper::Sortkeys = 1;
 my $output = Data::Dumper->Dump( [ $json->decode($input) ], ['$data'] );
 
 my $template = join '', (<DATA>);
@@ -24,5 +25,5 @@ __DATA__
 package Gherkin::Generated::Languages;
 
 use utf8;
-our $data = DATA;
+our DATA
 1;
