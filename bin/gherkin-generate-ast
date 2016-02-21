@@ -4,19 +4,14 @@ use strict;
 use warnings;
 use lib 'lib';
 
-use JSON::MaybeXS;
+use Cpanel::JSON::XS;
 use Gherkin::Parser;
 
 my @file_list = @ARGV;
 
-my $json = JSON::MaybeXS->new(
-    {   utf8         => 1,
-        space_before => 0,
-        space_after  => 1,
-        indent       => 1,
-        canonical    => 1
-    }
-);
+my $json = Cpanel::JSON::XS->new->utf8->space_before(0)->space_after(1)->indent
+    ->canonical;
+
 my $parser = Gherkin::Parser->new();
 
 for my $file (@file_list) {
