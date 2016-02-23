@@ -38,7 +38,10 @@ acceptance/testdata/%.feature.pickles.json: ../testdata/%.feature ../testdata/%.
 
 acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors .built
 	mkdir -p `dirname $@`
-	! bin/gherkin-generate-ast $< 2> $@
+	# Travis disables C extensions for jruby, and it doesn't seem possible to
+	# tell JRuby *not* to print this warning when they're disabled.
+	# Filter out the warning before doing the comparison.
+	! bin/gherkin-generate-ast $< 2>&1 | grep -v "jruby: warning: unknown property jruby.cext.enabled" > $@
 	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
