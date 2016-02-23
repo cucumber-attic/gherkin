@@ -7,9 +7,17 @@ use lib 'lib';
 use Gherkin::Parser;
 use Gherkin::TokenFormatterBuilder;
 
-my @file_list = @ARGV;
+package App::GherkinGenerateTokens;
 
-my $parser = Gherkin::Parser->new( Gherkin::TokenFormatterBuilder->new() );
+sub run {
+    my ( $class, $fh, @file_list ) = @_;
 
-print join "\n", @{ $parser->parse($_) } for @file_list;
-print "\n";
+    my $parser
+        = Gherkin::Parser->new( Gherkin::TokenFormatterBuilder->new() );
+
+    print $fh join "\n", @{ $parser->parse($_) } for @file_list;
+    print $fh "\n";
+
+}
+
+__PACKAGE__->run(\*STDOUT, @ARGV) unless caller;
