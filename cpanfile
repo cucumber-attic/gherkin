@@ -5,6 +5,7 @@ requires "IO::Scalar";
 on 'test' => sub {
     requires "Test::More";
     requires "Test::Differences";
+    requires "Test::Exception";
 };
 
 on 'develop' => sub {
