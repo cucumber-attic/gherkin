@@ -54,18 +54,21 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 gherkin/gherkin-languages.json: ../gherkin-languages.json
 	cp $^ $@
 
-release: clean .compared
+release: .compared CHANGES
 	cp ../testdata/good/*.feature acceptance/testdata/good/
 	cp ../testdata/bad/*.feature acceptance/testdata/bad/
 	cpanm --installdeps --with-develop .
 	dzil test --release && dzil build
 
 clean:
-	rm -rf Gherkin-* .compared .cpanfile_dependencies .built acceptance lib/Gherkin/Generated/Parser.pm gherkin/gherkin-languages.json
+	rm -rf CHANGES Gherkin-* .compared .cpanfile_dependencies .built acceptance lib/Gherkin/Generated/Parser.pm gherkin/gherkin-languages.json
 .PHONY: clean
 
+CHANGES:
+	perl helper-scripts/build_changelog.pl > $@
+
 lib/Gherkin/Generated/Languages.pm: gherkin/gherkin-languages.json
-	perl build_languages.pl > $@
+	perl helper-scripts/build_languages.pl > $@
 
 lib/Gherkin/Generated/Parser.pm: ../gherkin.berp gherkin-perl.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-perl.razor -o $@

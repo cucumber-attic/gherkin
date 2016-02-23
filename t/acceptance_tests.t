@@ -7,36 +7,47 @@ use Test::More;
 use Test::Differences;
 use Test::Exception;
 
+use Path::Class qw/file dir/;
 use IO::Scalar;
 
-require 'bin/gherkin-generate-ast';
-require 'bin/gherkin-generate-pickles';
-require 'bin/gherkin-generate-tokens';
+eval "require '" . file(qw!bin gherkin-generate-ast!) . "'";
+eval "require '" . file(qw!bin gherkin-generate-pickles!) . "'";
+eval "require '" . file(qw!bin gherkin-generate-tokens!) . "'";
 
-my @good_files = glob("acceptance/testdata/good/*.feature");
+my $ad = dir(qw!acceptance testdata!);
 
-for my $file ( @good_files ) {
+my @good_files = grep {m/\.feature$/} $ad->subdir('good')->children;
+
+for my $file (@good_files) {
     for my $type (qw/tokens ast pickles/) {
         my $result = "";
-        my $class = 'App::GherkinGenerate' . ucfirst( $type );
-        $class->run( (new IO::Scalar \$result), $file );
-        my $expected = `cat $file.$type*`;
+        my $class  = 'App::GherkinGenerate' . ucfirst($type);
+        $class->run( ( new IO::Scalar \$result ), "$file" );
+        my $expected
+            = file(
+            $file . '.' . $type . ( $type eq 'tokens' ? '' : '.json' ) )
+            ->slurp;
 
-        $expected =~ s!../testdata/!acceptance/testdata/!g;
-        eq_or_diff( $result, $expected, "$file - $type");
+        # Rewrite the path to be portable on Windows
+        $expected =~ s!(\.\./testdata/[^"]+)!
+            my $file = file($1);
+            my $parent = dir('acceptance')->subdir($file->parent->relative('../'));
+            $parent->file( $file->basename );
+            !eg;
+        eq_or_diff( $result, $expected, "$file - $type" );
     }
 }
 
-my @bad_files = glob("acceptance/testdata/bad/*.feature");
+my @bad_files = grep {m/\.feature$/} $ad->subdir('bad')->children;
 
-for my $file ( @bad_files ) {
-    my $result = "";
-    my $class = 'App::GherkinGenerateAst';
-    my $expected = `cat $file.errors`;
+for my $file (@bad_files) {
+    my $result   = "";
+    my $class    = 'App::GherkinGenerateAst';
+    my $expected = file( $file . '.errors' )->slurp;
 
-    dies_ok { $class->run( (new IO::Scalar \$result), $file ) }
-        "$file - throws";
-    eq_or_diff( "$@", $expected, "$file - correct errors");
+    dies_ok { $class->run( ( new IO::Scalar \$result ), "$file" ) }
+    "$file - throws";
+    eq_or_diff( "$@", $expected, "$file - correct errors" );
 }
 
 done_testing();
