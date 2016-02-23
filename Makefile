@@ -41,7 +41,8 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 	# Travis disables C extensions for jruby, and it doesn't seem possible to
 	# tell JRuby *not* to print this warning when they're disabled.
 	# Filter out the warning before doing the comparison.
-	! bin/gherkin-generate-ast $< 2>&1 | grep -v "jruby: warning: unknown property jruby.cext.enabled" > $@
+	! bin/gherkin-generate-ast $< 2> $@.tmp
+	cat $@.tmp | grep -v "jruby: warning: unknown property jruby.cext.enabled" > $@
 	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
