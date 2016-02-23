@@ -1,5 +1,8 @@
 package Gherkin;
 
+use strict;
+use warnings;
+
 =head1 NAME
 
 Gherkin - a parser and compiler for the Gherkin language
@@ -38,6 +41,17 @@ If you're writing a tool which needs to parse Gherkin, and you already know
 about the data model and ast, then the examples in C<bin/> will be interesting
 to you, as will all the documentation at:
 L<Gherkin|https://github.com/cucumber/gherkin>
+
+=head1 LICENSE
+
+Please see the included LICENSE.txt for the canonical version. In summary:
+
+The MIT License (MIT)
+
+Copyright (c) 2016 Peter Sergeant
+
+This work is a derivative of work that is:
+Copyright (c) 2014-2016 Cucumber Ltd, Gaspar Nagy
 
 =cut
 
