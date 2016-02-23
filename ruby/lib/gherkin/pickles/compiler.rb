@@ -42,7 +42,7 @@ module Gherkin
 
       def compile_scenario_outline(feature_tags, background_steps, scenario_outline, dialect, path, pickles)
         keyword = dialect.scenario_keywords[0]
-        scenario_outline[:examples].each do |examples|
+        scenario_outline[:examples].reject { |examples| examples[:tableHeader].nil? }.each do |examples|
           variable_cells = examples[:tableHeader][:cells]
           examples[:tableBody].each do |values|
             value_cells = values[:cells]
