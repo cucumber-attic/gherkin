@@ -3480,7 +3480,7 @@ var RULE_TYPES = [
   'Scenario', // Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
   'ScenarioOutline', // ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples_Definition+
   'Examples_Definition', // Examples_Definition! [#Empty|#Comment|#TagLine-&gt;#ExamplesLine] := Tags? Examples
-  'Examples', // Examples! := #ExamplesLine Examples_Description #TableRow #TableRow+
+  'Examples', // Examples! := #ExamplesLine Examples_Description #TableRow #TableRow*
   'Scenario_Step', // Scenario_Step := Step
   'ScenarioOutline_Step', // ScenarioOutline_Step := Step
   'Step', // Step! := #StepLine Step_Arg?
@@ -3649,8 +3649,8 @@ module.exports = function Parser(builder) {
       return matchTokenAt_25(token, context);
     case 26:
       return matchTokenAt_26(token, context);
-    case 27:
-      return matchTokenAt_27(token, context);
+    case 28:
+      return matchTokenAt_28(token, context);
     case 29:
       return matchTokenAt_29(token, context);
     case 30:
@@ -3661,8 +3661,6 @@ module.exports = function Parser(builder) {
       return matchTokenAt_32(token, context);
     case 33:
       return matchTokenAt_33(token, context);
-    case 34:
-      return matchTokenAt_34(token, context);
     default:
       throw new Error("Unknown state: " + state);
     }
@@ -3777,7 +3775,7 @@ module.exports = function Parser(builder) {
     if(match_EOF(context, token)) {
       endRule(context, 'Feature_Header');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_Empty(context, token)) {
       build(context, token);
@@ -3838,7 +3836,7 @@ module.exports = function Parser(builder) {
       endRule(context, 'Description');
       endRule(context, 'Feature_Header');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_Comment(context, token)) {
       endRule(context, 'Description');
@@ -3898,7 +3896,7 @@ module.exports = function Parser(builder) {
     if(match_EOF(context, token)) {
       endRule(context, 'Feature_Header');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_Comment(context, token)) {
       build(context, token);
@@ -3953,7 +3951,7 @@ module.exports = function Parser(builder) {
     if(match_EOF(context, token)) {
       endRule(context, 'Background');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_Empty(context, token)) {
       build(context, token);
@@ -4013,7 +4011,7 @@ module.exports = function Parser(builder) {
       endRule(context, 'Description');
       endRule(context, 'Background');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_Comment(context, token)) {
       endRule(context, 'Description');
@@ -4072,7 +4070,7 @@ module.exports = function Parser(builder) {
     if(match_EOF(context, token)) {
       endRule(context, 'Background');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_Comment(context, token)) {
       build(context, token);
@@ -4127,7 +4125,7 @@ module.exports = function Parser(builder) {
       endRule(context, 'Step');
       endRule(context, 'Background');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_TableRow(context, token)) {
       startRule(context, 'DataTable');
@@ -4137,7 +4135,7 @@ module.exports = function Parser(builder) {
     if(match_DocStringSeparator(context, token)) {
       startRule(context, 'DocString');
       build(context, token);
-      return 33;
+      return 32;
     }
     if(match_StepLine(context, token)) {
       endRule(context, 'Step');
@@ -4197,7 +4195,7 @@ module.exports = function Parser(builder) {
       endRule(context, 'Step');
       endRule(context, 'Background');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_TableRow(context, token)) {
       build(context, token);
@@ -4303,7 +4301,7 @@ module.exports = function Parser(builder) {
       endRule(context, 'Scenario');
       endRule(context, 'Scenario_Definition');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_Empty(context, token)) {
       build(context, token);
@@ -4367,7 +4365,7 @@ module.exports = function Parser(builder) {
       endRule(context, 'Scenario');
       endRule(context, 'Scenario_Definition');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_Comment(context, token)) {
       endRule(context, 'Description');
@@ -4430,7 +4428,7 @@ module.exports = function Parser(builder) {
       endRule(context, 'Scenario');
       endRule(context, 'Scenario_Definition');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_Comment(context, token)) {
       build(context, token);
@@ -4489,7 +4487,7 @@ module.exports = function Parser(builder) {
       endRule(context, 'Scenario');
       endRule(context, 'Scenario_Definition');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_TableRow(context, token)) {
       startRule(context, 'DataTable');
@@ -4499,7 +4497,7 @@ module.exports = function Parser(builder) {
     if(match_DocStringSeparator(context, token)) {
       startRule(context, 'DocString');
       build(context, token);
-      return 31;
+      return 30;
     }
     if(match_StepLine(context, token)) {
       endRule(context, 'Step');
@@ -4563,7 +4561,7 @@ module.exports = function Parser(builder) {
       endRule(context, 'Scenario');
       endRule(context, 'Scenario_Definition');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_TableRow(context, token)) {
       build(context, token);
@@ -4766,7 +4764,7 @@ module.exports = function Parser(builder) {
     if(match_DocStringSeparator(context, token)) {
       startRule(context, 'DocString');
       build(context, token);
-      return 29;
+      return 28;
     }
     if(match_StepLine(context, token)) {
       endRule(context, 'Step');
@@ -4982,44 +4980,17 @@ module.exports = function Parser(builder) {
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>#TableRow:0
   function matchTokenAt_26(token, context) {
-    if(match_TableRow(context, token)) {
-      build(context, token);
-      return 27;
-    }
-    if(match_Comment(context, token)) {
-      build(context, token);
-      return 26;
-    }
-    if(match_Empty(context, token)) {
-      build(context, token);
-      return 26;
-    }
-    
-    var stateComment = "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>#TableRow:0";
-    token.detach();
-    var expectedTokens = ["#TableRow", "#Comment", "#Empty"];
-    var error = token.isEof ?
-      Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
-      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
-    addError(context, error);
-    return 26;
-  }
-
-
-  // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:3>#TableRow:0
-  function matchTokenAt_27(token, context) {
     if(match_EOF(context, token)) {
       endRule(context, 'Examples');
       endRule(context, 'Examples_Definition');
       endRule(context, 'ScenarioOutline');
       endRule(context, 'Scenario_Definition');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_TableRow(context, token)) {
       build(context, token);
-      return 27;
+      return 26;
     }
     if(match_TagLine(context, token)) {
       if(lookahead_0(context, token)) {
@@ -5071,14 +5042,14 @@ module.exports = function Parser(builder) {
     }
     if(match_Comment(context, token)) {
       build(context, token);
-      return 27;
+      return 26;
     }
     if(match_Empty(context, token)) {
       build(context, token);
-      return 27;
+      return 26;
     }
     
-    var stateComment = "State: 27 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:3>#TableRow:0";
+    var stateComment = "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>#TableRow:0";
     token.detach();
     var expectedTokens = ["#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"];
     var error = token.isEof ?
@@ -5086,22 +5057,22 @@ module.exports = function Parser(builder) {
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
-    return 27;
+    return 26;
   }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-  function matchTokenAt_29(token, context) {
+  function matchTokenAt_28(token, context) {
     if(match_DocStringSeparator(context, token)) {
-      build(context, token);
-      return 30;
-    }
-    if(match_Other(context, token)) {
       build(context, token);
       return 29;
     }
+    if(match_Other(context, token)) {
+      build(context, token);
+      return 28;
+    }
     
-    var stateComment = "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
+    var stateComment = "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
     token.detach();
     var expectedTokens = ["#DocStringSeparator", "#Other"];
     var error = token.isEof ?
@@ -5109,12 +5080,12 @@ module.exports = function Parser(builder) {
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
-    return 29;
+    return 28;
   }
 
 
   // Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-  function matchTokenAt_30(token, context) {
+  function matchTokenAt_29(token, context) {
     if(match_StepLine(context, token)) {
       endRule(context, 'DocString');
       endRule(context, 'Step');
@@ -5140,16 +5111,39 @@ module.exports = function Parser(builder) {
     }
     if(match_Comment(context, token)) {
       build(context, token);
-      return 30;
+      return 29;
     }
     if(match_Empty(context, token)) {
+      build(context, token);
+      return 29;
+    }
+    
+    var stateComment = "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
+    token.detach();
+    var expectedTokens = ["#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"];
+    var error = token.isEof ?
+      Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
+    if (this.stopAtFirstError) throw error;
+    addError(context, error);
+    return 29;
+  }
+
+
+  // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
+  function matchTokenAt_30(token, context) {
+    if(match_DocStringSeparator(context, token)) {
+      build(context, token);
+      return 31;
+    }
+    if(match_Other(context, token)) {
       build(context, token);
       return 30;
     }
     
-    var stateComment = "State: 30 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
+    var stateComment = "State: 30 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
     token.detach();
-    var expectedTokens = ["#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"];
+    var expectedTokens = ["#DocStringSeparator", "#Other"];
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
@@ -5159,38 +5153,15 @@ module.exports = function Parser(builder) {
   }
 
 
-  // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-  function matchTokenAt_31(token, context) {
-    if(match_DocStringSeparator(context, token)) {
-      build(context, token);
-      return 32;
-    }
-    if(match_Other(context, token)) {
-      build(context, token);
-      return 31;
-    }
-    
-    var stateComment = "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
-    token.detach();
-    var expectedTokens = ["#DocStringSeparator", "#Other"];
-    var error = token.isEof ?
-      Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
-      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
-    addError(context, error);
-    return 31;
-  }
-
-
   // Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-  function matchTokenAt_32(token, context) {
+  function matchTokenAt_31(token, context) {
     if(match_EOF(context, token)) {
       endRule(context, 'DocString');
       endRule(context, 'Step');
       endRule(context, 'Scenario');
       endRule(context, 'Scenario_Definition');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_StepLine(context, token)) {
       endRule(context, 'DocString');
@@ -5231,16 +5202,39 @@ module.exports = function Parser(builder) {
     }
     if(match_Comment(context, token)) {
       build(context, token);
-      return 32;
+      return 31;
     }
     if(match_Empty(context, token)) {
+      build(context, token);
+      return 31;
+    }
+    
+    var stateComment = "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
+    token.detach();
+    var expectedTokens = ["#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"];
+    var error = token.isEof ?
+      Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
+      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
+    if (this.stopAtFirstError) throw error;
+    addError(context, error);
+    return 31;
+  }
+
+
+  // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
+  function matchTokenAt_32(token, context) {
+    if(match_DocStringSeparator(context, token)) {
+      build(context, token);
+      return 33;
+    }
+    if(match_Other(context, token)) {
       build(context, token);
       return 32;
     }
     
-    var stateComment = "State: 32 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
+    var stateComment = "State: 32 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
     token.detach();
-    var expectedTokens = ["#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"];
+    var expectedTokens = ["#DocStringSeparator", "#Other"];
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
@@ -5250,37 +5244,14 @@ module.exports = function Parser(builder) {
   }
 
 
-  // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-  function matchTokenAt_33(token, context) {
-    if(match_DocStringSeparator(context, token)) {
-      build(context, token);
-      return 34;
-    }
-    if(match_Other(context, token)) {
-      build(context, token);
-      return 33;
-    }
-    
-    var stateComment = "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
-    token.detach();
-    var expectedTokens = ["#DocStringSeparator", "#Other"];
-    var error = token.isEof ?
-      Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
-      Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
-    addError(context, error);
-    return 33;
-  }
-
-
   // Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-  function matchTokenAt_34(token, context) {
+  function matchTokenAt_33(token, context) {
     if(match_EOF(context, token)) {
       endRule(context, 'DocString');
       endRule(context, 'Step');
       endRule(context, 'Background');
       build(context, token);
-      return 28;
+      return 27;
     }
     if(match_StepLine(context, token)) {
       endRule(context, 'DocString');
@@ -5318,14 +5289,14 @@ module.exports = function Parser(builder) {
     }
     if(match_Comment(context, token)) {
       build(context, token);
-      return 34;
+      return 33;
     }
     if(match_Empty(context, token)) {
       build(context, token);
-      return 34;
+      return 33;
     }
     
-    var stateComment = "State: 34 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
+    var stateComment = "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
     token.detach();
     var expectedTokens = ["#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"];
     var error = token.isEof ?
@@ -5333,7 +5304,7 @@ module.exports = function Parser(builder) {
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
     if (this.stopAtFirstError) throw error;
     addError(context, error);
-    return 34;
+    return 33;
   }
 
 
