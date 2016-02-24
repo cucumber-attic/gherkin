@@ -2,6 +2,9 @@ This file contains changes in the CPAN-only releases of this module. Its entries
 will be interspersed with the parent CHANGELOG as part of the build process. It
 is expected to still be a valid CPAN Changes file, readable by CPAN::Changes.
 
+3.2.0004 - 2016-02-023
+ - Tests should now pass on Windows
+
 3.2.0003 - 2016-02-22
  - Build a proper CHANGES file
 
