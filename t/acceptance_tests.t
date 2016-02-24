@@ -7,6 +7,7 @@ use Test::More;
 use Test::Differences;
 use Test::Exception;
 
+use Cpanel::JSON::XS;
 use Path::Class qw/file dir/;
 use IO::Scalar;
 
@@ -28,11 +29,15 @@ for my $file (@good_files) {
             $file . '.' . $type . ( $type eq 'tokens' ? '' : '.json' ) )
             ->slurp;
 
-        # Rewrite the path to be portable on Windows
-        $expected =~ s!(\.\./testdata/[^"]+)!
-            my $file = file($1);
+        # Rewrite the path to be portable on Windows. This is dramatically less
+        # straight-forward than you might think.
+        $expected =~ s!("\.\./testdata/.+?")!
+            my $file = file(decode_json("[$1]")->[0]);
             my $parent = dir('acceptance')->subdir($file->parent->relative('../'));
-            $parent->file( $file->basename );
+            my $path = $parent->file( $file->basename );
+            my $replacement = encode_json( ['' . $path] );
+            $replacement =~ s/[\[\]]//g;
+            $replacement;
             !eg;
         eq_or_diff( $result, $expected, "$file - $type" );
     }
