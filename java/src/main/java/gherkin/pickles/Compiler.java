@@ -69,6 +69,7 @@ public class Compiler {
     private void compileScenarioOutline(List<Pickle> pickles, List<PickleStep> backgroundSteps, ScenarioOutline scenarioOutline, List<Tag> featureTags, String path, GherkinDialect dialect) {
         String keyword = dialect.getScenarioKeywords().get(0);
         for (final Examples examples : scenarioOutline.getExamples()) {
+            if (examples.getTableHeader() == null) continue;
             List<TableCell> variableCells = examples.getTableHeader().getCells();
             for (final TableRow values : examples.getTableBody()) {
                 List<TableCell> valueCells = values.getCells();
