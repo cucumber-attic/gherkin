@@ -18,6 +18,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
    by [pjlsergeant])
 
 ### Changed
+* (Ruby) More consistent AST node types
+  ([#158](https://github.com/cucumber/gherkin/pull/158)
+   by [enkessler])
 
 ### Fixed
 * (Python) Add the `gherkin.pickles` package to the Python installation
@@ -176,6 +179,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 [aslakhellesoy]:    https://github.com/aslakhellesoy
 [brasmusson]:       https://github.com/brasmusson
 [charlierudolph]:   https://github.com/charlierudolph
+[enkessler]:        https://github.com/enkessler
 [gabanz]:           https://github.com/gabanz
 [jargalan]:         https://github.com/jargalan
 [koterpillar]:      https://github.com/koterpillar
