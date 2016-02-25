@@ -194,7 +194,7 @@ module.exports = function AstBuilder () {
         var examplesNode = node.getSingle('Examples');
         var examplesLine = examplesNode.getToken('ExamplesLine');
         var description = getDescription(examplesNode);
-        var rows = getTableRows(examplesNode)
+        var exampleTable = examplesNode.getSingle('Examples_Table')
 
         return {
           type: examplesNode.ruleType,
@@ -203,8 +203,15 @@ module.exports = function AstBuilder () {
           keyword: examplesLine.matchedKeyword,
           name: examplesLine.matchedText,
           description: description,
-          tableHeader: rows[0],
-          tableBody: rows.slice(1)
+          tableHeader: exampleTable != undefined ? exampleTable.tableHeader : undefined,
+          tableBody: exampleTable != undefined ? exampleTable.tableBody : undefined
+        };
+      case 'Examples_Table':
+        var rows = getTableRows(node)
+
+        return {
+          tableHeader: rows != undefined ? rows[0] : undefined,
+          tableBody: rows != undefined ? rows.slice(1) : undefined
         };
       case 'Description':
         var lineTokens = node.getTokens('Other');
