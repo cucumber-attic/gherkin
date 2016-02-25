@@ -10,10 +10,7 @@ on 'test' => sub {
 };
 
 on 'develop' => sub {
-    requires "Config::INI::Reader";
-    requires "CPAN::Changes";
     requires "Dist::Zilla";
-    requires "Dist::Zilla::Plugin::Git::GatherDir";
     requires "Dist::Zilla::Plugin::Hook";
     requires "Dist::Zilla::Plugin::Prereqs::FromCPANfile";
     requires "Dist::Zilla::Plugin::Test::UseAllModules";
