@@ -5,5 +5,5 @@ acceptance/
 .compared
 CHANGES
 LICENSE.txt
-lib/Gherkin/Generated/*
+lib/Gherkin/Generated/Languages.pm
 Gherkin-*
