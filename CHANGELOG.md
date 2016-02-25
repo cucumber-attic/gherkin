@@ -16,6 +16,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 * (Perl) new implementation!
   ([#161](https://github.com/cucumber/gherkin/pull/161)
    by [pjlsergeant])
+* (Objective-C) Added Objective-C example to the README
+  ([#152](https://github.com/cucumber/gherkin/pull/152)
+   by [Ahmed-Ali])
 
 ### Changed
 * (Ruby) More consistent AST node types
@@ -176,6 +179,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 
 <!-- Contributors -->
 [10-io]:            https://github.com/10-io
+[Ahmed-Ali]:        https://github.com/Ahmed-Ali
 [aslakhellesoy]:    https://github.com/aslakhellesoy
 [brasmusson]:       https://github.com/brasmusson
 [charlierudolph]:   https://github.com/charlierudolph
