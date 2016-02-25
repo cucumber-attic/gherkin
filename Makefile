@@ -18,7 +18,7 @@ all: .compared
 	cpanm --installdeps .
 	touch $@
 
-.built: .cpanfile_dependencies lib/Gherkin/Generated/Parser.pm lib/Gherkin/Generated/Languages.pm $(PERL_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast
+.built: .cpanfile_dependencies lib/Gherkin/Generated/Parser.pm lib/Gherkin/Generated/Languages.pm $(PERL_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast LICENSE.txt
 	@$(MAKE) --no-print-directory show-version-info
 	# add Perl-level unit tests
 	touch $@
@@ -52,7 +52,7 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
 # Get to a point where dzil can be run
-predistribution: .compared CHANGES LICENSE.txt
+predistribution: .compared CHANGES
 	cp ../testdata/good/*.feature acceptance/testdata/good/
 	cp ../testdata/bad/*.feature acceptance/testdata/bad/
 	cpanm --installdeps --with-develop .
@@ -67,7 +67,7 @@ release: predistribution
 	dzil release
 
 clean:
-	rm -rf CHANGES LICENSE.txt Gherkin-* .compared .cpanfile_dependencies .built acceptance lib/Gherkin/Generated
+	rm -rf CHANGES Gherkin-* .compared .cpanfile_dependencies .built acceptance lib/Gherkin/Generated
 .PHONY: clean
 
 CHANGES:
