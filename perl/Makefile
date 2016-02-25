@@ -18,7 +18,7 @@ all: .compared
 	cpanm --installdeps .
 	touch $@
 
-.built: lib/Gherkin/Generated/Parser.pm lib/Gherkin/Generated/Languages.pm $(PERL_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast LICENSE.txt .cpanfile_dependencies
+.built: .cpanfile_dependencies lib/Gherkin/Generated/Parser.pm lib/Gherkin/Generated/Languages.pm $(PERL_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast
 	@$(MAKE) --no-print-directory show-version-info
 	# add Perl-level unit tests
 	touch $@
@@ -51,26 +51,29 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
-gherkin/gherkin-languages.json: ../gherkin-languages.json
-	cp $^ $@
-
-release: .compared CHANGES
+# Get to a point where dzil can be run
+prerelease: .compared CHANGES LICENSE.txt
 	cp ../testdata/good/*.feature acceptance/testdata/good/
 	cp ../testdata/bad/*.feature acceptance/testdata/bad/
 	cpanm --installdeps --with-develop .
+
+release: prerelease
 	dzil test --release && dzil build
 
 clean:
-	rm -rf CHANGES Gherkin-* .compared .cpanfile_dependencies .built acceptance lib/Gherkin/Generated/Parser.pm gherkin/gherkin-languages.json
+	rm -rf CHANGES LICENSE.txt Gherkin-* .compared .cpanfile_dependencies .built acceptance lib/Gherkin/Generated
 .PHONY: clean
 
 CHANGES:
-	perl helper-scripts/build_changelog.pl > $@
+	cp ../CHANGELOG.md $@
 
-lib/Gherkin/Generated/Languages.pm: gherkin/gherkin-languages.json
-	perl helper-scripts/build_languages.pl > $@
+lib/Gherkin/Generated:
+	mkdir -p $@
 
-lib/Gherkin/Generated/Parser.pm: ../gherkin.berp gherkin-perl.razor ../bin/berp.exe
+lib/Gherkin/Generated/Languages.pm: lib/Gherkin/Generated
+	perl helper-scripts/build_languages.pl < ../gherkin-languages.json > $@
+
+lib/Gherkin/Generated/Parser.pm: ../gherkin.berp gherkin-perl.razor ../bin/berp.exe lib/Gherkin/Generated
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-perl.razor -o $@
 	# Remove BOM
 	tail -c +4 $@ > $@.nobom
