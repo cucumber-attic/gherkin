@@ -120,10 +120,14 @@ namespace Gherkin
                     var examplesLine = examplesNode.GetToken(TokenType.ExamplesLine);
                     var description = GetDescription(examplesNode);
 
-                    var allRows = GetTableRows(examplesNode);
-                    var header = allRows.First();
-                    var rows = allRows.Skip(1).ToArray();
+                    var allRows = examplesNode.GetSingle<TableRow[]>(RuleType.Examples_Table);
+                    var header = allRows != null ? allRows.First() : null;
+                    var rows = allRows != null ? allRows.Skip(1).ToArray() : null;
                     return CreateExamples(tags, GetLocation(examplesLine), examplesLine.MatchedKeyword, examplesLine.MatchedText, description, header, rows, node);
+                }
+                case RuleType.Examples_Table:
+                {
+                    return GetTableRows(node);
                 }
                 case RuleType.Description:
                 {
