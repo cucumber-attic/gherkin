@@ -11,7 +11,7 @@ all [Cucumber](https://cukes.info) implementations to parse `.feature` files.
 If you want a reference implementation of Cucumber, take a
 look at [microcuke](https://github.com/cucumber/microcuke).
 
-Gherkin 3 is currently implemented for the following platforms:
+Gherkin 3 is currently implemented for the following platforms (in order of birthday):
 
 * [.NET](https://github.com/cucumber/gherkin-dotnet)
 * [Java](https://github.com/cucumber/gherkin-java)
@@ -20,12 +20,12 @@ Gherkin 3 is currently implemented for the following platforms:
 * [Go](https://github.com/cucumber/gherkin-go)
 * [Python](https://github.com/cucumber/gherkin-python)
 * [Objective-C](https://github.com/cucumber/gherkin-objective-c)
+* [Perl](https://github.com/cucumber/gherkin-perl)
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) if you want to contribute a parser for a new language.
 Our wish-list is (in no particular order):
 
 * C
-* Perl
 * PHP
 * Rust
 * Elixir
@@ -81,6 +81,15 @@ from gherkin.pickles.compiler import compile
 parser = Parser()
 feature = parser.parse("Feature: ...")
 pickles = compile(feature, "path/to/the.feature")
+```
+
+```perl
+use Gherkin::Parser;
+use Gherkin::Pickles::Compiler;
+
+my $parser = Gherkin::Parser->new();
+my $feature = $parser->parse("Feature: ...");
+my $pickles = Gherkin::Pickles::Compiler->compile($feature, "path/to/the.feature");
 ```
 
 ## Table cell escaping

@@ -13,6 +13,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (Perl) new implementation!
+  ([#161](https://github.com/cucumber/gherkin/pull/161)
+   by [pjlsergeant])
 
 ### Changed
 
@@ -180,5 +183,6 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 [maxmeyer]:         https://github.com/maxmeyer
 [merrua]:           https://github.com/merrua
 [moreau-nicolas]:   https://github.com/moreau-nicolas
+[pjlsergeant]:      https://github.com/pjlsergeant
 [zbmott]:           https://github.com/zbmott
 [Zearin]:           https://github.com/Zearin
