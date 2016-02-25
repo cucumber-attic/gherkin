@@ -12,5 +12,5 @@ Just run `make` from this directory.
 
 ## Make a release
 
-    # Change version in `dist.ini` and run
+    # The version number comes from ../VERSION
     make release
