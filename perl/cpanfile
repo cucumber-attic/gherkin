@@ -14,6 +14,7 @@ on 'develop' => sub {
     requires "CPAN::Changes";
     requires "Dist::Zilla";
     requires "Dist::Zilla::Plugin::Git::GatherDir";
+    requires "Dist::Zilla::Plugin::Hook";
     requires "Dist::Zilla::Plugin::Prereqs::FromCPANfile";
     requires "Dist::Zilla::Plugin::Test::UseAllModules";
 };

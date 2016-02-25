@@ -70,6 +70,17 @@ matrix:
       before_script:
         - brew install jq
 
+    - env: TARGET_LANG=perl
+      language: perl
+      perl:
+        - "5.20"
+        - "5.8"
+      install:
+        - ( cd $TARGET_LANG; dzil authordeps --missing | cpanm --no-skip-satisfied )
+        - ( cd $TARGET_LANG; dzil listdeps --author --missing | cpanm --no-skip-satisfied )
+      script:
+        - (cd $TARGET_LANG; dzil test --author --release )
+
 before_install:
   - export EnableNuGetPackageRestore=true
 
