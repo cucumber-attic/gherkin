@@ -5,6 +5,20 @@ sudo: false
 
 matrix:
   include:
+    - env: TARGET_LANG=perl
+      language: perl
+      perl: "5.8"
+      install:
+        - ( cd $TARGET_LANG; dzil authordeps --missing | cpanm --no-skip-satisfied )
+        - ( cd $TARGET_LANG; dzil listdeps --author --missing | cpanm --no-skip-satisfied )
+
+    - env: TARGET_LANG=perl
+      language: perl
+      perl: "5.20"
+      install:
+        - ( cd $TARGET_LANG; dzil authordeps --missing | cpanm --no-skip-satisfied )
+        - ( cd $TARGET_LANG; dzil listdeps --author --missing | cpanm --no-skip-satisfied )
+
     - env: TARGET_LANG=java
       language: java
       jdk: oraclejdk8

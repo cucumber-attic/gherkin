@@ -1,0 +1,35 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use lib 'lib';
+
+use Cpanel::JSON::XS;
+
+use Gherkin::Parser;
+use Gherkin::Pickles::Compiler;
+
+package App::GherkinGeneratePickles;
+
+sub run {
+    my ( $class, $fh, @file_list ) = @_;
+    my $json = Cpanel::JSON::XS->new->utf8->space_before(0)->space_after(1)
+        ->indent->canonical;
+
+    my $parser = Gherkin::Parser->new();
+
+    for my $file (@file_list) {
+        my $base = $json->encode(
+            Gherkin::Pickles::Compiler->compile(
+                $parser->parse($file), $file
+            )
+        );
+
+        # JSON::XS uses a triple indent(?!)
+        $base =~ s!^(\s+)!'  ' x ((length $1) / 3)!meg;
+        print $fh $base;
+    }
+}
+
+__PACKAGE__->run(\*STDOUT, @ARGV) unless caller;
+
