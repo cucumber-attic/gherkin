@@ -3,4 +3,7 @@ acceptance/
 .built
 .cpanfile_dependencies
 .compared
+CHANGES
+LICENSE.txt
+lib/Gherkin/Generated/*
 Gherkin-*
