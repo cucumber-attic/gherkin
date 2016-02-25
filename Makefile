@@ -52,13 +52,19 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
 # Get to a point where dzil can be run
-prerelease: .compared CHANGES LICENSE.txt
+predistribution: .compared CHANGES LICENSE.txt
 	cp ../testdata/good/*.feature acceptance/testdata/good/
 	cp ../testdata/bad/*.feature acceptance/testdata/bad/
 	cpanm --installdeps --with-develop .
+	dzil clean
+	@(git status --porcelain 2>/dev/null | grep "^??" | perl -ne\
+	    'die "The `release` target includes all files in the working directory. Please remove [$$_], or add it to .gitignore if it should be included\n" if s!.+ perl/(.+?)\n!$$1!')
 
-release: prerelease
+distribution: predistribution
 	dzil test --release && dzil build
+
+release: predistribution
+	dzil release
 
 clean:
 	rm -rf CHANGES LICENSE.txt Gherkin-* .compared .cpanfile_dependencies .built acceptance lib/Gherkin/Generated

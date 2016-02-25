@@ -10,17 +10,24 @@ You will need `cpanm` installed on your system
 
 Just run `make` from this directory.
 
-## Make a release
+## Make a distribution
 
     # The version number comes from ../VERSION
+    make distribution
+
+## Distribute the release
+
+    # Assuming you have a PAUSE (CPAN) account which is authorized to make
+    # releases, and they're in a ~/.pause file, you can also upload your release
+    # directly to CPAN with:
     make release
 
-## Making a trial release
+## Trial releases...
 
-If you want to make a trial release, you can temporarily edit `../VERSION` to
-add `_1`, `_2`, etc to it, make a release, and upload that to CPAN. That way
-you'll get your trial version smoked by CPAN Testers, but the release will be
-marked as development only, and when you come to release the real version, it
-won't conflict. Note that `3.2.1_1` is a trial release for `3.2.1`, not `3.2.2`,
-so you might upload: `3.2.1_1`, `3.2.1_2`, and then `3.2.1` when you're happy
-with it.
+Trial releases on CPAN allow you to upload the module to CPAN marked as a
+developer release. It'll get smoked on CPAN Testers, too, which is useful.
+Note that `3.2.1_1` is a trial release for `3.2.1`, not `3.2.2`, so you might
+upload: `3.2.1_1`, `3.2.1_2`, and then `3.2.1` when you're happy with it.
+
+Simply add the `_1` or whatever to `../VERSION` temporarily before running the
+commands above.
