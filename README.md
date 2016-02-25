@@ -1,4 +1,4 @@
-# Gherkin 3
+# Gherkin
 
 [![Join the chat at https://gitter.im/cucumber/gherkin](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cucumber/gherkin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/cucumber/gherkin.svg)](https://travis-ci.org/cucumber/gherkin)
@@ -11,7 +11,7 @@ all [Cucumber](https://cukes.info) implementations to parse `.feature` files.
 If you want a reference implementation of Cucumber, take a
 look at [microcuke](https://github.com/cucumber/microcuke).
 
-Gherkin 3 is currently implemented for the following platforms (in order of birthday):
+Gherkin is currently implemented for the following platforms (in order of birthday):
 
 * [.NET](https://github.com/cucumber/gherkin-dotnet)
 * [Java](https://github.com/cucumber/gherkin-java)
@@ -97,10 +97,6 @@ my $pickles = Gherkin::Pickles::Compiler->compile($feature, "path/to/the.feature
 If you want to use a newline character in a table cell, you can write this
 as `\n`. If you need a '|' as part of the cell, you can escape it as `\|`. And
 finally, if you need a '\', you can escape that with `\\`.
-
-## Why Gherkin 3?
-
-I wrote up a summary [here](https://groups.google.com/d/msg/cukes/YLKsqbBMBoI/DYhfFx8GBegJ).
 
 ## Architecture
 
@@ -347,6 +343,6 @@ generating reports and stack traces when a Scenario fails.
 Cucumber will further transform this list of `Pickle` structs to a list of `TestCase`
 objects. `TestCase` objects link user code such as Hooks and Step Definitions.
 
-## Building Gherkin 3
+## Building Gherkin
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md)
