@@ -73,20 +73,16 @@ matrix:
     - env: TARGET_LANG=perl
       language: perl
       perl: "5.8"
-      install:
+      before_install:
         - ( cd $TARGET_LANG; dzil authordeps --missing | cpanm --no-skip-satisfied )
         - ( cd $TARGET_LANG; dzil listdeps --author --missing | cpanm --no-skip-satisfied )
-      script:
-        - (cd $TARGET_LANG; dzil test --author --release )
 
     - env: TARGET_LANG=perl
       language: perl
       perl: "5.20"
-      install:
+      before_install:
         - ( cd $TARGET_LANG; dzil authordeps --missing | cpanm --no-skip-satisfied )
         - ( cd $TARGET_LANG; dzil listdeps --author --missing | cpanm --no-skip-satisfied )
-      script:
-        - (cd $TARGET_LANG; dzil test --author --release )
 
 
 before_install:
