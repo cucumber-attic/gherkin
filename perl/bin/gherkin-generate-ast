@@ -17,6 +17,8 @@ sub run {
 
     my $parser = Gherkin::Parser->new();
 
+    local $ENV{'GHERKIN_VERBOSE_EXCEPTIONS'} = 1;
+
     for my $file (@file_list) {
         my $base;
         $base = $json->encode( $parser->parse($file) );

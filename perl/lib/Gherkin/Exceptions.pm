@@ -50,7 +50,7 @@ sub new {
 
 sub message {
     my $self = shift;
-    return $self->context_message;
+    return $self->context_message if $ENV{'GHERKIN_VERBOSE_EXCEPTIONS'};
     return sprintf( '(%i:%i): %s',
         $self->{'location'}->{'line'},
         $self->{'location'}->{'column'} || '0',

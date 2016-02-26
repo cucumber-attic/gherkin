@@ -68,15 +68,23 @@ sub get_location {
     use Carp qw/confess/;
     confess "What no token?" unless $token;
 
-    if ( !defined $column ) {
-        return $token->location;
-    } else {
-        return {
-            line    => $token->location->{'line'},
-            context => $token->location->{'context'},
-            column  => $column,
-        };
-    }
+    return {
+        line => $token->location->{'line'},
+        column => (
+            defined $column ? $column : $token->location->{'column'}),
+    };
+}
+
+sub get_error_context {
+    my ( $self, $token ) = @_;
+
+    use Carp qw/confess/;
+    confess "What no token?" unless $token;
+
+    return {
+        filename => $token->location->{'filename'},
+        context => $token->location->{'context'},
+    };
 }
 
 sub get_tags {
@@ -113,6 +121,7 @@ sub get_table_rows {
                 type     => 'TableRow',
                 location => $self->get_location($token),
                 cells    => $self->get_cells($token),
+                error_context => $self->get_error_context($token),
             }
         );
     }
@@ -133,8 +142,12 @@ sub ensure_cell_count {
         unless ( $cell_count == $this_row_count ) {
             Gherkin::Exceptions::AstBuilder->throw(
                 "inconsistent cell count within the table",
-                $row->{'location'} );
+                {
+                    %{ $row->{'location'} },
+                    %{ $row->{'error_context'} },
+                });
         }
+        delete $row->{'error_context'};
     }
 }
 
