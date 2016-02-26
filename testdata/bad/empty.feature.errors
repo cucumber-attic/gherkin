@@ -1,2 +1,14 @@
 Parser errors:
-(1:0): unexpected end of file, expected: #Language, #TagLine, #FeatureLine, #Comment, #Empty
+-- UnexpectedEOF Error --
+
+unexpected end of file, expected: #Language, #TagLine, #FeatureLine, #Comment, #Empty
+  at [../testdata/bad/empty.feature] line 1, column 0
+
+-- [../testdata/bad/empty.feature] --
+
+   1| 
+    +-^
+
+-------------------------------------
+
+

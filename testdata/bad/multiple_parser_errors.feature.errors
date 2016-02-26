@@ -1,3 +1,34 @@
 Parser errors:
-(2:1): expected: #Language, #TagLine, #FeatureLine, #Comment, #Empty, got 'invalid line here'
-(9:1): expected: #EOF, #TableRow, #DocStringSeparator, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Comment, #Empty, got 'another invalid line here'
+-- UnexpectedToken Error --
+
+expected: #Language, #TagLine, #FeatureLine, #Comment, #Empty, got 'invalid line here'
+  at [../testdata/bad/multiple_parser_errors.feature] line 2, column 1
+
+-- [../testdata/bad/multiple_parser_errors.feature] --
+
+   1| 
+   2| invalid line here
+    +-^
+   3| 
+   4| Feature: Multiple parser errors
+   5| 
+
+------------------------------------------------------
+
+-- UnexpectedToken Error --
+
+expected: #EOF, #TableRow, #DocStringSeparator, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Comment, #Empty, got 'another invalid line here'
+  at [../testdata/bad/multiple_parser_errors.feature] line 9, column 1
+
+-- [../testdata/bad/multiple_parser_errors.feature] --
+
+   5| 
+   6|   Scenario: minimalistic
+   7|     Given the minimalism
+   8| 
+   9| another invalid line here
+    +-^
+
+------------------------------------------------------
+
+
