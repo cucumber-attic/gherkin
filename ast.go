@@ -45,16 +45,20 @@ type Scenario struct {
 
 type ScenarioOutline struct {
 	ScenarioDefinition
-	Tags     []*Tag      `json:"tags"`
-	Examples []*Examples `json:"examples,omitempty"`
+	Tags     []*Tag        `json:"tags"`
+	Examples []interface{} `json:"examples"`
 }
 
-type Examples struct {
+type ExamplesBase struct {
 	Node
 	Tags        []*Tag      `json:"tags"`
 	Keyword     string      `json:"keyword"`
 	Name        string      `json:"name"`
 	Description string      `json:"description,omitempty"`
+}
+
+type Examples struct {
+	ExamplesBase
 	TableHeader *TableRow   `json:"tableHeader"`
 	TableBody   []*TableRow `json:"tableBody"`
 }
