@@ -72,8 +72,9 @@ sub get_location {
         return $token->location;
     } else {
         return {
-            line   => $token->location->{'line'},
-            column => $column,
+            line    => $token->location->{'line'},
+            context => $token->location->{'context'},
+            column  => $column,
         };
     }
 }

@@ -9,6 +9,8 @@ sub compile {
     my ( $class, $feature, $path ) = @_;
     my @pickles;
 
+    $path = $feature->{'location'}->{'context'}->{'filename'}
+      unless defined $path;
     my $dialect          = $feature->{'language'};
     my $feature_tags     = $feature->{'tags'};
     my $background_steps = $class->_get_background_steps( $feature, $path );
