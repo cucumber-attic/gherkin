@@ -1,3 +1,34 @@
 Parser errors:
-(6:7): inconsistent cell count within the table
-(14:5): inconsistent cell count within the table
+-- AstBuilder Error --
+
+inconsistent cell count within the table
+  at [../testdata/bad/inconsistent_cell_count.feature] line 6, column 7
+
+-- [../testdata/bad/inconsistent_cell_count.feature] --
+
+   4|     Given a data table with inconsistent cell count
+   5|       | foo | bar |
+   6|       | boz | 
+    +-      ^
+   7| 
+   8| 
+
+-------------------------------------------------------
+
+-- AstBuilder Error --
+
+inconsistent cell count within the table
+  at [../testdata/bad/inconsistent_cell_count.feature] line 14, column 5
+
+-- [../testdata/bad/inconsistent_cell_count.feature] --
+
+  10|     Given the <what>
+  11| 
+  12|   Examples: 
+  13|     | what       |
+  14|     | minimalism | extra |
+    +-    ^
+
+-------------------------------------------------------
+
+

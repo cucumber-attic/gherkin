@@ -1,2 +1,18 @@
 Parser errors:
-(5:0): unexpected end of file, expected: #TableRow, #DocStringSeparator, #StepLine, #TagLine, #ExamplesLine, #Comment, #Empty
+-- UnexpectedEOF Error --
+
+unexpected end of file, expected: #TableRow, #DocStringSeparator, #StepLine, #TagLine, #ExamplesLine, #Comment, #Empty
+  at [../testdata/bad/unexpected_eof.feature] line 5, column 0
+
+-- [../testdata/bad/unexpected_eof.feature] --
+
+   1| Feature: Unexpected end of file
+   2| 
+   3|   Scenario Outline: minimalistic
+   4|     Given the minimalism
+   5| 
+    +-^
+
+----------------------------------------------
+
+

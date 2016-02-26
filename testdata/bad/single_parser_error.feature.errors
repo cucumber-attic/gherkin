@@ -1,2 +1,18 @@
 Parser errors:
-(2:1): expected: #Language, #TagLine, #FeatureLine, #Comment, #Empty, got 'invalid line here'
+-- UnexpectedToken Error --
+
+expected: #Language, #TagLine, #FeatureLine, #Comment, #Empty, got 'invalid line here'
+  at [../testdata/bad/single_parser_error.feature] line 2, column 1
+
+-- [../testdata/bad/single_parser_error.feature] --
+
+   1| 
+   2| invalid line here
+    +-^
+   3| 
+   4| Feature: Single parser error
+   5| 
+
+---------------------------------------------------
+
+

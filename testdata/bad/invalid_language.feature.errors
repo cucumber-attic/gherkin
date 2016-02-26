@@ -1,2 +1,18 @@
 Parser errors:
-(1:1): Language not supported: no-such
+-- NoSuchLanguage Error --
+
+Language not supported: no-such
+  at [../testdata/bad/invalid_language.feature] line 1, column 1
+
+-- [../testdata/bad/invalid_language.feature] --
+
+   1| #language:no-such
+    +-^
+   2| 
+   3| Feature: Minimal
+   4| 
+   5|   Scenario: minimalistic
+
+------------------------------------------------
+
+

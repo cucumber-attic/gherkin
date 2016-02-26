@@ -7,8 +7,7 @@ use overload
   q{""}    => 'stringify',
   fallback => 1;
 
-sub stringify { my $self  = shift; $self->{'message'} . "\n" }
-sub message   { my $self  = shift; $self->{'message'} }
+sub stringify { my $self  = shift; $self->message . "\n" }
 sub throw     { my $class = shift; die $class->new(@_) }
 
 # Parent of single and composite exceptions
@@ -23,10 +22,12 @@ use base 'Gherkin::Exceptions::Parser';
 
 sub new {
     my $class = shift;
-    bless {
-        message => join "\n",
-        ( 'Parser errors:', map { $_->{'message'} } @_ )
-    }, $class;
+    bless { errors => [@_], }, $class;
+}
+
+sub message {
+    my $class = shift;
+    return ( join '', ( "Parser errors:\n", @{ $class->{'errors'} } ) );
 }
 
 sub throw { my $class = shift; die $class->new(@_) }
@@ -36,14 +37,79 @@ sub throw { my $class = shift; die $class->new(@_) }
 #
 package Gherkin::Exceptions::SingleParser;
 
+use List::Util qw/max/;
 use base 'Gherkin::Exceptions::Parser';
 
 sub new {
     my ( $class, $message, $location ) = @_;
     bless {
-        message => sprintf( '(%i:%i): %s',
-            $location->{'line'}, $location->{'column'} || '0', $message ),
+        location         => $location,
+        original_message => $message,
     }, $class;
+}
+
+sub message {
+    my $self = shift;
+    return $self->context_message if $ENV{'GHERKIN_VERBOSE_EXCEPTIONS'};
+    return sprintf( '(%i:%i): %s',
+        $self->{'location'}->{'line'},
+        $self->{'location'}->{'column'} || '0',
+        $self->{'original_message'} );
+}
+
+sub context_message {
+    my $self = shift;
+
+    my $template = <<'ERROR';
+-- %s Error --
+
+%s
+  at [%s] line %d, column %d
+
+-- [%s] --
+
+%s
+--%s--
+ERROR
+
+    my ($error_class) = ( ref($self) =~ m/::([^:]+)$/g );
+
+    my $location = $self->{'location'};
+    my $context_line_number =
+      $location->{'line'} - @{ $location->{'context'}->{'before'} };
+
+    my $context_template = "% 4d| %s";
+
+    my $context_string = join '',
+      map { sprintf( $context_template, $context_line_number++, $_ ) }
+      @{ $location->{'context'}->{'before'} },
+      ( $location->{'context'}->{'current'} || '' );
+
+    # If we're EOF, might be missing a newline, which would make the next line
+    # a bit weird
+    $context_string .= "\n" unless $context_string =~ m/\n$/;
+
+    # Add a caret to show the column
+    $context_string .= ( ' ' x 4 ) .    # Line number indent
+      '+' .                             # Instead of the pipe delimiter
+      ( '-' x 1 ) .                     # Demonstrate fake leading space
+      ( ' ' x ( ( $location->{'column'} || 1 ) - 1 ) ) .    # Column indent
+      "^\n";                                                # The marker itself
+
+    $context_string .= join '',
+      map { sprintf( $context_template, $context_line_number++, $_ ) }
+      @{ $location->{'context'}->{'after'} };
+
+    return sprintf( $template,
+        $error_class,
+        $self->{'original_message'},
+        $location->{'filename'},
+        $location->{'line'},
+        ( $location->{'column'} || 0 ),
+        $location->{'filename'},
+        $context_string,
+        ( '-' x ( 4 + length( $location->{'filename'} ) ) ),
+    );
 }
 
 package Gherkin::Exceptions::NoSuchLanguage;

@@ -1,3 +1,29 @@
 Parser errors:
-(1:1): expected: #Language, #TagLine, #FeatureLine, #Comment, #Empty, got 'not gherkin'
-(3:0): unexpected end of file, expected: #Language, #TagLine, #FeatureLine, #Comment, #Empty
+-- UnexpectedToken Error --
+
+expected: #Language, #TagLine, #FeatureLine, #Comment, #Empty, got 'not gherkin'
+  at [../testdata/bad/not_gherkin.feature] line 1, column 1
+
+-- [../testdata/bad/not_gherkin.feature] --
+
+   1| not gherkin
+    +-^
+   2| 
+
+-------------------------------------------
+
+-- UnexpectedEOF Error --
+
+unexpected end of file, expected: #Language, #TagLine, #FeatureLine, #Comment, #Empty
+  at [../testdata/bad/not_gherkin.feature] line 3, column 0
+
+-- [../testdata/bad/not_gherkin.feature] --
+
+   1| not gherkin
+   2| 
+   3| 
+    +-^
+
+-------------------------------------------
+
+

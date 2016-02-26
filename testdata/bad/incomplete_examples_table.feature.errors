@@ -1,2 +1,18 @@
 Parser errors:
-(8:0): unexpected end of file, expected: #TableRow, #Comment, #Empty
+-- UnexpectedEOF Error --
+
+unexpected end of file, expected: #TableRow, #Comment, #Empty
+  at [../testdata/bad/incomplete_examples_table.feature] line 8, column 0
+
+-- [../testdata/bad/incomplete_examples_table.feature] --
+
+   4|     Given the <what>
+   5| 
+   6|   Examples:
+   7|     | what |
+   8| 
+    +-^
+
+---------------------------------------------------------
+
+
