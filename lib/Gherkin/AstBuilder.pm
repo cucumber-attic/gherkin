@@ -272,13 +272,11 @@ sub transform_node {
             );
         }
     } elsif ( $node->rule_type eq 'Examples_Definition' ) {
-        my $tags          = $self->get_tags($node);
-        my $examples_node = $node->get_single('Examples');
-        my $examples_line = $examples_node->get_token('ExamplesLine');
-        my $description   = $self->get_description($examples_node);
-        my $rows          = $self->get_table_rows($examples_node);
-
-        my $table_header = shift(@$rows);
+        my $tags           = $self->get_tags($node);
+        my $examples_node  = $node->get_single('Examples');
+        my $examples_line  = $examples_node->get_token('ExamplesLine');
+        my $description    = $self->get_description($examples_node);
+        my $examples_table = $examples_node->get_single('Examples_Table');
 
         return $self->reject_nones(
             {
@@ -288,6 +286,17 @@ sub transform_node {
                 keyword     => $examples_line->matched_keyword,
                 name        => $examples_line->matched_text,
                 description => $description,
+                tableHeader => $examples_table->{'tableHeader'} || undef,
+                tableBody   => $examples_table->{'tableBody'} || undef,
+            }
+        );
+    } elsif ( $node->rule_type eq 'Examples_Table' ) {
+        my $rows = $self->get_table_rows($node);
+
+        my $table_header = shift(@$rows) if $rows;
+
+        return $self->reject_nones(
+            {
                 tableHeader => $table_header,
                 tableBody   => $rows,
             }
