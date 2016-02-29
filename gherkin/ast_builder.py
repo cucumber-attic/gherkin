@@ -170,7 +170,7 @@ class AstBuilder(object):
             examples_node = node.get_single('Examples')
             examples_line = examples_node.get_token('ExamplesLine')
             description = self.get_description(examples_node)
-            rows = self.get_table_rows(examples_node)
+            examples_table = examples_node.get_single('Examples_Table')
 
             return self.reject_nones({
                 'type': examples_node.rule_type,
@@ -179,6 +179,12 @@ class AstBuilder(object):
                 'keyword': examples_line.matched_keyword,
                 'name': examples_line.matched_text,
                 'description': description,
+                'tableHeader': examples_table['tableHeader'] if examples_table else None,
+                'tableBody': examples_table['tableBody'] if examples_table else None
+            })
+        elif node.rule_type == 'Examples_Table':
+            rows = self.get_table_rows(node)
+            return self.reject_nones({
                 'tableHeader': rows[0],
                 'tableBody': rows[1:]
             })
