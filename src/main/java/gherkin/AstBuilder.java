@@ -131,8 +131,13 @@ public class AstBuilder implements Builder<Feature> {
                 AstNode examplesNode = node.getSingle(RuleType.Examples, null);
                 Token examplesLine = examplesNode.getToken(TokenType.ExamplesLine);
                 String description = getDescription(examplesNode);
-                List<TableRow> rows = getTableRows(examplesNode);
-                return new Examples(getLocation(examplesLine, 0), tags, examplesLine.matchedKeyword, examplesLine.matchedText, description, rows.get(0), rows.subList(1, rows.size()));
+                List<TableRow> rows = examplesNode.getSingle(RuleType.Examples_Table, null);
+                TableRow tableHeader = rows != null && !rows.isEmpty() ? rows.get(0) : null;
+                List<TableRow> tableBody = rows != null && !rows.isEmpty() ? rows.subList(1, rows.size()) : null;
+                return new Examples(getLocation(examplesLine, 0), tags, examplesLine.matchedKeyword, examplesLine.matchedText, description, tableHeader, tableBody);
+            }
+            case Examples_Table: {
+                return getTableRows(node);
             }
             case Description: {
                 List<Token> lineTokens = node.getTokens(TokenType.Other);
