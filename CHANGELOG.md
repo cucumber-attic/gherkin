@@ -24,6 +24,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 * (Ruby) More consistent AST node types
   ([#158](https://github.com/cucumber/gherkin/pull/158)
    by [enkessler])
+* (All) Allow incomplete scenario outlines
+  ([#160](https://github.com/cucumber/gherkin/pull/160)
+   by [brasmusson])
 
 ### Fixed
 * (Python) Add the `gherkin.pickles` package to the Python installation

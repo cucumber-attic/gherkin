@@ -27,9 +27,10 @@ our @RULE_TYPES = [
     'Background',  # Background! := #BackgroundLine Background_Description Scenario_Step*
     'Scenario_Definition',  # Scenario_Definition! := Tags? (Scenario | ScenarioOutline)
     'Scenario',  # Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
-    'ScenarioOutline',  # ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples_Definition+
+    'ScenarioOutline',  # ScenarioOutline! := #ScenarioOutlineLine ScenarioOutline_Description ScenarioOutline_Step* Examples_Definition*
     'Examples_Definition',  # Examples_Definition! [#Empty|#Comment|#TagLine-&gt;#ExamplesLine] := Tags? Examples
-    'Examples',  # Examples! := #ExamplesLine Examples_Description #TableRow #TableRow+
+    'Examples',  # Examples! := #ExamplesLine Examples_Description Examples_Table?
+    'Examples_Table',  # Examples_Table! := #TableRow #TableRow*
     'Scenario_Step',  # Scenario_Step := Step
     'ScenarioOutline_Step',  # ScenarioOutline_Step := Step
     'Step',  # Step! := #StepLine Step_Arg?
@@ -74,13 +75,12 @@ our %states_to_match_names = (
     24 => "match_token_at_24",
     25 => "match_token_at_25",
     26 => "match_token_at_26",
-    27 => "match_token_at_27",
+    28 => "match_token_at_28",
     29 => "match_token_at_29",
     30 => "match_token_at_30",
     31 => "match_token_at_31",
     32 => "match_token_at_32",
     33 => "match_token_at_33",
-    34 => "match_token_at_34",
 );
 
 sub match_token {
@@ -381,7 +381,7 @@ sub match_token_at_3 {
     if ($self->match_EOF($context, $token)) {
         $self->_end_rule($context, 'Feature_Header');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_Empty($context, $token)) {
         $self->_build($context, $token);
@@ -451,7 +451,7 @@ sub match_token_at_4 {
         $self->_end_rule($context, 'Description');
         $self->_end_rule($context, 'Feature_Header');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_Comment($context, $token)) {
         $self->_end_rule($context, 'Description');
@@ -520,7 +520,7 @@ sub match_token_at_5 {
     if ($self->match_EOF($context, $token)) {
         $self->_end_rule($context, 'Feature_Header');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_Comment($context, $token)) {
         $self->_build($context, $token);
@@ -584,7 +584,7 @@ sub match_token_at_6 {
     if ($self->match_EOF($context, $token)) {
         $self->_end_rule($context, 'Background');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_Empty($context, $token)) {
         $self->_build($context, $token);
@@ -653,7 +653,7 @@ sub match_token_at_7 {
         $self->_end_rule($context, 'Description');
         $self->_end_rule($context, 'Background');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_Comment($context, $token)) {
         $self->_end_rule($context, 'Description');
@@ -721,7 +721,7 @@ sub match_token_at_8 {
     if ($self->match_EOF($context, $token)) {
         $self->_end_rule($context, 'Background');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_Comment($context, $token)) {
         $self->_build($context, $token);
@@ -785,7 +785,7 @@ sub match_token_at_9 {
         $self->_end_rule($context, 'Step');
         $self->_end_rule($context, 'Background');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_TableRow($context, $token)) {
         $self->_start_rule($context, 'DataTable');
@@ -795,7 +795,7 @@ sub match_token_at_9 {
     if ($self->match_DocStringSeparator($context, $token)) {
         $self->_start_rule($context, 'DocString');
         $self->_build($context, $token);
-        return 33;
+        return 32;
     }
     if ($self->match_StepLine($context, $token)) {
         $self->_end_rule($context, 'Step');
@@ -864,7 +864,7 @@ sub match_token_at_10 {
         $self->_end_rule($context, 'Step');
         $self->_end_rule($context, 'Background');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_TableRow($context, $token)) {
         $self->_build($context, $token);
@@ -988,7 +988,7 @@ sub match_token_at_12 {
         $self->_end_rule($context, 'Scenario');
         $self->_end_rule($context, 'Scenario_Definition');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_Empty($context, $token)) {
         $self->_build($context, $token);
@@ -1061,7 +1061,7 @@ sub match_token_at_13 {
         $self->_end_rule($context, 'Scenario');
         $self->_end_rule($context, 'Scenario_Definition');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_Comment($context, $token)) {
         $self->_end_rule($context, 'Description');
@@ -1133,7 +1133,7 @@ sub match_token_at_14 {
         $self->_end_rule($context, 'Scenario');
         $self->_end_rule($context, 'Scenario_Definition');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_Comment($context, $token)) {
         $self->_build($context, $token);
@@ -1201,7 +1201,7 @@ sub match_token_at_15 {
         $self->_end_rule($context, 'Scenario');
         $self->_end_rule($context, 'Scenario_Definition');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_TableRow($context, $token)) {
         $self->_start_rule($context, 'DataTable');
@@ -1211,7 +1211,7 @@ sub match_token_at_15 {
     if ($self->match_DocStringSeparator($context, $token)) {
         $self->_start_rule($context, 'DocString');
         $self->_build($context, $token);
-        return 31;
+        return 30;
     }
     if ($self->match_StepLine($context, $token)) {
         $self->_end_rule($context, 'Step');
@@ -1284,7 +1284,7 @@ sub match_token_at_16 {
         $self->_end_rule($context, 'Scenario');
         $self->_end_rule($context, 'Scenario_Definition');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_TableRow($context, $token)) {
         $self->_build($context, $token);
@@ -1359,6 +1359,12 @@ sub match_token_at_16 {
 # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
 sub match_token_at_17 {
     my ( $self, $token, $context ) = @_;
+    if ($self->match_EOF($context, $token)) {
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_build($context, $token);
+        return 27;
+    }
     if ($self->match_Empty($context, $token)) {
         $self->_build($context, $token);
         return 17;
@@ -1373,16 +1379,42 @@ sub match_token_at_17 {
         return 20;
     }
     if ($self->match_TagLine($context, $token)) {
+        if ($self->lookahead_0($context, $token)) {
         $self->_start_rule($context, 'Examples_Definition');
         $self->_start_rule($context, 'Tags');
         $self->_build($context, $token);
         return 22;
+        }
+    }
+    if ($self->match_TagLine($context, $token)) {
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Tags');
+        $self->_build($context, $token);
+        return 11;
     }
     if ($self->match_ExamplesLine($context, $token)) {
         $self->_start_rule($context, 'Examples_Definition');
         $self->_start_rule($context, 'Examples');
         $self->_build($context, $token);
         return 23;
+    }
+    if ($self->match_ScenarioLine($context, $token)) {
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario');
+        $self->_build($context, $token);
+        return 12;
+    }
+    if ($self->match_ScenarioOutlineLine($context, $token)) {
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'ScenarioOutline');
+        $self->_build($context, $token);
+        return 17;
     }
     if ($self->match_Other($context, $token)) {
         $self->_start_rule($context, 'Description');
@@ -1398,7 +1430,7 @@ sub match_token_at_17 {
 
     my @args = (
         $token,
-        ["#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"], #"
+        ["#EOF", "#Empty", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"], #"
         "State: 17 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0",
     );
 
@@ -1413,6 +1445,13 @@ sub match_token_at_17 {
 # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
 sub match_token_at_18 {
     my ( $self, $token, $context ) = @_;
+    if ($self->match_EOF($context, $token)) {
+        $self->_end_rule($context, 'Description');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_build($context, $token);
+        return 27;
+    }
     if ($self->match_Comment($context, $token)) {
         $self->_end_rule($context, 'Description');
         $self->_build($context, $token);
@@ -1425,11 +1464,22 @@ sub match_token_at_18 {
         return 20;
     }
     if ($self->match_TagLine($context, $token)) {
+        if ($self->lookahead_0($context, $token)) {
         $self->_end_rule($context, 'Description');
         $self->_start_rule($context, 'Examples_Definition');
         $self->_start_rule($context, 'Tags');
         $self->_build($context, $token);
         return 22;
+        }
+    }
+    if ($self->match_TagLine($context, $token)) {
+        $self->_end_rule($context, 'Description');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Tags');
+        $self->_build($context, $token);
+        return 11;
     }
     if ($self->match_ExamplesLine($context, $token)) {
         $self->_end_rule($context, 'Description');
@@ -1437,6 +1487,24 @@ sub match_token_at_18 {
         $self->_start_rule($context, 'Examples');
         $self->_build($context, $token);
         return 23;
+    }
+    if ($self->match_ScenarioLine($context, $token)) {
+        $self->_end_rule($context, 'Description');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario');
+        $self->_build($context, $token);
+        return 12;
+    }
+    if ($self->match_ScenarioOutlineLine($context, $token)) {
+        $self->_end_rule($context, 'Description');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'ScenarioOutline');
+        $self->_build($context, $token);
+        return 17;
     }
     if ($self->match_Other($context, $token)) {
         $self->_build($context, $token);
@@ -1451,7 +1519,7 @@ sub match_token_at_18 {
 
     my @args = (
         $token,
-        ["#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Other"], #"
+        ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"], #"
         "State: 18 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0",
     );
 
@@ -1466,6 +1534,12 @@ sub match_token_at_18 {
 # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
 sub match_token_at_19 {
     my ( $self, $token, $context ) = @_;
+    if ($self->match_EOF($context, $token)) {
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_build($context, $token);
+        return 27;
+    }
     if ($self->match_Comment($context, $token)) {
         $self->_build($context, $token);
         return 19;
@@ -1476,16 +1550,42 @@ sub match_token_at_19 {
         return 20;
     }
     if ($self->match_TagLine($context, $token)) {
+        if ($self->lookahead_0($context, $token)) {
         $self->_start_rule($context, 'Examples_Definition');
         $self->_start_rule($context, 'Tags');
         $self->_build($context, $token);
         return 22;
+        }
+    }
+    if ($self->match_TagLine($context, $token)) {
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Tags');
+        $self->_build($context, $token);
+        return 11;
     }
     if ($self->match_ExamplesLine($context, $token)) {
         $self->_start_rule($context, 'Examples_Definition');
         $self->_start_rule($context, 'Examples');
         $self->_build($context, $token);
         return 23;
+    }
+    if ($self->match_ScenarioLine($context, $token)) {
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario');
+        $self->_build($context, $token);
+        return 12;
+    }
+    if ($self->match_ScenarioOutlineLine($context, $token)) {
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'ScenarioOutline');
+        $self->_build($context, $token);
+        return 17;
     }
     if ($self->match_Empty($context, $token)) {
         $self->_build($context, $token);
@@ -1500,7 +1600,7 @@ sub match_token_at_19 {
 
     my @args = (
         $token,
-        ["#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#Empty"], #"
+        ["#EOF", "#Comment", "#StepLine", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"], #"
         "State: 19 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0",
     );
 
@@ -1515,6 +1615,13 @@ sub match_token_at_19 {
 # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
 sub match_token_at_20 {
     my ( $self, $token, $context ) = @_;
+    if ($self->match_EOF($context, $token)) {
+        $self->_end_rule($context, 'Step');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_build($context, $token);
+        return 27;
+    }
     if ($self->match_TableRow($context, $token)) {
         $self->_start_rule($context, 'DataTable');
         $self->_build($context, $token);
@@ -1523,7 +1630,7 @@ sub match_token_at_20 {
     if ($self->match_DocStringSeparator($context, $token)) {
         $self->_start_rule($context, 'DocString');
         $self->_build($context, $token);
-        return 29;
+        return 28;
     }
     if ($self->match_StepLine($context, $token)) {
         $self->_end_rule($context, 'Step');
@@ -1532,11 +1639,22 @@ sub match_token_at_20 {
         return 20;
     }
     if ($self->match_TagLine($context, $token)) {
+        if ($self->lookahead_0($context, $token)) {
         $self->_end_rule($context, 'Step');
         $self->_start_rule($context, 'Examples_Definition');
         $self->_start_rule($context, 'Tags');
         $self->_build($context, $token);
         return 22;
+        }
+    }
+    if ($self->match_TagLine($context, $token)) {
+        $self->_end_rule($context, 'Step');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Tags');
+        $self->_build($context, $token);
+        return 11;
     }
     if ($self->match_ExamplesLine($context, $token)) {
         $self->_end_rule($context, 'Step');
@@ -1544,6 +1662,24 @@ sub match_token_at_20 {
         $self->_start_rule($context, 'Examples');
         $self->_build($context, $token);
         return 23;
+    }
+    if ($self->match_ScenarioLine($context, $token)) {
+        $self->_end_rule($context, 'Step');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario');
+        $self->_build($context, $token);
+        return 12;
+    }
+    if ($self->match_ScenarioOutlineLine($context, $token)) {
+        $self->_end_rule($context, 'Step');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'ScenarioOutline');
+        $self->_build($context, $token);
+        return 17;
     }
     if ($self->match_Comment($context, $token)) {
         $self->_build($context, $token);
@@ -1562,7 +1698,7 @@ sub match_token_at_20 {
 
     my @args = (
         $token,
-        ["#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"], #"
+        ["#EOF", "#TableRow", "#DocStringSeparator", "#StepLine", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"], #"
         "State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0",
     );
 
@@ -1577,6 +1713,14 @@ sub match_token_at_20 {
 # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
 sub match_token_at_21 {
     my ( $self, $token, $context ) = @_;
+    if ($self->match_EOF($context, $token)) {
+        $self->_end_rule($context, 'DataTable');
+        $self->_end_rule($context, 'Step');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_build($context, $token);
+        return 27;
+    }
     if ($self->match_TableRow($context, $token)) {
         $self->_build($context, $token);
         return 21;
@@ -1589,12 +1733,24 @@ sub match_token_at_21 {
         return 20;
     }
     if ($self->match_TagLine($context, $token)) {
+        if ($self->lookahead_0($context, $token)) {
         $self->_end_rule($context, 'DataTable');
         $self->_end_rule($context, 'Step');
         $self->_start_rule($context, 'Examples_Definition');
         $self->_start_rule($context, 'Tags');
         $self->_build($context, $token);
         return 22;
+        }
+    }
+    if ($self->match_TagLine($context, $token)) {
+        $self->_end_rule($context, 'DataTable');
+        $self->_end_rule($context, 'Step');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Tags');
+        $self->_build($context, $token);
+        return 11;
     }
     if ($self->match_ExamplesLine($context, $token)) {
         $self->_end_rule($context, 'DataTable');
@@ -1603,6 +1759,26 @@ sub match_token_at_21 {
         $self->_start_rule($context, 'Examples');
         $self->_build($context, $token);
         return 23;
+    }
+    if ($self->match_ScenarioLine($context, $token)) {
+        $self->_end_rule($context, 'DataTable');
+        $self->_end_rule($context, 'Step');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario');
+        $self->_build($context, $token);
+        return 12;
+    }
+    if ($self->match_ScenarioOutlineLine($context, $token)) {
+        $self->_end_rule($context, 'DataTable');
+        $self->_end_rule($context, 'Step');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'ScenarioOutline');
+        $self->_build($context, $token);
+        return 17;
     }
     if ($self->match_Comment($context, $token)) {
         $self->_build($context, $token);
@@ -1621,7 +1797,7 @@ sub match_token_at_21 {
 
     my @args = (
         $token,
-        ["#TableRow", "#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"], #"
+        ["#EOF", "#TableRow", "#StepLine", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"], #"
         "State: 21 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0",
     );
 
@@ -1678,6 +1854,14 @@ sub match_token_at_22 {
 # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0
 sub match_token_at_23 {
     my ( $self, $token, $context ) = @_;
+    if ($self->match_EOF($context, $token)) {
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_build($context, $token);
+        return 27;
+    }
     if ($self->match_Empty($context, $token)) {
         $self->_build($context, $token);
         return 23;
@@ -1687,159 +1871,9 @@ sub match_token_at_23 {
         return 25;
     }
     if ($self->match_TableRow($context, $token)) {
+        $self->_start_rule($context, 'Examples_Table');
         $self->_build($context, $token);
         return 26;
-    }
-    if ($self->match_Other($context, $token)) {
-        $self->_start_rule($context, 'Description');
-        $self->_build($context, $token);
-        return 24;
-    }
-
-    $token->detach;
-
-    # Create the appropriate error
-    my $error_class = "Gherkin::Exceptions::" . (
-        $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
-
-    my @args = (
-        $token,
-        ["#Empty", "#Comment", "#TableRow", "#Other"], #"
-        "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0",
-    );
-
-    $error_class->throw( @args ) if $self->stop_at_first_error;
-
-    eval {$error_class->throw( @args )};
-    $self->add_error( $context, $@ );
-
-    return 23;
-} 
-
-# Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
-sub match_token_at_24 {
-    my ( $self, $token, $context ) = @_;
-    if ($self->match_Comment($context, $token)) {
-        $self->_end_rule($context, 'Description');
-        $self->_build($context, $token);
-        return 25;
-    }
-    if ($self->match_TableRow($context, $token)) {
-        $self->_end_rule($context, 'Description');
-        $self->_build($context, $token);
-        return 26;
-    }
-    if ($self->match_Other($context, $token)) {
-        $self->_build($context, $token);
-        return 24;
-    }
-
-    $token->detach;
-
-    # Create the appropriate error
-    my $error_class = "Gherkin::Exceptions::" . (
-        $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
-
-    my @args = (
-        $token,
-        ["#Comment", "#TableRow", "#Other"], #"
-        "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0",
-    );
-
-    $error_class->throw( @args ) if $self->stop_at_first_error;
-
-    eval {$error_class->throw( @args )};
-    $self->add_error( $context, $@ );
-
-    return 24;
-} 
-
-# Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0
-sub match_token_at_25 {
-    my ( $self, $token, $context ) = @_;
-    if ($self->match_Comment($context, $token)) {
-        $self->_build($context, $token);
-        return 25;
-    }
-    if ($self->match_TableRow($context, $token)) {
-        $self->_build($context, $token);
-        return 26;
-    }
-    if ($self->match_Empty($context, $token)) {
-        $self->_build($context, $token);
-        return 25;
-    }
-
-    $token->detach;
-
-    # Create the appropriate error
-    my $error_class = "Gherkin::Exceptions::" . (
-        $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
-
-    my @args = (
-        $token,
-        ["#Comment", "#TableRow", "#Empty"], #"
-        "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0",
-    );
-
-    $error_class->throw( @args ) if $self->stop_at_first_error;
-
-    eval {$error_class->throw( @args )};
-    $self->add_error( $context, $@ );
-
-    return 25;
-} 
-
-# Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>#TableRow:0
-sub match_token_at_26 {
-    my ( $self, $token, $context ) = @_;
-    if ($self->match_TableRow($context, $token)) {
-        $self->_build($context, $token);
-        return 27;
-    }
-    if ($self->match_Comment($context, $token)) {
-        $self->_build($context, $token);
-        return 26;
-    }
-    if ($self->match_Empty($context, $token)) {
-        $self->_build($context, $token);
-        return 26;
-    }
-
-    $token->detach;
-
-    # Create the appropriate error
-    my $error_class = "Gherkin::Exceptions::" . (
-        $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
-
-    my @args = (
-        $token,
-        ["#TableRow", "#Comment", "#Empty"], #"
-        "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>#TableRow:0",
-    );
-
-    $error_class->throw( @args ) if $self->stop_at_first_error;
-
-    eval {$error_class->throw( @args )};
-    $self->add_error( $context, $@ );
-
-    return 26;
-} 
-
-# Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:3>#TableRow:0
-sub match_token_at_27 {
-    my ( $self, $token, $context ) = @_;
-    if ($self->match_EOF($context, $token)) {
-        $self->_end_rule($context, 'Examples');
-        $self->_end_rule($context, 'Examples_Definition');
-        $self->_end_rule($context, 'ScenarioOutline');
-        $self->_end_rule($context, 'Scenario_Definition');
-        $self->_build($context, $token);
-        return 28;
-    }
-    if ($self->match_TableRow($context, $token)) {
-        $self->_build($context, $token);
-        return 27;
     }
     if ($self->match_TagLine($context, $token)) {
         if ($self->lookahead_0($context, $token)) {
@@ -1889,13 +1923,302 @@ sub match_token_at_27 {
         $self->_build($context, $token);
         return 17;
     }
-    if ($self->match_Comment($context, $token)) {
+    if ($self->match_Other($context, $token)) {
+        $self->_start_rule($context, 'Description');
+        $self->_build($context, $token);
+        return 24;
+    }
+
+    $token->detach;
+
+    # Create the appropriate error
+    my $error_class = "Gherkin::Exceptions::" . (
+        $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
+
+    my @args = (
+        $token,
+        ["#EOF", "#Empty", "#Comment", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"], #"
+        "State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0",
+    );
+
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
+
+    return 23;
+} 
+
+# Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
+sub match_token_at_24 {
+    my ( $self, $token, $context ) = @_;
+    if ($self->match_EOF($context, $token)) {
+        $self->_end_rule($context, 'Description');
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
         $self->_build($context, $token);
         return 27;
     }
-    if ($self->match_Empty($context, $token)) {
+    if ($self->match_Comment($context, $token)) {
+        $self->_end_rule($context, 'Description');
+        $self->_build($context, $token);
+        return 25;
+    }
+    if ($self->match_TableRow($context, $token)) {
+        $self->_end_rule($context, 'Description');
+        $self->_start_rule($context, 'Examples_Table');
+        $self->_build($context, $token);
+        return 26;
+    }
+    if ($self->match_TagLine($context, $token)) {
+        if ($self->lookahead_0($context, $token)) {
+        $self->_end_rule($context, 'Description');
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_start_rule($context, 'Examples_Definition');
+        $self->_start_rule($context, 'Tags');
+        $self->_build($context, $token);
+        return 22;
+        }
+    }
+    if ($self->match_TagLine($context, $token)) {
+        $self->_end_rule($context, 'Description');
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Tags');
+        $self->_build($context, $token);
+        return 11;
+    }
+    if ($self->match_ExamplesLine($context, $token)) {
+        $self->_end_rule($context, 'Description');
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_start_rule($context, 'Examples_Definition');
+        $self->_start_rule($context, 'Examples');
+        $self->_build($context, $token);
+        return 23;
+    }
+    if ($self->match_ScenarioLine($context, $token)) {
+        $self->_end_rule($context, 'Description');
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario');
+        $self->_build($context, $token);
+        return 12;
+    }
+    if ($self->match_ScenarioOutlineLine($context, $token)) {
+        $self->_end_rule($context, 'Description');
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'ScenarioOutline');
+        $self->_build($context, $token);
+        return 17;
+    }
+    if ($self->match_Other($context, $token)) {
+        $self->_build($context, $token);
+        return 24;
+    }
+
+    $token->detach;
+
+    # Create the appropriate error
+    my $error_class = "Gherkin::Exceptions::" . (
+        $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
+
+    my @args = (
+        $token,
+        ["#EOF", "#Comment", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Other"], #"
+        "State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0",
+    );
+
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
+
+    return 24;
+} 
+
+# Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0
+sub match_token_at_25 {
+    my ( $self, $token, $context ) = @_;
+    if ($self->match_EOF($context, $token)) {
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
         $self->_build($context, $token);
         return 27;
+    }
+    if ($self->match_Comment($context, $token)) {
+        $self->_build($context, $token);
+        return 25;
+    }
+    if ($self->match_TableRow($context, $token)) {
+        $self->_start_rule($context, 'Examples_Table');
+        $self->_build($context, $token);
+        return 26;
+    }
+    if ($self->match_TagLine($context, $token)) {
+        if ($self->lookahead_0($context, $token)) {
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_start_rule($context, 'Examples_Definition');
+        $self->_start_rule($context, 'Tags');
+        $self->_build($context, $token);
+        return 22;
+        }
+    }
+    if ($self->match_TagLine($context, $token)) {
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Tags');
+        $self->_build($context, $token);
+        return 11;
+    }
+    if ($self->match_ExamplesLine($context, $token)) {
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_start_rule($context, 'Examples_Definition');
+        $self->_start_rule($context, 'Examples');
+        $self->_build($context, $token);
+        return 23;
+    }
+    if ($self->match_ScenarioLine($context, $token)) {
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario');
+        $self->_build($context, $token);
+        return 12;
+    }
+    if ($self->match_ScenarioOutlineLine($context, $token)) {
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'ScenarioOutline');
+        $self->_build($context, $token);
+        return 17;
+    }
+    if ($self->match_Empty($context, $token)) {
+        $self->_build($context, $token);
+        return 25;
+    }
+
+    $token->detach;
+
+    # Create the appropriate error
+    my $error_class = "Gherkin::Exceptions::" . (
+        $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
+
+    my @args = (
+        $token,
+        ["#EOF", "#Comment", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Empty"], #"
+        "State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0",
+    );
+
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
+
+    return 25;
+} 
+
+# Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>Examples_Table:0>#TableRow:0
+sub match_token_at_26 {
+    my ( $self, $token, $context ) = @_;
+    if ($self->match_EOF($context, $token)) {
+        $self->_end_rule($context, 'Examples_Table');
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_build($context, $token);
+        return 27;
+    }
+    if ($self->match_TableRow($context, $token)) {
+        $self->_build($context, $token);
+        return 26;
+    }
+    if ($self->match_TagLine($context, $token)) {
+        if ($self->lookahead_0($context, $token)) {
+        $self->_end_rule($context, 'Examples_Table');
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_start_rule($context, 'Examples_Definition');
+        $self->_start_rule($context, 'Tags');
+        $self->_build($context, $token);
+        return 22;
+        }
+    }
+    if ($self->match_TagLine($context, $token)) {
+        $self->_end_rule($context, 'Examples_Table');
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Tags');
+        $self->_build($context, $token);
+        return 11;
+    }
+    if ($self->match_ExamplesLine($context, $token)) {
+        $self->_end_rule($context, 'Examples_Table');
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_start_rule($context, 'Examples_Definition');
+        $self->_start_rule($context, 'Examples');
+        $self->_build($context, $token);
+        return 23;
+    }
+    if ($self->match_ScenarioLine($context, $token)) {
+        $self->_end_rule($context, 'Examples_Table');
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario');
+        $self->_build($context, $token);
+        return 12;
+    }
+    if ($self->match_ScenarioOutlineLine($context, $token)) {
+        $self->_end_rule($context, 'Examples_Table');
+        $self->_end_rule($context, 'Examples');
+        $self->_end_rule($context, 'Examples_Definition');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'ScenarioOutline');
+        $self->_build($context, $token);
+        return 17;
+    }
+    if ($self->match_Comment($context, $token)) {
+        $self->_build($context, $token);
+        return 26;
+    }
+    if ($self->match_Empty($context, $token)) {
+        $self->_build($context, $token);
+        return 26;
     }
 
     $token->detach;
@@ -1907,7 +2230,7 @@ sub match_token_at_27 {
     my @args = (
         $token,
         ["#EOF", "#TableRow", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"], #"
-        "State: 27 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:3>#TableRow:0",
+        "State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>Examples_Table:0>#TableRow:0",
     );
 
     $error_class->throw( @args ) if $self->stop_at_first_error;
@@ -1915,17 +2238,112 @@ sub match_token_at_27 {
     eval {$error_class->throw( @args )};
     $self->add_error( $context, $@ );
 
-    return 27;
+    return 26;
 } 
 
 # Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-sub match_token_at_29 {
+sub match_token_at_28 {
     my ( $self, $token, $context ) = @_;
     if ($self->match_DocStringSeparator($context, $token)) {
         $self->_build($context, $token);
-        return 30;
+        return 29;
     }
     if ($self->match_Other($context, $token)) {
+        $self->_build($context, $token);
+        return 28;
+    }
+
+    $token->detach;
+
+    # Create the appropriate error
+    my $error_class = "Gherkin::Exceptions::" . (
+        $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
+
+    my @args = (
+        $token,
+        ["#DocStringSeparator", "#Other"], #"
+        "State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0",
+    );
+
+    $error_class->throw( @args ) if $self->stop_at_first_error;
+
+    eval {$error_class->throw( @args )};
+    $self->add_error( $context, $@ );
+
+    return 28;
+} 
+
+# Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
+sub match_token_at_29 {
+    my ( $self, $token, $context ) = @_;
+    if ($self->match_EOF($context, $token)) {
+        $self->_end_rule($context, 'DocString');
+        $self->_end_rule($context, 'Step');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_build($context, $token);
+        return 27;
+    }
+    if ($self->match_StepLine($context, $token)) {
+        $self->_end_rule($context, 'DocString');
+        $self->_end_rule($context, 'Step');
+        $self->_start_rule($context, 'Step');
+        $self->_build($context, $token);
+        return 20;
+    }
+    if ($self->match_TagLine($context, $token)) {
+        if ($self->lookahead_0($context, $token)) {
+        $self->_end_rule($context, 'DocString');
+        $self->_end_rule($context, 'Step');
+        $self->_start_rule($context, 'Examples_Definition');
+        $self->_start_rule($context, 'Tags');
+        $self->_build($context, $token);
+        return 22;
+        }
+    }
+    if ($self->match_TagLine($context, $token)) {
+        $self->_end_rule($context, 'DocString');
+        $self->_end_rule($context, 'Step');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Tags');
+        $self->_build($context, $token);
+        return 11;
+    }
+    if ($self->match_ExamplesLine($context, $token)) {
+        $self->_end_rule($context, 'DocString');
+        $self->_end_rule($context, 'Step');
+        $self->_start_rule($context, 'Examples_Definition');
+        $self->_start_rule($context, 'Examples');
+        $self->_build($context, $token);
+        return 23;
+    }
+    if ($self->match_ScenarioLine($context, $token)) {
+        $self->_end_rule($context, 'DocString');
+        $self->_end_rule($context, 'Step');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario');
+        $self->_build($context, $token);
+        return 12;
+    }
+    if ($self->match_ScenarioOutlineLine($context, $token)) {
+        $self->_end_rule($context, 'DocString');
+        $self->_end_rule($context, 'Step');
+        $self->_end_rule($context, 'ScenarioOutline');
+        $self->_end_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'Scenario_Definition');
+        $self->_start_rule($context, 'ScenarioOutline');
+        $self->_build($context, $token);
+        return 17;
+    }
+    if ($self->match_Comment($context, $token)) {
+        $self->_build($context, $token);
+        return 29;
+    }
+    if ($self->match_Empty($context, $token)) {
         $self->_build($context, $token);
         return 29;
     }
@@ -1938,8 +2356,8 @@ sub match_token_at_29 {
 
     my @args = (
         $token,
-        ["#DocStringSeparator", "#Other"], #"
-        "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0",
+        ["#EOF", "#StepLine", "#TagLine", "#ExamplesLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"], #"
+        "State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0",
     );
 
     $error_class->throw( @args ) if $self->stop_at_first_error;
@@ -1950,71 +2368,16 @@ sub match_token_at_29 {
     return 29;
 } 
 
-# Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-sub match_token_at_30 {
-    my ( $self, $token, $context ) = @_;
-    if ($self->match_StepLine($context, $token)) {
-        $self->_end_rule($context, 'DocString');
-        $self->_end_rule($context, 'Step');
-        $self->_start_rule($context, 'Step');
-        $self->_build($context, $token);
-        return 20;
-    }
-    if ($self->match_TagLine($context, $token)) {
-        $self->_end_rule($context, 'DocString');
-        $self->_end_rule($context, 'Step');
-        $self->_start_rule($context, 'Examples_Definition');
-        $self->_start_rule($context, 'Tags');
-        $self->_build($context, $token);
-        return 22;
-    }
-    if ($self->match_ExamplesLine($context, $token)) {
-        $self->_end_rule($context, 'DocString');
-        $self->_end_rule($context, 'Step');
-        $self->_start_rule($context, 'Examples_Definition');
-        $self->_start_rule($context, 'Examples');
-        $self->_build($context, $token);
-        return 23;
-    }
-    if ($self->match_Comment($context, $token)) {
-        $self->_build($context, $token);
-        return 30;
-    }
-    if ($self->match_Empty($context, $token)) {
-        $self->_build($context, $token);
-        return 30;
-    }
-
-    $token->detach;
-
-    # Create the appropriate error
-    my $error_class = "Gherkin::Exceptions::" . (
-        $token->is_eof ? 'UnexpectedEOF' : 'UnexpectedToken' );
-
-    my @args = (
-        $token,
-        ["#StepLine", "#TagLine", "#ExamplesLine", "#Comment", "#Empty"], #"
-        "State: 30 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0",
-    );
-
-    $error_class->throw( @args ) if $self->stop_at_first_error;
-
-    eval {$error_class->throw( @args )};
-    $self->add_error( $context, $@ );
-
-    return 30;
-} 
-
 # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-sub match_token_at_31 {
+sub match_token_at_30 {
     my ( $self, $token, $context ) = @_;
     if ($self->match_DocStringSeparator($context, $token)) {
         $self->_build($context, $token);
-        return 32;
+        return 31;
     }
     if ($self->match_Other($context, $token)) {
         $self->_build($context, $token);
-        return 31;
+        return 30;
     }
 
     $token->detach;
@@ -2026,7 +2389,7 @@ sub match_token_at_31 {
     my @args = (
         $token,
         ["#DocStringSeparator", "#Other"], #"
-        "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0",
+        "State: 30 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0",
     );
 
     $error_class->throw( @args ) if $self->stop_at_first_error;
@@ -2034,11 +2397,11 @@ sub match_token_at_31 {
     eval {$error_class->throw( @args )};
     $self->add_error( $context, $@ );
 
-    return 31;
+    return 30;
 } 
 
 # Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-sub match_token_at_32 {
+sub match_token_at_31 {
     my ( $self, $token, $context ) = @_;
     if ($self->match_EOF($context, $token)) {
         $self->_end_rule($context, 'DocString');
@@ -2046,7 +2409,7 @@ sub match_token_at_32 {
         $self->_end_rule($context, 'Scenario');
         $self->_end_rule($context, 'Scenario_Definition');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_StepLine($context, $token)) {
         $self->_end_rule($context, 'DocString');
@@ -2087,11 +2450,11 @@ sub match_token_at_32 {
     }
     if ($self->match_Comment($context, $token)) {
         $self->_build($context, $token);
-        return 32;
+        return 31;
     }
     if ($self->match_Empty($context, $token)) {
         $self->_build($context, $token);
-        return 32;
+        return 31;
     }
 
     $token->detach;
@@ -2103,7 +2466,7 @@ sub match_token_at_32 {
     my @args = (
         $token,
         ["#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"], #"
-        "State: 32 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0",
+        "State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0",
     );
 
     $error_class->throw( @args ) if $self->stop_at_first_error;
@@ -2111,19 +2474,19 @@ sub match_token_at_32 {
     eval {$error_class->throw( @args )};
     $self->add_error( $context, $@ );
 
-    return 32;
+    return 31;
 } 
 
 # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
-sub match_token_at_33 {
+sub match_token_at_32 {
     my ( $self, $token, $context ) = @_;
     if ($self->match_DocStringSeparator($context, $token)) {
         $self->_build($context, $token);
-        return 34;
+        return 33;
     }
     if ($self->match_Other($context, $token)) {
         $self->_build($context, $token);
-        return 33;
+        return 32;
     }
 
     $token->detach;
@@ -2135,7 +2498,7 @@ sub match_token_at_33 {
     my @args = (
         $token,
         ["#DocStringSeparator", "#Other"], #"
-        "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0",
+        "State: 32 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0",
     );
 
     $error_class->throw( @args ) if $self->stop_at_first_error;
@@ -2143,18 +2506,18 @@ sub match_token_at_33 {
     eval {$error_class->throw( @args )};
     $self->add_error( $context, $@ );
 
-    return 33;
+    return 32;
 } 
 
 # Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
-sub match_token_at_34 {
+sub match_token_at_33 {
     my ( $self, $token, $context ) = @_;
     if ($self->match_EOF($context, $token)) {
         $self->_end_rule($context, 'DocString');
         $self->_end_rule($context, 'Step');
         $self->_end_rule($context, 'Background');
         $self->_build($context, $token);
-        return 28;
+        return 27;
     }
     if ($self->match_StepLine($context, $token)) {
         $self->_end_rule($context, 'DocString');
@@ -2192,11 +2555,11 @@ sub match_token_at_34 {
     }
     if ($self->match_Comment($context, $token)) {
         $self->_build($context, $token);
-        return 34;
+        return 33;
     }
     if ($self->match_Empty($context, $token)) {
         $self->_build($context, $token);
-        return 34;
+        return 33;
     }
 
     $token->detach;
@@ -2208,7 +2571,7 @@ sub match_token_at_34 {
     my @args = (
         $token,
         ["#EOF", "#StepLine", "#TagLine", "#ScenarioLine", "#ScenarioOutlineLine", "#Comment", "#Empty"], #"
-        "State: 34 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0",
+        "State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0",
     );
 
     $error_class->throw( @args ) if $self->stop_at_first_error;
@@ -2216,7 +2579,7 @@ sub match_token_at_34 {
     eval {$error_class->throw( @args )};
     $self->add_error( $context, $@ );
 
-    return 34;
+    return 33;
 } 
 
 

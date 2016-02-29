@@ -18,7 +18,7 @@ public class Examples extends Node {
         this.name = name;
         this.description = description;
         this.tableHeader = tableHeader;
-        this.tableBody = Collections.unmodifiableList(tableBody);
+        this.tableBody = tableBody != null ? Collections.unmodifiableList(tableBody) : null;
     }
 
     public String getKeyword() {
