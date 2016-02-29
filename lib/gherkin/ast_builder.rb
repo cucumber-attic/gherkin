@@ -190,7 +190,7 @@ module Gherkin
         examples_node = node.get_single(:Examples)
         examples_line = examples_node.get_token(:ExamplesLine)
         description = get_description(examples_node)
-        rows = get_table_rows(examples_node)
+        examples_table = examples_node.get_single(:Examples_Table)
 
         reject_nils(
           type: examples_node.rule_type,
@@ -199,6 +199,13 @@ module Gherkin
           keyword: examples_line.matched_keyword,
           name: examples_line.matched_text,
           description: description,
+          tableHeader: !examples_table.nil? ? examples_table[:tableHeader] : nil,
+          tableBody: !examples_table.nil? ? examples_table[:tableBody] : nil
+        )
+      when :Examples_Table
+        rows = get_table_rows(node)
+
+        reject_nils(
           tableHeader: rows.first,
           tableBody: rows[1..-1]
         )
