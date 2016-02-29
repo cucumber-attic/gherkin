@@ -163,18 +163,25 @@
             GHToken * examplesLine = [examplesNode tokenWithType: GHTokenTypeExamplesLine];
             NSString * description = [GHAstBuilder descriptionForScenarioDefinitionNode: examplesNode];
 
-            NSArray<GHTableRow *> * allRows = [self tableRowsForNode: examplesNode];
+            NSArray<GHTableRow *> * allRows = [examplesNode singleWithRuleType: GHRuleTypeExamples_Table];
             
-            GHTableRow * header = [allRows firstObject];
-            NSArray<GHTableRow *> * rows = allRows;
-            if (header)
+            GHTableRow * header = nil;
+            NSArray<GHTableRow *> * rows = nil;
+            if (allRows)
             {
+                header = [allRows firstObject];
                 NSMutableArray<GHTableRow *> * allRowsBuffer = [allRows mutableCopy];
                 [allRowsBuffer removeObject: header];
                 rows = [[NSArray<GHTableRow *> alloc] initWithArray: allRowsBuffer];
             }
             
             return [[GHExamples alloc] initWithTags: tags location: [examplesLine location] keyword: [examplesLine matchedKeyword] name: [examplesLine matchedText] description: description header: header body: rows];
+        }
+        case GHRuleTypeExamples_Table:
+        {
+            NSArray<GHTableRow *> * allRows = [self tableRowsForNode: theNode];
+            
+            return allRows;
         }
         case GHRuleTypeDescription:
         {
