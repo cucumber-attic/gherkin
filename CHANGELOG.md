@@ -19,6 +19,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 * (Objective-C) Added Objective-C example to the README
   ([#152](https://github.com/cucumber/gherkin/pull/152)
    by [Ahmed-Ali])
+* (I18n) ru: Add "Функциональность" as translation of Feature
+   ([#165](https://github.com/cucumber/gherkin/pull/165)
+    by [nixel2007])
 
 ### Changed
 * (Ruby) More consistent AST node types
@@ -194,6 +197,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 [maxmeyer]:         https://github.com/maxmeyer
 [merrua]:           https://github.com/merrua
 [moreau-nicolas]:   https://github.com/moreau-nicolas
+[nixel2007]:        https://github.com/nixel2007
 [pjlsergeant]:      https://github.com/pjlsergeant
 [zbmott]:           https://github.com/zbmott
 [Zearin]:           https://github.com/Zearin
