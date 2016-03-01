@@ -4,5 +4,4 @@ acceptance/
 .cpanfile_dependencies
 .compared
 CHANGES
-lib/Gherkin/Generated/Languages.pm
 Gherkin-*
