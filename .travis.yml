@@ -7,4 +7,4 @@ perl:
 install:
   - ( dzil authordeps --missing | cpanm --no-skip-satisfied )
   - ( dzil listdeps --author --missing | cpanm --no-skip-satisfied )
-script: echo -e "Feature: foo\n  Scenario: bar\n    Given zap" > f.feature && perl bin/gherkin-generate-pickles f.feature
+script: "echo -e 'Feature: foo\n  Scenario: bar\n    Given zap' > f.feature && perl bin/gherkin-generate-pickles f.feature"
