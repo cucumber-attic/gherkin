@@ -67,7 +67,7 @@ release: predistribution
 	dzil release
 
 clean:
-	rm -rf CHANGES Gherkin-* .compared .cpanfile_dependencies .built acceptance lib/Gherkin/Generated
+	rm -rf CHANGES Gherkin-* .compared .cpanfile_dependencies .built acceptance lib/Gherkin/Generated/Languages.pm lib/Gherkin/Generated/Parser.pm
 .PHONY: clean
 
 CHANGES:
@@ -76,10 +76,10 @@ CHANGES:
 lib/Gherkin/Generated:
 	mkdir -p $@
 
-lib/Gherkin/Generated/Languages.pm: lib/Gherkin/Generated
-	perl helper-scripts/build_languages.pl < ../gherkin-languages.json > $@
+lib/Gherkin/Generated/Languages.pm: ../gherkin-languages.json
+	perl helper-scripts/build_languages.pl < $< > $@
 
-lib/Gherkin/Generated/Parser.pm: ../gherkin.berp gherkin-perl.razor ../bin/berp.exe lib/Gherkin/Generated
+lib/Gherkin/Generated/Parser.pm: ../gherkin.berp gherkin-perl.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-perl.razor -o $@
 	# Remove BOM
 	tail -c +4 $@ > $@.nobom
@@ -88,5 +88,5 @@ lib/Gherkin/Generated/Parser.pm: ../gherkin.berp gherkin-perl.razor ../bin/berp.
 LICENSE.txt: ../LICENSE
 	cp $< $@
 
-update-gherkin-languages: gherkin/gherkin-languages.json
+update-gherkin-languages: lib/Gherkin/Generated/Languages.pm
 .PHONY: update-gherkin-languages
