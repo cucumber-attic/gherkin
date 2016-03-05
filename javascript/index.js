@@ -5,6 +5,7 @@
   } else if (typeof window === 'object') {
     // Browser globals (root is window)
     window.Gherkin = factory();
+    window.gherkin = window.Gherkin;
   } else {
     // Node.js/IO.js
     module.exports = factory();
