@@ -205,11 +205,6 @@ func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {
 			}
 			scenarioOutlineLine := scenarioOutlineNode.getToken(TokenType_ScenarioOutlineLine)
 			description, _ := scenarioOutlineNode.getSingle(RuleType_Description).(string)
-			examples := scenarioOutlineNode.getItems(RuleType_Examples_Definition)
-			if examples == nil {
-				examples = []interface{}{}
-			}
-
 			sc := new(ScenarioOutline)
 			sc.Type = "ScenarioOutline"
 			sc.Tags = tags
@@ -218,7 +213,7 @@ func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {
 			sc.Name = scenarioOutlineLine.Text
 			sc.Description = description
 			sc.Steps = astSteps(scenarioOutlineNode)
-			sc.Examples = examples
+			sc.Examples = astExamples(scenarioOutlineNode)
 			return sc, nil
 		}
 
@@ -229,28 +224,21 @@ func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {
 		description, _ := examplesNode.getSingle(RuleType_Description).(string)
 		examplesTable := examplesNode.getSingle(RuleType_Examples_Table)
 
+		ex := new(Examples)
+		ex.Type = "Examples"
+		ex.Tags = tags
+		ex.Location = astLocation(examplesLine)
+		ex.Keyword = examplesLine.Keyword
+		ex.Name = examplesLine.Text
+		ex.Description = description
+		ex.TableHeader = nil
+		ex.TableBody = nil
 		if examplesTable != nil {
 			allRows, _ := examplesTable.([]*TableRow)
-			ex := new(Examples)
-	        	ex.Type = "Examples"
-	        	ex.Tags = tags
-	        	ex.Location = astLocation(examplesLine)
-	        	ex.Keyword = examplesLine.Keyword
-	        	ex.Name = examplesLine.Text
-	        	ex.Description = description
 			ex.TableHeader = allRows[0]
 			ex.TableBody = allRows[1:]
-	        	return ex, nil
-		} else {
-			ex := new(ExamplesBase)
-	        	ex.Type = "Examples"
-	        	ex.Tags = tags
-	        	ex.Location = astLocation(examplesLine)
-	        	ex.Keyword = examplesLine.Keyword
-	        	ex.Name = examplesLine.Text
-	        	ex.Description = description
-	        	return ex, nil
 		}
+		return ex, nil
 
 	case RuleType_Examples_Table:
 		allRows, err := astTableRows(node)
@@ -361,6 +349,16 @@ func astSteps(t *astNode) (steps []*Step) {
 	for i := range tokens {
 		step, _ := tokens[i].(*Step)
 		steps = append(steps, step)
+	}
+	return
+}
+
+func astExamples(t *astNode) (examples []*Examples) {
+	examples = []*Examples{}
+	tokens := t.getItems(RuleType_Examples_Definition)
+	for i := range tokens {
+		example, _ := tokens[i].(*Examples)
+		examples = append(examples, example)
 	}
 	return
 }

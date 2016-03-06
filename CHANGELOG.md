@@ -28,7 +28,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
   ([#158](https://github.com/cucumber/gherkin/pull/158)
    by [enkessler])
 * (All) Allow incomplete scenario outlines
-  ([#160](https://github.com/cucumber/gherkin/pull/160)
+  ([#160](https://github.com/cucumber/gherkin/pull/160),
+   [#170](https://github.com/cucumber/gherkin/pull/170)
    by [brasmusson])
 
 ### Fixed
