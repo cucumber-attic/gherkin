@@ -23,6 +23,8 @@ module Gherkin
     private
 
       def compile_scenario(feature_tags, background_steps, scenario, dialect, path, pickles)
+        return if scenario[:steps].empty?
+
         steps = [].concat(background_steps)
 
         tags = [].concat(feature_tags).concat(scenario[:tags])
