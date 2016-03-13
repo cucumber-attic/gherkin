@@ -21,6 +21,9 @@ def compile(feature, path):
 
 def _compile_scenario(feature_tags, background_steps, scenario,
                       dialect, path, pickles):
+    if len(scenario['steps']) == 0:
+      return
+
     steps = list(background_steps)
     tags = list(feature_tags) + list(scenario['tags'])
 
