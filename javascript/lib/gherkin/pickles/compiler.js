@@ -1,4 +1,3 @@
-var dialects = require('../gherkin-languages.json');
 var countSymbols = require('../count_symbols')
 
 function Compiler() {
@@ -6,10 +5,12 @@ function Compiler() {
     var pickles = [];
 
     var featureTags = feature.tags;
-    var backgroundSteps = getBackgroundSteps(feature.background, path);
+    var backgroundSteps = [];
 
     feature.scenarioDefinitions.forEach(function (scenarioDefinition) {
-      if(scenarioDefinition.type === 'Scenario') {
+      if(scenarioDefinition.type === 'Background') {
+        backgroundSteps = getBackgroundSteps(scenarioDefinition, path);
+      } else if(scenarioDefinition.type === 'Scenario') {
         compileScenario(featureTags, backgroundSteps, scenarioDefinition, path, pickles);
       } else {
         compileScenarioOutline(featureTags, backgroundSteps, scenarioDefinition, path, pickles);
@@ -116,13 +117,9 @@ function Compiler() {
   }
 
   function getBackgroundSteps(background, path) {
-    if(background) {
-      return background.steps.map(function (step) {
-        return pickleStep(step, path);
-      });
-    } else {
-      return [];
-    }
+    return background.steps.map(function (step) {
+      return pickleStep(step, path);
+    });
   }
 
   function pickleStep(step, path) {
