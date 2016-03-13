@@ -5871,7 +5871,7 @@ function Compiler() {
 
     feature.scenarioDefinitions.forEach(function (scenarioDefinition) {
       if(scenarioDefinition.type === 'Background') {
-        backgroundSteps = getBackgroundSteps(scenarioDefinition, path);
+        backgroundSteps = pickleSteps(scenarioDefinition, path);
       } else if(scenarioDefinition.type === 'Scenario') {
         compileScenario(featureTags, backgroundSteps, scenarioDefinition, path, pickles);
       } else {
@@ -5978,8 +5978,8 @@ function Compiler() {
     return name;
   }
 
-  function getBackgroundSteps(background, path) {
-    return background.steps.map(function (step) {
+  function pickleSteps(scenarioDefinition, path) {
+    return scenarioDefinition.steps.map(function (step) {
       return pickleStep(step, path);
     });
   }
