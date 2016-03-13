@@ -46,6 +46,9 @@ public class Compiler {
     }
 
     private void compileScenario(List<Pickle> pickles, List<PickleStep> backgroundSteps, Scenario scenario, List<Tag> featureTags, String path) {
+        if (scenario.getSteps().size() == 0)
+          return;
+
         List<PickleStep> steps = new ArrayList<>();
         steps.addAll(backgroundSteps);
 
