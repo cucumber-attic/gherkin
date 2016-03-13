@@ -84,26 +84,5 @@
         "name": "@bar"
       }
     ]
-  },
-  {
-    "locations": [
-      {
-        "column": 3,
-        "line": 17,
-        "path": "../testdata/good/several_examples.feature"
-      }
-    ],
-    "name": "Scenario: ha ok",
-    "steps": [],
-    "tags": [
-      {
-        "location": {
-          "column": 3,
-          "line": 16,
-          "path": "../testdata/good/several_examples.feature"
-        },
-        "name": "@zap"
-      }
-    ]
   }
 ]
