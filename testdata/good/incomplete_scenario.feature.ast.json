@@ -1,24 +1,4 @@
 {
-  "background": {
-    "keyword": "Background",
-    "location": {
-      "column": 3,
-      "line": 3
-    },
-    "name": "Adding a background won't make a pickle",
-    "steps": [
-      {
-        "keyword": "* ",
-        "location": {
-          "column": 5,
-          "line": 4
-        },
-        "text": "a step",
-        "type": "Step"
-      }
-    ],
-    "type": "Background"
-  },
   "comments": [],
   "keyword": "Feature",
   "language": "en",
@@ -28,6 +8,26 @@
   },
   "name": "Incomplete scenarios",
   "scenarioDefinitions": [
+    {
+      "keyword": "Background",
+      "location": {
+        "column": 3,
+        "line": 3
+      },
+      "name": "Adding a background won't make a pickle",
+      "steps": [
+        {
+          "keyword": "* ",
+          "location": {
+            "column": 5,
+            "line": 4
+          },
+          "text": "a step",
+          "type": "Step"
+        }
+      ],
+      "type": "Background"
+    },
     {
       "keyword": "Scenario",
       "location": {
