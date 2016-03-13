@@ -1,4 +1,4 @@
-require_relative '../dialect'
+require 'gherkin/dialect'
 
 module Gherkin
   module Pickles
