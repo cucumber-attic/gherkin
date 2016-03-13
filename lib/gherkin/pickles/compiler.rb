@@ -9,7 +9,7 @@ module Gherkin
 
         feature[:scenarioDefinitions].each do |scenario_definition|
           if(scenario_definition[:type] == :Background)
-            background_steps = get_background_steps(scenario_definition, path)
+            background_steps = pickle_steps(scenario_definition, path)
           elsif(scenario_definition[:type] == :Scenario)
             compile_scenario(feature_tags, background_steps, scenario_definition, path, pickles)
           else
@@ -117,8 +117,8 @@ module Gherkin
         name
       end
 
-      def get_background_steps(background, path)
-        background[:steps].map do |step|
+      def pickle_steps(scenario_definition, path)
+        scenario_definition[:steps].map do |step|
           pickle_step(step, path)
         end
       end
