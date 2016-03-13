@@ -1,16 +1,19 @@
 (1:1)FeatureLine:Feature/Incomplete scenario outlines/
 (2:1)Empty://
-(3:3)ScenarioOutlineLine:Scenario Outline/steps, no examples/
-(4:5)StepLine:Given /a step/
+(3:3)BackgroundLine:Background/Adding a background won't make a pickle/
+(4:5)StepLine:* /a step/
 (5:1)Empty://
-(6:3)ScenarioOutlineLine:Scenario Outline/no steps, no examples/
-(7:1)Empty://
-(8:3)ScenarioOutlineLine:Scenario Outline/no steps, no table/
-(9:1)Empty://
-(10:5)ExamplesLine:Examples//
-(11:1)Empty://
-(12:3)ScenarioOutlineLine:Scenario Outline/no steps, only table header/
-(13:1)Empty://
-(14:5)ExamplesLine:Examples//
-(15:5)TableRow://7:what
+(6:3)ScenarioOutlineLine:Scenario Outline/steps, no examples/
+(7:5)StepLine:Given /a step/
+(8:1)Empty://
+(9:3)ScenarioOutlineLine:Scenario Outline/no steps, no examples/
+(10:1)Empty://
+(11:3)ScenarioOutlineLine:Scenario Outline/no steps, no table/
+(12:1)Empty://
+(13:5)ExamplesLine:Examples//
+(14:1)Empty://
+(15:3)ScenarioOutlineLine:Scenario Outline/no steps, only table header/
+(16:1)Empty://
+(17:5)ExamplesLine:Examples//
+(18:5)TableRow://7:what
 EOF
