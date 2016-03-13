@@ -278,8 +278,10 @@ module.exports = function AstBuilder () {
         var tags = getTags(header);
         var featureLine = header.getToken('FeatureLine');
         if(!featureLine) return null;
+        var scenarioDefinitions = []
         var background = node.getSingle('Background');
-        var scenariodefinitions = node.getItems('Scenario_Definition');
+        if(background) scenarioDefinitions.push(background);
+        scenarioDefinitions = scenarioDefinitions.concat(node.getItems('Scenario_Definition'));
         var description = getDescription(header);
         var language = featureLine.matchedGherkinDialect;
 
@@ -291,8 +293,7 @@ module.exports = function AstBuilder () {
           keyword: featureLine.matchedKeyword,
           name: featureLine.matchedText,
           description: description,
-          background: background,
-          scenarioDefinitions: scenariodefinitions,
+          scenarioDefinitions: scenarioDefinitions,
           comments: comments
         };
       default:
@@ -5859,7 +5860,6 @@ module.exports = function Parser(builder) {
 }
 
 },{"./ast_builder":2,"./errors":6,"./token_matcher":12,"./token_scanner":13}],10:[function(require,module,exports){
-var dialects = require('../gherkin-languages.json');
 var countSymbols = require('../count_symbols')
 
 function Compiler() {
@@ -5867,10 +5867,12 @@ function Compiler() {
     var pickles = [];
 
     var featureTags = feature.tags;
-    var backgroundSteps = getBackgroundSteps(feature.background, path);
+    var backgroundSteps = [];
 
     feature.scenarioDefinitions.forEach(function (scenarioDefinition) {
-      if(scenarioDefinition.type === 'Scenario') {
+      if(scenarioDefinition.type === 'Background') {
+        backgroundSteps = getBackgroundSteps(scenarioDefinition, path);
+      } else if(scenarioDefinition.type === 'Scenario') {
         compileScenario(featureTags, backgroundSteps, scenarioDefinition, path, pickles);
       } else {
         compileScenarioOutline(featureTags, backgroundSteps, scenarioDefinition, path, pickles);
@@ -5977,13 +5979,9 @@ function Compiler() {
   }
 
   function getBackgroundSteps(background, path) {
-    if(background) {
-      return background.steps.map(function (step) {
-        return pickleStep(step, path);
-      });
-    } else {
-      return [];
-    }
+    return background.steps.map(function (step) {
+      return pickleStep(step, path);
+    });
   }
 
   function pickleStep(step, path) {
@@ -6026,7 +6024,7 @@ function Compiler() {
 
 module.exports = Compiler;
 
-},{"../count_symbols":4,"../gherkin-languages.json":7}],11:[function(require,module,exports){
+},{"../count_symbols":4}],11:[function(require,module,exports){
 function Token(line, location) {
   this.line = line;
   this.location = location;
