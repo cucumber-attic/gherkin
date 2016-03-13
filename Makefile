@@ -28,6 +28,11 @@ acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.featur
 	diff --unified $<.tokens $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
+# acceptance/testdata/%.feature.ast.json: ../testdata/%.feature .built
+# 	mkdir -p `dirname $@`
+# 	bin/gherkin-generate-ast $< | jq --sort-keys "." > $<.ast.json
+# .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
+
 acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json .built
 	mkdir -p `dirname $@`
 	bin/gherkin-generate-ast $< | jq --sort-keys "." > $@
