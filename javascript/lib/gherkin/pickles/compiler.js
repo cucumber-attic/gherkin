@@ -20,6 +20,8 @@ function Compiler() {
   };
 
   function compileScenario(featureTags, backgroundSteps, scenario, dialect, path, pickles) {
+    if (scenario.steps.length == 0) return;
+
     var steps = [].concat(backgroundSteps);
 
     var tags = [].concat(featureTags).concat(scenario.tags);
