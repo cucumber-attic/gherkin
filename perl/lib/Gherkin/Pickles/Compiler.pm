@@ -43,11 +43,9 @@ sub _compile_scenario {
         $dialect, $path, $pickles )
       = @_;
 
-    # There's probably an easier way to check if there are scenario steps or not, but my perl sucks
     my $array_reference = $scenario->{'steps'};
     my @actual_array = @$array_reference;
     my $array_size = @actual_array;
-
     if ($array_size == 0) { return; }
 
     my @tags = ( @$feature_tags, @{ $scenario->{'tags'} || [] } );
@@ -75,6 +73,11 @@ sub _compile_scenario_outline {
     my ( $class, $feature_tags, $background_steps, $scenario_outline,
         $dialect, $path, $pickles )
       = @_;
+
+    my $array_reference = $scenario_outline->{'steps'};
+    my @actual_array = @$array_reference;
+    my $array_size = @actual_array;
+    if ($array_size == 0) { return; }
 
     my $dialect_object = Gherkin::Dialect->new( { dialect => $dialect } );
     my $keyword = $dialect_object->Scenario->[0];

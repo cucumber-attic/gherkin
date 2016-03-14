@@ -125,6 +125,65 @@
       "steps": [],
       "tags": [],
       "type": "ScenarioOutline"
+    },
+    {
+      "examples": [
+        {
+          "keyword": "Examples",
+          "location": {
+            "column": 5,
+            "line": 22
+          },
+          "name": "",
+          "tableBody": [
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 7,
+                    "line": 24
+                  },
+                  "type": "TableCell",
+                  "value": "nada"
+                }
+              ],
+              "location": {
+                "column": 5,
+                "line": 24
+              },
+              "type": "TableRow"
+            }
+          ],
+          "tableHeader": {
+            "cells": [
+              {
+                "location": {
+                  "column": 7,
+                  "line": 23
+                },
+                "type": "TableCell",
+                "value": "nope"
+              }
+            ],
+            "location": {
+              "column": 5,
+              "line": 23
+            },
+            "type": "TableRow"
+          },
+          "tags": [],
+          "type": "Examples"
+        }
+      ],
+      "keyword": "Scenario Outline",
+      "location": {
+        "column": 3,
+        "line": 20
+      },
+      "name": "no steps, one example header",
+      "steps": [],
+      "tags": [],
+      "type": "ScenarioOutline"
     }
   ],
   "tags": [],

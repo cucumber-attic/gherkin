@@ -16,3 +16,9 @@ Feature: Incomplete scenario outlines
 
     Examples:
     | what |
+
+  Scenario Outline: no steps, one example header
+
+    Examples:
+    | nope |
+    | nada |

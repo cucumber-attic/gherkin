@@ -24,6 +24,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
     by [nixel2007])
 
 ### Changed
+* (All) Don't make pickles out of step-less scenarios
+  ([#161](https://github.com/cucumber/gherkin/pull/175)
+   by [pjlsergeant])
 * (Ruby) More consistent AST node types
   ([#158](https://github.com/cucumber/gherkin/pull/158)
    by [enkessler])

@@ -41,6 +41,9 @@ def _compile_scenario(feature_tags, background_steps, scenario,
 
 def _compile_scenario_outline(feature_tags, background_steps, scenario_outline,
                               dialect, path, pickles):
+    if len(scenario_outline['steps']) == 0:
+      return
+
     keyword = Dialect.for_name(dialect).scenario_keywords[0]
 
     for examples in (e for e in scenario_outline['examples'] if 'tableHeader' in e):
