@@ -46,6 +46,9 @@ public class Compiler {
     }
 
     private void compileScenario(List<Pickle> pickles, List<PickleStep> backgroundSteps, Scenario scenario, List<Tag> featureTags, String path) {
+        if (scenario.getSteps().isEmpty())
+          return;
+
         List<PickleStep> steps = new ArrayList<>();
         steps.addAll(backgroundSteps);
 
@@ -67,6 +70,9 @@ public class Compiler {
     }
 
     private void compileScenarioOutline(List<Pickle> pickles, List<PickleStep> backgroundSteps, ScenarioOutline scenarioOutline, List<Tag> featureTags, String path, GherkinDialect dialect) {
+        if (scenarioOutline.getSteps().isEmpty())
+          return;
+
         String keyword = dialect.getScenarioKeywords().get(0);
         for (final Examples examples : scenarioOutline.getExamples()) {
             if (examples.getTableHeader() == null) continue;

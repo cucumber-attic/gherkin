@@ -5876,6 +5876,8 @@ function Compiler() {
   };
 
   function compileScenario(featureTags, backgroundSteps, scenario, dialect, path, pickles) {
+    if (scenario.steps.length == 0) return;
+
     var steps = [].concat(backgroundSteps);
 
     var tags = [].concat(featureTags).concat(scenario.tags);
@@ -5894,6 +5896,8 @@ function Compiler() {
   }
 
   function compileScenarioOutline(featureTags, backgroundSteps, scenarioOutline, dialect, path, pickles) {
+    if (scenarioOutline.steps.length == 0) return;
+
     var keyword = dialect.scenario[0];
     scenarioOutline.examples.filter(function(e) { return e.tableHeader != undefined; }).forEach(function (examples) {
       var variableCells = examples.tableHeader.cells;
