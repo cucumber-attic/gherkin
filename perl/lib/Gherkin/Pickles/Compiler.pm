@@ -42,6 +42,14 @@ sub _compile_scenario {
     my ( $class, $feature_tags, $background_steps, $scenario,
         $dialect, $path, $pickles )
       = @_;
+
+    # There's probably an easier way to check if there are scenario steps or not, but my perl sucks
+    my $array_reference = $scenario->{'steps'};
+    my @actual_array = @$array_reference;
+    my $array_size = @actual_array;
+
+    if ($array_size == 0) { return; }
+
     my @tags = ( @$feature_tags, @{ $scenario->{'tags'} || [] } );
 
     my @steps = (
