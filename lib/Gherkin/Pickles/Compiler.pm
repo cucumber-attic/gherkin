@@ -8,14 +8,16 @@ sub compile {
     my @pickles;
 
     my $feature_tags     = $feature->{'tags'};
-    my $background_steps = $class->_get_background_steps( $feature, $path );
+    my $background_steps = [];
 
-    for my $scenario_definition ( @{ $feature->{'scenarioDefinitions'} } ) {
+    for my $scenario_definition ( @{ $feature->{'children'} } ) {
         my @args = (
             $feature_tags, $background_steps, $scenario_definition,
             $path, \@pickles
         );
-        if ( $scenario_definition->{'type'} eq 'Scenario' ) {
+        if ( $scenario_definition->{'type'} eq 'Background' ) {
+            $background_steps = $class->_pickle_steps($scenario_definition, $path)
+        } elsif ( $scenario_definition->{'type'} eq 'Scenario' ) {
             $class->_compile_scenario(@args);
         } else {
             $class->_compile_scenario_outline(@args);
@@ -25,13 +27,10 @@ sub compile {
     return \@pickles;
 }
 
-sub _get_background_steps {
-    my ( $class, $feature, $path ) = @_;
-    my @steps;
-    if ( $feature->{'background'} ) {
-        @steps = map { $class->_pickle_step( $_, $path ) }
-          @{ $feature->{'background'}->{'steps'} };
-    }
+sub _pickle_steps {
+    my ( $class, $scenario_definition, $path ) = @_;
+    my @steps = map { $class->_pickle_step( $_, $path ) }
+      @{ $scenario_definition->{'steps'} };
     return \@steps;
 }
 
