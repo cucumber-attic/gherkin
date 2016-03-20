@@ -3508,6 +3508,7 @@ var RULE_TYPES = [
 
 module.exports = function Parser(builder) {
   builder = builder || new AstBuilder();
+  var self = this;
   var context;
 
   this.parse = function(tokenScanner, tokenMatcher) {
@@ -3574,7 +3575,7 @@ module.exports = function Parser(builder) {
   }
 
   function handleExternalError(context, defaultValue, action) {
-    if(this.stopAtFirstError) return action();
+    if(self.stopAtFirstError) return action();
     try {
       return action();
     } catch (e) {
@@ -3709,7 +3710,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 0;
   }
@@ -3741,7 +3742,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 1;
   }
@@ -3773,7 +3774,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 2;
   }
@@ -3833,7 +3834,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 3;
   }
@@ -3894,7 +3895,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 4;
   }
@@ -3949,7 +3950,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 5;
   }
@@ -4008,7 +4009,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 6;
   }
@@ -4068,7 +4069,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 7;
   }
@@ -4122,7 +4123,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 8;
   }
@@ -4191,7 +4192,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 9;
   }
@@ -4259,7 +4260,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 10;
   }
@@ -4298,7 +4299,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 11;
   }
@@ -4361,7 +4362,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 12;
   }
@@ -4425,7 +4426,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 13;
   }
@@ -4483,7 +4484,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 14;
   }
@@ -4556,7 +4557,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 15;
   }
@@ -4628,7 +4629,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 16;
   }
@@ -4705,7 +4706,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 17;
   }
@@ -4785,7 +4786,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 18;
   }
@@ -4857,7 +4858,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 19;
   }
@@ -4946,7 +4947,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 20;
   }
@@ -5036,7 +5037,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 21;
   }
@@ -5069,7 +5070,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 22;
   }
@@ -5158,7 +5159,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 23;
   }
@@ -5250,7 +5251,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 24;
   }
@@ -5334,7 +5335,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 25;
   }
@@ -5423,7 +5424,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 26;
   }
@@ -5446,7 +5447,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 28;
   }
@@ -5532,7 +5533,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 29;
   }
@@ -5555,7 +5556,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 30;
   }
@@ -5623,7 +5624,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 31;
   }
@@ -5646,7 +5647,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 32;
   }
@@ -5710,7 +5711,7 @@ module.exports = function Parser(builder) {
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return 33;
   }
@@ -5908,10 +5909,10 @@ function Compiler() {
 
         scenarioOutline.steps.forEach(function (scenarioOutlineStep) {
           var stepText = interpolate(scenarioOutlineStep.text, variableCells, valueCells);
-          var arguments = createPickleArguments(scenarioOutlineStep.argument, variableCells, valueCells, path);
+          var args = createPickleArguments(scenarioOutlineStep.argument, variableCells, valueCells, path);
           var pickleStep = {
             text: stepText,
-            arguments: arguments,
+            arguments: args,
             locations: [
               pickleLocation(values.location, path),
               pickleStepLocation(scenarioOutlineStep, path)

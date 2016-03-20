@@ -52,10 +52,10 @@ function Compiler() {
 
         scenarioOutline.steps.forEach(function (scenarioOutlineStep) {
           var stepText = interpolate(scenarioOutlineStep.text, variableCells, valueCells);
-          var arguments = createPickleArguments(scenarioOutlineStep.argument, variableCells, valueCells, path);
+          var args = createPickleArguments(scenarioOutlineStep.argument, variableCells, valueCells, path);
           var pickleStep = {
             text: stepText,
-            arguments: arguments,
+            arguments: args,
             locations: [
               pickleLocation(values.location, path),
               pickleStepLocation(scenarioOutlineStep, path)

@@ -36,6 +36,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
    by [brasmusson])
 
 ### Fixed
+* (JavaScript) Fixed undefined reference to stopOnFirstError on ES6
+  (by [aslakhellesoy])
 * (Python) Add the `gherkin.pickles` package to the Python installation
   ([#157](https://github.com/cucumber/gherkin/pull/157),
    [#156](https://github.com/cucumber/gherkin/issues/156)
