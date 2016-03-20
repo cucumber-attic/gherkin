@@ -145,18 +145,18 @@ namespace Gherkin
                     var tags = GetTags(header);
                     var featureLine = header.GetToken(TokenType.FeatureLine);
                     if(featureLine == null) return null;
-                    var scenarioDefinitions = new List<ScenarioDefinition> ();
+                    var children = new List<ScenarioDefinition> ();
                     var background = node.GetSingle<Background>(RuleType.Background);
                     if (background != null) 
                     {
-                        scenarioDefinitions.Add (background);
+                        children.Add (background);
                     }
-                    var scenarioDefinitionsEnumerable = scenarioDefinitions.Concat(node.GetItems<ScenarioDefinition>(RuleType.Scenario_Definition));
+                    var childrenEnumerable = children.Concat(node.GetItems<ScenarioDefinition>(RuleType.Scenario_Definition));
                     var description = GetDescription(header);
                     if(featureLine.MatchedGherkinDialect == null) return null;
                     var language = featureLine.MatchedGherkinDialect.Language;
 
-                    return CreateFeature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.MatchedText, description, scenarioDefinitionsEnumerable.ToArray(), comments.ToArray(), node);
+                    return CreateFeature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.MatchedText, description, childrenEnumerable.ToArray(), comments.ToArray(), node);
                 }
             }
 
@@ -203,9 +203,9 @@ namespace Gherkin
             return new Step(location, keyword, text, argument);
         }
 
-        protected virtual Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description, ScenarioDefinition[] scenariodefinitions, Comment[] featureFileComments, AstNode node)
+        protected virtual Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description, ScenarioDefinition[] children, Comment[] featureFileComments, AstNode node)
         {
-            return new Feature(tags, location, language, keyword, name, description, scenariodefinitions, featureFileComments);
+            return new Feature(tags, location, language, keyword, name, description, children, featureFileComments);
         }
         protected virtual Tag CreateTag(Location location, string name, AstNode node)
         {
