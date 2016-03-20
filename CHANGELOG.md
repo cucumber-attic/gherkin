@@ -42,6 +42,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
    by [brasmusson])
 
 ### Fixed
+* (Ruby) Use require instead of require_relative
+  ([#173](https://github.com/cucumber/gherkin/pull/173)
+   by [maximeg])
 * (JavaScript) Fixed undefined reference to stopOnFirstError on ES6
   (by [aslakhellesoy])
 * (Python) Add the `gherkin.pickles` package to the Python installation
@@ -206,6 +209,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 [jargalan]:         https://github.com/jargalan
 [koterpillar]:      https://github.com/koterpillar
 [LiohAu]:           https://github.com/LiohAu
+[maximeg]:          https://github.com/maximeg
 [maxmeyer]:         https://github.com/maxmeyer
 [merrua]:           https://github.com/merrua
 [moreau-nicolas]:   https://github.com/moreau-nicolas
