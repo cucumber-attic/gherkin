@@ -267,12 +267,12 @@ func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {
 		if featureLine == nil {
 			return nil, nil
 		}
-		scenarioDefinitions := []interface{}{}
+		children := []interface{}{}
 		background, _ := node.getSingle(RuleType_Background).(*Background)
 		if background != nil {
-			scenarioDefinitions = append(scenarioDefinitions, background)
+			children = append(children, background)
 		}
-		scenarioDefinitions = append(scenarioDefinitions, node.getItems(RuleType_Scenario_Definition)...)
+		children = append(children, node.getItems(RuleType_Scenario_Definition)...)
 		description, _ := header.getSingle(RuleType_Description).(string)
 
 		feat := new(Feature)
@@ -283,7 +283,7 @@ func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {
 		feat.Keyword = featureLine.Keyword
 		feat.Name = featureLine.Text
 		feat.Description = description
-		feat.ScenarioDefinitions = scenarioDefinitions
+		feat.Children = children
 		feat.Comments = t.comments
 		return feat, nil
 	}
