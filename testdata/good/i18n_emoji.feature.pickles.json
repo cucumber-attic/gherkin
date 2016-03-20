@@ -4,7 +4,7 @@
       {
         "column": 3,
         "line": 4,
-        "path": "../testdata/good/minimal-emoji.feature"
+        "path": "../testdata/good/i18n_emoji.feature"
       }
     ],
     "name": "📕: 💃",
@@ -15,7 +15,7 @@
           {
             "column": 6,
             "line": 5,
-            "path": "../testdata/good/minimal-emoji.feature"
+            "path": "../testdata/good/i18n_emoji.feature"
           }
         ],
         "text": "🎸"
