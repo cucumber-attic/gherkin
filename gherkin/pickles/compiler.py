@@ -7,7 +7,7 @@ def compile(feature, path):
     pickles = []
     feature_tags = feature['tags']
     background_steps = []
-    for scenario_definition in feature['scenarioDefinitions']:
+    for scenario_definition in feature['children']:
         args = (feature_tags, background_steps, scenario_definition, path, pickles)
         if scenario_definition['type'] is 'Background':
             background_steps = _pickle_steps(scenario_definition, path)
