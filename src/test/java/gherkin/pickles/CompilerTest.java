@@ -28,7 +28,7 @@ public class CompilerTest {
         assertEquals("" +
                         "[\n" +
                         "  {\n" +
-                        "    \"name\": \"Scenario: s\",\n" +
+                        "    \"name\": \"s\",\n" +
                         "    \"steps\": [\n" +
                         "      {\n" +
                         "        \"text\": \"passing\",\n" +
