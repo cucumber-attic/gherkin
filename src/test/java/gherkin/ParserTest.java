@@ -44,7 +44,7 @@ public class ParserTest {
                 "\"language\":\"en\"," +
                 "\"keyword\":\"Feature\"," +
                 "\"name\":\"Foo\"," +
-                "\"scenarioDefinitions\":[{" +
+                "\"children\":[{" +
                 "    \"tags\":[]," +
                 "    \"keyword\":\"Scenario\"," +
                 "    \"name\":\"Bar\"," +
@@ -78,7 +78,7 @@ public class ParserTest {
                 "\"language\":\"no\"," +
                 "\"keyword\":\"Egenskap\"," +
                 "\"name\":\"i18n support\"," +
-                "\"scenarioDefinitions\":[]," +
+                "\"children\":[]," +
                 "\"comments\":[]," +
                 "\"type\":\"Feature\"," +
                 "\"location\":{\"line\":1,\"column\":1}}"),
