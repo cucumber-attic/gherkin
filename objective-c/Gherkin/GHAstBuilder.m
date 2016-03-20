@@ -210,7 +210,10 @@
                 return nil;
             
             GHBackground * background = [theNode singleWithRuleType: GHRuleTypeBackground];
-            NSArray<GHScenarioDefinition *> * scenariodefinitions = (NSArray<GHScenarioDefinition *> *)[theNode itemsWithRuleType: GHRuleTypeScenario_Definition];
+            NSMutableArray<GHScenarioDefinition *> * scenariodefinitions = [(NSArray<GHScenarioDefinition *> *)[theNode itemsWithRuleType: GHRuleTypeScenario_Definition] mutableCopy];
+            if(background != nil){
+                [scenariodefinitions insertObject:background atIndex:0];
+            }
             NSString * description = [GHAstBuilder descriptionForScenarioDefinitionNode: header];
             
             if ([featureLine matchedGherkinDialect] == nil)
@@ -218,7 +221,7 @@
             
             NSString * language = [[featureLine matchedGherkinDialect] language];
 
-            return [[GHFeature alloc] initWithTags: tags location: [featureLine location] language: language keyword: [featureLine matchedKeyword] name: [featureLine matchedText] description: description background: background scenarioDefinitions: scenariodefinitions comments: comments];
+            return [[GHFeature alloc] initWithTags: tags location: [featureLine location] language: language keyword: [featureLine matchedKeyword] name: [featureLine matchedText] description: description scenarioDefinitions: scenariodefinitions comments: comments];
         }
     }
 
