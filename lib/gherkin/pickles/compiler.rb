@@ -7,7 +7,7 @@ module Gherkin
         feature_tags = feature[:tags]
         background_steps = []
 
-        feature[:scenarioDefinitions].each do |scenario_definition|
+        feature[:children].each do |scenario_definition|
           if(scenario_definition[:type] == :Background)
             background_steps = pickle_steps(scenario_definition, path)
           elsif(scenario_definition[:type] == :Scenario)

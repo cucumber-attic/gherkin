@@ -18,7 +18,7 @@ module Gherkin
         language: "en",
         keyword: "Feature",
         name: "test",
-        scenarioDefinitions: [],
+        children: [],
         comments: []
       })
     end
@@ -68,7 +68,7 @@ module Gherkin
                           keyword: "Feature",
                           name: "feature name",
                           description: "  feature description",
-                          scenarioDefinitions: [{type: :Background,
+                          children: [{type: :Background,
                                                  location: {line: 5, column: 4},
                                                  keyword: "Background",
                                                  name: "background name",
@@ -146,7 +146,7 @@ module Gherkin
         language: "en",
         keyword: "Feature",
         name: "test",
-        scenarioDefinitions: [],
+        children: [],
         comments: []
       })
     end
@@ -162,7 +162,7 @@ module Gherkin
         language: "en",
         keyword: "Feature",
         name: "test",
-        scenarioDefinitions: [],
+        children: [],
         comments: []
       })
     end
@@ -179,7 +179,7 @@ module Gherkin
         language: "en",
         keyword: "Feature",
         name: "test",
-        scenarioDefinitions: [],
+        children: [],
         comments: []
       })
       expect(ast2).to eq({
@@ -189,7 +189,7 @@ module Gherkin
         language: "en",
         keyword: "Feature",
         name: "test2",
-        scenarioDefinitions: [],
+        children: [],
         comments: []
       })
     end
@@ -221,7 +221,7 @@ module Gherkin
         language: "en",
         keyword: "Feature",
         name: "Foo",
-        scenarioDefinitions: [{
+        children: [{
           :type=>:Scenario,
           :tags=>[],
           :location=>{:line=>2, :column=>3},
@@ -251,7 +251,7 @@ module Gherkin
         language: "no",
         keyword: "Egenskap",
         name: "i18n support",
-        scenarioDefinitions: [],
+        children: [],
         comments: []
       })
     end
