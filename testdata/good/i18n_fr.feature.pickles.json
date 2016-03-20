@@ -7,7 +7,7 @@
         "path": "../testdata/good/i18n_fr.feature"
       }
     ],
-    "name": "Scénario: Support des caractères spéciaux",
+    "name": "Support des caractères spéciaux",
     "steps": [
       {
         "arguments": [],
@@ -53,7 +53,7 @@
         "path": "../testdata/good/i18n_fr.feature"
       }
     ],
-    "name": "Scénario: Support du mot-clef \"Etant donné que \"",
+    "name": "Support du mot-clef \"Etant donné que \"",
     "steps": [
       {
         "arguments": [],
@@ -99,7 +99,7 @@
         "path": "../testdata/good/i18n_fr.feature"
       }
     ],
-    "name": "Scénario: Support du mot-clef \"Etant donné qu'\"",
+    "name": "Support du mot-clef \"Etant donné qu'\"",
     "steps": [
       {
         "arguments": [],
@@ -145,7 +145,7 @@
         "path": "../testdata/good/i18n_fr.feature"
       }
     ],
-    "name": "Scénario: Support du mot-clef \"Étant donné que \"",
+    "name": "Support du mot-clef \"Étant donné que \"",
     "steps": [
       {
         "arguments": [],
@@ -191,7 +191,7 @@
         "path": "../testdata/good/i18n_fr.feature"
       }
     ],
-    "name": "Scénario: Support du mot-clef \"Étant donné qu'\"",
+    "name": "Support du mot-clef \"Étant donné qu'\"",
     "steps": [
       {
         "arguments": [],
@@ -237,7 +237,7 @@
         "path": "../testdata/good/i18n_fr.feature"
       }
     ],
-    "name": "Scénario: Support du mot-clef \"Et que \"",
+    "name": "Support du mot-clef \"Et que \"",
     "steps": [
       {
         "arguments": [],
@@ -294,7 +294,7 @@
         "path": "../testdata/good/i18n_fr.feature"
       }
     ],
-    "name": "Scénario: Support du mot-clef \"Et qu'\"",
+    "name": "Support du mot-clef \"Et qu'\"",
     "steps": [
       {
         "arguments": [],
@@ -351,7 +351,7 @@
         "path": "../testdata/good/i18n_fr.feature"
       }
     ],
-    "name": "Scénario: Support du mot-clef \"Et \"",
+    "name": "Support du mot-clef \"Et \"",
     "steps": [
       {
         "arguments": [],
@@ -408,7 +408,7 @@
         "path": "../testdata/good/i18n_fr.feature"
       }
     ],
-    "name": "Scénario: Support du mot-clef \"Mais que \"",
+    "name": "Support du mot-clef \"Mais que \"",
     "steps": [
       {
         "arguments": [],
@@ -465,7 +465,7 @@
         "path": "../testdata/good/i18n_fr.feature"
       }
     ],
-    "name": "Scénario: Support du mot-clef \"Mais qu'\"",
+    "name": "Support du mot-clef \"Mais qu'\"",
     "steps": [
       {
         "arguments": [],
@@ -522,7 +522,7 @@
         "path": "../testdata/good/i18n_fr.feature"
       }
     ],
-    "name": "Scénario: Support du mot-clef \"Mais \"",
+    "name": "Support du mot-clef \"Mais \"",
     "steps": [
       {
         "arguments": [],

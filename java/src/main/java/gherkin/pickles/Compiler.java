@@ -1,8 +1,6 @@
 package gherkin.pickles;
 
 import gherkin.SymbolCounter;
-import gherkin.GherkinDialect;
-import gherkin.GherkinDialectProvider;
 import gherkin.ast.Background;
 import gherkin.ast.DataTable;
 import gherkin.ast.DocString;
@@ -30,7 +28,6 @@ public class Compiler {
 
     public List<Pickle> compile(Feature feature, String path) {
         List<Pickle> pickles = new ArrayList<>();
-        GherkinDialect dialect = new GherkinDialectProvider().getDialect(feature.getLanguage(), null);
 
         List<Tag> featureTags = feature.getTags();
         List<PickleStep> backgroundSteps = getBackgroundSteps(feature.getBackground(), path);
@@ -39,7 +36,7 @@ public class Compiler {
             if (scenarioDefinition instanceof Scenario) {
                 compileScenario(pickles, backgroundSteps, (Scenario) scenarioDefinition, featureTags, path);
             } else {
-                compileScenarioOutline(pickles, backgroundSteps, (ScenarioOutline) scenarioDefinition, featureTags, path, dialect);
+                compileScenarioOutline(pickles, backgroundSteps, (ScenarioOutline) scenarioDefinition, featureTags, path);
             }
         }
         return pickles;
@@ -61,7 +58,7 @@ public class Compiler {
         }
 
         Pickle pickle = new Pickle(
-                scenario.getKeyword() + ": " + scenario.getName(),
+                scenario.getName(),
                 steps,
                 pickleTags(scenarioTags, path),
                 singletonList(pickleLocation(scenario.getLocation(), path))
@@ -69,11 +66,10 @@ public class Compiler {
         pickles.add(pickle);
     }
 
-    private void compileScenarioOutline(List<Pickle> pickles, List<PickleStep> backgroundSteps, ScenarioOutline scenarioOutline, List<Tag> featureTags, String path, GherkinDialect dialect) {
+    private void compileScenarioOutline(List<Pickle> pickles, List<PickleStep> backgroundSteps, ScenarioOutline scenarioOutline, List<Tag> featureTags, String path) {
         if (scenarioOutline.getSteps().isEmpty())
           return;
 
-        String keyword = dialect.getScenarioKeywords().get(0);
         for (final Examples examples : scenarioOutline.getExamples()) {
             if (examples.getTableHeader() == null) continue;
             List<TableCell> variableCells = examples.getTableHeader().getCells();
@@ -107,7 +103,7 @@ public class Compiler {
                 }
 
                 Pickle pickle = new Pickle(
-                        keyword + ": " + interpolate(scenarioOutline.getName(), variableCells, valueCells),
+                        interpolate(scenarioOutline.getName(), variableCells, valueCells),
                         steps,
                         pickleTags(tags, path),
                         asList(

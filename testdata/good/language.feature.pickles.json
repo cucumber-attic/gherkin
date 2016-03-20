@@ -7,7 +7,7 @@
         "path": "../testdata/good/language.feature"
       }
     ],
-    "name": "Scenario: minimalistic",
+    "name": "minimalistic",
     "steps": [
       {
         "arguments": [],

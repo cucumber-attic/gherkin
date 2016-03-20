@@ -12,7 +12,7 @@
         "path": "../testdata/good/example_tokens_everywhere.feature"
       }
     ],
-    "name": "Scenario: the un",
+    "name": "the un",
     "steps": [
       {
         "arguments": [
@@ -88,7 +88,7 @@
         "path": "../testdata/good/example_tokens_everywhere.feature"
       }
     ],
-    "name": "Scenario: the uno",
+    "name": "the uno",
     "steps": [
       {
         "arguments": [

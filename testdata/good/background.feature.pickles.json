@@ -7,7 +7,7 @@
         "path": "../testdata/good/background.feature"
       }
     ],
-    "name": "Scenario: minimalistic",
+    "name": "minimalistic",
     "steps": [
       {
         "arguments": [],
