@@ -39,11 +39,12 @@ THE SOFTWARE.
     TokenScanner: require('./lib/gherkin/token_scanner'),
     TokenMatcher: require('./lib/gherkin/token_matcher'),
     AstBuilder: require('./lib/gherkin/ast_builder'),
-    Compiler: require('./lib/gherkin/pickles/compiler')
+    Compiler: require('./lib/gherkin/pickles/compiler'),
+    DIALECTS: require('./lib/gherkin/dialects')
   };
 }));
 
-},{"./lib/gherkin/ast_builder":2,"./lib/gherkin/parser":8,"./lib/gherkin/pickles/compiler":9,"./lib/gherkin/token_matcher":11,"./lib/gherkin/token_scanner":12}],2:[function(require,module,exports){
+},{"./lib/gherkin/ast_builder":2,"./lib/gherkin/dialects":5,"./lib/gherkin/parser":9,"./lib/gherkin/pickles/compiler":10,"./lib/gherkin/token_matcher":12,"./lib/gherkin/token_scanner":13}],2:[function(require,module,exports){
 var AstNode = require('./ast_node');
 var Errors = require('./errors');
 
@@ -301,7 +302,7 @@ module.exports = function AstBuilder () {
 
 };
 
-},{"./ast_node":3,"./errors":5}],3:[function(require,module,exports){
+},{"./ast_node":3,"./errors":6}],3:[function(require,module,exports){
 function AstNode (ruleType) {
   this.ruleType = ruleType;
   this._subItems = {};
@@ -340,6 +341,9 @@ module.exports = function countSymbols(string) {
 }
 
 },{}],5:[function(require,module,exports){
+module.exports = require('./gherkin-languages.json');
+
+},{"./gherkin-languages.json":7}],6:[function(require,module,exports){
 var Errors = {};
 
 [
@@ -402,7 +406,7 @@ function createError(Ctor, message, location) {
 
 module.exports = Errors;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 module.exports={
   "af": {
     "and": [
@@ -3373,7 +3377,7 @@ module.exports={
   }
 }
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var countSymbols = require('./count_symbols')
 
 function GherkinLine(lineText, lineNumber) {
@@ -3458,7 +3462,7 @@ GherkinLine.prototype.getTags = function getTags() {
 
 module.exports = GherkinLine;
 
-},{"./count_symbols":4}],8:[function(require,module,exports){
+},{"./count_symbols":4}],9:[function(require,module,exports){
 // This file is generated. Do not edit! Edit gherkin-javascript.razor instead.
 var Errors = require('./errors');
 var AstBuilder = require('./ast_builder');
@@ -5854,29 +5858,28 @@ module.exports = function Parser(builder) {
 
 }
 
-},{"./ast_builder":2,"./errors":5,"./token_matcher":11,"./token_scanner":12}],9:[function(require,module,exports){
+},{"./ast_builder":2,"./errors":6,"./token_matcher":12,"./token_scanner":13}],10:[function(require,module,exports){
 var dialects = require('../gherkin-languages.json');
 var countSymbols = require('../count_symbols')
 
 function Compiler() {
   this.compile = function (feature, path) {
     var pickles = [];
-    var dialect = dialects[feature.language];
 
     var featureTags = feature.tags;
     var backgroundSteps = getBackgroundSteps(feature.background, path);
 
     feature.scenarioDefinitions.forEach(function (scenarioDefinition) {
       if(scenarioDefinition.type === 'Scenario') {
-        compileScenario(featureTags, backgroundSteps, scenarioDefinition, dialect, path, pickles);
+        compileScenario(featureTags, backgroundSteps, scenarioDefinition, path, pickles);
       } else {
-        compileScenarioOutline(featureTags, backgroundSteps, scenarioDefinition, dialect, path, pickles);
+        compileScenarioOutline(featureTags, backgroundSteps, scenarioDefinition, path, pickles);
       }
     });
     return pickles;
   };
 
-  function compileScenario(featureTags, backgroundSteps, scenario, dialect, path, pickles) {
+  function compileScenario(featureTags, backgroundSteps, scenario, path, pickles) {
     if (scenario.steps.length == 0) return;
 
     var steps = [].concat(backgroundSteps);
@@ -5889,17 +5892,16 @@ function Compiler() {
 
     var pickle = {
       tags: pickleTags(tags, path),
-      name: scenario.keyword + ": " + scenario.name,
+      name: scenario.name,
       locations: [pickleLocation(scenario.location, path)],
       steps: steps
     };
     pickles.push(pickle);
   }
 
-  function compileScenarioOutline(featureTags, backgroundSteps, scenarioOutline, dialect, path, pickles) {
+  function compileScenarioOutline(featureTags, backgroundSteps, scenarioOutline, path, pickles) {
     if (scenarioOutline.steps.length == 0) return;
 
-    var keyword = dialect.scenario[0];
     scenarioOutline.examples.filter(function(e) { return e.tableHeader != undefined; }).forEach(function (examples) {
       var variableCells = examples.tableHeader.cells;
       examples.tableBody.forEach(function (values) {
@@ -5922,7 +5924,7 @@ function Compiler() {
         });
 
         var pickle = {
-          name: keyword + ": " + interpolate(scenarioOutline.name, variableCells, valueCells),
+          name: interpolate(scenarioOutline.name, variableCells, valueCells),
           steps: steps,
           tags: pickleTags(tags, path),
           locations: [
@@ -6024,7 +6026,7 @@ function Compiler() {
 
 module.exports = Compiler;
 
-},{"../count_symbols":4,"../gherkin-languages.json":6}],10:[function(require,module,exports){
+},{"../count_symbols":4,"../gherkin-languages.json":7}],11:[function(require,module,exports){
 function Token(line, location) {
   this.line = line;
   this.location = location;
@@ -6041,8 +6043,8 @@ Token.prototype.detach = function () {
 
 module.exports = Token;
 
-},{}],11:[function(require,module,exports){
-var dialects = require('./gherkin-languages.json');
+},{}],12:[function(require,module,exports){
+var DIALECTS = require('./dialects');
 var Errors = require('./errors');
 var LANGUAGE_PATTERN = /^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$/;
 
@@ -6055,7 +6057,7 @@ module.exports = function TokenMatcher(defaultDialectName) {
   var indentToRemove;
 
   function changeDialect(newDialectName, location) {
-    var newDialect = dialects[newDialectName];
+    var newDialect = DIALECTS[newDialectName];
     if(!newDialect) {
       throw Errors.NoSuchLanguageException.create(newDialectName, location);
     }
@@ -6232,7 +6234,7 @@ module.exports = function TokenMatcher(defaultDialectName) {
   }
 };
 
-},{"./errors":5,"./gherkin-languages.json":6}],12:[function(require,module,exports){
+},{"./dialects":5,"./errors":6}],13:[function(require,module,exports){
 var Token = require('./token');
 var GherkinLine = require('./gherkin_line');
 
@@ -6257,4 +6259,4 @@ module.exports = function TokenScanner(source) {
   }
 };
 
-},{"./gherkin_line":7,"./token":10}]},{},[1]);
+},{"./gherkin_line":8,"./token":11}]},{},[1]);
