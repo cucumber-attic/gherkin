@@ -1,13 +1,5 @@
 {
-  "comments": [],
-  "keyword": "Feature",
-  "language": "en",
-  "location": {
-    "column": 1,
-    "line": 1
-  },
-  "name": "Incomplete scenarios",
-  "scenarioDefinitions": [
+  "children": [
     {
       "keyword": "Background",
       "location": {
@@ -40,6 +32,14 @@
       "type": "Scenario"
     }
   ],
+  "comments": [],
+  "keyword": "Feature",
+  "language": "en",
+  "location": {
+    "column": 1,
+    "line": 1
+  },
+  "name": "Incomplete scenarios",
   "tags": [],
   "type": "Feature"
 }

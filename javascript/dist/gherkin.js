@@ -278,10 +278,10 @@ module.exports = function AstBuilder () {
         var tags = getTags(header);
         var featureLine = header.getToken('FeatureLine');
         if(!featureLine) return null;
-        var scenarioDefinitions = []
+        var children = []
         var background = node.getSingle('Background');
-        if(background) scenarioDefinitions.push(background);
-        scenarioDefinitions = scenarioDefinitions.concat(node.getItems('Scenario_Definition'));
+        if(background) children.push(background);
+        children = children.concat(node.getItems('Scenario_Definition'));
         var description = getDescription(header);
         var language = featureLine.matchedGherkinDialect;
 
@@ -293,7 +293,7 @@ module.exports = function AstBuilder () {
           keyword: featureLine.matchedKeyword,
           name: featureLine.matchedText,
           description: description,
-          scenarioDefinitions: scenarioDefinitions,
+          children: children,
           comments: comments
         };
       default:
@@ -5869,7 +5869,7 @@ function Compiler() {
     var featureTags = feature.tags;
     var backgroundSteps = [];
 
-    feature.scenarioDefinitions.forEach(function (scenarioDefinition) {
+    feature.children.forEach(function (scenarioDefinition) {
       if(scenarioDefinition.type === 'Background') {
         backgroundSteps = pickleSteps(scenarioDefinition, path);
       } else if(scenarioDefinition.type === 'Scenario') {

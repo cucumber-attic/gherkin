@@ -78,7 +78,7 @@ console.log(JSON.stringify(ast, null, 2))
       keyword: 'Feature',
       name: 'Foo',
       description: undefined,
-      scenarioDefinitions: [{
+      children: [{
         description: undefined,
         keyword: 'Scenario',
         location: { line: 2, column: 3 },

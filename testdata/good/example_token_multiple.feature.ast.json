@@ -1,13 +1,5 @@
 {
-  "comments": [],
-  "keyword": "Feature",
-  "language": "en",
-  "location": {
-    "column": 1,
-    "line": 1
-  },
-  "name": "Example token used multiple times",
-  "scenarioDefinitions": [
+  "children": [
     {
       "examples": [
         {
@@ -78,6 +70,14 @@
       "type": "ScenarioOutline"
     }
   ],
+  "comments": [],
+  "keyword": "Feature",
+  "language": "en",
+  "location": {
+    "column": 1,
+    "line": 1
+  },
+  "name": "Example token used multiple times",
   "tags": [],
   "type": "Feature"
 }

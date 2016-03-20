@@ -1,13 +1,5 @@
 {
-  "comments": [],
-  "keyword": "Feature",
-  "language": "en",
-  "location": {
-    "column": 1,
-    "line": 3
-  },
-  "name": "Explicit language specification",
-  "scenarioDefinitions": [
+  "children": [
     {
       "keyword": "Scenario",
       "location": {
@@ -30,6 +22,14 @@
       "type": "Scenario"
     }
   ],
+  "comments": [],
+  "keyword": "Feature",
+  "language": "en",
+  "location": {
+    "column": 1,
+    "line": 3
+  },
+  "name": "Explicit language specification",
   "tags": [],
   "type": "Feature"
 }

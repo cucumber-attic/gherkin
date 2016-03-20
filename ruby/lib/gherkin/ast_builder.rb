@@ -221,10 +221,10 @@ module Gherkin
         tags = get_tags(header)
         feature_line = header.get_token(:FeatureLine)
         return unless feature_line
-        scenario_definitions = []
+        children = []
         background = node.get_single(:Background)
-        scenario_definitions.push(background) if background
-        scenario_definitions.concat(node.get_items(:Scenario_Definition))
+        children.push(background) if background
+        children.concat(node.get_items(:Scenario_Definition))
         description = get_description(header)
         language = feature_line.matched_gherkin_dialect
 
@@ -236,7 +236,7 @@ module Gherkin
           keyword: feature_line.matched_keyword,
           name: feature_line.matched_text,
           description: description,
-          scenarioDefinitions: scenario_definitions,
+          children: children,
           comments: @comments
         )
       else

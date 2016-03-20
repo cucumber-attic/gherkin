@@ -1,31 +1,5 @@
 {
-  "comments": [
-    {
-      "location": {
-        "column": 1,
-        "line": 30
-      },
-      "text": "# this is a comment",
-      "type": "Comment"
-    },
-    {
-      "location": {
-        "column": 1,
-        "line": 36
-      },
-      "text": "    #  this is another comment",
-      "type": "Comment"
-    }
-  ],
-  "description": "  This is a single line description",
-  "keyword": "Feature",
-  "language": "en",
-  "location": {
-    "column": 1,
-    "line": 1
-  },
-  "name": "Descriptions everywhere",
-  "scenarioDefinitions": [
+  "children": [
     {
       "description": "  This description\n  has two lines and indented with two spaces",
       "keyword": "Scenario",
@@ -252,6 +226,32 @@
       "type": "ScenarioOutline"
     }
   ],
+  "comments": [
+    {
+      "location": {
+        "column": 1,
+        "line": 30
+      },
+      "text": "# this is a comment",
+      "type": "Comment"
+    },
+    {
+      "location": {
+        "column": 1,
+        "line": 36
+      },
+      "text": "    #  this is another comment",
+      "type": "Comment"
+    }
+  ],
+  "description": "  This is a single line description",
+  "keyword": "Feature",
+  "language": "en",
+  "location": {
+    "column": 1,
+    "line": 1
+  },
+  "name": "Descriptions everywhere",
   "tags": [],
   "type": "Feature"
 }

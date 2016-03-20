@@ -14,7 +14,7 @@
 @property (nonatomic, strong) NSString                          * keyword;
 @property (nonatomic, strong) NSString                          * name;
 @property (nonatomic, strong) NSString                          * desc;
-@property (nonatomic, strong) NSArray<GHScenarioDefinition *>   * scenarioDefinitions;
+@property (nonatomic, strong) NSArray<GHScenarioDefinition *>   * children;
 @property (nonatomic, strong) NSArray<GHComment *>              * comments;
 
 @end
@@ -27,10 +27,10 @@
 @synthesize keyword;
 @synthesize name;
 @synthesize desc;
-@synthesize scenarioDefinitions;
+@synthesize children;
 @synthesize comments;
 
-- (id)initWithTags:(NSArray<GHTag *> *)theTags location:(GHLocation *)theLocation language:(NSString *)theLanguage keyword:(NSString *)theKeyword name:(NSString *)theName description:(NSString *)theDescription scenarioDefinitions:(NSArray<GHScenarioDefinition *> *)theScenarioDefinitions comments:(NSArray<GHComment *> *)theComments
+- (id)initWithTags:(NSArray<GHTag *> *)theTags location:(GHLocation *)theLocation language:(NSString *)theLanguage keyword:(NSString *)theKeyword name:(NSString *)theName description:(NSString *)theDescription children:(NSArray<GHScenarioDefinition *> *)theChildren comments:(NSArray<GHComment *> *)theComments
 {
     if (self = [super init])
     {
@@ -40,10 +40,10 @@
         keyword = theKeyword;
         name = theName;
         desc = theDescription;
-        scenarioDefinitions = theScenarioDefinitions;
+        children = theChildren;
         comments = theComments;
     }
-    
+
     return self;
 }
 

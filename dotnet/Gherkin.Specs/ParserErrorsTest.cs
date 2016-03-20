@@ -72,7 +72,7 @@ Feature: Foo
   ""Language"": ""en"",
   ""Keyword"": ""Feature"",
   ""Name"": ""Foo"",
-  ""ScenarioDefinitions"": [
+  ""Children"": [
     {
       ""Tags"": [],
       ""Location"": {

@@ -45,7 +45,7 @@ namespace Gherkin.Specs
   ""Language"": ""en"",
   ""Keyword"": ""Feature"",
   ""Name"": ""Test"",
-  ""ScenarioDefinitions"": [],
+  ""Children"": [],
   ""Comments"": []
 }");
 	    string expected2 = LineEndingHelper.NormalizeLineEndings(@"{
@@ -57,7 +57,7 @@ namespace Gherkin.Specs
   ""Language"": ""en"",
   ""Keyword"": ""Feature"",
   ""Name"": ""Test2"",
-  ""ScenarioDefinitions"": [],
+  ""Children"": [],
   ""Comments"": []
 }");
             Assert.AreEqual(expected1, astText1);
@@ -85,7 +85,7 @@ namespace Gherkin.Specs
   ""Language"": ""no"",
   ""Keyword"": ""Egenskap"",
   ""Name"": ""i18n support"",
-  ""ScenarioDefinitions"": [],
+  ""Children"": [],
   ""Comments"": []
 }");
             Assert.AreEqual(expected, astText);

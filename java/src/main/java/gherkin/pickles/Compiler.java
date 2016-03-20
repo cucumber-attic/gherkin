@@ -32,9 +32,9 @@ public class Compiler {
         List<Tag> featureTags = feature.getTags();
         List<PickleStep> backgroundSteps = new ArrayList<>();
 
-        for (Node scenarioDefinition : feature.getScenarioDefinitions()) {
+        for (ScenarioDefinition scenarioDefinition : feature.getChildren()) {
             if (scenarioDefinition instanceof Background) {
-                backgroundSteps = pickleSteps((Background) scenarioDefinition, path);
+                backgroundSteps = pickleSteps(scenarioDefinition, path);
             } else if (scenarioDefinition instanceof Scenario) {
                 compileScenario(pickles, backgroundSteps, (Scenario) scenarioDefinition, featureTags, path);
             } else {

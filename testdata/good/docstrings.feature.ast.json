@@ -1,13 +1,5 @@
 {
-  "comments": [],
-  "keyword": "Feature",
-  "language": "en",
-  "location": {
-    "column": 1,
-    "line": 1
-  },
-  "name": "DocString variations",
-  "scenarioDefinitions": [
+  "children": [
     {
       "keyword": "Scenario",
       "location": {
@@ -141,6 +133,14 @@
       "type": "Scenario"
     }
   ],
+  "comments": [],
+  "keyword": "Feature",
+  "language": "en",
+  "location": {
+    "column": 1,
+    "line": 1
+  },
+  "name": "DocString variations",
   "tags": [],
   "type": "Feature"
 }
