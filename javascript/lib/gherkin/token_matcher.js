@@ -1,4 +1,4 @@
-var dialects = require('./gherkin-languages.json');
+var DIALECTS = require('./dialects');
 var Errors = require('./errors');
 var LANGUAGE_PATTERN = /^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$/;
 
@@ -11,7 +11,7 @@ module.exports = function TokenMatcher(defaultDialectName) {
   var indentToRemove;
 
   function changeDialect(newDialectName, location) {
-    var newDialect = dialects[newDialectName];
+    var newDialect = DIALECTS[newDialectName];
     if(!newDialect) {
       throw Errors.NoSuchLanguageException.create(newDialectName, location);
     }

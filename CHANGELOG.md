@@ -13,6 +13,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (JavaScript) Expose dialects
+  ([#177](https://github.com/cucumber/gherkin/pull/177)
+   by [charlierudolph])
 * (Perl) new implementation!
   ([#161](https://github.com/cucumber/gherkin/pull/161)
    by [pjlsergeant])
