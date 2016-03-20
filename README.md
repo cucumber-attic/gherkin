@@ -5,7 +5,7 @@
 
 Gherkin is a parser and compiler for the Gherkin language.
 
-It is intended to replace [Gherkin 2](https://github.com/cucumber/gherkin) and be used by
+It is intended to replace [Gherkin 2](https://github.com/cucumber/gherkin2) and be used by
 all [Cucumber](https://cukes.info) implementations to parse `.feature` files.
 
 If you want a reference implementation of Cucumber, take a
