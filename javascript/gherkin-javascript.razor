@@ -22,7 +22,7 @@
     var error = token.isEof ?
       Errors.UnexpectedEOFException.create(token, expectedTokens, stateComment) :
       Errors.UnexpectedTokenException.create(token, expectedTokens, stateComment);
-    if (this.stopAtFirstError) throw error;
+    if (self.stopAtFirstError) throw error;
     addError(context, error);
     return @state.Id;</text>}
 @helper MatchToken(TokenType tokenType)
@@ -42,6 +42,7 @@ var RULE_TYPES = [
 
 module.exports = function Parser(builder) {
   builder = builder || new AstBuilder();
+  var self = this;
   var context;
 
   this.parse = function(tokenScanner, tokenMatcher) {
@@ -108,7 +109,7 @@ module.exports = function Parser(builder) {
   }
 
   function handleExternalError(context, defaultValue, action) {
-    if(this.stopAtFirstError) return action();
+    if(self.stopAtFirstError) return action();
     try {
       return action();
     } catch (e) {
