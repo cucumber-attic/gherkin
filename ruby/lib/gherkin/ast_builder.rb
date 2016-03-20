@@ -1,4 +1,4 @@
-require_relative 'ast_node'
+require 'gherkin/ast_node'
 
 module Gherkin
   class AstBuilder
