@@ -12,7 +12,7 @@
         "path": "../testdata/good/scenario_outlines_with_tags.feature"
       }
     ],
-    "name": "Scenario: ",
+    "name": "",
     "steps": [
       {
         "arguments": [],
@@ -71,7 +71,7 @@
         "path": "../testdata/good/scenario_outlines_with_tags.feature"
       }
     ],
-    "name": "Scenario: ",
+    "name": "",
     "steps": [
       {
         "arguments": [],

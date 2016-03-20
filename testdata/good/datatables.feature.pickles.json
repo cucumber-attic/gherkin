@@ -7,7 +7,7 @@
         "path": "../testdata/good/datatables.feature"
       }
     ],
-    "name": "Scenario: minimalistic",
+    "name": "minimalistic",
     "steps": [
       {
         "arguments": [

@@ -12,7 +12,7 @@
         "path": "../testdata/good/example_token_multiple.feature"
       }
     ],
-    "name": "Scenario: Token used twice in a single step",
+    "name": "Token used twice in a single step",
     "steps": [
       {
         "arguments": [],

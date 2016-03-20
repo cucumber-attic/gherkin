@@ -3,20 +3,17 @@ package Gherkin::Pickles::Compiler;
 use strict;
 use warnings;
 
-use Gherkin::Dialect;
-
 sub compile {
     my ( $class, $feature, $path ) = @_;
     my @pickles;
 
-    my $dialect          = $feature->{'language'};
     my $feature_tags     = $feature->{'tags'};
     my $background_steps = $class->_get_background_steps( $feature, $path );
 
     for my $scenario_definition ( @{ $feature->{'scenarioDefinitions'} } ) {
         my @args = (
             $feature_tags, $background_steps, $scenario_definition,
-            $dialect, $path, \@pickles
+            $path, \@pickles
         );
         if ( $scenario_definition->{'type'} eq 'Scenario' ) {
             $class->_compile_scenario(@args);
@@ -40,7 +37,7 @@ sub _get_background_steps {
 
 sub _compile_scenario {
     my ( $class, $feature_tags, $background_steps, $scenario,
-        $dialect, $path, $pickles )
+        $path, $pickles )
       = @_;
 
     my $array_reference = $scenario->{'steps'};
@@ -60,8 +57,7 @@ sub _compile_scenario {
         @$pickles,
         {
             tags => $class->_pickle_tags( \@tags, $path ),
-            name =>
-              sprintf( '%s: %s', $scenario->{'keyword'}, $scenario->{'name'} ),
+            name => $scenario->{'name'},
             locations =>
               [ $class->_pickle_location( $scenario->{'location'}, $path ) ],
             steps => \@steps,
@@ -71,16 +67,13 @@ sub _compile_scenario {
 
 sub _compile_scenario_outline {
     my ( $class, $feature_tags, $background_steps, $scenario_outline,
-        $dialect, $path, $pickles )
+        $path, $pickles )
       = @_;
 
     my $array_reference = $scenario_outline->{'steps'};
     my @actual_array = @$array_reference;
     my $array_size = @actual_array;
     if ($array_size == 0) { return; }
-
-    my $dialect_object = Gherkin::Dialect->new( { dialect => $dialect } );
-    my $keyword = $dialect_object->Scenario->[0];
 
     for my $examples ( @{ $scenario_outline->{'examples'} || [] } ) {
         my $variable_cells = $examples->{'tableHeader'}->{'cells'};
@@ -123,13 +116,11 @@ sub _compile_scenario_outline {
             push(
                 @$pickles,
                 {
-                    name => sprintf(
-                        "%s: %s", $keyword,
+                    name =>
                         $class->_interpolate(
                             $scenario_outline->{'name'}, $variable_cells,
                             $value_cells,
-                        )
-                    ),
+                        ),
                     steps     => \@steps,
                     tags      => $class->_pickle_tags( \@tags, $path ),
                     locations => [

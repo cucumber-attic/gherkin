@@ -7,7 +7,7 @@
         "path": "../testdata/good/escaped_pipes.feature"
       }
     ],
-    "name": "Scenario: They are the future",
+    "name": "They are the future",
     "steps": [
       {
         "arguments": [

@@ -1,20 +1,17 @@
-require_relative '../dialect'
-
 module Gherkin
   module Pickles
     class Compiler
       def compile(feature, path)
         pickles = []
-        dialect = Dialect.for(feature[:language])
 
         feature_tags = feature[:tags]
         background_steps = get_background_steps(feature[:background], path)
 
         feature[:scenarioDefinitions].each do |scenario_definition|
           if(scenario_definition[:type] == :Scenario)
-            compile_scenario(feature_tags, background_steps, scenario_definition, dialect, path, pickles)
+            compile_scenario(feature_tags, background_steps, scenario_definition, path, pickles)
           else
-            compile_scenario_outline(feature_tags, background_steps, scenario_definition, dialect, path, pickles)
+            compile_scenario_outline(feature_tags, background_steps, scenario_definition, path, pickles)
           end
         end
         return pickles
@@ -22,7 +19,7 @@ module Gherkin
 
     private
 
-      def compile_scenario(feature_tags, background_steps, scenario, dialect, path, pickles)
+      def compile_scenario(feature_tags, background_steps, scenario, path, pickles)
         return if scenario[:steps].empty?
 
         steps = [].concat(background_steps)
@@ -35,17 +32,16 @@ module Gherkin
 
         pickle = {
           tags: pickle_tags(tags, path),
-          name: scenario[:keyword] + ": " + scenario[:name],
+          name: scenario[:name],
           locations: [pickle_location(scenario[:location], path)],
           steps: steps
         }
         pickles.push(pickle)
       end
 
-      def compile_scenario_outline(feature_tags, background_steps, scenario_outline, dialect, path, pickles)
+      def compile_scenario_outline(feature_tags, background_steps, scenario_outline, path, pickles)
         return if scenario_outline[:steps].empty?
 
-        keyword = dialect.scenario_keywords[0]
         scenario_outline[:examples].reject { |examples| examples[:tableHeader].nil? }.each do |examples|
           variable_cells = examples[:tableHeader][:cells]
           examples[:tableBody].each do |values|
@@ -68,7 +64,7 @@ module Gherkin
             end
 
             pickle = {
-              name: keyword + ": " + interpolate(scenario_outline[:name], variable_cells, value_cells),
+              name: interpolate(scenario_outline[:name], variable_cells, value_cells),
               steps: steps,
               tags: pickle_tags(tags, path),
               locations: [

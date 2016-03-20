@@ -1,17 +1,15 @@
 import re
 
-from ..dialect import Dialect
 from ..count_symbols import count_symbols
 
 
 def compile(feature, path):
     pickles = []
-    dialect = feature['language']
     feature_tags = feature['tags']
     background_steps = _get_background_steps(feature, path)
     for scenario_definition in feature['scenarioDefinitions']:
         args = (feature_tags, background_steps, scenario_definition,
-                dialect, path, pickles)
+                path, pickles)
         if scenario_definition['type'] is 'Scenario':
             _compile_scenario(*args)
         else:
@@ -20,7 +18,7 @@ def compile(feature, path):
 
 
 def _compile_scenario(feature_tags, background_steps, scenario,
-                      dialect, path, pickles):
+                      path, pickles):
     if len(scenario['steps']) == 0:
       return
 
@@ -32,7 +30,7 @@ def _compile_scenario(feature_tags, background_steps, scenario,
 
     pickle = {
         'tags': _pickle_tags(tags, path),
-        'name': u'{0[keyword]}: {0[name]}'.format(scenario),
+        'name': scenario['name'],
         'locations': [_pickle_location(scenario['location'], path)],
         'steps': steps
     }
@@ -40,11 +38,9 @@ def _compile_scenario(feature_tags, background_steps, scenario,
 
 
 def _compile_scenario_outline(feature_tags, background_steps, scenario_outline,
-                              dialect, path, pickles):
+                              path, pickles):
     if len(scenario_outline['steps']) == 0:
       return
-
-    keyword = Dialect.for_name(dialect).scenario_keywords[0]
 
     for examples in (e for e in scenario_outline['examples'] if 'tableHeader' in e):
         variable_cells = examples['tableHeader']['cells']
@@ -77,13 +73,10 @@ def _compile_scenario_outline(feature_tags, background_steps, scenario_outline,
                 steps.append(_pickle_step)
 
             pickle = {
-                'name': u'{0}: {1}'.format(
-                    keyword,
-                    _interpolate(
-                        scenario_outline['name'],
-                        variable_cells,
-                        value_cells)
-                    ),
+                'name': _interpolate(
+                    scenario_outline['name'],
+                    variable_cells,
+                    value_cells),
                 'steps': steps,
                 'tags': _pickle_tags(tags, path),
                 'locations': [

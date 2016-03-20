@@ -25,7 +25,7 @@ def test_compiles_a_scenario():
         """\
         [
           {
-            "name": "Scenario: s",
+            "name": "s",
             "steps": [
               {
                 "text": "passing",
@@ -74,7 +74,7 @@ def test_compiles_a_scenario_outline_with_i18n_characters():
         """\
         [
           {
-            "name": "Scenario: with 'é' in title",
+            "name": "with 'é' in title",
             "steps": [
               {
                 "text": "passing",
