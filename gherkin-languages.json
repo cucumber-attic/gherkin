@@ -446,7 +446,9 @@
       "Szenario"
     ],
     "scenarioOutline": [
-      "Szenariogrundriss"
+      "Szenariogrundriss",
+      "Szenariovorlage",
+      "Regel"
     ],
     "then": [
       "* ",
