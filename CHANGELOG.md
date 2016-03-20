@@ -27,6 +27,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
     by [nixel2007])
 
 ### Changed
+* (All) Remove scenario keyword from pickles
+  ([#176](https://github.com/cucumber/gherkin/pull/176)
+   by [charlierudolph])
 * (All) Don't make pickles out of step-less scenarios
   ([#161](https://github.com/cucumber/gherkin/pull/175)
    by [pjlsergeant])
