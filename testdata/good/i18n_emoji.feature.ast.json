@@ -1,13 +1,5 @@
 {
-  "comments": [],
-  "keyword": "📚",
-  "language": "em",
-  "location": {
-    "column": 1,
-    "line": 2
-  },
-  "name": "🙈🙉🙊",
-  "scenarioDefinitions": [
+  "children": [
     {
       "keyword": "📕",
       "location": {
@@ -30,6 +22,14 @@
       "type": "Scenario"
     }
   ],
+  "comments": [],
+  "keyword": "📚",
+  "language": "em",
+  "location": {
+    "column": 1,
+    "line": 2
+  },
+  "name": "🙈🙉🙊",
   "tags": [],
   "type": "Feature"
 }

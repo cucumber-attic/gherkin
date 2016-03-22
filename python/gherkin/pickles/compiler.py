@@ -6,11 +6,12 @@ from ..count_symbols import count_symbols
 def compile(feature, path):
     pickles = []
     feature_tags = feature['tags']
-    background_steps = _get_background_steps(feature, path)
-    for scenario_definition in feature['scenarioDefinitions']:
-        args = (feature_tags, background_steps, scenario_definition,
-                path, pickles)
-        if scenario_definition['type'] is 'Scenario':
+    background_steps = []
+    for scenario_definition in feature['children']:
+        args = (feature_tags, background_steps, scenario_definition, path, pickles)
+        if scenario_definition['type'] is 'Background':
+            background_steps = _pickle_steps(scenario_definition, path)
+        elif scenario_definition['type'] is 'Scenario':
             _compile_scenario(*args)
         else:
             _compile_scenario_outline(*args)
@@ -129,11 +130,9 @@ def _interpolate(name, variable_cells, value_cells):
     return name
 
 
-def _get_background_steps(feature, path):
-    if 'background' in feature:
-        return [_pickle_step(step, path)
-                for step in feature['background']['steps']]
-    return []
+def _pickle_steps(scenario_definition, path):
+    return [_pickle_step(step, path)
+        for step in scenario_definition['steps']]
 
 
 def _pickle_step(step, path):

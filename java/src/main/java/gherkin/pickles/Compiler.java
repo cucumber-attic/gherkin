@@ -30,10 +30,12 @@ public class Compiler {
         List<Pickle> pickles = new ArrayList<>();
 
         List<Tag> featureTags = feature.getTags();
-        List<PickleStep> backgroundSteps = getBackgroundSteps(feature.getBackground(), path);
+        List<PickleStep> backgroundSteps = new ArrayList<>();
 
-        for (ScenarioDefinition scenarioDefinition : feature.getScenarioDefinitions()) {
-            if (scenarioDefinition instanceof Scenario) {
+        for (ScenarioDefinition scenarioDefinition : feature.getChildren()) {
+            if (scenarioDefinition instanceof Background) {
+                backgroundSteps = pickleSteps(scenarioDefinition, path);
+            } else if (scenarioDefinition instanceof Scenario) {
                 compileScenario(pickles, backgroundSteps, (Scenario) scenarioDefinition, featureTags, path);
             } else {
                 compileScenarioOutline(pickles, backgroundSteps, (ScenarioOutline) scenarioDefinition, featureTags, path);
@@ -53,9 +55,7 @@ public class Compiler {
         scenarioTags.addAll(featureTags);
         scenarioTags.addAll(scenario.getTags());
 
-        for (Step step : scenario.getSteps()) {
-            steps.add(pickleStep(step, path));
-        }
+        steps.addAll(pickleSteps(scenario, path));
 
         Pickle pickle = new Pickle(
                 scenario.getName(),
@@ -157,12 +157,10 @@ public class Compiler {
         return result;
     }
 
-    private List<PickleStep> getBackgroundSteps(Background background, String path) {
+    private List<PickleStep> pickleSteps(ScenarioDefinition scenarioDefinition, String path) {
         List<PickleStep> result = new ArrayList<>();
-        if (background != null) {
-            for (Step step : background.getSteps()) {
-                result.add(pickleStep(step, path));
-            }
+        for (Step step : scenarioDefinition.getSteps()) {
+            result.add(pickleStep(step, path));
         }
         return unmodifiableList(result);
     }

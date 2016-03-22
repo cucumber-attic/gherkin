@@ -49,7 +49,7 @@ sub build {
             {
                 type     => 'Comment',
                 location => $self->get_location($token),
-                text     => $token->matched_text,
+                text     => $token->matched_text
             }
         );
     } else {
@@ -73,7 +73,7 @@ sub get_location {
     } else {
         return {
             line   => $token->location->{'line'},
-            column => $column,
+            column => $column
         };
     }
 }
@@ -111,7 +111,7 @@ sub get_table_rows {
             {
                 type     => 'TableRow',
                 location => $self->get_location($token),
-                cells    => $self->get_cells($token),
+                cells    => $self->get_cells($token)
             }
         );
     }
@@ -148,7 +148,7 @@ sub get_cells {
                 location => $self->get_location(
                     $table_row_token, $cell_item->{'column'}
                 ),
-                value => $cell_item->{'text'},
+                value => $cell_item->{'text'}
             }
         );
     }
@@ -186,7 +186,7 @@ sub transform_node {
                 location => $self->get_location($step_line),
                 keyword  => $step_line->matched_keyword,
                 text     => $step_line->matched_text,
-                argument => $step_argument,
+                argument => $step_argument
             }
         );
     } elsif ( $node->rule_type eq 'DocString' ) {
@@ -201,7 +201,7 @@ sub transform_node {
                 type        => $node->rule_type,
                 location    => $self->get_location($separator_token),
                 contentType => $content_type,
-                content     => $content,
+                content     => $content
             }
         );
     } elsif ( $node->rule_type eq 'DataTable' ) {
@@ -210,7 +210,7 @@ sub transform_node {
             {
                 type     => $node->rule_type,
                 location => $rows->[0]->{'location'},
-                rows     => $rows,
+                rows     => $rows
             }
         );
     } elsif ( $node->rule_type eq 'Background' ) {
@@ -225,7 +225,7 @@ sub transform_node {
                 keyword     => $background_line->matched_keyword,
                 name        => $background_line->matched_text,
                 description => $description,
-                steps       => $steps,
+                steps       => $steps
             }
         );
     } elsif ( $node->rule_type eq 'Scenario_Definition' ) {
@@ -244,7 +244,7 @@ sub transform_node {
                     keyword     => $scenario_line->matched_keyword,
                     name        => $scenario_line->matched_text,
                     description => $description,
-                    steps       => $steps,
+                    steps       => $steps
                 }
             );
         } else {
@@ -267,7 +267,7 @@ sub transform_node {
                     name        => $scenario_outline_line->matched_text,
                     description => $description,
                     steps       => $steps,
-                    examples    => $examples,
+                    examples    => $examples
                 }
             );
         }
@@ -287,7 +287,7 @@ sub transform_node {
                 name        => $examples_line->matched_text,
                 description => $description,
                 tableHeader => $examples_table->{'tableHeader'} || undef,
-                tableBody   => $examples_table->{'tableBody'} || undef,
+                tableBody   => $examples_table->{'tableBody'} || undef
             }
         );
     } elsif ( $node->rule_type eq 'Examples_Table' ) {
@@ -298,7 +298,7 @@ sub transform_node {
         return $self->reject_nones(
             {
                 tableHeader => $table_header,
-                tableBody   => $rows,
+                tableBody   => $rows
             }
         );
     } elsif ( $node->rule_type eq 'Description' ) {
@@ -316,8 +316,15 @@ sub transform_node {
         return unless $feature_line;
         my $tags = $self->get_tags($header);
 
-        my $background           = $node->get_single('Background');
-        my $scenario_definitions = $node->get_items('Scenario_Definition');
+        my $children = [];
+        my $background = $node->get_single('Background');
+        if ( $background ) {
+            push($children, $background)
+        }
+        for my $scenario_definition ( @{ $node->get_items('Scenario_Definition') } ) {
+            push($children, $scenario_definition)
+        }
+
         my $description          = $self->get_description($header);
         my $language             = $feature_line->matched_gherkin_dialect;
 
@@ -330,9 +337,8 @@ sub transform_node {
                 keyword             => $feature_line->matched_keyword,
                 name                => $feature_line->matched_text,
                 description         => $description,
-                background          => $background,
-                scenarioDefinitions => $scenario_definitions,
-                comments            => $self->{'comments'},
+                children            => $children,
+                comments            => $self->{'comments'}
             }
         );
     } else {

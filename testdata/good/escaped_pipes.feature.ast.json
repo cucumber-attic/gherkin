@@ -1,14 +1,5 @@
 {
-  "comments": [],
-  "description": "    The \\-character will be considered as an escape in table cell\n    iff it is followed by a |-character, a \\-character or an n.",
-  "keyword": "Feature",
-  "language": "en",
-  "location": {
-    "column": 1,
-    "line": 1
-  },
-  "name": "Escaped pipes",
-  "scenarioDefinitions": [
+  "children": [
     {
       "keyword": "Scenario",
       "location": {
@@ -158,6 +149,15 @@
       "type": "Scenario"
     }
   ],
+  "comments": [],
+  "description": "    The \\-character will be considered as an escape in table cell\n    iff it is followed by a |-character, a \\-character or an n.",
+  "keyword": "Feature",
+  "language": "en",
+  "location": {
+    "column": 1,
+    "line": 1
+  },
+  "name": "Escaped pipes",
   "tags": [],
   "type": "Feature"
 }

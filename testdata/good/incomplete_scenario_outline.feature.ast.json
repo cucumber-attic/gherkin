@@ -1,33 +1,25 @@
 {
-  "background": {
-    "keyword": "Background",
-    "location": {
-      "column": 3,
-      "line": 3
+  "children": [
+    {
+      "keyword": "Background",
+      "location": {
+        "column": 3,
+        "line": 3
+      },
+      "name": "Adding a background won't make a pickle",
+      "steps": [
+        {
+          "keyword": "* ",
+          "location": {
+            "column": 5,
+            "line": 4
+          },
+          "text": "a step",
+          "type": "Step"
+        }
+      ],
+      "type": "Background"
     },
-    "name": "Adding a background won't make a pickle",
-    "steps": [
-      {
-        "keyword": "* ",
-        "location": {
-          "column": 5,
-          "line": 4
-        },
-        "text": "a step",
-        "type": "Step"
-      }
-    ],
-    "type": "Background"
-  },
-  "comments": [],
-  "keyword": "Feature",
-  "language": "en",
-  "location": {
-    "column": 1,
-    "line": 1
-  },
-  "name": "Incomplete scenario outlines",
-  "scenarioDefinitions": [
     {
       "examples": [],
       "keyword": "Scenario Outline",
@@ -186,6 +178,14 @@
       "type": "ScenarioOutline"
     }
   ],
+  "comments": [],
+  "keyword": "Feature",
+  "language": "en",
+  "location": {
+    "column": 1,
+    "line": 1
+  },
+  "name": "Incomplete scenario outlines",
   "tags": [],
   "type": "Feature"
 }

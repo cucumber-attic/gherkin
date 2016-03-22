@@ -9,8 +9,7 @@ public class Feature extends Node {
     private final String keyword;
     private final String name;
     private final String description;
-    private final Background background;
-    private final List<ScenarioDefinition> scenarioDefinitions;
+    private final List<ScenarioDefinition> children;
     private final List<Comment> comments;
 
     public Feature(
@@ -20,8 +19,7 @@ public class Feature extends Node {
             String keyword,
             String name,
             String description,
-            Background background,
-            List<ScenarioDefinition> scenarioDefinitions,
+            List<ScenarioDefinition> children,
             List<Comment> comments) {
         super(location);
         this.tags = Collections.unmodifiableList(tags);
@@ -29,17 +27,12 @@ public class Feature extends Node {
         this.keyword = keyword;
         this.name = name;
         this.description = description;
-        this.background = background;
-        this.scenarioDefinitions = Collections.unmodifiableList(scenarioDefinitions);
+        this.children = Collections.unmodifiableList(children);
         this.comments = Collections.unmodifiableList(comments);
     }
 
-    public List<ScenarioDefinition> getScenarioDefinitions() {
-        return scenarioDefinitions;
-    }
-
-    public Background getBackground() {
-        return background;
+    public List<ScenarioDefinition> getChildren() {
+        return children;
     }
 
     public String getLanguage() {

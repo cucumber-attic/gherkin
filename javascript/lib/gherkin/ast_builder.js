@@ -231,8 +231,10 @@ module.exports = function AstBuilder () {
         var tags = getTags(header);
         var featureLine = header.getToken('FeatureLine');
         if(!featureLine) return null;
+        var children = []
         var background = node.getSingle('Background');
-        var scenariodefinitions = node.getItems('Scenario_Definition');
+        if(background) children.push(background);
+        children = children.concat(node.getItems('Scenario_Definition'));
         var description = getDescription(header);
         var language = featureLine.matchedGherkinDialect;
 
@@ -244,8 +246,7 @@ module.exports = function AstBuilder () {
           keyword: featureLine.matchedKeyword,
           name: featureLine.matchedText,
           description: description,
-          background: background,
-          scenarioDefinitions: scenariodefinitions,
+          children: children,
           comments: comments
         };
       default:

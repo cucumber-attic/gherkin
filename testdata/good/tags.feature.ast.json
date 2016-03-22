@@ -1,13 +1,5 @@
 {
-  "comments": [],
-  "keyword": "Feature",
-  "language": "en",
-  "location": {
-    "column": 1,
-    "line": 3
-  },
-  "name": "Minimal Scenario Outline",
-  "scenarioDefinitions": [
+  "children": [
     {
       "keyword": "Scenario",
       "location": {
@@ -245,6 +237,14 @@
       "type": "ScenarioOutline"
     }
   ],
+  "comments": [],
+  "keyword": "Feature",
+  "language": "en",
+  "location": {
+    "column": 1,
+    "line": 3
+  },
+  "name": "Minimal Scenario Outline",
   "tags": [
     {
       "location": {

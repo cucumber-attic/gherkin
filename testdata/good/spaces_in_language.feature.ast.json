@@ -1,4 +1,5 @@
 {
+  "children": [],
   "comments": [],
   "keyword": "OH HAI",
   "language": "en-lol",
@@ -7,7 +8,6 @@
     "line": 2
   },
   "name": "STUFFING",
-  "scenarioDefinitions": [],
   "tags": [],
   "type": "Feature"
 }

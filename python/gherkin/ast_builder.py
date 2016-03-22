@@ -207,8 +207,11 @@ class AstBuilder(object):
             if not feature_line:
                 return
 
+            children = []
             background = node.get_single('Background')
-            scenario_definitions = node.get_items('Scenario_Definition')
+            if (background):
+                children.append(background)
+            children = children + node.get_items('Scenario_Definition')
             description = self.get_description(header)
             language = feature_line.matched_gherkin_dialect
 
@@ -220,8 +223,7 @@ class AstBuilder(object):
                 'keyword': feature_line.matched_keyword,
                 'name': feature_line.matched_text,
                 'description': description,
-                'background': background,
-                'scenarioDefinitions': scenario_definitions,
+                'children': children,
                 'comments': self.comments
             })
         else:

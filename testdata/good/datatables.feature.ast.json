@@ -1,22 +1,5 @@
 {
-  "comments": [
-    {
-      "location": {
-        "column": 1,
-        "line": 17
-      },
-      "text": "      # this is a comment",
-      "type": "Comment"
-    }
-  ],
-  "keyword": "Feature",
-  "language": "en",
-  "location": {
-    "column": 1,
-    "line": 1
-  },
-  "name": "DataTables",
-  "scenarioDefinitions": [
+  "children": [
     {
       "keyword": "Scenario",
       "location": {
@@ -328,6 +311,23 @@
       "type": "Scenario"
     }
   ],
+  "comments": [
+    {
+      "location": {
+        "column": 1,
+        "line": 17
+      },
+      "text": "      # this is a comment",
+      "type": "Comment"
+    }
+  ],
+  "keyword": "Feature",
+  "language": "en",
+  "location": {
+    "column": 1,
+    "line": 1
+  },
+  "name": "DataTables",
   "tags": [],
   "type": "Feature"
 }

@@ -17,8 +17,7 @@ type Feature struct {
 	Keyword             string        `json:"keyword"`
 	Name                string        `json:"name"`
 	Description         string        `json:"description,omitempty"`
-	Background          *Background   `json:"background,omitempty"`
-	ScenarioDefinitions []interface{} `json:"scenarioDefinitions"`
+	Children            []interface{} `json:"children"`
 	Comments            []*Comment    `json:"comments"`
 }
 

@@ -1,13 +1,5 @@
 {
-  "comments": [],
-  "keyword": "Feature",
-  "language": "en",
-  "location": {
-    "column": 1,
-    "line": 1
-  },
-  "name": "Example tokens everywhere",
-  "scenarioDefinitions": [
+  "children": [
     {
       "examples": [
         {
@@ -234,6 +226,14 @@
       "type": "ScenarioOutline"
     }
   ],
+  "comments": [],
+  "keyword": "Feature",
+  "language": "en",
+  "location": {
+    "column": 1,
+    "line": 1
+  },
+  "name": "Example tokens everywhere",
   "tags": [],
   "type": "Feature"
 }

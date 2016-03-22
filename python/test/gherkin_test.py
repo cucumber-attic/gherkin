@@ -15,7 +15,7 @@ def test_parser():
         'language': 'en',
         'location': {'column': 1, 'line': 1},
         'name': u'Foo',
-        'scenarioDefinitions': [],
+        'children': [],
         'tags': [],
         'type': 'Feature'}
 
@@ -62,7 +62,7 @@ def test_parse_feature_after_parser_error():
         'location': {'column': 3, 'line': 2},
         'type': 'Scenario'}]
 
-    assert_equals(expected, feature['scenarioDefinitions'])
+    assert_equals(expected, feature['children'])
 
 
 def test_change_the_default_language():
@@ -75,7 +75,7 @@ def test_change_the_default_language():
         'language': 'no',
         'location': {'column': 1, 'line': 1},
         'name': u'i18n support - åæø',
-        'scenarioDefinitions': [],
+        'children': [],
         'tags': [],
         'type': 'Feature'}
 

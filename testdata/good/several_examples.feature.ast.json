@@ -1,13 +1,5 @@
 {
-  "comments": [],
-  "keyword": "Feature",
-  "language": "en",
-  "location": {
-    "column": 1,
-    "line": 1
-  },
-  "name": "Tagged Examples",
-  "scenarioDefinitions": [
+  "children": [
     {
       "examples": [
         {
@@ -162,6 +154,14 @@
       "type": "Scenario"
     }
   ],
+  "comments": [],
+  "keyword": "Feature",
+  "language": "en",
+  "location": {
+    "column": 1,
+    "line": 1
+  },
+  "name": "Tagged Examples",
   "tags": [],
   "type": "Feature"
 }
