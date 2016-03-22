@@ -360,3 +360,9 @@ objects. `TestCase` objects link user code such as Hooks and Step Definitions.
 ## Building Gherkin
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md)
+
+## Projects using Gherkin
+
+- [cucumber-ruby](https://github.com/cucumber/cucumber-ruby)
+- [microcuke](https://github.com/cucumber/microcuke)
+- [godog](https://github.com/DATA-DOG/godog) - Cucumber like BDD framework for **go**
