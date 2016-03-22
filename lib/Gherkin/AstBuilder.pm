@@ -319,10 +319,10 @@ sub transform_node {
         my $children = [];
         my $background = $node->get_single('Background');
         if ( $background ) {
-            push($children, $background)
+            push( @{ $children }, $background)
         }
         for my $scenario_definition ( @{ $node->get_items('Scenario_Definition') } ) {
-            push($children, $scenario_definition)
+            push( @{ $children }, $scenario_definition)
         }
 
         my $description          = $self->get_description($header);
