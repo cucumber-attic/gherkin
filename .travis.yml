@@ -59,10 +59,10 @@ matrix:
 
     - env: TARGET_LANG=javascript
       language: javascript
-      node_js: 4.2.6
+      node_js: 4.4.1
     - env: TARGET_LANG=javascript
       language: javascript
-      node_js: 5.5.0
+      node_js: 5.9.0
 
     - env: TARGET_LANG=go
       language: go
@@ -70,11 +70,11 @@ matrix:
 
     - env: TARGET_LANG=python
       language: python
-      python: "2.7"
+      python: "2.7.11"
       install: "pip install -r $TARGET_LANG/requirements.txt"
     - env: TARGET_LANG=python
       language: python
-      python: "3.4"
+      python: "3.5.1"
       install: "pip install -r $TARGET_LANG/requirements.txt"
 
     - env: TARGET_LANG=objective-c
