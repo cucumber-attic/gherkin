@@ -29,7 +29,7 @@ func ExampleGenerateAst() {
 	//   "language": "en",
 	//   "keyword": "Feature",
 	//   "name": "Minimal",
-	//   "scenarioDefinitions": [
+	//   "children": [
 	//     {
 	//       "location": {
 	//         "line": 3,
