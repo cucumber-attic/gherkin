@@ -84,20 +84,21 @@ pickles = compile(feature, "path/to/the.feature")
 ```
 
 ```Objective-C
-//Objective-C
+// Objective-C
 #import "GHParser+Extensions.h"
 
 GHParser * featureParser = [[GHParser alloc] init];
-NSString * featureFilePath; //Shoud refere to the place where we can get the content of the feature
+NSString * featureFilePath; // Should refer to the place where we can get the content of the feature
 NSString * content = [NSString stringWithContentsOfURL:featureFilePath encoding:NSUTF8StringEncoding error:nil];
 if([content stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0){
-      //GHParser will throw an error if you passed empty content... handle this issue first.
+      // GHParser will throw an error if you passed empty content... handle this issue first.
 }
-//GHFeature contains all the information found during parsing the feature content
+// GHFeature contains all the information found during parsing the feature content
 GHFeature * result = [featureParser parseContent:content];
 ```
 
 ```perl
+# Perl
 use Gherkin::Parser;
 use Gherkin::Pickles::Compiler;
 
