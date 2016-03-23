@@ -23,10 +23,15 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
   ([#152](https://github.com/cucumber/gherkin/pull/152)
    by [Ahmed-Ali])
 * (I18n) ru: Add "Функциональность" as translation of Feature
-   ([#165](https://github.com/cucumber/gherkin/pull/165)
-    by [nixel2007])
+  ([#165](https://github.com/cucumber/gherkin/pull/165)
+   by [nixel2007])
 
 ### Changed
+* (All) Rename Feature.scenarioDefinitions to Feature.children
+  (by [aslakhellesoy])
+* (All) Background as part of Feature.children
+  ([#178](https://github.com/cucumber/gherkin/pull/174)
+   by [aslakhellesoy])
 * (All) Remove scenario keyword from pickles
   ([#176](https://github.com/cucumber/gherkin/pull/176)
    by [charlierudolph])
