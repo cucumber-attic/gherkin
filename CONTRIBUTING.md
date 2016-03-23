@@ -149,7 +149,7 @@ about to create.
 
 When you run `make` it should complain that `gherkin-x.razor` does not exist.
 
-Now, copy a `.razor` file form one of the other implementations.
+Now, copy a `.razor` file from one of the other implementations.
 
 Your `.built` target should compile your code (if necessary) and run unit tests.
 You won't need a lot of unit tests (the cross-platform acceptance tests are pretty
