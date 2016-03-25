@@ -8,7 +8,7 @@
 #include "doc_string.h"
 #include "pickle_table.h"
 #include "pickle_tag.h"
-#include "dialect.h"
+#include "pickle_string.h"
 #include <stdlib.h>
 
 typedef struct Compiler {

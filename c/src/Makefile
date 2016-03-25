@@ -1,5 +1,5 @@
 CC=gcc
-CC_FLAGS=-c -Wall
+CC_FLAGS=-c -Wall -Werror
 GENERATE_DEPS_FLAGS=-MMD -MF $(basename $@).d
 AR=ar
 AR_FLAGS=cr
