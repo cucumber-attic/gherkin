@@ -53,6 +53,10 @@ matrix:
       before_script:
         - brew install jq
 
+    - env: TARGET_LANG=c
+      language: c
+      compiler: gcc
+
 before_install:
   - export EnableNuGetPackageRestore=true
 
