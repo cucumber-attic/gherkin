@@ -3,13 +3,14 @@
 
 #include <stdbool.h>
 #include "token.h"
-#include "error_list.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 typedef struct Dialect Dialect;
+
+typedef struct ErrorList ErrorList;
 
 typedef struct TokenMatcher TokenMatcher;
 

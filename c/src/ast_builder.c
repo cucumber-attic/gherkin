@@ -6,6 +6,7 @@
 #include "scenario_outline.h"
 #include "data_table.h"
 #include "doc_string.h"
+#include "error_list.h"
 #include <stdio.h>
 #include <stdlib.h>
 

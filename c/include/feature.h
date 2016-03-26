@@ -3,7 +3,6 @@
 
 #include <wchar.h>
 
-#include "item.h"
 #include "ast.h"
 #include "location.h"
 #include "tag.h"

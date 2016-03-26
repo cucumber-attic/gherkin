@@ -14,20 +14,20 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS) $(PICKLES)
 	touch $@
 
-.built: src/rule_type.h src/parser.c src/dialect.c $(SRC_FILES) src/Makefile LICENSE
+.built: ./include/rule_type.h src/parser.c src/dialect.c $(SRC_FILES) src/Makefile LICENSE
 	cd src; $(MAKE)
 	touch $@
 
 clean:
-	rm -rf .compared .built acceptance src/rule_type.h src/parser.c src/dialect.c
+	rm -rf .compared .built acceptance ./include/rule_type.h src/parser.c src/dialect.c
 	cd src; $(MAKE) $@
 .PHONY: clean
 
-libs: src/rule_type.h src/parser.c src/dialect.c
+libs: ./include/rule_type.h src/parser.c src/dialect.c
 	cd src; $(MAKE) $@
 .PHONY: libs
 
-src/rule_type.h: ../gherkin.berp gherkin-c-rule-type.razor ../bin/berp.exe
+./include/rule_type.h: ../gherkin.berp gherkin-c-rule-type.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-c-rule-type.razor -o $@
 	# Remove BOM
 	tail -c +4 $@ > $@.nobom

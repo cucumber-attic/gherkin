@@ -1,6 +1,6 @@
 CC=gcc
 CC_FLAGS=-c -Wall -Werror
-GENERATE_DEPS_FLAGS=-MMD -MF $(basename $@).d
+GENERATE_DEPS_FLAGS=-MMD -MP -MF $(basename $@).d
 AR=ar
 AR_FLAGS=cr
 LD=gcc
@@ -82,7 +82,7 @@ GENERATE_PICKLES_OBJS= \
 
 ../objs/%.o: %.c Makefile
 	$(MKDIR_CMD) $(dir $@)
-	$(CC) $(CC_FLAGS) $(GENERATE_DEPS_FLAGS) -I . $< -o $@
+	$(CC) $(CC_FLAGS) $(GENERATE_DEPS_FLAGS) -I ../include -I . $< -o $@
 
 ../libs/libgherkin.a: $(PARSER_OBJS) $(AST_OBJS) $(COMPILER_OBJS) $(PICKLES_OBJS)
 	$(MKDIR_CMD) $(dir $@)

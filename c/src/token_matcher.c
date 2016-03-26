@@ -1,6 +1,7 @@
 #include "token_matcher.h"
 #include "gherkin_line.h"
 #include "dialect.h"
+#include "error_list.h"
 #include <stdbool.h>
 #include <stdlib.h>
 

@@ -27,8 +27,6 @@ typedef struct GherkinAstItem {
     GherkinAstType type;
 } GherkinAstItem;
 
-void GherkinAstItem_delete(GherkinAstItem* ast_item);
-
 #ifdef __cplusplus
 }
 #endif

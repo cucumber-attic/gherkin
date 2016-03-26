@@ -3,7 +3,8 @@
 
 #include "rule_type.h"
 #include "token.h"
-#include "error_list.h"
+
+typedef struct ErrorList ErrorList;
 
 typedef struct Builder Builder;
 
