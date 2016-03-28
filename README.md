@@ -367,3 +367,4 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md)
 - [cucumber-ruby](https://github.com/cucumber/cucumber-ruby)
 - [microcuke](https://github.com/cucumber/microcuke)
 - [godog](https://github.com/DATA-DOG/godog) - Cucumber like BDD framework for **go**
+- [behat-gherkin] (https://github.com/Behat/Gherkin) - Gherkin parser, written in PHP 5.3+
