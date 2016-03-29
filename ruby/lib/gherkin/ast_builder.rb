@@ -33,7 +33,7 @@ module Gherkin
     end
 
     def get_result
-      current_node.get_single(:Feature)
+      current_node.get_single(:GherkinDocument)
     end
 
     def current_node
@@ -237,6 +237,12 @@ module Gherkin
           name: feature_line.matched_text,
           description: description,
           children: children,
+        )
+      when :GherkinDocument
+        feature = node.get_single(:Feature)
+        reject_nils(
+          type: node.rule_type,
+          feature: feature,
           comments: @comments
         )
       else
