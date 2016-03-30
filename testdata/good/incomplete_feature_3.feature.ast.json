@@ -1,0 +1,13 @@
+{
+  "comments": [
+    {
+      "location": {
+        "column": 1,
+        "line": 1
+      },
+      "text": "# Just a comment",
+      "type": "Comment"
+    }
+  ],
+  "type": "GherkinDocument"
+}
