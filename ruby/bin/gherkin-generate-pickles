@@ -14,7 +14,7 @@ files.each do |file|
   begin
     File.open(file, 'r:UTF-8') do |io|
       feature = parser.parse(io)
-      pickles = compiler.compile(feature, file);
+      pickles = compiler.compile(feature[:feature], file);
       puts JSON.generate(pickles)
     end
   rescue Gherkin::ParserError => e
