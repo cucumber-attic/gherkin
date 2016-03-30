@@ -1,13 +1,15 @@
 {
-  "children": [],
   "comments": [],
-  "keyword": "OH HAI",
-  "language": "en-lol",
-  "location": {
-    "column": 1,
-    "line": 2
-  },
-  "name": "STUFFING",
-  "tags": [],
-  "type": "Feature"
+  "feature": {
+    "children": [],
+    "keyword": "OH HAI",
+    "language": "en-lol",
+    "location": {
+      "column": 1,
+      "line": 2
+    },
+    "name": "STUFFING",
+    "tags": [],
+    "type": "Feature"
+  }
 }
