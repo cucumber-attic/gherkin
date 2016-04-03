@@ -28,7 +28,7 @@ class AstBuilder(object):
             self.current_node.add(token.matched_type, token)
 
     def get_result(self):
-        return self.current_node.get_single('Feature')
+        return self.current_node.get_single('GherkinDocument')
 
     @property
     def current_node(self):
@@ -223,7 +223,14 @@ class AstBuilder(object):
                 'keyword': feature_line.matched_keyword,
                 'name': feature_line.matched_text,
                 'description': description,
-                'children': children,
+                'children': children
+            })
+        elif node.rule_type == 'GherkinDocument':
+            feature = node.get_single('Feature')
+
+            return self.reject_nones({
+                'type': node.rule_type,
+                'feature': feature,
                 'comments': self.comments
             })
         else:
