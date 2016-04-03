@@ -63,7 +63,7 @@ class @(Model.ParserClassName)(object):
             deque(),
             [])
 
-        self.start_rule(context, 'Feature')
+        self.start_rule(context, '@Model.RuleSet.StartRule.Name')
         state = 0
         token = None
         while True:
@@ -72,7 +72,7 @@ class @(Model.ParserClassName)(object):
             if token.eof():
                 break
 
-        self.end_rule(context, 'Feature')
+        self.end_rule(context, '@Model.RuleSet.StartRule.Name')
 
         if context.errors:
             raise CompositeParserException(context.errors)
