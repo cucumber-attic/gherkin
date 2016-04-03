@@ -3,8 +3,12 @@ import re
 from ..count_symbols import count_symbols
 
 
-def compile(feature, path):
+def compile(feature_file, path):
     pickles = []
+    if 'feature' not in feature_file:
+        return pickles
+
+    feature = feature_file['feature']
     feature_tags = feature['tags']
     background_steps = []
     for scenario_definition in feature['children']:

@@ -1,21 +1,21 @@
 module Gherkin
   module Pickles
     class Compiler
-      def compile(feature, path)
+      def compile(feature_file, path)
         pickles = []
 
-        unless feature.nil?
-          feature_tags = feature[:tags]
-          background_steps = []
+        return pickles unless feature_file[:feature]
+        feature = feature_file[:feature]
+        feature_tags = feature[:tags]
+        background_steps = []
 
-          feature[:children].each do |scenario_definition|
-            if (scenario_definition[:type] == :Background)
-              background_steps = pickle_steps(scenario_definition, path)
-            elsif (scenario_definition[:type] == :Scenario)
-              compile_scenario(feature_tags, background_steps, scenario_definition, path, pickles)
-            else
-              compile_scenario_outline(feature_tags, background_steps, scenario_definition, path, pickles)
-            end
+        feature[:children].each do |scenario_definition|
+          if(scenario_definition[:type] == :Background)
+            background_steps = pickle_steps(scenario_definition, path)
+          elsif(scenario_definition[:type] == :Scenario)
+            compile_scenario(feature_tags, background_steps, scenario_definition, path, pickles)
+          else
+            compile_scenario_outline(feature_tags, background_steps, scenario_definition, path, pickles)
           end
         end
 
