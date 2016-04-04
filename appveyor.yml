@@ -21,7 +21,9 @@ build:
   publish_nuget: true  
 
 after_build:
-  - nuget pack dotnet/Gherkin.NuGetPackages/Gherkin.nuspec -Version %GherkinPackageVersion%
+  - set paddedVersion=000%GherkinPackageVersion%
+  - set GherkinPaddedPackageVersion=%paddedVersion:~-3%
+  - nuget pack dotnet/Gherkin.NuGetPackages/Gherkin.nuspec -Version %GherkinPaddedPackageVersion%
   
 artifacts:
 - path: 'Gherkin.*.nupkg'
