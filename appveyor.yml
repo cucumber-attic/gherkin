@@ -1,5 +1,11 @@
 version: build{build}
 
+nuget:
+  project_feed: true
+  disable_publish_on_pr: true
+
+configuration: Release
+
 
 before_build:
   - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/v3.2.0-rc/nuget.exe
