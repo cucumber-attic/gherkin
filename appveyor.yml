@@ -21,4 +21,4 @@ build:
   publish_nuget: true  
 
 after_build:
-  - nuget pack dotnet/Gherkin.NuGetPackages/Gherkin.nuspec -Version $(GherkinPackageVersion)
+  - nuget pack dotnet/Gherkin.NuGetPackages/Gherkin.nuspec -Version %GherkinPackageVersion%
