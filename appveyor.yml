@@ -23,11 +23,8 @@ build:
 
 after_build:
   - set paddedVersion=000%APPVEYOR_BUILD_NUMBER%
-  - echo %paddedVersion%
   - set paddedVersion=%paddedVersion:~-3%
-  - echo %paddedVersion%
   - set GherkinPaddedPackageVersion=%GherkinVersion%-ci%paddedVersion%
-  - echo %GherkinPaddedPackageVersion%
   - nuget pack dotnet/Gherkin.NuGetPackages/Gherkin.nuspec -Version %GherkinPaddedPackageVersion%
   
 artifacts:
