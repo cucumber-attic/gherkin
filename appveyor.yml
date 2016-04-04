@@ -23,6 +23,9 @@ build:
 after_build:
   - set paddedVersion=000%GherkinPackageVersion%
   - set GherkinPaddedPackageVersion=%paddedVersion:~-3%
+  - echo %GherkinPackageVersion%
+  - echo %paddedVersion%
+  - echo %GherkinPaddedPackageVersion%
   - nuget pack dotnet/Gherkin.NuGetPackages/Gherkin.nuspec -Version %GherkinPaddedPackageVersion%
   
 artifacts:
