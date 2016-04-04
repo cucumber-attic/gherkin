@@ -22,3 +22,6 @@ build:
 
 after_build:
   - nuget pack dotnet/Gherkin.NuGetPackages/Gherkin.nuspec -Version %GherkinPackageVersion%
+  
+artifacts:
+- path: 'Gherkin.*.nupkg'
