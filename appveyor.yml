@@ -7,5 +7,3 @@ before_build:
   - nuget-restore
 
   
- build_script:
-  - msbuild dotnet\Gherkin.CSharp.sln
