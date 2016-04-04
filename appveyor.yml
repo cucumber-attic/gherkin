@@ -2,7 +2,8 @@ version: build{build}
 
 
 environment:
-  GherkinPackageVersion: "3.3.0-ci$(APPVEYOR_BUILD_NUMBER)"
+  GherkinVersion: "3.3.0"
+  GherkinPackageVersion: "$(GherkinVersion)-ci$(APPVEYOR_BUILD_NUMBER)"
 
 
 nuget:
@@ -21,10 +22,11 @@ build:
   publish_nuget: true  
 
 after_build:
-  - set paddedVersion=000%GherkinPackageVersion%
-  - set GherkinPaddedPackageVersion=%paddedVersion:~-3%
-  - echo %GherkinPackageVersion%
+  - set paddedVersion=000%APPVEYOR_BUILD_NUMBER%
   - echo %paddedVersion%
+  - set paddedVersion=%paddedVersion:~-3%
+  - echo %paddedVersion%
+  - set GherkinPaddedPackageVersion=%GherkinVersion%-ci%paddedVersion%
   - echo %GherkinPaddedPackageVersion%
   - nuget pack dotnet/Gherkin.NuGetPackages/Gherkin.nuspec -Version %GherkinPaddedPackageVersion%
   
