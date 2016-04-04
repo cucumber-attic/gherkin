@@ -13,3 +13,5 @@ before_build:
   - nuget-restore dotnet\Gherkin.CSharp.sln
 
   
+build:
+  publish_nuget: true  
