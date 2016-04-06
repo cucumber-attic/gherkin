@@ -34,7 +34,7 @@ module.exports = function AstBuilder () {
   };
 
   this.getResult = function () {
-    return currentNode().getSingle('Feature');
+    return currentNode().getSingle('FeatureFile');
   };
 
   function currentNode () {
@@ -247,6 +247,12 @@ module.exports = function AstBuilder () {
           name: featureLine.matchedText,
           description: description,
           children: children,
+        };
+      case 'FeatureFile':
+        var feature = node.getSingle('Feature');
+
+        return {
+          feature: feature,
           comments: comments
         };
       default:

@@ -71,30 +71,32 @@ describe('Parser', function () {
 console.log(JSON.stringify(ast, null, 2))
 
     assert.deepEqual(ast, {
-      type: 'Feature',
-      tags: [],
-      location: { line: 1, column: 1 },
-      language: 'en',
-      keyword: 'Feature',
-      name: 'Foo',
-      description: undefined,
-      children: [{
-        description: undefined,
-        keyword: 'Scenario',
-        location: { line: 2, column: 3 },
-        name: 'Bar',
-        steps: [{
-          argument: {
-            content: 'closed docstring',
-            location: { line: 4, column: 7 },
-            type: 'DocString',
-          },
-          keyword: 'Given ',
-          location: { line: 3, column: 5 },
-          text: 'x',
-          type: 'Step' }],
+      feature: {
+        type: 'Feature',
         tags: [],
-        type: 'Scenario' }],
+        location: {line: 1, column: 1},
+        language: 'en',
+        keyword: 'Feature',
+        name: 'Foo',
+        description: undefined,
+        children: [{
+          description: undefined,
+          keyword: 'Scenario',
+          location: {line: 2, column: 3},
+          name: 'Bar',
+          steps: [{
+            argument: {
+              content: 'closed docstring',
+              location: {line: 4, column: 7},
+              type: 'DocString',
+            },
+            keyword: 'Given ',
+            location: {line: 3, column: 5},
+            text: 'x',
+            type: 'Step' }],
+          tags: [],
+          type: 'Scenario' }]
+      },
       comments: []
     });
   });
