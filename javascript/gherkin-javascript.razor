@@ -58,7 +58,7 @@ module.exports = function Parser(builder) {
       tokenQueue: [],
       errors: []
     };
-    startRule(context, 'Feature');
+    startRule(context, "@Model.RuleSet.StartRule.Name");
     var state = 0;
     var token = null;
     while(true) {
@@ -67,7 +67,7 @@ module.exports = function Parser(builder) {
       if(token.isEof) break;
     }
 
-    endRule(context, 'Feature');
+    endRule(context, "@Model.RuleSet.StartRule.Name");
 
     if(context.errors.length > 0) {
       throw Errors.CompositeParserException.create(context.errors);
