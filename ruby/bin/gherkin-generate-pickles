@@ -13,8 +13,8 @@ start_time = Time.now
 files.each do |file|
   begin
     File.open(file, 'r:UTF-8') do |io|
-      feature = parser.parse(io)
-      pickles = compiler.compile(feature[:feature], file);
+      ast = parser.parse(io)
+      pickles = compiler.compile(ast, file)
       puts JSON.generate(pickles)
     end
   rescue Gherkin::ParserError => e
