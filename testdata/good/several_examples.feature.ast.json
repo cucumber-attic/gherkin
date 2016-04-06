@@ -165,5 +165,6 @@
     "name": "Tagged Examples",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

@@ -81,5 +81,6 @@
     "name": "Minimal Scenario Outline",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

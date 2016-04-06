@@ -33,5 +33,6 @@
     "name": "🙈🙉🙊",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

@@ -5,7 +5,7 @@
 	Namespace -> Gherkin
 ]
 
-FeatureFile! := Feature?
+GherkinDocument! := Feature?
 Feature! := Feature_Header Background? Scenario_Definition*
 Feature_Header! := #Language? Tags? #FeatureLine Feature_Description
 

@@ -189,5 +189,6 @@
     "name": "Incomplete scenario outlines",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

@@ -273,5 +273,6 @@
       }
     ],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

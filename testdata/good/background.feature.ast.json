@@ -53,5 +53,6 @@
     "name": "Background",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

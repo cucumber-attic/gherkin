@@ -36,8 +36,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
   ([#176](https://github.com/cucumber/gherkin/pull/176)
    by [charlierudolph])
 * (All) Don't make pickles out of step-less scenarios
-  ([#161](https://github.com/cucumber/gherkin/pull/175)
-   by [pjlsergeant])
+  ([#174](https://github.com/cucumber/gherkin/pull/175)
+   by [enkessler])
 * (Ruby) More consistent AST node types
   ([#158](https://github.com/cucumber/gherkin/pull/158)
    by [enkessler])
@@ -149,7 +149,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Added
 * (All) Add Bosnian
   ([#48](https://github.com/cucumber/gherkin/pull/48)
-   by [10-io])
+   by [paigehf])
 * (All) Add support for `\n`, '\|', and '\\' in table cells
   ([#40](https://github.com/cucumber/gherkin/issues/40),
    [#71](https://github.com/cucumber/gherkin/pull/71),
@@ -204,7 +204,6 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 [3.1.0]:      https://github.com/cucumber/gherkin/compare/v3.0.0...v3.1.0
 
 <!-- Contributors -->
-[10-io]:            https://github.com/10-io
 [Ahmed-Ali]:        https://github.com/Ahmed-Ali
 [aslakhellesoy]:    https://github.com/aslakhellesoy
 [brasmusson]:       https://github.com/brasmusson
@@ -219,6 +218,7 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 [merrua]:           https://github.com/merrua
 [moreau-nicolas]:   https://github.com/moreau-nicolas
 [nixel2007]:        https://github.com/nixel2007
+[paigehf]:          https://github.com/paigehf
 [pjlsergeant]:      https://github.com/pjlsergeant
 [zbmott]:           https://github.com/zbmott
 [Zearin]:           https://github.com/Zearin

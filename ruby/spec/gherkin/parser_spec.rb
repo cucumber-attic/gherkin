@@ -21,7 +21,8 @@ module Gherkin
           name: "test",
           children: []
         },
-        comments: []
+        comments: [],
+        type: :GherkinDocument
       })
     end
 
@@ -134,7 +135,8 @@ module Gherkin
                           },
                           comments: [{type: :Comment,
                                       location: {line: 22, column: 1},
-                                      text: "                # Random file comment"}]}
+                                      text: "                # Random file comment"}],
+                          type: :GherkinDocument}
                      )
     end
 
@@ -151,7 +153,8 @@ module Gherkin
           name: "test",
           children: []
         },
-        comments: []
+        comments: [],
+        type: :GherkinDocument
       })
     end
 
@@ -168,7 +171,8 @@ module Gherkin
           name: "test",
           children: []
         },
-        comments: []
+        comments: [],
+        type: :GherkinDocument
       })
     end
 
@@ -187,7 +191,8 @@ module Gherkin
           name: "test",
           children: []
         },
-        comments: []
+        comments: [],
+        type: :GherkinDocument
       })
       expect(ast2).to eq({
         feature: {
@@ -199,7 +204,8 @@ module Gherkin
           name: "test2",
           children: []
         },
-        comments: []
+        comments: [],
+        type: :GherkinDocument
       })
     end
 
@@ -246,7 +252,8 @@ module Gherkin
                           :location=>{:line=>4, :column=>7},
                           :content=>"closed docstring"}}]}]
         },
-        comments: []
+        comments: [],
+        type: :GherkinDocument
       })
     end
 
@@ -265,7 +272,8 @@ module Gherkin
           name: "i18n support",
           children: []
         },
-        comments: []
+        comments: [],
+        type: :GherkinDocument
       })
     end
   end

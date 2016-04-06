@@ -34,7 +34,7 @@ module.exports = function AstBuilder () {
   };
 
   this.getResult = function () {
-    return currentNode().getSingle('FeatureFile');
+    return currentNode().getSingle('GherkinDocument');
   };
 
   function currentNode () {
@@ -248,10 +248,11 @@ module.exports = function AstBuilder () {
           description: description,
           children: children,
         };
-      case 'FeatureFile':
+      case 'GherkinDocument':
         var feature = node.getSingle('Feature');
 
         return {
+          type: node.ruleType,
           feature: feature,
           comments: comments
         };

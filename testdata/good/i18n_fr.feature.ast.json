@@ -495,5 +495,6 @@
     "name": "i18n support",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

@@ -43,5 +43,6 @@
     "name": "Incomplete scenarios",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

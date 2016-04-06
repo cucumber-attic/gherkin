@@ -8,5 +8,6 @@
       "text": "# Just a comment",
       "type": "Comment"
     }
-  ]
+  ],
+  "type": "GherkinDocument"
 }

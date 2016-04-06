@@ -11,14 +11,15 @@ def test_parser():
     feature_file = parser.parse(TokenScanner("Feature: Foo"))
     expected = {
         'comments': [],
-        'feature' : {
+        'feature': {
             'keyword': u'Feature',
             'language': 'en',
             'location': {'column': 1, 'line': 1},
             'name': u'Foo',
             'children': [],
             'tags': [],
-            'type': 'Feature'}}
+            'type': 'Feature'},
+        'type': 'GherkinDocument'}
 
     assert_equals(expected, feature_file)
 
@@ -79,6 +80,7 @@ def test_change_the_default_language():
             'name': u'i18n support - åæø',
             'children': [],
             'tags': [],
-            'type': 'Feature'}}
+            'type': 'Feature'},
+        'type': 'GherkinDocument'}
 
     assert_equals(expected, feature_file)

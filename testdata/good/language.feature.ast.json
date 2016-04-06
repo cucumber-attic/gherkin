@@ -33,5 +33,6 @@
     "name": "Explicit language specification",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

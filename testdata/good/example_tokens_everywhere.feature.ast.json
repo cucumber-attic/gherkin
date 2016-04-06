@@ -237,5 +237,6 @@
     "name": "Example tokens everywhere",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

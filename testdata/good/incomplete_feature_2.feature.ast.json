@@ -11,5 +11,6 @@
     "name": "Empty feature",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

@@ -161,5 +161,6 @@
     "name": "Escaped pipes",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

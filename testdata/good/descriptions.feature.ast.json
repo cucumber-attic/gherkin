@@ -255,5 +255,6 @@
     "name": "Descriptions everywhere",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

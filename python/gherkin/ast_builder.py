@@ -28,7 +28,7 @@ class AstBuilder(object):
             self.current_node.add(token.matched_type, token)
 
     def get_result(self):
-        return self.current_node.get_single('FeatureFile')
+        return self.current_node.get_single('GherkinDocument')
 
     @property
     def current_node(self):
@@ -225,10 +225,11 @@ class AstBuilder(object):
                 'description': description,
                 'children': children
             })
-        elif node.rule_type == 'FeatureFile':
+        elif node.rule_type == 'GherkinDocument':
             feature = node.get_single('Feature')
 
             return self.reject_nones({
+                'type': node.rule_type,
                 'feature': feature,
                 'comments': self.comments
             })

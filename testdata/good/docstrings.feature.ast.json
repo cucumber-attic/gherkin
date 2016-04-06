@@ -144,5 +144,6 @@
     "name": "DocString variations",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

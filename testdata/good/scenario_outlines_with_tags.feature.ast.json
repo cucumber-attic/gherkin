@@ -202,5 +202,6 @@
       }
     ],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

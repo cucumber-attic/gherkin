@@ -33,5 +33,6 @@
     "name": "Minimal",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

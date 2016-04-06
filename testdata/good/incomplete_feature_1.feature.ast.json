@@ -12,5 +12,6 @@
     "name": "Just a description",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

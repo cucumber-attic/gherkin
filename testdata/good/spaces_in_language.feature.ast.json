@@ -11,5 +11,6 @@
     "name": "STUFFING",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }

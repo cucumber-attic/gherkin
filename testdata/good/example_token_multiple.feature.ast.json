@@ -81,5 +81,6 @@
     "name": "Example token used multiple times",
     "tags": [],
     "type": "Feature"
-  }
+  },
+  "type": "GherkinDocument"
 }
