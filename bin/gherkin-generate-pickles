@@ -10,8 +10,8 @@ var files = process.argv.slice(2);
 files.forEach(function (file) {
   var scanner = new Gherkin.TokenScanner(fs.readFileSync(file, 'UTF-8'));
   try {
-    var feature = parser.parse(scanner, matcher);
-    var pickles = compiler.compile(feature, file);
+    var ast = parser.parse(scanner, matcher);
+    var pickles = compiler.compile(ast, file);
     console.log(JSON.stringify(pickles));
   } catch (e) {
     console.error(e.stack);
