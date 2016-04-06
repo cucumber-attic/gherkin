@@ -121,7 +121,7 @@ func (p *parser) Parse(s Scanner, m Matcher) (err error) {
   m.Reset()
   ctxt := &parseContext{p,s,p.builder,m,nil,nil}
   var state int
-  ctxt.startRule(RuleType_Feature)
+  ctxt.startRule(@Raw("RuleType_" + @Model.RuleSet.StartRule.Name))
   for {
     gl, eof, err := ctxt.scan()
     if err != nil {
@@ -142,7 +142,7 @@ func (p *parser) Parse(s Scanner, m Matcher) (err error) {
       break
     }
   }
-  ctxt.endRule(RuleType_Feature)
+  ctxt.endRule(@Raw("RuleType_" + @Model.RuleSet.StartRule.Name))
   if len(ctxt.errors) > 0 {
     return ctxt.errors
   }
