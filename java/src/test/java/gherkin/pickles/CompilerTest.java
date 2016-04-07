@@ -2,7 +2,7 @@ package gherkin.pickles;
 
 import gherkin.AstBuilder;
 import gherkin.Parser;
-import gherkin.ast.Feature;
+import gherkin.ast.GherkinDocument;
 import gherkin.deps.com.google.gson.Gson;
 import gherkin.deps.com.google.gson.GsonBuilder;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class CompilerTest {
-    private final Parser<Feature> parser = new Parser<>(new AstBuilder());
+    private final Parser<GherkinDocument> parser = new Parser<>(new AstBuilder());
     private final Compiler compiler = new Compiler();
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
