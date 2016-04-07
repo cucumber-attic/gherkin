@@ -1,11 +1,11 @@
 module Gherkin
   module Pickles
     class Compiler
-      def compile(feature_file, path)
+      def compile(gherkin_document, path)
         pickles = []
 
-        return pickles unless feature_file[:feature]
-        feature = feature_file[:feature]
+        return pickles unless gherkin_document[:feature]
+        feature = gherkin_document[:feature]
         feature_tags = feature[:tags]
         background_steps = []
 
