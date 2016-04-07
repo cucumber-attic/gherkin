@@ -42,7 +42,7 @@ sub parse {
         }
     );
 
-    $self->_start_rule( $context, 'Feature' );
+    $self->_start_rule( $context, 'GherkinDocument' );
 
     my $state = 0;
     my $token;
@@ -54,7 +54,7 @@ sub parse {
         last if $token->is_eof();
     }
 
-    $self->_end_rule( $context, 'Feature' );
+    $self->_end_rule( $context, 'GherkinDocument' );
 
     if ( my @errors = $context->errors ) {
         Gherkin::Exceptions::CompositeParser->throw(@errors);
