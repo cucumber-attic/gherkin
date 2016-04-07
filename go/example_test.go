@@ -30,11 +30,12 @@ func ExampleParseFeature() {
 `
 	r := strings.NewReader(input)
 
-	feature, err := gherkin.ParseFeature(r)
+	gherkinDocument, err := gherkin.ParseGherkinDocument(r)
 	if err != nil {
 		fmt.Fprintf(os.Stdout, "%s\n", err)
 		return
 	}
+	feature := gherkinDocument.Feature
 	fmt.Fprintf(os.Stdout, "Location: %+v\n", feature.Location)
 	fmt.Fprintf(os.Stdout, "Keyword: %+v\n", feature.Keyword)
 	fmt.Fprintf(os.Stdout, "Name: %+v\n", feature.Name)
@@ -84,7 +85,8 @@ func ExampleParseMultipleFeatures() {
 		fmt.Fprintf(os.Stdout, "%s\n", err1)
 		return
 	}
-	feature1 := builder.GetFeature()
+	doc1 := builder.GetGherkinDocument()
+	feature1 := doc1.Feature
 	fmt.Fprintf(os.Stdout, "Location: %+v\n", feature1.Location)
 	fmt.Fprintf(os.Stdout, "Keyword: %+v\n", feature1.Keyword)
 	fmt.Fprintf(os.Stdout, "Name: %+v\n", feature1.Name)
@@ -99,7 +101,8 @@ func ExampleParseMultipleFeatures() {
 		fmt.Fprintf(os.Stdout, "%s\n", err2)
 		return
 	}
-	feature2 := builder.GetFeature()
+	doc2 := builder.GetGherkinDocument()
+	feature2 := doc2.Feature
 	fmt.Fprintf(os.Stdout, "Location: %+v\n", feature2.Location)
 	fmt.Fprintf(os.Stdout, "Keyword: %+v\n", feature2.Keyword)
 	fmt.Fprintf(os.Stdout, "Name: %+v\n", feature2.Name)
@@ -154,8 +157,10 @@ Feature: Foo
 		fmt.Fprintf(os.Stdout, "%s\n", err2)
 		return
 	}
-	feature2 := builder.GetFeature()
-        fmt.Fprintf(os.Stdout, "Comments: length: %+v\n", len(feature2.Comments))
+	doc2 := builder.GetGherkinDocument()
+        fmt.Fprintf(os.Stdout, "Comments: length: %+v\n", len(doc2.Comments))
+
+	feature2 := doc2.Feature
 	fmt.Fprintf(os.Stdout, "Location: %+v\n", feature2.Location)
 	fmt.Fprintf(os.Stdout, "Keyword: %+v\n", feature2.Keyword)
 	fmt.Fprintf(os.Stdout, "Name: %+v\n", feature2.Name)
@@ -198,7 +203,8 @@ func ExampleChangeDefaultDialect() {
 		fmt.Fprintf(os.Stdout, "%s\n", err)
 		return
 	}
-	feature := builder.GetFeature()
+	doc := builder.GetGherkinDocument()
+	feature := doc.Feature
 	fmt.Fprintf(os.Stdout, "Location: %+v\n", feature.Location)
 	fmt.Fprintf(os.Stdout, "Keyword: %+v\n", feature.Keyword)
 	fmt.Fprintf(os.Stdout, "Name: %+v\n", feature.Name)

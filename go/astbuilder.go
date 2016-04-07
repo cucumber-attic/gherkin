@@ -6,7 +6,7 @@ import (
 
 type AstBuilder interface {
 	Builder
-	GetFeature() *Feature
+	GetGherkinDocument() *GherkinDocument
 }
 
 type astBuilder struct {
@@ -20,9 +20,9 @@ func (t *astBuilder) Reset() {
 	t.push(newAstNode(RuleType_None))
 }
 
-func (t *astBuilder) GetFeature() *Feature {
-	res := t.currentNode().getSingle(RuleType_Feature)
-	if val, ok := res.(*Feature); ok {
+func (t *astBuilder) GetGherkinDocument() *GherkinDocument {
+	res := t.currentNode().getSingle(RuleType_GherkinDocument)
+	if val, ok := res.(*GherkinDocument); ok {
 		return val
 	}
 	return nil
@@ -284,8 +284,16 @@ func (t *astBuilder) transformNode(node *astNode) (interface{}, error) {
 		feat.Name = featureLine.Text
 		feat.Description = description
 		feat.Children = children
-		feat.Comments = t.comments
 		return feat, nil
+
+	case RuleType_GherkinDocument:
+		feature, _ := node.getSingle(RuleType_Feature).(*Feature)
+
+		doc := new(GherkinDocument)
+		doc.Type = "GherkinDocument"
+		doc.Feature = feature
+		doc.Comments = t.comments
+		return doc, nil
 	}
 	return node, nil
 }

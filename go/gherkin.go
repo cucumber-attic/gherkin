@@ -122,7 +122,7 @@ func (g *Line) StartsWith(prefix string) bool {
 	return strings.HasPrefix(g.TrimmedLineText, prefix)
 }
 
-func ParseFeature(in io.Reader) (feature *Feature, err error) {
+func ParseGherkinDocument(in io.Reader) (gherkinDocument *GherkinDocument, err error) {
 
 	builder := NewAstBuilder()
 	parser := NewParser(builder)
@@ -133,5 +133,5 @@ func ParseFeature(in io.Reader) (feature *Feature, err error) {
 
 	err = parser.Parse(scanner, matcher)
 
-	return builder.GetFeature(), err
+	return builder.GetGherkinDocument(), err
 }
