@@ -1,10 +1,10 @@
-﻿#import "GHTokenScanner.h"
+﻿#import <Foundation/Foundation.h>
+#import "GHTokenScanner.h"
 
 #import "GHToken.h"
 #import "GHLocation.h"
 #import "GHGherkinLine.h"
 #import "GHParser.h"
-#import "GHLineEndingHelper.h"
 
 @implementation GHTokenScanner
 {
