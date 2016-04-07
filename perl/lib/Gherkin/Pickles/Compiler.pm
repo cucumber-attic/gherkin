@@ -4,9 +4,10 @@ use strict;
 use warnings;
 
 sub compile {
-    my ( $class, $feature, $path ) = @_;
+    my ( $class, $feature_file, $path ) = @_;
     my @pickles;
 
+    my $feature = $feature_file->{'feature'};
     my $feature_tags     = $feature->{'tags'};
     my $background_steps = [];
 
