@@ -6,6 +6,7 @@ import gherkin.ast.DataTable;
 import gherkin.ast.DocString;
 import gherkin.ast.Examples;
 import gherkin.ast.Feature;
+import gherkin.ast.GherkinDocument;
 import gherkin.ast.Location;
 import gherkin.ast.Node;
 import gherkin.ast.Scenario;
@@ -26,7 +27,7 @@ import static gherkin.Parser.RuleType;
 import static gherkin.Parser.TokenType;
 import static gherkin.StringUtils.join;
 
-public class AstBuilder implements Builder<Feature> {
+public class AstBuilder implements Builder<GherkinDocument> {
     private Deque<AstNode> stack;
     private List<Comment> comments;
 
@@ -169,7 +170,12 @@ public class AstBuilder implements Builder<Feature> {
                 if (featureLine.matchedGherkinDialect == null) return null;
                 String language = featureLine.matchedGherkinDialect.getLanguage();
 
-                return new Feature(tags, getLocation(featureLine, 0), language, featureLine.matchedKeyword, featureLine.matchedText, description, scenarioDefinitions, comments);
+                return new Feature(tags, getLocation(featureLine, 0), language, featureLine.matchedKeyword, featureLine.matchedText, description, scenarioDefinitions);
+            }
+            case GherkinDocument: {
+                Feature feature = node.getSingle(RuleType.Feature, null);
+
+                return new GherkinDocument(feature, comments);
             }
 
         }
@@ -232,7 +238,7 @@ public class AstBuilder implements Builder<Feature> {
     }
 
     @Override
-    public Feature getResult() {
-        return currentNode().getSingle(RuleType.Feature, null);
+    public GherkinDocument getResult() {
+        return currentNode().getSingle(RuleType.GherkinDocument, null);
     }
 }
