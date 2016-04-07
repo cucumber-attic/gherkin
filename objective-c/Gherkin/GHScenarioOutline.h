@@ -1,3 +1,4 @@
+#import <Foundation/Foundation.h>
 #import "GHScenarioDefinition.h"
 
 @class GHExamples;

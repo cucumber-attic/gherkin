@@ -1,4 +1,5 @@
-﻿@class GHLocation;
+﻿#import <Foundation/Foundation.h>
+@class GHLocation;
 
 @protocol GHHasLocationProtocol <NSObject>
 

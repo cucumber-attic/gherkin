@@ -1,3 +1,4 @@
+#import <Foundation/Foundation.h>
 @interface GHGherkinLanguageSetting : NSObject
 
 @property (nonatomic, strong) NSString            * name;

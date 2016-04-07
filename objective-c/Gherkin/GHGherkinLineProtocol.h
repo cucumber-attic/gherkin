@@ -1,4 +1,5 @@
-﻿@class GHGherkinLineSpan;
+﻿#import <Foundation/Foundation.h>
+@class GHGherkinLineSpan;
 
 @protocol GHGherkinLineProtocol <NSObject>
 

@@ -13,7 +13,6 @@
 #import "GHAstBuilder.h"
 #import "GHToken.h"
 #import "GHParserException.h"
-
 @implementation GHParserContext
 
 @synthesize tokenScanner;
@@ -69,7 +68,7 @@
         token = [self readTokenWithContext: context];
         state = [self matchToken: token withState: state context: context];
     } while(![token isEOF]);
-
+    
     [self endRuleWithContext: context ruleType: GHRuleTypeFeature];
 
     if ([[context errors] count])
@@ -377,6 +376,9 @@
         return 0;
     }
     
+    if(theToken.matchedType == GHTokenTypeNone){
+        return 0;
+    }
     NSString * stateComment = @"State: 0 - Start";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#Language", @"#TagLine", @"#FeatureLine", @"#Comment", @"#Empty", nil];
