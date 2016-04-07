@@ -25,6 +25,18 @@ namespace Gherkin.AstGenerator
                         Readable = true
                     });
             }
+            if (typeof(GherkinDocument).IsAssignableFrom(type))
+            {
+                var objContract = (JsonObjectContract) contract;
+                if (!objContract.Properties.Contains("type"))
+                    objContract.Properties.AddProperty(new JsonProperty()
+                    {
+                        PropertyName = "type",
+                        ValueProvider = new GetTypeValueProvider(),
+                        PropertyType = typeof(string),
+                        Readable = true
+                    });
+            }
 
             return contract;
         }
