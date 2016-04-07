@@ -26,7 +26,7 @@ namespace Gherkin.Specs
         public void TestMultipleFeatures()
         {
             var tokenMatcher = new TokenMatcher();
-            var parser = new Parser(new AstBuilder<Feature>());
+            var parser = new Parser(new AstBuilder<GherkinDocument>());
             var jsonSerializerSettings = new JsonSerializerSettings();
             jsonSerializerSettings.Formatting = Formatting.Indented;
             jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
@@ -37,27 +37,31 @@ namespace Gherkin.Specs
             var astText2 = LineEndingHelper.NormalizeLineEndings(JsonConvert.SerializeObject(parsingResult2, jsonSerializerSettings));
 
 	    string expected1 = LineEndingHelper.NormalizeLineEndings(@"{
-  ""Tags"": [],
-  ""Location"": {
-    ""Line"": 1,
-    ""Column"": 1
+  ""Feature"": {
+    ""Tags"": [],
+    ""Location"": {
+      ""Line"": 1,
+      ""Column"": 1
+    },
+    ""Language"": ""en"",
+    ""Keyword"": ""Feature"",
+    ""Name"": ""Test"",
+    ""Children"": []
   },
-  ""Language"": ""en"",
-  ""Keyword"": ""Feature"",
-  ""Name"": ""Test"",
-  ""Children"": [],
   ""Comments"": []
 }");
 	    string expected2 = LineEndingHelper.NormalizeLineEndings(@"{
-  ""Tags"": [],
-  ""Location"": {
-    ""Line"": 1,
-    ""Column"": 1
+  ""Feature"": {
+    ""Tags"": [],
+    ""Location"": {
+      ""Line"": 1,
+      ""Column"": 1
+    },
+    ""Language"": ""en"",
+    ""Keyword"": ""Feature"",
+    ""Name"": ""Test2"",
+    ""Children"": []
   },
-  ""Language"": ""en"",
-  ""Keyword"": ""Feature"",
-  ""Name"": ""Test2"",
-  ""Children"": [],
   ""Comments"": []
 }");
             Assert.AreEqual(expected1, astText1);
@@ -68,7 +72,7 @@ namespace Gherkin.Specs
         public void TestChangeDefaultLanguage()
         {
             var tokenMatcher = new TokenMatcher("no");
-            var parser = new Parser(new AstBuilder<Feature>());
+            var parser = new Parser(new AstBuilder<GherkinDocument>());
             var jsonSerializerSettings = new JsonSerializerSettings();
             jsonSerializerSettings.Formatting = Formatting.Indented;
             jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
@@ -77,15 +81,17 @@ namespace Gherkin.Specs
             var astText = LineEndingHelper.NormalizeLineEndings(JsonConvert.SerializeObject(parsingResult, jsonSerializerSettings));
 
 	    string expected = LineEndingHelper.NormalizeLineEndings(@"{
-  ""Tags"": [],
-  ""Location"": {
-    ""Line"": 1,
-    ""Column"": 1
+  ""Feature"": {
+    ""Tags"": [],
+    ""Location"": {
+      ""Line"": 1,
+      ""Column"": 1
+    },
+    ""Language"": ""no"",
+    ""Keyword"": ""Egenskap"",
+    ""Name"": ""i18n support"",
+    ""Children"": []
   },
-  ""Language"": ""no"",
-  ""Keyword"": ""Egenskap"",
-  ""Name"": ""i18n support"",
-  ""Children"": [],
   ""Comments"": []
 }");
             Assert.AreEqual(expected, astText);
