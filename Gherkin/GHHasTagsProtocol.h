@@ -1,4 +1,5 @@
-﻿@class GHTag;
+﻿#import <Foundation/Foundation.h>
+@class GHTag;
 
 @protocol GHHasTagsProtocol <NSObject>
 

@@ -1,3 +1,4 @@
-﻿@interface GHStepArgument : NSObject
+﻿#import <Foundation/Foundation.h>
+@interface GHStepArgument : NSObject
 
 @end

@@ -1,4 +1,5 @@
-﻿@class GHStep;
+﻿#import <Foundation/Foundation.h>
+@class GHStep;
 
 @protocol GHHasStepsProtocol <NSObject>
 

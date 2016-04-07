@@ -53,6 +53,9 @@
 - (NSDictionary<NSString *, GHGherkinLanguageSetting *> *)languagesSetting
 {
     NSBundle * gherkinLanguagesBundle = [NSBundle bundleWithPath: [[NSBundle mainBundle] pathForResource: @"GherkinLanguages" ofType: @"bundle"]];
+    if(gherkinLanguagesBundle == nil){
+        gherkinLanguagesBundle = [NSBundle bundleForClass:[self class]];
+    }
     NSData * languagesFileContent = [NSData dataWithContentsOfFile: [gherkinLanguagesBundle pathForResource: @"gherkin-languages" ofType: @"json"]];
     
     /*TODO: check for error
