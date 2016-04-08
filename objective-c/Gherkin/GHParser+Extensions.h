@@ -1,10 +1,10 @@
 ﻿#import <Foundation/Foundation.h>
 #import "GHParser.h"
 
-@class GHFeature;
+@class GHGherkinDocument;
 
 @interface GHParser (Extensions)
 
-- (GHFeature *)parse:(NSString *)theSourceFile;
+- (GHGherkinDocument *)parse:(NSString *)theSourceFile;
 
 @end
