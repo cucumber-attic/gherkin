@@ -7,131 +7,133 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5B0264001BD03E190040F71E /* GHTokensGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0263FF1BD03E190040F71E /* GHTokensGenerator.m */; settings = {ASSET_TAGS = (); }; };
-		5B0264031BD03E510040F71E /* GHTokenFormatterBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0264021BD03E510040F71E /* GHTokenFormatterBuilder.m */; settings = {ASSET_TAGS = (); }; };
-		5B0264061BD03FB00040F71E /* GHTestTokenFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0264051BD03FB00040F71E /* GHTestTokenFormatter.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C88A1BCD35B900D16073 /* GHTokenScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8891BCD35B900D16073 /* GHTokenScanner.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C88E1BCD3D6300D16073 /* GHGherkinLineSpan.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C88D1BCD3D6300D16073 /* GHGherkinLineSpan.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8901BCD3EA200D16073 /* GHGherkinDialect.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C88F1BCD3EA200D16073 /* GHGherkinDialect.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8951BCD5C1C00D16073 /* GHToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8861BCD34EB00D16073 /* GHToken.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8961BCD5C2300D16073 /* GHGherkinLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8811BCD34EB00D16073 /* GHGherkinLine.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8971BCD5C2600D16073 /* GHGherkinLanguageConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8801BCD34EB00D16073 /* GHGherkinLanguageConstants.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8981BCD5C2800D16073 /* GHGherkinDialectProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C87F1BCD34EB00D16073 /* GHGherkinDialectProvider.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C89C1BCD747D00D16073 /* NSString+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C89B1BCD747D00D16073 /* NSString+Trim.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C89F1BCD797800D16073 /* GHGherkinLanguageSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C89E1BCD797800D16073 /* GHGherkinLanguageSetting.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8A01BCD81FC00D16073 /* GHTokenMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8871BCD34EB00D16073 /* GHTokenMatcher.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8A51BCDA46C00D16073 /* GHAstNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8A41BCDA46C00D16073 /* GHAstNode.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8AF1BCDBF6300D16073 /* libGherkiniOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B18C83F1BCD0BD400D16073 /* libGherkiniOS.a */; settings = {ASSET_TAGS = (); }; };
-		5B18C8B61BCDBF8A00D16073 /* GHGherkinLineTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8B51BCDBF8A00D16073 /* GHGherkinLineTest.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8B81BCDC06E00D16073 /* GHAstBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C87C1BCD34EB00D16073 /* GHAstBuilder.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8E11BCE423800D16073 /* GHBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8BB1BCE423800D16073 /* GHBackground.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8E21BCE423800D16073 /* GHComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8BD1BCE423800D16073 /* GHComment.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8E31BCE423800D16073 /* GHDataTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8BF1BCE423800D16073 /* GHDataTable.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8E41BCE423800D16073 /* GHDocString.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8C11BCE423800D16073 /* GHDocString.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8E51BCE423800D16073 /* GHExamples.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8C41BCE423800D16073 /* GHExamples.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8E61BCE423800D16073 /* GHFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8C61BCE423800D16073 /* GHFeature.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8E71BCE423800D16073 /* GHLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8CD1BCE423800D16073 /* GHLocation.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8E81BCE423800D16073 /* GHNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8CF1BCE423800D16073 /* GHNode.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8E91BCE423800D16073 /* GHScenario.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D11BCE423800D16073 /* GHScenario.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8EA1BCE423800D16073 /* GHScenarioDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D41BCE423800D16073 /* GHScenarioDefinition.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8EB1BCE423800D16073 /* GHScenarioOutline.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D61BCE423800D16073 /* GHScenarioOutline.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8EC1BCE423800D16073 /* GHStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D81BCE423800D16073 /* GHStep.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8ED1BCE423800D16073 /* GHStepArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8DA1BCE423800D16073 /* GHStepArgument.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8EE1BCE423800D16073 /* GHTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8DC1BCE423800D16073 /* GHTableCell.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8EF1BCE423800D16073 /* GHTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8DE1BCE423800D16073 /* GHTableRow.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8F01BCE423800D16073 /* GHTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8E01BCE423800D16073 /* GHTag.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8F51BCE970E00D16073 /* GHParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8F21BCE78C100D16073 /* GHParser.m */; settings = {ASSET_TAGS = (); }; };
-		5B18C8F71BCEB58100D16073 /* GHParserException.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8851BCD34EB00D16073 /* GHParserException.m */; settings = {ASSET_TAGS = (); }; };
-		5B99A5B61BD03CD000233759 /* NSObject+Dictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA18901BCF923700D59664 /* NSObject+Dictionary.m */; settings = {ASSET_TAGS = (); }; };
-		5B99A5B71BD03CD000233759 /* GHAstGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EB1BCEF60600D59664 /* GHAstGenerator.m */; settings = {ASSET_TAGS = (); }; };
-		5B99A5B81BD03CD000233759 /* GHLineEndingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */; settings = {ASSET_TAGS = (); }; };
+		5B0264001BD03E190040F71E /* GHTokensGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0263FF1BD03E190040F71E /* GHTokensGenerator.m */; };
+		5B0264031BD03E510040F71E /* GHTokenFormatterBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0264021BD03E510040F71E /* GHTokenFormatterBuilder.m */; };
+		5B0264061BD03FB00040F71E /* GHTestTokenFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0264051BD03FB00040F71E /* GHTestTokenFormatter.m */; };
+		5B18C88A1BCD35B900D16073 /* GHTokenScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8891BCD35B900D16073 /* GHTokenScanner.m */; };
+		5B18C88E1BCD3D6300D16073 /* GHGherkinLineSpan.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C88D1BCD3D6300D16073 /* GHGherkinLineSpan.m */; };
+		5B18C8901BCD3EA200D16073 /* GHGherkinDialect.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C88F1BCD3EA200D16073 /* GHGherkinDialect.m */; };
+		5B18C8951BCD5C1C00D16073 /* GHToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8861BCD34EB00D16073 /* GHToken.m */; };
+		5B18C8961BCD5C2300D16073 /* GHGherkinLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8811BCD34EB00D16073 /* GHGherkinLine.m */; };
+		5B18C8971BCD5C2600D16073 /* GHGherkinLanguageConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8801BCD34EB00D16073 /* GHGherkinLanguageConstants.m */; };
+		5B18C8981BCD5C2800D16073 /* GHGherkinDialectProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C87F1BCD34EB00D16073 /* GHGherkinDialectProvider.m */; };
+		5B18C89C1BCD747D00D16073 /* NSString+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C89B1BCD747D00D16073 /* NSString+Trim.m */; };
+		5B18C89F1BCD797800D16073 /* GHGherkinLanguageSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C89E1BCD797800D16073 /* GHGherkinLanguageSetting.m */; };
+		5B18C8A01BCD81FC00D16073 /* GHTokenMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8871BCD34EB00D16073 /* GHTokenMatcher.m */; };
+		5B18C8A51BCDA46C00D16073 /* GHAstNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8A41BCDA46C00D16073 /* GHAstNode.m */; };
+		5B18C8AF1BCDBF6300D16073 /* libGherkiniOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B18C83F1BCD0BD400D16073 /* libGherkiniOS.a */; };
+		5B18C8B61BCDBF8A00D16073 /* GHGherkinLineTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8B51BCDBF8A00D16073 /* GHGherkinLineTest.m */; };
+		5B18C8B81BCDC06E00D16073 /* GHAstBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C87C1BCD34EB00D16073 /* GHAstBuilder.m */; };
+		5B18C8E11BCE423800D16073 /* GHBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8BB1BCE423800D16073 /* GHBackground.m */; };
+		5B18C8E21BCE423800D16073 /* GHComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8BD1BCE423800D16073 /* GHComment.m */; };
+		5B18C8E31BCE423800D16073 /* GHDataTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8BF1BCE423800D16073 /* GHDataTable.m */; };
+		5B18C8E41BCE423800D16073 /* GHDocString.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8C11BCE423800D16073 /* GHDocString.m */; };
+		5B18C8E51BCE423800D16073 /* GHExamples.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8C41BCE423800D16073 /* GHExamples.m */; };
+		5B18C8E61BCE423800D16073 /* GHFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8C61BCE423800D16073 /* GHFeature.m */; };
+		5B18C8E71BCE423800D16073 /* GHLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8CD1BCE423800D16073 /* GHLocation.m */; };
+		5B18C8E81BCE423800D16073 /* GHNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8CF1BCE423800D16073 /* GHNode.m */; };
+		5B18C8E91BCE423800D16073 /* GHScenario.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D11BCE423800D16073 /* GHScenario.m */; };
+		5B18C8EA1BCE423800D16073 /* GHScenarioDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D41BCE423800D16073 /* GHScenarioDefinition.m */; };
+		5B18C8EB1BCE423800D16073 /* GHScenarioOutline.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D61BCE423800D16073 /* GHScenarioOutline.m */; };
+		5B18C8EC1BCE423800D16073 /* GHStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D81BCE423800D16073 /* GHStep.m */; };
+		5B18C8ED1BCE423800D16073 /* GHStepArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8DA1BCE423800D16073 /* GHStepArgument.m */; };
+		5B18C8EE1BCE423800D16073 /* GHTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8DC1BCE423800D16073 /* GHTableCell.m */; };
+		5B18C8EF1BCE423800D16073 /* GHTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8DE1BCE423800D16073 /* GHTableRow.m */; };
+		5B18C8F01BCE423800D16073 /* GHTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8E01BCE423800D16073 /* GHTag.m */; };
+		5B18C8F51BCE970E00D16073 /* GHParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8F21BCE78C100D16073 /* GHParser.m */; };
+		5B18C8F71BCEB58100D16073 /* GHParserException.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8851BCD34EB00D16073 /* GHParserException.m */; };
+		5B99A5B61BD03CD000233759 /* NSObject+Dictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA18901BCF923700D59664 /* NSObject+Dictionary.m */; };
+		5B99A5B71BD03CD000233759 /* GHAstGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EB1BCEF60600D59664 /* GHAstGenerator.m */; };
+		5B99A5B81BD03CD000233759 /* GHLineEndingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */; };
 		5B99A5BA1BD03CD000233759 /* libGherkinOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BAA18081BCF00DA00D59664 /* libGherkinOSX.a */; };
 		5B99A5BC1BD03CD000233759 /* GherkinLanguages.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5BAA17F81BCEFEA500D59664 /* GherkinLanguages.bundle */; };
-		5B99A5C61BD03D6500233759 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B99A5C51BD03D6500233759 /* main.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA17DE1BCED40600D59664 /* GHGherkinTokenizationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17DD1BCED40600D59664 /* GHGherkinTokenizationTest.m */; settings = {ASSET_TAGS = (); }; };
+		5B99A5C61BD03D6500233759 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B99A5C51BD03D6500233759 /* main.m */; };
+		5BAA17DE1BCED40600D59664 /* GHGherkinTokenizationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17DD1BCED40600D59664 /* GHGherkinTokenizationTest.m */; };
 		5BAA17E61BCEF4EA00D59664 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17E51BCEF4EA00D59664 /* main.m */; };
-		5BAA17EC1BCEF60600D59664 /* GHAstGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EB1BCEF60600D59664 /* GHAstGenerator.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA17F01BCEF81100D59664 /* GHLineEndingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA17FF1BCEFEC200D59664 /* gherkin-languages.json in Resources */ = {isa = PBXBuildFile; fileRef = 5BAA17FE1BCEFEC200D59664 /* gherkin-languages.json */; settings = {ASSET_TAGS = (); }; };
+		5BAA17EC1BCEF60600D59664 /* GHAstGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EB1BCEF60600D59664 /* GHAstGenerator.m */; };
+		5BAA17F01BCEF81100D59664 /* GHLineEndingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */; };
+		5BAA17FF1BCEFEC200D59664 /* gherkin-languages.json in Resources */ = {isa = PBXBuildFile; fileRef = 5BAA17FE1BCEFEC200D59664 /* gherkin-languages.json */; };
 		5BAA18031BCEFEF600D59664 /* GherkinLanguages.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5BAA17F81BCEFEA500D59664 /* GherkinLanguages.bundle */; };
-		5BAA18111BCF00E600D59664 /* GHAstBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8A21BCD86F100D16073 /* GHAstBuilder.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18121BCF00E600D59664 /* GHAstBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C87C1BCD34EB00D16073 /* GHAstBuilder.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18131BCF00E600D59664 /* GHAstNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8A31BCDA46C00D16073 /* GHAstNode.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18141BCF00E600D59664 /* GHAstNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8A41BCDA46C00D16073 /* GHAstNode.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18151BCF00E600D59664 /* NSString+Trim.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C89A1BCD747D00D16073 /* NSString+Trim.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18161BCF00E600D59664 /* NSString+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C89B1BCD747D00D16073 /* NSString+Trim.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18171BCF00E600D59664 /* GHGherkinLanguageSetting.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C89D1BCD797800D16073 /* GHGherkinLanguageSetting.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18181BCF00E600D59664 /* GHGherkinLanguageSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C89E1BCD797800D16073 /* GHGherkinLanguageSetting.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18191BCF00E600D59664 /* GHGherkinDialect.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C87E1BCD34EB00D16073 /* GHGherkinDialect.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA181A1BCF00E600D59664 /* GHGherkinDialect.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C88F1BCD3EA200D16073 /* GHGherkinDialect.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA181B1BCF00E600D59664 /* GHGherkinDialectProviderProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8A11BCD838800D16073 /* GHGherkinDialectProviderProtocol.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA181C1BCF00E600D59664 /* GHGherkinDialectProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8991BCD5CFB00D16073 /* GHGherkinDialectProvider.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA181D1BCF00E600D59664 /* GHGherkinDialectProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C87F1BCD34EB00D16073 /* GHGherkinDialectProvider.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA181E1BCF00E600D59664 /* GHGherkinLanguageConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8911BCD412D00D16073 /* GHGherkinLanguageConstants.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA181F1BCF00E600D59664 /* GHGherkinLanguageConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8801BCD34EB00D16073 /* GHGherkinLanguageConstants.m */; settings = {ASSET_TAGS = (); }; };
+		5BAA18111BCF00E600D59664 /* GHAstBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8A21BCD86F100D16073 /* GHAstBuilder.h */; };
+		5BAA18121BCF00E600D59664 /* GHAstBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C87C1BCD34EB00D16073 /* GHAstBuilder.m */; };
+		5BAA18131BCF00E600D59664 /* GHAstNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8A31BCDA46C00D16073 /* GHAstNode.h */; };
+		5BAA18141BCF00E600D59664 /* GHAstNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8A41BCDA46C00D16073 /* GHAstNode.m */; };
+		5BAA18151BCF00E600D59664 /* NSString+Trim.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C89A1BCD747D00D16073 /* NSString+Trim.h */; };
+		5BAA18161BCF00E600D59664 /* NSString+Trim.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C89B1BCD747D00D16073 /* NSString+Trim.m */; };
+		5BAA18171BCF00E600D59664 /* GHGherkinLanguageSetting.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C89D1BCD797800D16073 /* GHGherkinLanguageSetting.h */; };
+		5BAA18181BCF00E600D59664 /* GHGherkinLanguageSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C89E1BCD797800D16073 /* GHGherkinLanguageSetting.m */; };
+		5BAA18191BCF00E600D59664 /* GHGherkinDialect.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C87E1BCD34EB00D16073 /* GHGherkinDialect.h */; };
+		5BAA181A1BCF00E600D59664 /* GHGherkinDialect.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C88F1BCD3EA200D16073 /* GHGherkinDialect.m */; };
+		5BAA181B1BCF00E600D59664 /* GHGherkinDialectProviderProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8A11BCD838800D16073 /* GHGherkinDialectProviderProtocol.h */; };
+		5BAA181C1BCF00E600D59664 /* GHGherkinDialectProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8991BCD5CFB00D16073 /* GHGherkinDialectProvider.h */; };
+		5BAA181D1BCF00E600D59664 /* GHGherkinDialectProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C87F1BCD34EB00D16073 /* GHGherkinDialectProvider.m */; };
+		5BAA181E1BCF00E600D59664 /* GHGherkinLanguageConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8911BCD412D00D16073 /* GHGherkinLanguageConstants.h */; };
+		5BAA181F1BCF00E600D59664 /* GHGherkinLanguageConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8801BCD34EB00D16073 /* GHGherkinLanguageConstants.m */; };
 		5BAA18201BCF00E600D59664 /* GHGherkinLine.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8931BCD47AF00D16073 /* GHGherkinLine.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5BAA18211BCF00E600D59664 /* GHGherkinLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8811BCD34EB00D16073 /* GHGherkinLine.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18221BCF00E600D59664 /* GHGherkinLineSpan.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8821BCD34EB00D16073 /* GHGherkinLineSpan.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18231BCF00E600D59664 /* GHGherkinLineSpan.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C88D1BCD3D6300D16073 /* GHGherkinLineSpan.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18241BCF00E600D59664 /* GHGherkinLineProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8831BCD34EB00D16073 /* GHGherkinLineProtocol.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18251BCF00E600D59664 /* GHParser+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8F61BCEACEE00D16073 /* GHParser+Extensions.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18261BCF00E600D59664 /* GHParser+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8841BCD34EB00D16073 /* GHParser+Extensions.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18271BCF00E600D59664 /* GHParserException.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8F41BCE944E00D16073 /* GHParserException.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18281BCF00E600D59664 /* GHParserException.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8851BCD34EB00D16073 /* GHParserException.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18291BCF00E600D59664 /* GHToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C88B1BCD390600D16073 /* GHToken.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA182A1BCF00E600D59664 /* GHToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8861BCD34EB00D16073 /* GHToken.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA182B1BCF00E600D59664 /* GHTokenMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8921BCD479E00D16073 /* GHTokenMatcher.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA182C1BCF00E600D59664 /* GHTokenMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8871BCD34EB00D16073 /* GHTokenMatcher.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA182D1BCF00E600D59664 /* GHTokenScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8881BCD34EB00D16073 /* GHTokenScanner.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA182E1BCF00E600D59664 /* GHTokenScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8891BCD35B900D16073 /* GHTokenScanner.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18301BCF00F000D59664 /* GHBackground.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8BA1BCE423800D16073 /* GHBackground.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18311BCF00F000D59664 /* GHBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8BB1BCE423800D16073 /* GHBackground.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18321BCF00F000D59664 /* GHComment.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8BC1BCE423800D16073 /* GHComment.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18331BCF00F000D59664 /* GHComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8BD1BCE423800D16073 /* GHComment.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18341BCF00F000D59664 /* GHDataTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8BE1BCE423800D16073 /* GHDataTable.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18351BCF00F000D59664 /* GHDataTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8BF1BCE423800D16073 /* GHDataTable.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18361BCF00F000D59664 /* GHDocString.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8C01BCE423800D16073 /* GHDocString.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18371BCF00F000D59664 /* GHDocString.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8C11BCE423800D16073 /* GHDocString.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18381BCF00F000D59664 /* GHExamples.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8C31BCE423800D16073 /* GHExamples.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18391BCF00F000D59664 /* GHExamples.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8C41BCE423800D16073 /* GHExamples.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA183A1BCF00F000D59664 /* GHFeature.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8C51BCE423800D16073 /* GHFeature.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA183B1BCF00F000D59664 /* GHFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8C61BCE423800D16073 /* GHFeature.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA183C1BCF00F000D59664 /* GHHasDescriptionProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8C71BCE423800D16073 /* GHHasDescriptionProtocol.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA183D1BCF00F000D59664 /* GHHasLocationProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8C81BCE423800D16073 /* GHHasLocationProtocol.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA183E1BCF00F000D59664 /* GHHasRowsProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8C91BCE423800D16073 /* GHHasRowsProtocol.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA183F1BCF00F000D59664 /* GHHasStepsProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8CA1BCE423800D16073 /* GHHasStepsProtocol.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18401BCF00F000D59664 /* GHHasTagsProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8CB1BCE423800D16073 /* GHHasTagsProtocol.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18411BCF00F000D59664 /* GHLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8CC1BCE423800D16073 /* GHLocation.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18421BCF00F000D59664 /* GHLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8CD1BCE423800D16073 /* GHLocation.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18431BCF00F000D59664 /* GHNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8CE1BCE423800D16073 /* GHNode.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18441BCF00F000D59664 /* GHNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8CF1BCE423800D16073 /* GHNode.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18451BCF00F000D59664 /* GHScenario.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8D01BCE423800D16073 /* GHScenario.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18461BCF00F000D59664 /* GHScenario.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D11BCE423800D16073 /* GHScenario.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18471BCF00F000D59664 /* GHScenarioDefinition_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8D21BCE423800D16073 /* GHScenarioDefinition_Private.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18481BCF00F000D59664 /* GHScenarioDefinition.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8D31BCE423800D16073 /* GHScenarioDefinition.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18491BCF00F000D59664 /* GHScenarioDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D41BCE423800D16073 /* GHScenarioDefinition.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA184A1BCF00F000D59664 /* GHScenarioOutline.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8D51BCE423800D16073 /* GHScenarioOutline.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA184B1BCF00F000D59664 /* GHScenarioOutline.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D61BCE423800D16073 /* GHScenarioOutline.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA184C1BCF00F000D59664 /* GHStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8D71BCE423800D16073 /* GHStep.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA184D1BCF00F000D59664 /* GHStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D81BCE423800D16073 /* GHStep.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA184E1BCF00F000D59664 /* GHStepArgument.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8D91BCE423800D16073 /* GHStepArgument.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA184F1BCF00F000D59664 /* GHStepArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8DA1BCE423800D16073 /* GHStepArgument.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18501BCF00F000D59664 /* GHTableCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8DB1BCE423800D16073 /* GHTableCell.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18511BCF00F000D59664 /* GHTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8DC1BCE423800D16073 /* GHTableCell.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18521BCF00F000D59664 /* GHTableRow.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8DD1BCE423800D16073 /* GHTableRow.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18531BCF00F000D59664 /* GHTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8DE1BCE423800D16073 /* GHTableRow.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18541BCF00F000D59664 /* GHTag.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8DF1BCE423800D16073 /* GHTag.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA18551BCF00F000D59664 /* GHTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8E01BCE423800D16073 /* GHTag.m */; settings = {ASSET_TAGS = (); }; };
+		5BAA18211BCF00E600D59664 /* GHGherkinLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8811BCD34EB00D16073 /* GHGherkinLine.m */; };
+		5BAA18221BCF00E600D59664 /* GHGherkinLineSpan.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8821BCD34EB00D16073 /* GHGherkinLineSpan.h */; };
+		5BAA18231BCF00E600D59664 /* GHGherkinLineSpan.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C88D1BCD3D6300D16073 /* GHGherkinLineSpan.m */; };
+		5BAA18241BCF00E600D59664 /* GHGherkinLineProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8831BCD34EB00D16073 /* GHGherkinLineProtocol.h */; };
+		5BAA18251BCF00E600D59664 /* GHParser+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8F61BCEACEE00D16073 /* GHParser+Extensions.h */; };
+		5BAA18261BCF00E600D59664 /* GHParser+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8841BCD34EB00D16073 /* GHParser+Extensions.m */; };
+		5BAA18271BCF00E600D59664 /* GHParserException.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8F41BCE944E00D16073 /* GHParserException.h */; };
+		5BAA18281BCF00E600D59664 /* GHParserException.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8851BCD34EB00D16073 /* GHParserException.m */; };
+		5BAA18291BCF00E600D59664 /* GHToken.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C88B1BCD390600D16073 /* GHToken.h */; };
+		5BAA182A1BCF00E600D59664 /* GHToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8861BCD34EB00D16073 /* GHToken.m */; };
+		5BAA182B1BCF00E600D59664 /* GHTokenMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8921BCD479E00D16073 /* GHTokenMatcher.h */; };
+		5BAA182C1BCF00E600D59664 /* GHTokenMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8871BCD34EB00D16073 /* GHTokenMatcher.m */; };
+		5BAA182D1BCF00E600D59664 /* GHTokenScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8881BCD34EB00D16073 /* GHTokenScanner.h */; };
+		5BAA182E1BCF00E600D59664 /* GHTokenScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8891BCD35B900D16073 /* GHTokenScanner.m */; };
+		5BAA18301BCF00F000D59664 /* GHBackground.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8BA1BCE423800D16073 /* GHBackground.h */; };
+		5BAA18311BCF00F000D59664 /* GHBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8BB1BCE423800D16073 /* GHBackground.m */; };
+		5BAA18321BCF00F000D59664 /* GHComment.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8BC1BCE423800D16073 /* GHComment.h */; };
+		5BAA18331BCF00F000D59664 /* GHComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8BD1BCE423800D16073 /* GHComment.m */; };
+		5BAA18341BCF00F000D59664 /* GHDataTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8BE1BCE423800D16073 /* GHDataTable.h */; };
+		5BAA18351BCF00F000D59664 /* GHDataTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8BF1BCE423800D16073 /* GHDataTable.m */; };
+		5BAA18361BCF00F000D59664 /* GHDocString.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8C01BCE423800D16073 /* GHDocString.h */; };
+		5BAA18371BCF00F000D59664 /* GHDocString.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8C11BCE423800D16073 /* GHDocString.m */; };
+		5BAA18381BCF00F000D59664 /* GHExamples.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8C31BCE423800D16073 /* GHExamples.h */; };
+		5BAA18391BCF00F000D59664 /* GHExamples.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8C41BCE423800D16073 /* GHExamples.m */; };
+		5BAA183A1BCF00F000D59664 /* GHFeature.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8C51BCE423800D16073 /* GHFeature.h */; };
+		5BAA183B1BCF00F000D59664 /* GHFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8C61BCE423800D16073 /* GHFeature.m */; };
+		5BAA183C1BCF00F000D59664 /* GHHasDescriptionProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8C71BCE423800D16073 /* GHHasDescriptionProtocol.h */; };
+		5BAA183D1BCF00F000D59664 /* GHHasLocationProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8C81BCE423800D16073 /* GHHasLocationProtocol.h */; };
+		5BAA183E1BCF00F000D59664 /* GHHasRowsProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8C91BCE423800D16073 /* GHHasRowsProtocol.h */; };
+		5BAA183F1BCF00F000D59664 /* GHHasStepsProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8CA1BCE423800D16073 /* GHHasStepsProtocol.h */; };
+		5BAA18401BCF00F000D59664 /* GHHasTagsProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8CB1BCE423800D16073 /* GHHasTagsProtocol.h */; };
+		5BAA18411BCF00F000D59664 /* GHLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8CC1BCE423800D16073 /* GHLocation.h */; };
+		5BAA18421BCF00F000D59664 /* GHLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8CD1BCE423800D16073 /* GHLocation.m */; };
+		5BAA18431BCF00F000D59664 /* GHNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8CE1BCE423800D16073 /* GHNode.h */; };
+		5BAA18441BCF00F000D59664 /* GHNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8CF1BCE423800D16073 /* GHNode.m */; };
+		5BAA18451BCF00F000D59664 /* GHScenario.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8D01BCE423800D16073 /* GHScenario.h */; };
+		5BAA18461BCF00F000D59664 /* GHScenario.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D11BCE423800D16073 /* GHScenario.m */; };
+		5BAA18471BCF00F000D59664 /* GHScenarioDefinition_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8D21BCE423800D16073 /* GHScenarioDefinition_Private.h */; };
+		5BAA18481BCF00F000D59664 /* GHScenarioDefinition.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8D31BCE423800D16073 /* GHScenarioDefinition.h */; };
+		5BAA18491BCF00F000D59664 /* GHScenarioDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D41BCE423800D16073 /* GHScenarioDefinition.m */; };
+		5BAA184A1BCF00F000D59664 /* GHScenarioOutline.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8D51BCE423800D16073 /* GHScenarioOutline.h */; };
+		5BAA184B1BCF00F000D59664 /* GHScenarioOutline.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D61BCE423800D16073 /* GHScenarioOutline.m */; };
+		5BAA184C1BCF00F000D59664 /* GHStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8D71BCE423800D16073 /* GHStep.h */; };
+		5BAA184D1BCF00F000D59664 /* GHStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8D81BCE423800D16073 /* GHStep.m */; };
+		5BAA184E1BCF00F000D59664 /* GHStepArgument.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8D91BCE423800D16073 /* GHStepArgument.h */; };
+		5BAA184F1BCF00F000D59664 /* GHStepArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8DA1BCE423800D16073 /* GHStepArgument.m */; };
+		5BAA18501BCF00F000D59664 /* GHTableCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8DB1BCE423800D16073 /* GHTableCell.h */; };
+		5BAA18511BCF00F000D59664 /* GHTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8DC1BCE423800D16073 /* GHTableCell.m */; };
+		5BAA18521BCF00F000D59664 /* GHTableRow.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8DD1BCE423800D16073 /* GHTableRow.h */; };
+		5BAA18531BCF00F000D59664 /* GHTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8DE1BCE423800D16073 /* GHTableRow.m */; };
+		5BAA18541BCF00F000D59664 /* GHTag.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B18C8DF1BCE423800D16073 /* GHTag.h */; };
+		5BAA18551BCF00F000D59664 /* GHTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8E01BCE423800D16073 /* GHTag.m */; };
 		5BAA18581BCF019C00D59664 /* libGherkinOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BAA18081BCF00DA00D59664 /* libGherkinOSX.a */; };
-		5BAA185C1BCF03DA00D59664 /* GHParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 5BAA185B1BCF03DA00D59664 /* GHParser.h */; settings = {ASSET_TAGS = (); }; };
-		5BAA185D1BCF061800D59664 /* GHParser+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8841BCD34EB00D16073 /* GHParser+Extensions.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA185E1BCF06C800D59664 /* GHParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8F21BCE78C100D16073 /* GHParser.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18911BCF923700D59664 /* NSObject+Dictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA18901BCF923700D59664 /* NSObject+Dictionary.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18A01BCFF81C00D59664 /* libGherkinOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BAA18081BCF00DA00D59664 /* libGherkinOSX.a */; settings = {ASSET_TAGS = (); }; };
+		5BAA185C1BCF03DA00D59664 /* GHParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 5BAA185B1BCF03DA00D59664 /* GHParser.h */; };
+		5BAA185D1BCF061800D59664 /* GHParser+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8841BCD34EB00D16073 /* GHParser+Extensions.m */; };
+		5BAA185E1BCF06C800D59664 /* GHParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8F21BCE78C100D16073 /* GHParser.m */; };
+		5BAA18911BCF923700D59664 /* NSObject+Dictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA18901BCF923700D59664 /* NSObject+Dictionary.m */; };
+		5BAA18A01BCFF81C00D59664 /* libGherkinOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BAA18081BCF00DA00D59664 /* libGherkinOSX.a */; };
 		5BAA18A61BCFF8BB00D59664 /* GHGherkinLineTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B18C8B51BCDBF8A00D16073 /* GHGherkinLineTest.m */; };
 		5BAA18A71BCFF8BB00D59664 /* GHGherkinTokenizationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17DD1BCED40600D59664 /* GHGherkinTokenizationTest.m */; };
-		5BAA18A81BCFFBB700D59664 /* GHLineEndingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */; settings = {ASSET_TAGS = (); }; };
-		5BAA18A91BCFFBB800D59664 /* GHLineEndingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */; settings = {ASSET_TAGS = (); }; };
+		5BAA18A81BCFFBB700D59664 /* GHLineEndingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */; };
+		5BAA18A91BCFFBB800D59664 /* GHLineEndingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BAA17EF1BCEF81100D59664 /* GHLineEndingHelper.m */; };
+		DC83A4721CB7EC8400B0F0C7 /* GHGherkinDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = DC83A4711CB7EC8400B0F0C7 /* GHGherkinDocument.h */; };
+		DC83A4741CB7EE0A00B0F0C7 /* GHGherkinDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DC83A4731CB7EE0A00B0F0C7 /* GHGherkinDocument.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -307,6 +309,8 @@
 		5BAA188F1BCF923700D59664 /* NSObject+Dictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Dictionary.h"; sourceTree = "<group>"; };
 		5BAA18901BCF923700D59664 /* NSObject+Dictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Dictionary.m"; sourceTree = "<group>"; };
 		5BAA189B1BCFF81C00D59664 /* GherkinTestsOSX.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GherkinTestsOSX.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC83A4711CB7EC8400B0F0C7 /* GHGherkinDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHGherkinDocument.h; sourceTree = "<group>"; };
+		DC83A4731CB7EE0A00B0F0C7 /* GHGherkinDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHGherkinDocument.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -486,6 +490,8 @@
 				5B18C8DE1BCE423800D16073 /* GHTableRow.m */,
 				5B18C8DF1BCE423800D16073 /* GHTag.h */,
 				5B18C8E01BCE423800D16073 /* GHTag.m */,
+				DC83A4711CB7EC8400B0F0C7 /* GHGherkinDocument.h */,
+				DC83A4731CB7EE0A00B0F0C7 /* GHGherkinDocument.m */,
 			);
 			name = AST;
 			sourceTree = "<group>";
@@ -555,6 +561,7 @@
 				5BAA18381BCF00F000D59664 /* GHExamples.h in Headers */,
 				5BAA18171BCF00E600D59664 /* GHGherkinLanguageSetting.h in Headers */,
 				5BAA18191BCF00E600D59664 /* GHGherkinDialect.h in Headers */,
+				DC83A4721CB7EC8400B0F0C7 /* GHGherkinDocument.h in Headers */,
 				5BAA18401BCF00F000D59664 /* GHHasTagsProtocol.h in Headers */,
 				5BAA18301BCF00F000D59664 /* GHBackground.h in Headers */,
 				5BAA18411BCF00F000D59664 /* GHLocation.h in Headers */,
@@ -886,6 +893,7 @@
 				5BAA185E1BCF06C800D59664 /* GHParser.m in Sources */,
 				5BAA18281BCF00E600D59664 /* GHParserException.m in Sources */,
 				5BAA182E1BCF00E600D59664 /* GHTokenScanner.m in Sources */,
+				DC83A4741CB7EE0A00B0F0C7 /* GHGherkinDocument.m in Sources */,
 				5BAA18211BCF00E600D59664 /* GHGherkinLine.m in Sources */,
 				5BAA18311BCF00F000D59664 /* GHBackground.m in Sources */,
 				5BAA18331BCF00F000D59664 /* GHComment.m in Sources */,

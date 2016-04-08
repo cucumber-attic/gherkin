@@ -13,6 +13,7 @@
 #import "GHAstBuilder.h"
 #import "GHToken.h"
 #import "GHParserException.h"
+
 @implementation GHParserContext
 
 @synthesize tokenScanner;
@@ -60,7 +61,7 @@
     [context setTokenQueue: [[NSMutableArray<GHToken *> alloc] init]];
     [context setErrors: [[NSMutableArray<GHParserException *> alloc] init]];
 
-    [self startRuleWithContext: context ruleType: GHRuleTypeFeature];
+    [self startRuleWithContext: context ruleType: GHRuleTypeGherkinDocument];
     NSUInteger state = 0;
     GHToken * token;
     do
@@ -68,8 +69,8 @@
         token = [self readTokenWithContext: context];
         state = [self matchToken: token withState: state context: context];
     } while(![token isEOF]);
-    
-    [self endRuleWithContext: context ruleType: GHRuleTypeFeature];
+
+    [self endRuleWithContext: context ruleType: GHRuleTypeGherkinDocument];
 
     if ([[context errors] count])
     {
@@ -346,14 +347,21 @@
 // Start
 - (int)matchTokenAt_0:(GHToken *)theToken context:(GHParserContext *)theContext
 {
+    if ([self matchEOFWithContext: theContext token: theToken])
+    {
+        [self buildWithContext: theContext token: theToken];
+        return 27;
+    }
     if ([self matchLanguageWithContext: theContext token: theToken])
     {
+        [self startRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self startRuleWithContext: theContext ruleType: GHRuleTypeFeature_Header];
         [self buildWithContext: theContext token: theToken];
         return 1;
     }
     if ([self matchTagLineWithContext: theContext token: theToken])
     {
+        [self startRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self startRuleWithContext: theContext ruleType: GHRuleTypeFeature_Header];
         [self startRuleWithContext: theContext ruleType: GHRuleTypeTags];
         [self buildWithContext: theContext token: theToken];
@@ -361,6 +369,7 @@
     }
     if ([self matchFeatureLineWithContext: theContext token: theToken])
     {
+        [self startRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self startRuleWithContext: theContext ruleType: GHRuleTypeFeature_Header];
         [self buildWithContext: theContext token: theToken];
         return 3;
@@ -376,12 +385,9 @@
         return 0;
     }
     
-    if(theToken.matchedType == GHTokenTypeNone){
-        return 0;
-    }
     NSString * stateComment = @"State: 0 - Start";
     [theToken detach];
-    NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#Language", @"#TagLine", @"#FeatureLine", @"#Comment", @"#Empty", nil];
+    NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Language", @"#TagLine", @"#FeatureLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
     if (stopAtFirstError)
         @throw error;
@@ -392,7 +398,7 @@
 }
 
 
-// Feature:0>Feature_Header:0>#Language:0
+// GherkinDocument:0>Feature:0>Feature_Header:0>#Language:0
 - (int)matchTokenAt_1:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchTagLineWithContext: theContext token: theToken])
@@ -417,7 +423,7 @@
         return 1;
     }
     
-    NSString * stateComment = @"State: 1 - Feature:0>Feature_Header:0>#Language:0";
+    NSString * stateComment = @"State: 1 - GherkinDocument:0>Feature:0>Feature_Header:0>#Language:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#TagLine", @"#FeatureLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -430,7 +436,7 @@
 }
 
 
-// Feature:0>Feature_Header:1>Tags:0>#TagLine:0
+// GherkinDocument:0>Feature:0>Feature_Header:1>Tags:0>#TagLine:0
 - (int)matchTokenAt_2:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchTagLineWithContext: theContext token: theToken])
@@ -455,7 +461,7 @@
         return 2;
     }
     
-    NSString * stateComment = @"State: 2 - Feature:0>Feature_Header:1>Tags:0>#TagLine:0";
+    NSString * stateComment = @"State: 2 - GherkinDocument:0>Feature:0>Feature_Header:1>Tags:0>#TagLine:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#TagLine", @"#FeatureLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -468,12 +474,13 @@
 }
 
 
-// Feature:0>Feature_Header:2>#FeatureLine:0
+// GherkinDocument:0>Feature:0>Feature_Header:2>#FeatureLine:0
 - (int)matchTokenAt_3:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
     {
         [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature_Header];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -525,7 +532,7 @@
         return 4;
     }
     
-    NSString * stateComment = @"State: 3 - Feature:0>Feature_Header:2>#FeatureLine:0";
+    NSString * stateComment = @"State: 3 - GherkinDocument:0>Feature:0>Feature_Header:2>#FeatureLine:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Empty", @"#Comment", @"#BackgroundLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Other", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -538,13 +545,14 @@
 }
 
 
-// Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
+// GherkinDocument:0>Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0
 - (int)matchTokenAt_4:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
     {
         [self endRuleWithContext: theContext ruleType: GHRuleTypeDescription];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature_Header];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -595,7 +603,7 @@
         return 4;
     }
     
-    NSString * stateComment = @"State: 4 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0";
+    NSString * stateComment = @"State: 4 - GherkinDocument:0>Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Comment", @"#BackgroundLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Other", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -608,12 +616,13 @@
 }
 
 
-// Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0
+// GherkinDocument:0>Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0
 - (int)matchTokenAt_5:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
     {
         [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature_Header];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -659,7 +668,7 @@
         return 5;
     }
     
-    NSString * stateComment = @"State: 5 - Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0";
+    NSString * stateComment = @"State: 5 - GherkinDocument:0>Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Comment", @"#BackgroundLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -672,12 +681,13 @@
 }
 
 
-// Feature:1>Background:0>#BackgroundLine:0
+// GherkinDocument:0>Feature:1>Background:0>#BackgroundLine:0
 - (int)matchTokenAt_6:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
     {
         [self endRuleWithContext: theContext ruleType: GHRuleTypeBackground];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -728,7 +738,7 @@
         return 7;
     }
     
-    NSString * stateComment = @"State: 6 - Feature:1>Background:0>#BackgroundLine:0";
+    NSString * stateComment = @"State: 6 - GherkinDocument:0>Feature:1>Background:0>#BackgroundLine:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Empty", @"#Comment", @"#StepLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Other", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -741,13 +751,14 @@
 }
 
 
-// Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
+// GherkinDocument:0>Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0
 - (int)matchTokenAt_7:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
     {
         [self endRuleWithContext: theContext ruleType: GHRuleTypeDescription];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeBackground];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -797,7 +808,7 @@
         return 7;
     }
     
-    NSString * stateComment = @"State: 7 - Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0";
+    NSString * stateComment = @"State: 7 - GherkinDocument:0>Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Comment", @"#StepLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Other", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -810,12 +821,13 @@
 }
 
 
-// Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
+// GherkinDocument:0>Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0
 - (int)matchTokenAt_8:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
     {
         [self endRuleWithContext: theContext ruleType: GHRuleTypeBackground];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -860,7 +872,7 @@
         return 8;
     }
     
-    NSString * stateComment = @"State: 8 - Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0";
+    NSString * stateComment = @"State: 8 - GherkinDocument:0>Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Comment", @"#StepLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -873,13 +885,14 @@
 }
 
 
-// Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
+// GherkinDocument:0>Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0
 - (int)matchTokenAt_9:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
     {
         [self endRuleWithContext: theContext ruleType: GHRuleTypeStep];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeBackground];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -940,7 +953,7 @@
         return 9;
     }
     
-    NSString * stateComment = @"State: 9 - Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0";
+    NSString * stateComment = @"State: 9 - GherkinDocument:0>Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#TableRow", @"#DocStringSeparator", @"#StepLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -953,7 +966,7 @@
 }
 
 
-// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
+// GherkinDocument:0>Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
 - (int)matchTokenAt_10:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
@@ -961,6 +974,7 @@
         [self endRuleWithContext: theContext ruleType: GHRuleTypeDataTable];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeStep];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeBackground];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -1018,7 +1032,7 @@
         return 10;
     }
     
-    NSString * stateComment = @"State: 10 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
+    NSString * stateComment = @"State: 10 - GherkinDocument:0>Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#TableRow", @"#StepLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -1031,7 +1045,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0
 - (int)matchTokenAt_11:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchTagLineWithContext: theContext token: theToken])
@@ -1064,7 +1078,7 @@
         return 11;
     }
     
-    NSString * stateComment = @"State: 11 - Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0";
+    NSString * stateComment = @"State: 11 - GherkinDocument:0>Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -1077,13 +1091,14 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0
 - (int)matchTokenAt_12:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
     {
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -1137,7 +1152,7 @@
         return 13;
     }
     
-    NSString * stateComment = @"State: 12 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0";
+    NSString * stateComment = @"State: 12 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Empty", @"#Comment", @"#StepLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Other", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -1150,7 +1165,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0
 - (int)matchTokenAt_13:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
@@ -1158,6 +1173,7 @@
         [self endRuleWithContext: theContext ruleType: GHRuleTypeDescription];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -1210,7 +1226,7 @@
         return 13;
     }
     
-    NSString * stateComment = @"State: 13 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0";
+    NSString * stateComment = @"State: 13 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Comment", @"#StepLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Other", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -1223,13 +1239,14 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0
 - (int)matchTokenAt_14:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
     {
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -1277,7 +1294,7 @@
         return 14;
     }
     
-    NSString * stateComment = @"State: 14 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0";
+    NSString * stateComment = @"State: 14 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Comment", @"#StepLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -1290,7 +1307,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0
 - (int)matchTokenAt_15:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
@@ -1298,6 +1315,7 @@
         [self endRuleWithContext: theContext ruleType: GHRuleTypeStep];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -1361,7 +1379,7 @@
         return 15;
     }
     
-    NSString * stateComment = @"State: 15 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0";
+    NSString * stateComment = @"State: 15 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#TableRow", @"#DocStringSeparator", @"#StepLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -1374,7 +1392,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
 - (int)matchTokenAt_16:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
@@ -1383,6 +1401,7 @@
         [self endRuleWithContext: theContext ruleType: GHRuleTypeStep];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -1443,7 +1462,7 @@
         return 16;
     }
     
-    NSString * stateComment = @"State: 16 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
+    NSString * stateComment = @"State: 16 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#TableRow", @"#StepLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -1456,13 +1475,14 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0
 - (int)matchTokenAt_17:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
     {
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenarioOutline];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -1533,7 +1553,7 @@
         return 18;
     }
     
-    NSString * stateComment = @"State: 17 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0";
+    NSString * stateComment = @"State: 17 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Empty", @"#Comment", @"#StepLine", @"#TagLine", @"#ExamplesLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Other", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -1546,7 +1566,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0
 - (int)matchTokenAt_18:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
@@ -1554,6 +1574,7 @@
         [self endRuleWithContext: theContext ruleType: GHRuleTypeDescription];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenarioOutline];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -1625,7 +1646,7 @@
         return 18;
     }
     
-    NSString * stateComment = @"State: 18 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0";
+    NSString * stateComment = @"State: 18 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Comment", @"#StepLine", @"#TagLine", @"#ExamplesLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Other", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -1638,13 +1659,14 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0
 - (int)matchTokenAt_19:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
     {
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenarioOutline];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -1709,7 +1731,7 @@
         return 19;
     }
     
-    NSString * stateComment = @"State: 19 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0";
+    NSString * stateComment = @"State: 19 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Comment", @"#StepLine", @"#TagLine", @"#ExamplesLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -1722,7 +1744,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0
 - (int)matchTokenAt_20:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
@@ -1730,6 +1752,7 @@
         [self endRuleWithContext: theContext ruleType: GHRuleTypeStep];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenarioOutline];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -1812,7 +1835,7 @@
         return 20;
     }
     
-    NSString * stateComment = @"State: 20 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0";
+    NSString * stateComment = @"State: 20 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#TableRow", @"#DocStringSeparator", @"#StepLine", @"#TagLine", @"#ExamplesLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -1825,7 +1848,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0
 - (int)matchTokenAt_21:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
@@ -1834,6 +1857,7 @@
         [self endRuleWithContext: theContext ruleType: GHRuleTypeStep];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenarioOutline];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -1915,7 +1939,7 @@
         return 21;
     }
     
-    NSString * stateComment = @"State: 21 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
+    NSString * stateComment = @"State: 21 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#TableRow", @"#StepLine", @"#TagLine", @"#ExamplesLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -1928,7 +1952,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:0>Tags:0>#TagLine:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:0>Tags:0>#TagLine:0
 - (int)matchTokenAt_22:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchTagLineWithContext: theContext token: theToken])
@@ -1954,7 +1978,7 @@
         return 22;
     }
     
-    NSString * stateComment = @"State: 22 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:0>Tags:0>#TagLine:0";
+    NSString * stateComment = @"State: 22 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:0>Tags:0>#TagLine:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#TagLine", @"#ExamplesLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -1967,7 +1991,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0
 - (int)matchTokenAt_23:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
@@ -1976,6 +2000,7 @@
         [self endRuleWithContext: theContext ruleType: GHRuleTypeExamples_Definition];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenarioOutline];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -2056,7 +2081,7 @@
         return 24;
     }
     
-    NSString * stateComment = @"State: 23 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0";
+    NSString * stateComment = @"State: 23 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Empty", @"#Comment", @"#TableRow", @"#TagLine", @"#ExamplesLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Other", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -2069,7 +2094,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0
 - (int)matchTokenAt_24:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
@@ -2079,6 +2104,7 @@
         [self endRuleWithContext: theContext ruleType: GHRuleTypeExamples_Definition];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenarioOutline];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -2160,7 +2186,7 @@
         return 24;
     }
     
-    NSString * stateComment = @"State: 24 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0";
+    NSString * stateComment = @"State: 24 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Comment", @"#TableRow", @"#TagLine", @"#ExamplesLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Other", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -2173,7 +2199,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0
 - (int)matchTokenAt_25:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
@@ -2182,6 +2208,7 @@
         [self endRuleWithContext: theContext ruleType: GHRuleTypeExamples_Definition];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenarioOutline];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -2256,7 +2283,7 @@
         return 25;
     }
     
-    NSString * stateComment = @"State: 25 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0";
+    NSString * stateComment = @"State: 25 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Comment", @"#TableRow", @"#TagLine", @"#ExamplesLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -2269,7 +2296,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>Examples_Table:0>#TableRow:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>Examples_Table:0>#TableRow:0
 - (int)matchTokenAt_26:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
@@ -2279,6 +2306,7 @@
         [self endRuleWithContext: theContext ruleType: GHRuleTypeExamples_Definition];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenarioOutline];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -2357,7 +2385,7 @@
         return 26;
     }
     
-    NSString * stateComment = @"State: 26 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>Examples_Table:0>#TableRow:0";
+    NSString * stateComment = @"State: 26 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>Examples_Table:0>#TableRow:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#TableRow", @"#TagLine", @"#ExamplesLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -2370,7 +2398,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
 - (int)matchTokenAt_28:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchDocStringSeparatorWithContext: theContext token: theToken])
@@ -2384,7 +2412,7 @@
         return 28;
     }
     
-    NSString * stateComment = @"State: 28 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
+    NSString * stateComment = @"State: 28 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#DocStringSeparator", @"#Other", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -2397,7 +2425,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
 - (int)matchTokenAt_29:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
@@ -2406,6 +2434,7 @@
         [self endRuleWithContext: theContext ruleType: GHRuleTypeStep];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenarioOutline];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -2482,7 +2511,7 @@
         return 29;
     }
     
-    NSString * stateComment = @"State: 29 - Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
+    NSString * stateComment = @"State: 29 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#StepLine", @"#TagLine", @"#ExamplesLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -2495,7 +2524,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
 - (int)matchTokenAt_30:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchDocStringSeparatorWithContext: theContext token: theToken])
@@ -2509,7 +2538,7 @@
         return 30;
     }
     
-    NSString * stateComment = @"State: 30 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
+    NSString * stateComment = @"State: 30 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#DocStringSeparator", @"#Other", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -2522,7 +2551,7 @@
 }
 
 
-// Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
+// GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
 - (int)matchTokenAt_31:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
@@ -2531,6 +2560,7 @@
         [self endRuleWithContext: theContext ruleType: GHRuleTypeStep];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeScenario_Definition];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -2586,7 +2616,7 @@
         return 31;
     }
     
-    NSString * stateComment = @"State: 31 - Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
+    NSString * stateComment = @"State: 31 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#StepLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -2599,7 +2629,7 @@
 }
 
 
-// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
+// GherkinDocument:0>Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0
 - (int)matchTokenAt_32:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchDocStringSeparatorWithContext: theContext token: theToken])
@@ -2613,7 +2643,7 @@
         return 32;
     }
     
-    NSString * stateComment = @"State: 32 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
+    NSString * stateComment = @"State: 32 - GherkinDocument:0>Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#DocStringSeparator", @"#Other", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
@@ -2626,7 +2656,7 @@
 }
 
 
-// Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
+// GherkinDocument:0>Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0
 - (int)matchTokenAt_33:(GHToken *)theToken context:(GHParserContext *)theContext
 {
     if ([self matchEOFWithContext: theContext token: theToken])
@@ -2634,6 +2664,7 @@
         [self endRuleWithContext: theContext ruleType: GHRuleTypeDocString];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeStep];
         [self endRuleWithContext: theContext ruleType: GHRuleTypeBackground];
+        [self endRuleWithContext: theContext ruleType: GHRuleTypeFeature];
         [self buildWithContext: theContext token: theToken];
         return 27;
     }
@@ -2686,7 +2717,7 @@
         return 33;
     }
     
-    NSString * stateComment = @"State: 33 - Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
+    NSString * stateComment = @"State: 33 - GherkinDocument:0>Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#StepLine", @"#TagLine", @"#ScenarioLine", @"#ScenarioOutlineLine", @"#Comment", @"#Empty", nil];
     id error = [theToken isEOF] ? (GHParserException *)[[GHUnexpectedEOFException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment] : [[GHUnexpectedTokenException alloc] initWithToken: theToken expectedTokenTypes: expectedTokens stateComment: stateComment];
