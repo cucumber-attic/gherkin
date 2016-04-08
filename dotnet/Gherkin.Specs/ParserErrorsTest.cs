@@ -37,7 +37,7 @@ namespace Gherkin.Specs
         public void TestFeatureAfterParseError()
         {
             var tokenMatcher = new TokenMatcher();
-            var parser = new Parser(new AstBuilder<Feature>());
+            var parser = new Parser(new AstBuilder<GherkinDocument>());
             var jsonSerializerSettings = new JsonSerializerSettings();
             jsonSerializerSettings.Formatting = Formatting.Indented;
             jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
@@ -64,42 +64,44 @@ Feature: Foo
             var astText2 = LineEndingHelper.NormalizeLineEndings(JsonConvert.SerializeObject(parsingResult2, jsonSerializerSettings));
 
             string expected2 = LineEndingHelper.NormalizeLineEndings(@"{
-  ""Tags"": [],
-  ""Location"": {
-    ""Line"": 1,
-    ""Column"": 1
-  },
-  ""Language"": ""en"",
-  ""Keyword"": ""Feature"",
-  ""Name"": ""Foo"",
-  ""Children"": [
-    {
-      ""Tags"": [],
-      ""Location"": {
-        ""Line"": 2,
-        ""Column"": 3
-      },
-      ""Keyword"": ""Scenario"",
-      ""Name"": ""Bar"",
-      ""Steps"": [
-        {
-          ""Location"": {
-            ""Line"": 3,
-            ""Column"": 5
-          },
-          ""Keyword"": ""Given "",
-          ""Text"": ""x"",
-          ""Argument"": {
+  ""Feature"": {
+    ""Tags"": [],
+    ""Location"": {
+      ""Line"": 1,
+      ""Column"": 1
+    },
+    ""Language"": ""en"",
+    ""Keyword"": ""Feature"",
+    ""Name"": ""Foo"",
+    ""Children"": [
+      {
+        ""Tags"": [],
+        ""Location"": {
+          ""Line"": 2,
+          ""Column"": 3
+        },
+        ""Keyword"": ""Scenario"",
+        ""Name"": ""Bar"",
+        ""Steps"": [
+          {
             ""Location"": {
-              ""Line"": 4,
-              ""Column"": 7
+              ""Line"": 3,
+              ""Column"": 5
             },
-            ""Content"": ""closed docstring""
+            ""Keyword"": ""Given "",
+            ""Text"": ""x"",
+            ""Argument"": {
+              ""Location"": {
+                ""Line"": 4,
+                ""Column"": 7
+              },
+              ""Content"": ""closed docstring""
+            }
           }
-        }
-      ]
-    }
-  ],
+        ]
+      }
+    ]
+  },
   ""Comments"": []
 }");
             Assert.AreEqual(expected2, astText2);

@@ -1,4 +1,4 @@
-
+#import <Foundation/Foundation.h>
 extern NSString * const GHTagPrefix;
 extern NSString * const GHCommentPrefix;
 extern NSString * const GHTitleKeywordSeparator;

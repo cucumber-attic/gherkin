@@ -84,6 +84,44 @@ our %states_to_match_names = (
     33 => "match_token_at_33",
 );
 
+sub parse {
+    my ( $self, $token_scanner, $token_matcher ) = @_;
+
+    $token_matcher ||= Gherkin::TokenMatcher->new();
+    $token_scanner = Gherkin::TokenScanner->new($token_scanner)
+      unless ref $token_scanner;
+
+    $self->ast_builder->reset();
+    $token_matcher->reset();
+
+    my $context = Gherkin::ParserContext->new(
+        {
+            token_scanner => $token_scanner,
+            token_matcher => $token_matcher,
+        }
+    );
+
+    $self->_start_rule( $context, 'GherkinDocument' );
+
+    my $state = 0;
+    my $token;
+
+    while (1) {
+        $token = $context->read_token($context);
+        $state = $self->match_token( $state, $token, $context );
+
+        last if $token->is_eof();
+    }
+
+    $self->_end_rule( $context, 'GherkinDocument' );
+
+    if ( my @errors = $context->errors ) {
+        Gherkin::Exceptions::CompositeParser->throw(@errors);
+    }
+
+    return $self->get_result();
+}
+
 sub match_token {
     my ( $self, $state, $token, $context ) = @_;
     my $method_name = $states_to_match_names{ $state } ||

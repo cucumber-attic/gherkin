@@ -6,7 +6,7 @@
 //      the code is regenerated.
 //  </auto-generated>
 // ------------------------------------------------------------------------------
-
+#import <Foundation/Foundation.h>
 
 typedef enum    GHTokenType
 {

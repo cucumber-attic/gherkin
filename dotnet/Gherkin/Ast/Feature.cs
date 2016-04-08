@@ -13,9 +13,8 @@ namespace Gherkin.Ast
         public string Name { get; private set; }
         public string Description { get; private set; }
         public IEnumerable<ScenarioDefinition> Children { get; private set; }
-        public IEnumerable<Comment> Comments { get; private set; }
 
-        public Feature(Tag[] tags, Location location, string language, string keyword, string name, string description, ScenarioDefinition[] children, Comment[] comments)
+        public Feature(Tag[] tags, Location location, string language, string keyword, string name, string description, ScenarioDefinition[] children)
         {
             Tags = tags;
             Location = location;
@@ -24,7 +23,6 @@ namespace Gherkin.Ast
             Name = name;
             Description = description;
             Children = children;
-            Comments = comments;
         }
     }
 }

@@ -20,38 +20,41 @@ func ExampleGenerateAst() {
 	// Output:
 	//
 	// {
-	//   "location": {
-	//     "line": 1,
-	//     "column": 1
+	//   "type": "GherkinDocument",
+	//   "feature": {
+	//     "location": {
+	//       "line": 1,
+	//       "column": 1
+	//     },
+	//     "type": "Feature",
+	//     "tags": [],
+	//     "language": "en",
+	//     "keyword": "Feature",
+	//     "name": "Minimal",
+	//     "children": [
+	//       {
+	//         "location": {
+	//           "line": 3,
+	//           "column": 3
+	//         },
+	//         "type": "Scenario",
+	//         "keyword": "Scenario",
+	//         "name": "minimalistic",
+	//         "steps": [
+	//           {
+	//             "location": {
+	//               "line": 4,
+	//               "column": 5
+	//             },
+	//             "type": "Step",
+	//             "keyword": "Given ",
+	//             "text": "the minimalism"
+	//           }
+	//         ],
+	//         "tags": []
+	//       }
+	//     ]
 	//   },
-	//   "type": "Feature",
-	//   "tags": [],
-	//   "language": "en",
-	//   "keyword": "Feature",
-	//   "name": "Minimal",
-	//   "children": [
-	//     {
-	//       "location": {
-	//         "line": 3,
-	//         "column": 3
-	//       },
-	//       "type": "Scenario",
-	//       "keyword": "Scenario",
-	//       "name": "minimalistic",
-	//       "steps": [
-	//         {
-	//           "location": {
-	//             "line": 4,
-	//             "column": 5
-	//           },
-	//           "type": "Step",
-	//           "keyword": "Given ",
-	//           "text": "the minimalism"
-	//         }
-	//       ],
-	//       "tags": []
-	//     }
-	//   ],
 	//   "comments": []
 	// }
 	//

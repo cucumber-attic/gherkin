@@ -1,4 +1,5 @@
-﻿#import "GHHasLocationProtocol.h"
+﻿#import <Foundation/Foundation.h>
+#import "GHHasLocationProtocol.h"
 #import "GHHasDescriptionProtocol.h"
 #import "GHHasStepsProtocol.h"
 #import "GHHasTagsProtocol.h"

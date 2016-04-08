@@ -1,4 +1,5 @@
-﻿#import "GHParser.h"
+﻿#import <Foundation/Foundation.h>
+#import "GHParser.h"
 
 @class GHToken;
 
