@@ -44,6 +44,7 @@ typedef enum    GHRuleType
             GHRuleType_TableRow, // #TableRow
             GHRuleType_Language, // #Language
             GHRuleType_Other, // #Other
+            GHRuleTypeGherkinDocument, // GherkinDocument! := Feature?
             GHRuleTypeFeature, // Feature! := Feature_Header Background? Scenario_Definition*
             GHRuleTypeFeature_Header, // Feature_Header! := #Language? Tags? #FeatureLine Feature_Description
             GHRuleTypeBackground, // Background! := #BackgroundLine Background_Description Scenario_Step*
