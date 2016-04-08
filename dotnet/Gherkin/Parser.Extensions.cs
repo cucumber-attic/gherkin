@@ -4,23 +4,23 @@ using Gherkin.Ast;
 
 namespace Gherkin
 {
-    public class Parser : Parser<Feature>
+    public class Parser : Parser<GherkinDocument>
     {
         public Parser()
         {
         }
 
-        public Parser(IAstBuilder<Feature> astBuilder)
+        public Parser(IAstBuilder<GherkinDocument> astBuilder)
             : base (astBuilder)
         {
         }
 
-        public Feature Parse(TextReader reader)
+        public GherkinDocument Parse(TextReader reader)
         {
             return Parse(new TokenScanner(reader));
         }
 
-        public Feature Parse(string sourceFile)
+        public GherkinDocument Parse(string sourceFile)
         {
             using (var reader = new StreamReader(sourceFile))
             {

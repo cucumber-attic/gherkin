@@ -17,8 +17,7 @@
 @property (nonatomic, readonly) NSString                        * name;
 @property (nonatomic, readonly) NSString                        * desc;
 @property (nonatomic, readonly) NSArray<GHScenarioDefinition *> * children;
-@property (nonatomic, readonly) NSArray<GHComment *>            * comments;
 
-- (id)initWithTags:(NSArray<GHTag *> *)theTags location:(GHLocation *)theLocation language:(NSString *)theLanguage keyword:(NSString *)theKeyword name:(NSString *)theName description:(NSString *)theDescription children:(NSArray<GHScenarioDefinition *> *)theChildren comments:(NSArray<GHComment *> *)theComments;
+- (id)initWithTags:(NSArray<GHTag *> *)theTags location:(GHLocation *)theLocation language:(NSString *)theLanguage keyword:(NSString *)theKeyword name:(NSString *)theName description:(NSString *)theDescription children:(NSArray<GHScenarioDefinition *> *)theChildren;
 
 @end

@@ -2,11 +2,11 @@
 
 #import "GHParser.h"
 #import "GHTokenScanner.h"
-#import "GHFeature.h"
+#import "GHGherkinDocument.h"
 
 @implementation GHParser (Extensions)
 
-- (GHFeature *)parse:(NSString *)theSourceFile
+- (GHGherkinDocument *)parse:(NSString *)theSourceFile
 {
     return [self parseWithTokenScanner: [[GHTokenScanner alloc] initWithContentsOfFile: theSourceFile]];
 }

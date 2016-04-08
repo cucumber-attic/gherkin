@@ -49,7 +49,7 @@ namespace Gherkin
 
         public T GetResult()
         {
-            return CurrentNode.GetSingle<T>(RuleType.Feature);
+            return CurrentNode.GetSingle<T>(RuleType.GherkinDocument);
         }
 
         private object GetTransformedNode(AstNode node)
@@ -156,7 +156,13 @@ namespace Gherkin
                     if(featureLine.MatchedGherkinDialect == null) return null;
                     var language = featureLine.MatchedGherkinDialect.Language;
 
-                    return CreateFeature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.MatchedText, description, childrenEnumerable.ToArray(), comments.ToArray(), node);
+                    return CreateFeature(tags, GetLocation(featureLine), language, featureLine.MatchedKeyword, featureLine.MatchedText, description, childrenEnumerable.ToArray(), node);
+                }
+                case RuleType.GherkinDocument:
+                {
+                    var feature = node.GetSingle<Feature>(RuleType.Feature);
+
+                    return CreateGherkinDocument(feature, comments.ToArray(), node);
                 }
             }
 
@@ -203,9 +209,13 @@ namespace Gherkin
             return new Step(location, keyword, text, argument);
         }
 
-        protected virtual Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description, ScenarioDefinition[] children, Comment[] featureFileComments, AstNode node)
+        protected virtual GherkinDocument CreateGherkinDocument(Feature feature, Comment[] gherkinDocumentComments, AstNode node) {
+            return new GherkinDocument(feature, gherkinDocumentComments);
+        }
+
+        protected virtual Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description, ScenarioDefinition[] children, AstNode node)
         {
-            return new Feature(tags, location, language, keyword, name, description, children, featureFileComments);
+            return new Feature(tags, location, language, keyword, name, description, children);
         }
         protected virtual Tag CreateTag(Location location, string name, AstNode node)
         {

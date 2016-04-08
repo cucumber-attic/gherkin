@@ -1,6 +1,6 @@
 package gherkin;
 
-import gherkin.ast.Feature;
+import gherkin.ast.GherkinDocument;
 import gherkin.deps.com.google.gson.Gson;
 import gherkin.deps.com.google.gson.JsonParser;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class ParserTest {
                 "      closed docstring\n" +
                 "      \"\"\"";
         TokenMatcher matcher = new TokenMatcher();
-        Parser<Feature> parser = new Parser<>(new AstBuilder());
+        Parser<GherkinDocument> parser = new Parser<>(new AstBuilder());
 
         try {
             parser.parse(in1, matcher);
@@ -37,52 +37,54 @@ public class ParserTest {
         } catch (ParserException e) {
             // pass
         }
-        Feature feature = parser.parse(in2, matcher);
+        GherkinDocument gherkinDocument = parser.parse(in2, matcher);
 
         assertEquals(jsonParser.parse("" +
-                "{\"tags\":[]," +
-                "\"language\":\"en\"," +
-                "\"keyword\":\"Feature\"," +
-                "\"name\":\"Foo\"," +
-                "\"children\":[{" +
-                "    \"tags\":[]," +
-                "    \"keyword\":\"Scenario\"," +
-                "    \"name\":\"Bar\"," +
-                "    \"steps\":[{" +
-                "        \"keyword\":\"Given \"," +
-                "        \"text\":\"x\"," +
-                "        \"argument\":{" +
-                "            \"content\":\"closed docstring\"," +
-                "            \"type\":\"DocString\"," +
-                "            \"location\":{\"line\":4,\"column\":7}}," +
-                "        \"type\":\"Step\"," +
-                "        \"location\":{\"line\":3,\"column\":5}}]," +
-                "    \"type\":\"Scenario\"," +
-                "    \"location\":{\"line\":2,\"column\":3}}]," +
+                "{\"feature\":{\"tags\":[]," +
+                "    \"language\":\"en\"," +
+                "    \"keyword\":\"Feature\"," +
+                "    \"name\":\"Foo\"," +
+                "    \"children\":[{" +
+                "        \"tags\":[]," +
+                "        \"keyword\":\"Scenario\"," +
+                "        \"name\":\"Bar\"," +
+                "        \"steps\":[{" +
+                "            \"keyword\":\"Given \"," +
+                "            \"text\":\"x\"," +
+                "            \"argument\":{" +
+                "                \"content\":\"closed docstring\"," +
+                "                \"type\":\"DocString\"," +
+                "                \"location\":{\"line\":4,\"column\":7}}," +
+                "            \"type\":\"Step\"," +
+                "            \"location\":{\"line\":3,\"column\":5}}]," +
+                "        \"type\":\"Scenario\"," +
+                "        \"location\":{\"line\":2,\"column\":3}}]," +
+                "    \"type\":\"Feature\"," +
+                "    \"location\":{\"line\":1,\"column\":1}}," +
                 "\"comments\":[]," +
-                "\"type\":\"Feature\"," +
-                "\"location\":{\"line\":1,\"column\":1}}"),
-                jsonParser.parse(gson.toJson(feature)));
+                "\"type\":\"GherkinDocument\"}"),
+                jsonParser.parse(gson.toJson(gherkinDocument)));
     }
     @Test
     public void change_default_language() throws Exception {
         Gson gson = new Gson();
         JsonParser jsonParser = new JsonParser();
         TokenMatcher matcher = new TokenMatcher("no");
-        Parser<Feature> parser = new Parser<>(new AstBuilder());
+        Parser<GherkinDocument> parser = new Parser<>(new AstBuilder());
 
-	    Feature feature = parser.parse("Egenskap: i18n support\n", matcher);
+	    GherkinDocument gherkinDocument = parser.parse("Egenskap: i18n support\n", matcher);
 
         assertEquals(jsonParser.parse("" +
-                "{\"tags\":[]," +
-                "\"language\":\"no\"," +
-                "\"keyword\":\"Egenskap\"," +
-                "\"name\":\"i18n support\"," +
-                "\"children\":[]," +
+                "{\"feature\":{\"tags\":[]," +
+                "    \"language\":\"no\"," +
+                "    \"keyword\":\"Egenskap\"," +
+                "    \"name\":\"i18n support\"," +
+                "    \"children\":[]," +
+                "    \"type\":\"Feature\"," +
+                "    \"location\":{\"line\":1,\"column\":1}}," +
                 "\"comments\":[]," +
-                "\"type\":\"Feature\"," +
-                "\"location\":{\"line\":1,\"column\":1}}"),
-                jsonParser.parse(gson.toJson(feature)));
+                "\"type\":\"GherkinDocument\"}"),
+                jsonParser.parse(gson.toJson(gherkinDocument)));
     }
 
 }

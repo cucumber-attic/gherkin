@@ -1,5 +1,6 @@
-﻿#import "GHAstNode.h"
-
+﻿#import <Foundation/Foundation.h>
+#import "GHAstNode.h"
+#import "GHParser.h"
 @protocol GHAstBuilderProtocol;
 @class GHToken;
 

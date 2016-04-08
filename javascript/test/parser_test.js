@@ -8,14 +8,17 @@ describe('Parser', function () {
     var matcher = new Gherkin.TokenMatcher();
     var ast = parser.parse(scanner, matcher);
     assert.deepEqual(ast, {
-      type: 'Feature',
-      tags: [],
-      location: { line: 1, column: 1 },
-      language: 'en',
-      keyword: 'Feature',
-      name: 'hello',
-      description: undefined,
-      scenarioDefinitions: [],
+      type: 'GherkinDocument',
+      feature: {
+        type: 'Feature',
+        tags: [],
+        location: { line: 1, column: 1 },
+        language: 'en',
+        keyword: 'Feature',
+        name: 'hello',
+        description: undefined,
+        children: []
+      },
       comments: []
     });
   });
@@ -27,25 +30,31 @@ describe('Parser', function () {
     var ast2 = parser.parse(new Gherkin.TokenScanner("Feature: hello again"), matcher);
 
     assert.deepEqual(ast1, {
-      type: 'Feature',
-      tags: [],
-      location: { line: 1, column: 1 },
-      language: 'en',
-      keyword: 'Feature',
-      name: 'hello',
-      description: undefined,
-      scenarioDefinitions: [],
+      type: 'GherkinDocument',
+      feature: {
+        type: 'Feature',
+        tags: [],
+        location: { line: 1, column: 1 },
+        language: 'en',
+        keyword: 'Feature',
+        name: 'hello',
+        description: undefined,
+        children: []
+      },
       comments: []
     });
     assert.deepEqual(ast2, {
-      type: 'Feature',
-      tags: [],
-      location: { line: 1, column: 1 },
-      language: 'en',
-      keyword: 'Feature',
-      name: 'hello again',
-      description: undefined,
-      scenarioDefinitions: [],
+      type: 'GherkinDocument',
+      feature: {
+        type: 'Feature',
+        tags: [],
+        location: { line: 1, column: 1 },
+        language: 'en',
+        keyword: 'Feature',
+        name: 'hello again',
+        description: undefined,
+        children: []
+      },
       comments: []
     });
   });
@@ -71,30 +80,33 @@ describe('Parser', function () {
 console.log(JSON.stringify(ast, null, 2))
 
     assert.deepEqual(ast, {
-      type: 'Feature',
-      tags: [],
-      location: { line: 1, column: 1 },
-      language: 'en',
-      keyword: 'Feature',
-      name: 'Foo',
-      description: undefined,
-      children: [{
-        description: undefined,
-        keyword: 'Scenario',
-        location: { line: 2, column: 3 },
-        name: 'Bar',
-        steps: [{
-          argument: {
-            content: 'closed docstring',
-            location: { line: 4, column: 7 },
-            type: 'DocString',
-          },
-          keyword: 'Given ',
-          location: { line: 3, column: 5 },
-          text: 'x',
-          type: 'Step' }],
+      type: 'GherkinDocument',
+      feature: {
+        type: 'Feature',
         tags: [],
-        type: 'Scenario' }],
+        location: {line: 1, column: 1},
+        language: 'en',
+        keyword: 'Feature',
+        name: 'Foo',
+        description: undefined,
+        children: [{
+          description: undefined,
+          keyword: 'Scenario',
+          location: {line: 2, column: 3},
+          name: 'Bar',
+          steps: [{
+            argument: {
+              content: 'closed docstring',
+              location: {line: 4, column: 7},
+              type: 'DocString',
+            },
+            keyword: 'Given ',
+            location: {line: 3, column: 5},
+            text: 'x',
+            type: 'Step' }],
+          tags: [],
+          type: 'Scenario' }]
+      },
       comments: []
     });
   });
@@ -105,14 +117,17 @@ console.log(JSON.stringify(ast, null, 2))
     var scanner = new Gherkin.TokenScanner("Egenskap: i18n support");
     var ast = parser.parse(scanner, matcher);
     assert.deepEqual(ast, {
-      type: 'Feature',
-      tags: [],
-      location: { line: 1, column: 1 },
-      language: 'no',
-      keyword: 'Egenskap',
-      name: 'i18n support',
-      description: undefined,
-      scenarioDefinitions: [],
+      type: 'GherkinDocument',
+      feature: {
+        type: 'Feature',
+        tags: [],
+        location: { line: 1, column: 1 },
+        language: 'no',
+        keyword: 'Egenskap',
+        name: 'i18n support',
+        description: undefined,
+        children: []
+      },
       comments: []
     });
   });

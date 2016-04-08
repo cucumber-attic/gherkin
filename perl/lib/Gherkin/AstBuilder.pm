@@ -59,7 +59,7 @@ sub build {
 
 sub get_result {
     my $self = shift;
-    return $self->current_node->get_single('Feature');
+    return $self->current_node->get_single('GherkinDocument');
 }
 
 sub get_location {
@@ -337,10 +337,19 @@ sub transform_node {
                 keyword             => $feature_line->matched_keyword,
                 name                => $feature_line->matched_text,
                 description         => $description,
-                children            => $children,
-                comments            => $self->{'comments'}
+                children            => $children
             }
         );
+    } elsif ( $node->rule_type eq 'GherkinDocument' ) {
+         my $feature = $node->get_single('Feature');
+
+         return $self->reject_nones(
+             {
+                 type                => $node->rule_type,
+                 feature             => $feature,
+                 comments            => $self->{'comments'}
+             }
+         );
     } else {
         return $node;
     }

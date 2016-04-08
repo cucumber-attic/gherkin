@@ -1,4 +1,5 @@
-﻿#import "GHHasLocationProtocol.h"
+﻿#import <Foundation/Foundation.h>
+#import "GHHasLocationProtocol.h"
 
 @interface GHComment : NSObject <GHHasLocationProtocol>
 

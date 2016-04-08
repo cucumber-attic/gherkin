@@ -36,8 +36,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
   ([#176](https://github.com/cucumber/gherkin/pull/176)
    by [charlierudolph])
 * (All) Don't make pickles out of step-less scenarios
-  ([#161](https://github.com/cucumber/gherkin/pull/175)
-   by [pjlsergeant])
+  ([#174](https://github.com/cucumber/gherkin/pull/175)
+   by [enkessler])
 * (Ruby) More consistent AST node types
   ([#158](https://github.com/cucumber/gherkin/pull/158)
    by [enkessler])

@@ -34,7 +34,7 @@ module.exports = function AstBuilder () {
   };
 
   this.getResult = function () {
-    return currentNode().getSingle('Feature');
+    return currentNode().getSingle('GherkinDocument');
   };
 
   function currentNode () {
@@ -247,6 +247,13 @@ module.exports = function AstBuilder () {
           name: featureLine.matchedText,
           description: description,
           children: children,
+        };
+      case 'GherkinDocument':
+        var feature = node.getSingle('Feature');
+
+        return {
+          type: node.ruleType,
+          feature: feature,
           comments: comments
         };
       default:

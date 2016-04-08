@@ -3,8 +3,12 @@ import re
 from ..count_symbols import count_symbols
 
 
-def compile(feature, path):
+def compile(gherkin_document, path):
     pickles = []
+    if 'feature' not in gherkin_document:
+        return pickles
+
+    feature = gherkin_document['feature']
     feature_tags = feature['tags']
     background_steps = []
     for scenario_definition in feature['children']:

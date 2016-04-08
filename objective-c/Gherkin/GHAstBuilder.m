@@ -12,6 +12,7 @@
 #import "GHScenarioOutline.h"
 #import "GHExamples.h"
 #import "GHGherkinDialect.h"
+#import "GHGherkinDocument.h"
 #import "GHFeature.h"
 #import "GHLocation.h"
 #import "GHGherkinLanguageConstants.h"
@@ -83,7 +84,7 @@
 
 - (id)result
 {
-    return [[stack lastObject] singleWithRuleType: GHRuleTypeFeature];
+    return [[stack lastObject] singleWithRuleType: GHRuleTypeGherkinDocument];
 }
 
 - (id)transformNode:(GHAstNode *)theNode
@@ -221,7 +222,13 @@
 
             NSString * language = [[featureLine matchedGherkinDialect] language];
 
-            return [[GHFeature alloc] initWithTags: tags location: [featureLine location] language: language keyword: [featureLine matchedKeyword] name: [featureLine matchedText] description: description children: children comments: comments];
+            return [[GHFeature alloc] initWithTags: tags location: [featureLine location] language: language keyword: [featureLine matchedKeyword] name: [featureLine matchedText] description: description children: children];
+        }
+        case GHRuleTypeGherkinDocument:
+        {
+          GHFeature * feature = [theNode singleWithRuleType: GHRuleTypeFeature];
+
+          return [[GHGherkinDocument alloc] init: feature comments: comments];
         }
     }
 

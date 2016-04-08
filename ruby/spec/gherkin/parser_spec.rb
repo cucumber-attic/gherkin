@@ -12,14 +12,17 @@ module Gherkin
       scanner = TokenScanner.new("Feature: test")
       ast = parser.parse(scanner)
       expect(ast).to eq({
-        type: :Feature,
-        tags: [],
-        location: {line: 1, column: 1},
-        language: "en",
-        keyword: "Feature",
-        name: "test",
-        children: [],
-        comments: []
+        feature: {
+          type: :Feature,
+          tags: [],
+          location: {line: 1, column: 1},
+          language: "en",
+          keyword: "Feature",
+          name: "test",
+          children: []
+        },
+        comments: [],
+        type: :GherkinDocument
       })
     end
 
@@ -57,9 +60,8 @@ module Gherkin
       scanner = TokenScanner.new(feature_text)
       ast = parser.parse(scanner)
 
-
-      expect(ast).to eq(
-                         {type: :Feature,
+      expect(ast).to eq({
+                         feature: {type: :Feature,
                           tags: [{type: :Tag,
                                   location: {line: 1, column: 1},
                                   name: "@feature_tag"}],
@@ -130,9 +132,11 @@ module Gherkin
                                                                           cells: [{type: :TableCell,
                                                                                    location: {line: 27, column: 7},
                                                                                    value: "value"}]}]}]}],
+                          },
                           comments: [{type: :Comment,
                                       location: {line: 22, column: 1},
-                                      text: "                # Random file comment"}]}
+                                      text: "                # Random file comment"}],
+                          type: :GherkinDocument}
                      )
     end
 
@@ -140,30 +144,35 @@ module Gherkin
       parser = Parser.new
       ast = parser.parse("Feature: test")
       expect(ast).to eq({
-        type: :Feature,
-        tags: [],
-        location: {line: 1, column: 1},
-        language: "en",
-        keyword: "Feature",
-        name: "test",
-        children: [],
-        comments: []
+        feature: {
+          type: :Feature,
+          tags: [],
+          location: {line: 1, column: 1},
+          language: "en",
+          keyword: "Feature",
+          name: "test",
+          children: []
+        },
+        comments: [],
+        type: :GherkinDocument
       })
     end
 
     it "parses io feature" do
       parser = Parser.new
       ast = parser.parse(StringIO.new("Feature: test"))
-
       expect(ast).to eq({
-        type: :Feature,
-        tags: [],
-        location: {line: 1, column: 1},
-        language: "en",
-        keyword: "Feature",
-        name: "test",
-        children: [],
-        comments: []
+        feature: {
+          type: :Feature,
+          tags: [],
+          location: {line: 1, column: 1},
+          language: "en",
+          keyword: "Feature",
+          name: "test",
+          children: []
+        },
+        comments: [],
+        type: :GherkinDocument
       })
     end
 
@@ -173,24 +182,30 @@ module Gherkin
       ast2 = parser.parse(TokenScanner.new("Feature: test2"))
 
       expect(ast1).to eq({
-        type: :Feature,
-        tags: [],
-        location: {line: 1, column: 1},
-        language: "en",
-        keyword: "Feature",
-        name: "test",
-        children: [],
-        comments: []
+        feature: {
+          type: :Feature,
+          tags: [],
+          location: {line: 1, column: 1},
+          language: "en",
+          keyword: "Feature",
+          name: "test",
+          children: []
+        },
+        comments: [],
+        type: :GherkinDocument
       })
       expect(ast2).to eq({
-        type: :Feature,
-        tags: [],
-        location: {line: 1, column: 1},
-        language: "en",
-        keyword: "Feature",
-        name: "test2",
-        children: [],
-        comments: []
+        feature: {
+          type: :Feature,
+          tags: [],
+          location: {line: 1, column: 1},
+          language: "en",
+          keyword: "Feature",
+          name: "test2",
+          children: []
+        },
+        comments: [],
+        type: :GherkinDocument
       })
     end
 
@@ -215,27 +230,30 @@ module Gherkin
                          matcher)
 
       expect(ast).to eq({
-        type: :Feature,
-        tags: [],
-        location: {line: 1, column: 1},
-        language: "en",
-        keyword: "Feature",
-        name: "Foo",
-        children: [{
-          :type=>:Scenario,
-          :tags=>[],
-          :location=>{:line=>2, :column=>3},
-          :keyword=>"Scenario",
-          :name=>"Bar",
-          :steps=>[{
-            :type=>:Step,
-            :location=>{:line=>3, :column=>5},
-            :keyword=>"Given ",
-            :text=>"x",
-            :argument=>{:type=>:DocString,
-                        :location=>{:line=>4, :column=>7},
-                        :content=>"closed docstring"}}]}],
-        comments: []
+        feature: {
+          type: :Feature,
+          tags: [],
+          location: {line: 1, column: 1},
+          language: "en",
+          keyword: "Feature",
+          name: "Foo",
+          children: [{
+            :type=>:Scenario,
+            :tags=>[],
+            :location=>{:line=>2, :column=>3},
+            :keyword=>"Scenario",
+            :name=>"Bar",
+            :steps=>[{
+              :type=>:Step,
+              :location=>{:line=>3, :column=>5},
+              :keyword=>"Given ",
+              :text=>"x",
+              :argument=>{:type=>:DocString,
+                          :location=>{:line=>4, :column=>7},
+                          :content=>"closed docstring"}}]}]
+        },
+        comments: [],
+        type: :GherkinDocument
       })
     end
 
@@ -245,14 +263,17 @@ module Gherkin
       scanner = TokenScanner.new("Egenskap: i18n support")
       ast = parser.parse(scanner, matcher)
       expect(ast).to eq({
-        type: :Feature,
-        tags: [],
-        location: {line: 1, column: 1},
-        language: "no",
-        keyword: "Egenskap",
-        name: "i18n support",
-        children: [],
-        comments: []
+        feature: {
+          type: :Feature,
+          tags: [],
+          location: {line: 1, column: 1},
+          language: "no",
+          keyword: "Egenskap",
+          name: "i18n support",
+          children: []
+        },
+        comments: [],
+        type: :GherkinDocument
       })
     end
   end
