@@ -18,6 +18,7 @@ module Gherkin
             compile_scenario_outline(feature_tags, background_steps, scenario_definition, path, pickles)
           end
         end
+
         return pickles
       end
 

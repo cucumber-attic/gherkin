@@ -13,7 +13,6 @@
 #import "GHAstBuilder.h"
 #import "GHToken.h"
 #import "GHParserException.h"
-
 @implementation GHParserContext
 
 @synthesize tokenScanner;
@@ -385,6 +384,9 @@
         return 0;
     }
     
+    if(theToken.matchedType == GHTokenTypeNone){
+        return 0;
+    }
     NSString * stateComment = @"State: 0 - Start";
     [theToken detach];
     NSArray<NSString *> * expectedTokens = [[NSArray<NSString *> alloc] initWithObjects: @"#EOF", @"#Language", @"#TagLine", @"#FeatureLine", @"#Comment", @"#Empty", nil];
