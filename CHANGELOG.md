@@ -12,6 +12,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 
 ### Removed
 
+* (JavaScript) Remove bower package
+   by [aslakhellesoy])
+
 ### Added
 * (JavaScript) Expose dialects
   ([#177](https://github.com/cucumber/gherkin/pull/177)
