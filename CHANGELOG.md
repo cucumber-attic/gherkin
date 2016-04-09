@@ -27,6 +27,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
    by [nixel2007])
 
 ### Changed
+* (All) Allow emtpy Feature files
+  ([#189](https://github.com/cucumber/gherkin/pull/189)
+  by [aslakhellesoy], [brasmusson], [enkessler])
 * (All) Rename Feature.scenarioDefinitions to Feature.children
   (by [aslakhellesoy])
 * (All) Background as part of Feature.children
