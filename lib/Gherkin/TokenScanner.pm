@@ -20,8 +20,7 @@ sub new {
     # a straight string is a path
     my $fh;
     if ( ref $path_or_str eq 'SCALAR' ) {
-        my $data = $path_or_str;
-        $fh = new IO::Scalar \$path_or_str;
+        $fh = new IO::Scalar $path_or_str;
     } else {
         $fh = IO::File->new();
         $fh->open( $path_or_str, '<' )
