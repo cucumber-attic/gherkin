@@ -1,0 +1,26 @@
+[
+  {
+    "locations": [
+      {
+        "column": 3,
+        "line": 5,
+        "path": "../testdata/good/incomplete_background_1.feature"
+      }
+    ],
+    "name": "still pickles up",
+    "steps": [
+      {
+        "arguments": [],
+        "locations": [
+          {
+            "column": 7,
+            "line": 6,
+            "path": "../testdata/good/incomplete_background_1.feature"
+          }
+        ],
+        "text": "a step"
+      }
+    ],
+    "tags": []
+  }
+]
