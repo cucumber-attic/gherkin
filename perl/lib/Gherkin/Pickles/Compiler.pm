@@ -4,10 +4,10 @@ use strict;
 use warnings;
 
 sub compile {
-    my ( $class, $feature_file, $path ) = @_;
+    my ( $class, $gherkin_document, $path ) = @_;
     my @pickles;
 
-    my $feature = $feature_file->{'feature'};
+    my $feature = $gherkin_document->{'feature'};
     my $feature_tags     = $feature->{'tags'};
     my $background_steps = [];
 
