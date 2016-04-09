@@ -33,13 +33,13 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 * (All) Rename Feature.scenarioDefinitions to Feature.children
   (by [aslakhellesoy])
 * (All) Background as part of Feature.children
-  ([#178](https://github.com/cucumber/gherkin/pull/174)
+  ([#174](https://github.com/cucumber/gherkin/pull/174)
    by [aslakhellesoy])
 * (All) Remove scenario keyword from pickles
   ([#176](https://github.com/cucumber/gherkin/pull/176)
    by [charlierudolph])
 * (All) Don't make pickles out of step-less scenarios
-  ([#174](https://github.com/cucumber/gherkin/pull/175)
+  ([#175](https://github.com/cucumber/gherkin/pull/175)
    by [enkessler])
 * (Ruby) More consistent AST node types
   ([#158](https://github.com/cucumber/gherkin/pull/158)
