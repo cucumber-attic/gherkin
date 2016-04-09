@@ -89,7 +89,7 @@ sub parse {
 
     $token_matcher ||= Gherkin::TokenMatcher->new();
     $token_scanner = Gherkin::TokenScanner->new($token_scanner)
-      unless ref $token_scanner;
+      unless ref $token_scanner && (ref $token_scanner ne 'SCALAR');
 
     $self->ast_builder->reset();
     $token_matcher->reset();
