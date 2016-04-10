@@ -7,11 +7,31 @@ This project adheres to [Semantic Versioning](http://semver.org).
 This document is formatted according to the principles of [Keep A CHANGELOG](http://keepachangelog.com).
 
 ----
-
 ## [Unreleased] - TBD
 
 ### Removed
 
+### Added
+
+### Changed
+
+### Fixed
+
+## [4.0.0] - 2016-04-10
+
+This is a major release because of two backwards-incompatible changes.
+
+First, the AST returned by the parser is a `GherkinDocument` node, with a `feature`
+property pointing to a `Feature` node. Prior to this release the parser would return
+a `Feature` node.
+
+Second, the `Feature` node now has an array/list of `children` that are `Background`,
+`Scenario` or `ScenarioOutline`.
+
+Other noteworthy changes is several minor improvements to bring the grammar closer
+to Gherkin 2.
+
+### Removed
 * (JavaScript) Remove bower package
    by [aslakhellesoy])
 
@@ -203,7 +223,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 * First release
 
 <!-- Releases -->
-[Unreleased]: https://github.com/cucumber/gherkin/compare/v3.2.0...HEAD
+[Unreleased]: https://github.com/cucumber/gherkin/compare/v4.0.0...HEAD
+[4.0.0]:      https://github.com/cucumber/gherkin/compare/v3.2.0...v4.0.0
 [3.2.0]:      https://github.com/cucumber/gherkin/compare/v3.1.2...v3.2.0
 [3.1.2]:      https://github.com/cucumber/gherkin/compare/v3.1.1...v3.1.2
 [3.1.1]:      https://github.com/cucumber/gherkin/compare/v3.1.0...v3.1.1
