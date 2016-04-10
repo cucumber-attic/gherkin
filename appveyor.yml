@@ -2,7 +2,7 @@ version: build{build}
 
 
 environment:
-  GherkinVersion: "3.3.0"
+  GherkinVersion: "4.0.0"
   GherkinPackageVersion: "$(GherkinVersion)-ci$(APPVEYOR_BUILD_NUMBER)"
 
 
