@@ -1,35 +1,38 @@
 {
-  "children": [
-    {
-      "keyword": "Scenario",
-      "location": {
-        "column": 3,
-        "line": 3
-      },
-      "name": "minimalistic",
-      "steps": [
-        {
-          "keyword": "Given ",
-          "location": {
-            "column": 5,
-            "line": 4
-          },
-          "text": "the minimalism",
-          "type": "Step"
-        }
-      ],
-      "tags": [],
-      "type": "Scenario"
-    }
-  ],
   "comments": [],
-  "keyword": "Feature",
-  "language": "en",
-  "location": {
-    "column": 1,
-    "line": 1
+  "feature": {
+    "children": [
+      {
+        "keyword": "Scenario",
+        "location": {
+          "column": 3,
+          "line": 3
+        },
+        "name": "minimalistic",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "location": {
+              "column": 5,
+              "line": 4
+            },
+            "text": "the minimalism",
+            "type": "Step"
+          }
+        ],
+        "tags": [],
+        "type": "Scenario"
+      }
+    ],
+    "keyword": "Feature",
+    "language": "en",
+    "location": {
+      "column": 1,
+      "line": 1
+    },
+    "name": "Minimal",
+    "tags": [],
+    "type": "Feature"
   },
-  "name": "Minimal",
-  "tags": [],
-  "type": "Feature"
+  "type": "GherkinDocument"
 }

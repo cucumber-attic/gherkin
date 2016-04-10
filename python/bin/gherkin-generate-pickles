@@ -20,8 +20,8 @@ parser.stop_at_first_error = False
 files = sys.argv[1:]
 for file in files:
     try:
-        feature = parser.parse(file)
-        pickles = compile(feature, file)
+        gherkin_document = parser.parse(file)
+        pickles = compile(gherkin_document, file)
         if sys.version_info > (3, 0):
             print(json.dumps(pickles, sort_keys=True, indent=2, separators=(',', ': '), ensure_ascii=False))
         else:

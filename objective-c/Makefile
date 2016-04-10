@@ -13,10 +13,7 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
-.built: .xcodeproj_built_debug LICENSE
-	xcodebuild -scheme "AstGenerator" CONFIGURATION_BUILD_DIR=build/
-	xcodebuild -scheme "TokensGenerator" CONFIGURATION_BUILD_DIR=build/
-#	xcodebuild test -scheme "GherkinTestsOSX"
+.built: build/AstGenerator build/TokensGenerator LICENSE
 	touch $@
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
@@ -41,7 +38,6 @@ clean:
 	rm -rf .compared .built acceptance Gherkin/GHParser.m Gherkin/GHParser.h gherkin-languages.json
 	rm -rf build/
 	rm -rf *~
-	xcodebuild clean -scheme "GherkinOSX" CONFIGURATION_BUILD_DIR=build/
 .PHONY: clean
 
 Gherkin/GHParser.h: ../gherkin.berp gherkin-objective-c-header.razor ../bin/berp.exe
@@ -50,21 +46,11 @@ Gherkin/GHParser.h: ../gherkin.berp gherkin-objective-c-header.razor ../bin/berp
 Gherkin/GHParser.m: ../gherkin.berp gherkin-objective-c-implementation.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-objective-c-implementation.razor -o $@
 
-.xcodeproj_built_debug: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) GherkinLanguages/gherkin-languages.json
-	rm -f $@
-	xcodebuild -version
-	xcodebuild -scheme "GherkinOSX" -configuration Debug CONFIGURATION_BUILD_DIR=build/
-	touch $@
+build/AstGenerator: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) GherkinLanguages/gherkin-languages.json
+	xcodebuild -scheme "AstGenerator" CONFIGURATION_BUILD_DIR=build/
 
-Gherkin/bin/Debug/Gherkin.a: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) GherkinLanguages/gherkin-languages.json
-	rm -f $@
-	xcodebuild -scheme "GherkinOSX" -configuration Debug CONFIGURATION_BUILD_DIR=build/
-	touch $@
-
-Gherkin/bin/Release/Gherkin.a: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) GherkinLanguages/gherkin-languages.json
-	rm -f $@
-	xcodebuild -scheme "GherkinOSX" -configuration Release CONFIGURATION_BUILD_DIR=build/
-	touch $@
+build/TokensGenerator: Gherkin/GHParser.h Gherkin/GHParser.m $(M_FILES) GherkinLanguages/gherkin-languages.json
+	xcodebuild -scheme "TokensGenerator" CONFIGURATION_BUILD_DIR=build/
 
 GherkinLanguages/gherkin-languages.json: ../gherkin-languages.json
 	cp $< $@

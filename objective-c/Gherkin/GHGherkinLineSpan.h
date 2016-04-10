@@ -1,4 +1,5 @@
-﻿@interface GHGherkinLineSpan : NSObject
+﻿#import <Foundation/Foundation.h>
+@interface GHGherkinLineSpan : NSObject
 
 @property (nonatomic, readonly) NSUInteger  column;
 @property (nonatomic, readonly) NSString    * text;

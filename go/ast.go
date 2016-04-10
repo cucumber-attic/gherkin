@@ -10,6 +10,12 @@ type Node struct {
 	Type     string    `json:"type"`
 }
 
+type GherkinDocument struct {
+	Type                string        `json:"type"`
+	Feature             *Feature      `json:"feature,omitempty"`
+	Comments            []*Comment    `json:"comments"`
+}
+
 type Feature struct {
 	Node
 	Tags                []*Tag        `json:"tags"`
@@ -18,7 +24,6 @@ type Feature struct {
 	Name                string        `json:"name"`
 	Description         string        `json:"description,omitempty"`
 	Children            []interface{} `json:"children"`
-	Comments            []*Comment    `json:"comments"`
 }
 
 type Comment struct {

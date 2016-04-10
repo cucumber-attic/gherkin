@@ -6,6 +6,7 @@ import gherkin.ast.DataTable;
 import gherkin.ast.DocString;
 import gherkin.ast.Examples;
 import gherkin.ast.Feature;
+import gherkin.ast.GherkinDocument;
 import gherkin.ast.Location;
 import gherkin.ast.Node;
 import gherkin.ast.Scenario;
@@ -26,8 +27,12 @@ import static java.util.Collections.unmodifiableList;
 
 public class Compiler {
 
-    public List<Pickle> compile(Feature feature, String path) {
+    public List<Pickle> compile(GherkinDocument gherkinDocument, String path) {
         List<Pickle> pickles = new ArrayList<>();
+        Feature feature = gherkinDocument.getFeature();
+        if (feature == null) {
+            return pickles;
+        }
 
         List<Tag> featureTags = feature.getTags();
         List<PickleStep> backgroundSteps = new ArrayList<>();

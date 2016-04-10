@@ -7,10 +7,33 @@ This project adheres to [Semantic Versioning](http://semver.org).
 This document is formatted according to the principles of [Keep A CHANGELOG](http://keepachangelog.com).
 
 ----
-
 ## [Unreleased] - TBD
 
 ### Removed
+
+### Added
+
+### Changed
+
+### Fixed
+
+## [4.0.0] - 2016-04-10
+
+This is a major release because of two backwards-incompatible changes.
+
+First, the AST returned by the parser is a `GherkinDocument` node, with a `feature`
+property pointing to a `Feature` node. Prior to this release the parser would return
+a `Feature` node.
+
+Second, the `Feature` node now has an array/list of `children` that are `Background`,
+`Scenario` or `ScenarioOutline`.
+
+Other noteworthy changes is several minor improvements to bring the grammar closer
+to Gherkin 2.
+
+### Removed
+* (JavaScript) Remove bower package
+   by [aslakhellesoy])
 
 ### Added
 * (JavaScript) Expose dialects
@@ -27,16 +50,19 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
    by [nixel2007])
 
 ### Changed
+* (All) Allow emtpy Feature files
+  ([#189](https://github.com/cucumber/gherkin/pull/189)
+  by [aslakhellesoy], [brasmusson], [enkessler])
 * (All) Rename Feature.scenarioDefinitions to Feature.children
   (by [aslakhellesoy])
 * (All) Background as part of Feature.children
-  ([#178](https://github.com/cucumber/gherkin/pull/174)
+  ([#174](https://github.com/cucumber/gherkin/pull/174)
    by [aslakhellesoy])
 * (All) Remove scenario keyword from pickles
   ([#176](https://github.com/cucumber/gherkin/pull/176)
    by [charlierudolph])
 * (All) Don't make pickles out of step-less scenarios
-  ([#174](https://github.com/cucumber/gherkin/pull/175)
+  ([#175](https://github.com/cucumber/gherkin/pull/175)
    by [enkessler])
 * (Ruby) More consistent AST node types
   ([#158](https://github.com/cucumber/gherkin/pull/158)
@@ -197,7 +223,8 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 * First release
 
 <!-- Releases -->
-[Unreleased]: https://github.com/cucumber/gherkin/compare/v3.2.0...HEAD
+[Unreleased]: https://github.com/cucumber/gherkin/compare/v4.0.0...HEAD
+[4.0.0]:      https://github.com/cucumber/gherkin/compare/v3.2.0...v4.0.0
 [3.2.0]:      https://github.com/cucumber/gherkin/compare/v3.1.2...v3.2.0
 [3.1.2]:      https://github.com/cucumber/gherkin/compare/v3.1.1...v3.1.2
 [3.1.1]:      https://github.com/cucumber/gherkin/compare/v3.1.0...v3.1.1

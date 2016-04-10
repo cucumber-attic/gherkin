@@ -34,15 +34,15 @@ Our wish-list is (in no particular order):
 
 ```java
 // Java
-Parser<Feature> parser = new Parser<>(new AstBuilder());
-Feature feature = parser.parse("Feature: ...");
-List<Pickle> pickles = new Compiler().compile(feature, "path/to/the.feature")
+Parser<GherkinDocument> parser = new Parser<>(new AstBuilder());
+GherkinDocument gherkinDocument = parser.parse("Feature: ...");
+List<Pickle> pickles = new Compiler().compile(gherkinDocument, "path/to/the.feature")
 ```
 
 ```csharp
 // C#
 var parser = new Parser();
-var feature = parser.Parse("Feature: ...");
+var gherkinDocument = parser.Parse("Feature: ...");
 ```
 
 ```ruby
@@ -50,16 +50,16 @@ var feature = parser.Parse("Feature: ...");
 require 'gherkin/parser'
 require 'gherkin/pickles/compiler'
 parser = Gherkin::Parser.new
-feature = parser.parse("Feature: ...")
-pickles = Gherkin::Pickles::Compiler.new.compile(feature, "path/to/the.feature")
+gherkin_document = parser.parse("Feature: ...")
+pickles = Gherkin::Pickles::Compiler.new.compile(gherkin_document, "path/to/the.feature")
 ```
 
 ```javascript
 // JavaScript
 var Gherkin = require('gherkin');
 var parser = new Gherkin.Parser();
-var feature = parser.parse("Feature: ...");
-var pickles = new Gherkin.Compiler().compile(feature, "path/to/the.feature");
+var gherkinDocument = parser.parse("Feature: ...");
+var pickles = new Gherkin.Compiler().compile(gherkinDocument, "path/to/the.feature");
 ```
 
 ```go
@@ -69,7 +69,7 @@ import (
   "github.com/cucumber/gherkin-go"
 )
 reader := strings.NewReader(`Feature: ...`)
-feature, err := gherkin.ParseFeature(reader)
+gherkinDocument, err := gherkin.ParseGherkinDocument(reader)
 ```
 *Download the package via: `go get github.com/cucumber/gherkin-go`*
 
@@ -79,22 +79,21 @@ from gherkin.parser import Parser
 from gherkin.pickles.compiler import compile
 
 parser = Parser()
-feature = parser.parse("Feature: ...")
-pickles = compile(feature, "path/to/the.feature")
+gherkin_document = parser.parse("Feature: ...")
+pickles = compile(gherkin_document, "path/to/the.feature")
 ```
 
 ```Objective-C
 // Objective-C
 #import "GHParser+Extensions.h"
 
-GHParser * featureParser = [[GHParser alloc] init];
+GHParser * parser = [[GHParser alloc] init];
 NSString * featureFilePath; // Should refer to the place where we can get the content of the feature
 NSString * content = [NSString stringWithContentsOfURL:featureFilePath encoding:NSUTF8StringEncoding error:nil];
 if([content stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0){
       // GHParser will throw an error if you passed empty content... handle this issue first.
 }
-// GHFeature contains all the information found during parsing the feature content
-GHFeature * result = [featureParser parseContent:content];
+GHGherkinDocument * result = [parser parseContent:content];
 ```
 
 ```perl
@@ -103,8 +102,8 @@ use Gherkin::Parser;
 use Gherkin::Pickles::Compiler;
 
 my $parser = Gherkin::Parser->new();
-my $feature = $parser->parse("Feature: ...");
-my $pickles = Gherkin::Pickles::Compiler->compile($feature, "path/to/the.feature");
+my $gherkin_document = $parser->parse("Feature: ...");
+my $pickles = Gherkin::Pickles::Compiler->compile($gherkin_document, "path/to/the.feature");
 ```
 
 ## Table cell escaping

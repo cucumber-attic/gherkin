@@ -1,4 +1,5 @@
-﻿@class GHTableRow;
+﻿#import <Foundation/Foundation.h>
+@class GHTableRow;
 
 @protocol GHHasRowsProtocol <NSObject>
 

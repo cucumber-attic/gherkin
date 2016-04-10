@@ -44,15 +44,15 @@ func main() {
 }
 
 func GenerateAst(in io.Reader, out io.Writer, pretty bool) (err error) {
-	feature, err := gherkin.ParseFeature(in)
+	gherkinDocument, err := gherkin.ParseGherkinDocument(in)
 	if err != nil {
 		return
 	}
 	var bytes []byte
 	if pretty {
-		bytes, err = json.MarshalIndent(feature, "", "  ")
+		bytes, err = json.MarshalIndent(gherkinDocument, "", "  ")
 	} else {
-		bytes, err = json.Marshal(feature)
+		bytes, err = json.Marshal(gherkinDocument)
 	}
 	if err != nil {
 		return

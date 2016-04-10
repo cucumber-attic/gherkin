@@ -1,6 +1,7 @@
 #import "NSObject+Dictionary.h"
 
 #import "GHHasLocationProtocol.h"
+#import "GHGherkinDocument.h"
 
 #import <objc/runtime.h>
 
@@ -76,7 +77,10 @@ static NSDateFormatter * dateFormatter;
     // Add type based on class name to the dictionary
     if ([[self class] conformsToProtocol: @protocol(GHHasLocationProtocol)])
         [dictionary setObject: [NSStringFromClass([self class]) stringByReplacingOccurrencesOfString: @"GH" withString: @""] forKey: @"type"];
-    
+
+    if ([self isKindOfClass:[GHGherkinDocument class]])
+        [dictionary setObject: @"GherkinDocument" forKey: @"type"];
+
     return dictionary;
 }
 

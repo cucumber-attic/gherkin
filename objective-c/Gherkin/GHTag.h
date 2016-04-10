@@ -1,3 +1,4 @@
+#import <Foundation/Foundation.h>
 @class GHLocation;
 
 #import "GHHasLocationProtocol.h"

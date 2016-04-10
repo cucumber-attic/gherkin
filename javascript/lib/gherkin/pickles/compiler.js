@@ -1,9 +1,12 @@
 var countSymbols = require('../count_symbols')
 
 function Compiler() {
-  this.compile = function (feature, path) {
+  this.compile = function (gherkin_document, path) {
     var pickles = [];
 
+    if (gherkin_document.feature == null) return pickles;
+
+    var feature = gherkin_document.feature;
     var featureTags = feature.tags;
     var backgroundSteps = [];
 
