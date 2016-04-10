@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>Gherkin</id>
-    <version>3.2.0</version>
+    <version>4.0.0</version>
     <title>Gherkin Parser</title>
     <authors>Cucumber Ltd, Gaspar Nagy</authors>
     <owners>Cucumber</owners>
@@ -13,7 +13,7 @@
     <iconUrl>https://cucumber.io/images/cucumber-mark-32x32.png</iconUrl>
     <licenseUrl>https://github.com/cucumber/gherkin/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <copyright>Copyright © 2014-2016 Cucumber Ltd, Gaspar Nagy</copyright>
+    <copyright>Copyright © Cucumber Ltd, Gaspar Nagy</copyright>
     <tags>specflow gherkin cucumber</tags>
   </metadata>
   <files>
