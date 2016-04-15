@@ -1,0 +1,36 @@
+@using Berp;
+@helper CallProduction(ProductionRule production)
+{
+  switch(production.Type)
+  {
+    case ProductionRuleType.Start:
+      @:  start_rule(context, :@production.RuleName);
+      break;
+    case ProductionRuleType.End:
+      @:  end_rule(context, :@production.RuleName);
+      break;
+    case ProductionRuleType.Process:
+      @:  build(context, token);
+      break;
+  }
+}
+@helper HandleParserError(IEnumerable<string> expectedTokens, State state)
+{<text>
+      state_comment = "State: @state.Id - @Raw(state.Comment)"
+      token.detach
+      expected_tokens = ["@Raw(string.Join("\", \"", expectedTokens))"]
+      error = token.eof? ? UnexpectedEOFException.new(token, expected_tokens, state_comment) : UnexpectedTokenException.new(token, expected_tokens, state_comment)
+      raise error if (stop_at_first_error)
+      add_error(context, error)
+      return @state.Id</text>}
+@helper MatchToken(TokenType tokenType)
+{<text>match_@(tokenType)(context, token)</text>}
+# This file is generated. Do not edit! Edit /elixir/parser.elixir.razor instead.
+
+defmodule @Model.Namespace do
+  defmodule @Model.ParserClassName do
+    def parse do
+      true
+    end
+  end
+end
