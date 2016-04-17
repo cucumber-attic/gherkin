@@ -1,6 +1,4 @@
-default: clean lib/parser.ex test
-
-test:
+test: lib/parser.ex
 	mix test
 .PHONY: test
 
