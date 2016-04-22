@@ -1,12 +1,19 @@
 GOOD_FEATURE_FILES = $(shell find ../testdata/good -name "*.feature")
-TOKENS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.tokens,$(GOOD_FEATURE_FILES))
+
+TOKENS = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.tokens,$(GOOD_FEATURE_FILES))
 
 test: lib/parser.ex
 	mix test
 .PHONY: test
 
-empty: $(TOKENS)
-.PHONY: empty
+all: .compared
+.PHONY: all
+
+.compared: .built $(TOKENS)
+	touch $@
+
+.built: lib/parser.ex
+	touch $@
 
 lib/parser.ex: ../gherkin.berp parser.elixir.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t parser.elixir.razor -o $@

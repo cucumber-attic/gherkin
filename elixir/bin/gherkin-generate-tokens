@@ -1,1 +1,3 @@
 #!/bin/sh
+this_dir=`dirname $0`
+elixir $this_dir/gherkin-generate-tokens.exs
