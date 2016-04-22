@@ -7,7 +7,7 @@ Feature: DataTables
     And a data table with a single cell
       | foo |
     And a data table with different fromatting
-      |   foo|bar|    boz    |    
+      |   foo|bar|    boz    |
     And a data table with an empty cell
       |foo||boz|
     And a data table with comments and newlines inside
@@ -16,3 +16,6 @@ Feature: DataTables
       | boz  | boo  |
       # this is a comment
       | boz2 | boo2 |
+    And a data table with newlines inside cells
+      | foo\nzoo\nbaz | bar\nbaz\nboo |
+      | bar\nfoo      | baz           |
