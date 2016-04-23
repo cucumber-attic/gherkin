@@ -16,6 +16,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Changed
 
 ### Fixed
+* (Javascript) Check for module before window
+  ([#204](https://github.com/cucumber/gherkin/pull/204)
+   by [charlierudolph])
 
 ## [4.0.0] - 2016-04-10
 

@@ -26,13 +26,13 @@ THE SOFTWARE.
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define([], factory);
-  } else if (typeof window === 'object') {
-    // Browser globals (root is window)
-    window.Gherkin = factory();
-  } else {
-    // Node.js/IO.js
+  } else if (typeof module !== 'undefined' && module.exports) {
+    // Node.js/IO.js/RequireJS
     module.exports = factory();
-  }
+  } else {
+    // Browser globals (root is window)
+    root.Gherkin = factory();
+  } 
 }(this, function () {
   return {
     Parser: require('./lib/gherkin/parser'),
