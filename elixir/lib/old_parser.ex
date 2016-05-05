@@ -11,11 +11,11 @@ defmodule Gherkin do
     end
   end
 
-  defmodule Parser do
-    def parse do
-      %Node.GherkinDocument{
-        feature: %Node.Feature{}
-      }
-    end
-  end
+  # defmodule Parser do
+  #   def parse do
+  #     %Node.GherkinDocument{
+  #       feature: %Node.Feature{}
+  #     }
+  #   end
+  # end
 end
