@@ -15,7 +15,7 @@ all: .compared
 .built: lib/parser.ex
 	touch $@
 
-lib/parser.ex: ../gherkin.berp parser.elixir.razor ../bin/berp.exe
+lib/parser.ex: lib/gherkin/gherkin-languages.json ../gherkin.berp parser.elixir.razor ../bin/berp.exe
 	#mono ../bin/berp.exe -g ../gherkin.berp -t parser.elixir.razor -o $@
 	# Remove BOM
 	#tail -c +4 $@ > $@.nobom
@@ -26,6 +26,9 @@ acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.featur
 	bin/gherkin-generate-tokens $< > $@
 	diff --unified $<.tokens $@
 #.DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
+
+lib/gherkin/gherkin-languages.json: ../gherkin-languages.json
+	cp $^ $@
 
 clean:
 	rm -rf lib/parser.ex

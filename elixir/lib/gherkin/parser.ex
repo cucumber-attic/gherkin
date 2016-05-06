@@ -52,25 +52,61 @@ defmodule Gherkin.Parser do
   end
 
   def match_token(state, token) do
-    case find_token_type(token, allowed_token_types_for_state(state)) do
+    # TODO get current dialect from state
+    case find_token_type("en", token, allowed_token_types_for_state(state)) do
       :error ->
+        IO.inspect(token)
         :error
       token_type_to_match ->
         do_match_token(state, token_type_to_match, token)
     end
   end
 
-  defp find_token_type(token, allowed_types) do
+  defp find_token_type(dialect, token, allowed_types) do
     allowed_types
-    |> Enum.find(:error, fn (token_type) -> token_of_type?(token, token_type) end)
+    |> Enum.find(:error, fn (token_type) -> token_of_type?(dialect, token, token_type) end)
   end
 
-  defp token_of_type?(%{line: nil}, :EOF), do: true
-  defp token_of_type?(%{line: %{trimmed_line_text: ""}}, :Empty), do: true
-  defp token_of_type?(%{line: %{trimmed_line_text: "Feature:" <> _}}, :FeatureLine), do: true
-  defp token_of_type?(%{line: %{trimmed_line_text: "Scenario:" <> _}}, :ScenarioLine), do: true
-  defp token_of_type?(%{line: %{trimmed_line_text: "Given " <> _}}, :StepLine), do: true
-  defp token_of_type?(_, _), do: false
+
+  defp token_of_type?(_, %{line: nil}, :EOF), do: true
+  defp token_of_type?(_, %{line: %{trimmed_line_text: ""}}, :Empty), do: true
+
+  @keyword_to_token_type %{
+    "scenario" => :ScenarioLine,
+    "feature"  => :FeatureLine,
+    "given"    => :StepLine,
+    "when"     => :StepLine,
+    "then"     => :StepLine,
+    "but"      => :StepLine,
+    "*"        => :StepLine,
+  }
+
+  @tokens_table Path.join([__DIR__, "..", "..", "gherkin-languages.json"])
+    |> File.read!
+    |> Poison.decode!
+    |> Enum.flat_map(fn ({language, keywords}) ->
+      keywords
+      |> Dict.drop(~w[name native])
+      |> Enum.flat_map(fn ({keyword, aliases}) ->
+        aliases
+        |> Enum.map(fn (translated_keyword) ->
+          {language, translated_keyword, Dict.get(@keyword_to_token_type, keyword, :TokenTypeNotYetMapped)}
+        end)
+      end)
+    end)
+
+  for {language, keyword, token_type} <- @tokens_table do
+
+    defp token_of_type?(unquote(language), %{line: %{trimmed_line_text: unquote(keyword) <> _}}, unquote(token_type)), do: true
+
+  end
+
+  # Tentatively replaced by macro code above
+  #defp token_of_type?(%{line: %{trimmed_line_text: "Feature:" <> _}}, :FeatureLine), do: true
+  #defp token_of_type?(%{line: %{trimmed_line_text: "Scenario:" <> _}}, :ScenarioLine), do: true
+  #defp token_of_type?(%{line: %{trimmed_line_text: "Given " <> _}}, :StepLine), do: true
+
+  defp token_of_type?(_, _, _), do: false
 
   defp do_match_token(_, :EOF, token = %{line: nil}), do: {:ok, token}
   defp do_match_token(_, :Empty, token) do
@@ -87,6 +123,7 @@ defmodule Gherkin.Parser do
   defp do_match_token(_, :FeatureLine, token = %{line: %{trimmed_line_text: text, indent: indent}}) do
     matched_token = %{token |
       matched_type: :FeatureLine,
+      # XXX hardcoded offsets, breaks with other dialects
       matched_text: text |> String.slice(8..-1) |> String.strip,
       matched_keyword: text |> String.slice(0, 7),
       matched_indent: indent,
@@ -98,6 +135,7 @@ defmodule Gherkin.Parser do
   defp do_match_token(_, :ScenarioLine, token = %{line: %{trimmed_line_text: text, indent: indent}}) do
     matched_token = %{token |
       matched_type: :ScenarioLine,
+      # XXX hardcoded offsets, breaks with other dialects
       matched_text: text |> String.slice(9..-1) |> String.strip,
       matched_keyword: text |> String.slice(0, 8),
       matched_indent: indent,
@@ -109,6 +147,7 @@ defmodule Gherkin.Parser do
   defp do_match_token(_, :StepLine, token = %{line: %{trimmed_line_text: text, indent: indent}}) do
     matched_token =  %{token |
       matched_type: :StepLine,
+      # XXX hardcoded offsets, breaks with other dialects
       matched_text: text |> String.slice(6..-1) |> String.strip,
       matched_keyword: text |> String.slice(0, 6),
       matched_indent: indent,
