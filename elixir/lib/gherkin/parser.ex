@@ -51,17 +51,49 @@ defmodule Gherkin.Parser do
     token
   end
   def match_token(parser_state, token = %{line: %{trimmed_line_text: trimmed_line_text}}) do
-    if String.starts_with?(trimmed_line_text, "Feature:") do
-      %{token |
-        matched_type: :FeatureLine,
-        matched_text: trimmed_line_text |> String.slice(8..-1) |> String.strip,
-        matched_keyword: String.slice(trimmed_line_text, 0, 7),
-        matched_indent: token.line.indent,
-        matched_items: [],
-        location: %{token.location | column: token.line.indent + 1},
-      }
-    else
-      token
+    cond do
+      trimmed_line_text == "" ->
+        %{token |
+          matched_type: :Empty,
+          matched_text: nil,
+          matched_keyword: nil,
+          matched_indent: 0,
+          matched_items: [],
+          location: %{token.location | column: 1},
+        }
+
+      String.starts_with?(trimmed_line_text, "Feature:") ->
+        %{token |
+          matched_type: :FeatureLine,
+          matched_text: trimmed_line_text |> String.slice(8..-1) |> String.strip,
+          matched_keyword: String.slice(trimmed_line_text, 0, 7),
+          matched_indent: token.line.indent,
+          matched_items: [],
+          location: %{token.location | column: token.line.indent + 1},
+        }
+
+      String.starts_with?(trimmed_line_text, "Scenario:") ->
+        %{token |
+          matched_type: :ScenarioLine,
+          matched_text: trimmed_line_text |> String.slice(9..-1) |> String.strip,
+          matched_keyword: String.slice(trimmed_line_text, 0, 8),
+          matched_indent: token.line.indent,
+          matched_items: [],
+          location: %{token.location | column: token.line.indent + 1},
+        }
+
+      String.starts_with?(trimmed_line_text, "Given ") ->
+        %{token |
+          matched_type: :StepLine,
+          matched_text: trimmed_line_text |> String.slice(6..-1) |> String.strip,
+          matched_keyword: String.slice(trimmed_line_text, 0, 6),
+          matched_indent: token.line.indent,
+          matched_items: [],
+          location: %{token.location | column: token.line.indent + 1},
+        }
+
+      true ->
+        token
     end
   end
 
