@@ -24,7 +24,7 @@ defmodule Gherkin.Parser do
 
     #IO.inspect(token)
 
-    matched_token = match_token(parser_state, token)
+    {:ok, matched_token} = match_token(parser_state, token)
 
    # IO.inspect(matched_token)
 
@@ -47,54 +47,75 @@ defmodule Gherkin.Parser do
     Kernel.apply(builder, fun, args)
   end
 
-  def match_token(_parser_state, token = %{line: nil}) do
-    token
+  def allowed_token_types_for_state(_) do
+    [:EOF, :Empty, :FeatureLine, :ScenarioLine, :StepLine]
   end
-  def match_token(parser_state, token = %{line: %{trimmed_line_text: trimmed_line_text}}) do
-    cond do
-      trimmed_line_text == "" ->
-        %{token |
-          matched_type: :Empty,
-          matched_text: nil,
-          matched_keyword: nil,
-          matched_indent: 0,
-          matched_items: [],
-          location: %{token.location | column: 1},
-        }
 
-      String.starts_with?(trimmed_line_text, "Feature:") ->
-        %{token |
-          matched_type: :FeatureLine,
-          matched_text: trimmed_line_text |> String.slice(8..-1) |> String.strip,
-          matched_keyword: String.slice(trimmed_line_text, 0, 7),
-          matched_indent: token.line.indent,
-          matched_items: [],
-          location: %{token.location | column: token.line.indent + 1},
-        }
-
-      String.starts_with?(trimmed_line_text, "Scenario:") ->
-        %{token |
-          matched_type: :ScenarioLine,
-          matched_text: trimmed_line_text |> String.slice(9..-1) |> String.strip,
-          matched_keyword: String.slice(trimmed_line_text, 0, 8),
-          matched_indent: token.line.indent,
-          matched_items: [],
-          location: %{token.location | column: token.line.indent + 1},
-        }
-
-      String.starts_with?(trimmed_line_text, "Given ") ->
-        %{token |
-          matched_type: :StepLine,
-          matched_text: trimmed_line_text |> String.slice(6..-1) |> String.strip,
-          matched_keyword: String.slice(trimmed_line_text, 0, 6),
-          matched_indent: token.line.indent,
-          matched_items: [],
-          location: %{token.location | column: token.line.indent + 1},
-        }
-
-      true ->
-        token
+  def match_token(state, token) do
+    case find_token_type(token, allowed_token_types_for_state(state)) do
+      :error ->
+        :error
+      token_type_to_match ->
+        do_match_token(state, token_type_to_match, token)
     end
+  end
+
+  defp find_token_type(token, allowed_types) do
+    allowed_types
+    |> Enum.find(:error, fn (token_type) -> token_of_type?(token, token_type) end)
+  end
+
+  defp token_of_type?(%{line: nil}, :EOF), do: true
+  defp token_of_type?(%{line: %{trimmed_line_text: ""}}, :Empty), do: true
+  defp token_of_type?(%{line: %{trimmed_line_text: "Feature:" <> _}}, :FeatureLine), do: true
+  defp token_of_type?(%{line: %{trimmed_line_text: "Scenario:" <> _}}, :ScenarioLine), do: true
+  defp token_of_type?(%{line: %{trimmed_line_text: "Given " <> _}}, :StepLine), do: true
+  defp token_of_type?(_, _), do: false
+
+  defp do_match_token(_, :EOF, token = %{line: nil}), do: {:ok, token}
+  defp do_match_token(_, :Empty, token) do
+    matched_token = %{token |
+      matched_type: :Empty,
+      matched_text: nil,
+      matched_keyword: nil,
+      matched_indent: 0,
+      matched_items: [],
+      location: %{token.location | column: 1},
+    }
+    {:ok, matched_token}
+  end
+  defp do_match_token(_, :FeatureLine, token = %{line: %{trimmed_line_text: text, indent: indent}}) do
+    matched_token = %{token |
+      matched_type: :FeatureLine,
+      matched_text: text |> String.slice(8..-1) |> String.strip,
+      matched_keyword: text |> String.slice(0, 7),
+      matched_indent: indent,
+      matched_items: [],
+      location: %{token.location | column: indent + 1},
+    }
+    {:ok, matched_token}
+  end
+  defp do_match_token(_, :ScenarioLine, token = %{line: %{trimmed_line_text: text, indent: indent}}) do
+    matched_token = %{token |
+      matched_type: :ScenarioLine,
+      matched_text: text |> String.slice(9..-1) |> String.strip,
+      matched_keyword: text |> String.slice(0, 8),
+      matched_indent: indent,
+      matched_items: [],
+      location: %{token.location | column: indent + 1},
+    }
+    {:ok, matched_token}
+  end
+  defp do_match_token(_, :StepLine, token = %{line: %{trimmed_line_text: text, indent: indent}}) do
+    matched_token =  %{token |
+      matched_type: :StepLine,
+      matched_text: text |> String.slice(6..-1) |> String.strip,
+      matched_keyword: text |> String.slice(0, 6),
+      matched_indent: indent,
+      matched_items: [],
+      location: %{token.location | column: indent + 1},
+    }
+    {:ok, matched_token}
   end
 
 end
