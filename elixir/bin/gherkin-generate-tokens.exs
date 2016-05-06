@@ -1,5 +1,3 @@
-IO.puts "EOF"
-
 parser = Gherkin.Parser.new(Gherkin.TokenFormatterBuilder)
 
 System.argv

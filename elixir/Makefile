@@ -16,16 +16,16 @@ all: .compared
 	touch $@
 
 lib/parser.ex: ../gherkin.berp parser.elixir.razor ../bin/berp.exe
-	mono ../bin/berp.exe -g ../gherkin.berp -t parser.elixir.razor -o $@
+	#mono ../bin/berp.exe -g ../gherkin.berp -t parser.elixir.razor -o $@
 	# Remove BOM
-	tail -c +4 $@ > $@.nobom
-	mv $@.nobom $@
+	#tail -c +4 $@ > $@.nobom
+	#mv $@.nobom $@
 
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
 	mkdir -p `dirname $@`
 	bin/gherkin-generate-tokens $< > $@
 	diff --unified $<.tokens $@
-.DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
+#.DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
 clean:
 	rm -rf lib/parser.ex
