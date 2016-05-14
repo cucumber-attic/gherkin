@@ -63,5 +63,6 @@ gherkin/parser.py: ../gherkin.berp gherkin-python.razor ../bin/berp.exe
 LICENSE.txt: ../LICENSE
 	cp $< $@
 
-update-gherkin-languages: gherkin/gherkin-languages.json
+update-gherkin-languages: ../gherkin-languages.json gherkin/gherkin-languages.json
+	diff -q $< gherkin/gherkin-languages.json || cp $< gherkin/gherkin-languages.json
 .PHONY: update-gherkin-languages

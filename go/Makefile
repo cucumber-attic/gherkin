@@ -54,8 +54,9 @@ parser.go: ../gherkin.berp parser.go.razor ../bin/berp.exe
 	tail -c +4 $@ > $@.nobom
 	mv $@.nobom $@
 
-dialects_builtin.go: ../gherkin-languages.json dialects_builtin.go.jq
-	cat $< | jq -f dialects_builtin.go.jq -r -c > $@
+dialects_builtin.%: ../gherkin-languages.json dialects_builtin_filter.jq
+	cat $< | jq -f dialects_builtin_filter.jq -r -c > $@
+.INTERMEDIATE: dialects_builtin.go.tmp
 
 LICENSE: ../LICENSE
 	cp $< $@
@@ -64,5 +65,6 @@ clean:
 	rm -rf .compared .built acceptance bin/ parser.go dialects_builtin.go
 .PHONY: clean show-version-info
 
-update-gherkin-languages: dialects_builtin.go
+update-gherkin-languages: dialects_builtin.go.tmp dialects_builtin.go
+	diff -q $< dialects_builtin.go || mv $< dialects_builtin.go
 .PHONY: update-gherkin-languages

@@ -73,5 +73,6 @@ clean:
 	rm -rf .compared .built acceptance target src/main/java/gherkin/Parser.java src/main/resources/gherkin/gherkin-languages.json
 .PHONY: clean
 
-update-gherkin-languages: src/main/resources/gherkin/gherkin-languages.json
+update-gherkin-languages: ../gherkin-languages.json src/main/resources/gherkin/gherkin-languages.json
+	diff -q $< src/main/resources/gherkin/gherkin-languages.json || cp $< src/main/resources/gherkin/gherkin-languages.json
 .PHONY: update-gherkin-languages
