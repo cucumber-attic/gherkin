@@ -67,7 +67,7 @@ release: predistribution
 	dzil release
 
 clean:
-	rm -rf CHANGES Gherkin-* .compared .cpanfile_dependencies .built acceptance lib/Gherkin/Generated/Languages.pm lib/Gherkin/Generated/Parser.pm
+	rm -rf CHANGES Gherkin-* .compared .cpanfile_dependencies .built acceptance lib/Gherkin/Generated/Languages.pm lib/Gherkin/Generated/Parser.pm gherkin-languages.json
 .PHONY: clean
 
 CHANGES:
