@@ -60,3 +60,5 @@ LICENSE: ../LICENSE
 
 update-gherkin-languages: GherkinLanguages/gherkin-languages.json
 .PHONY: update-gherkin-languages
+
+update-version:

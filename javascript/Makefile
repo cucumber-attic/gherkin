@@ -83,3 +83,11 @@ clean:
 
 update-gherkin-languages: lib/gherkin/gherkin-languages.json
 .PHONY: update-gherkin-languages
+
+update-version: package.json.tmp package.json
+	diff -q $< package.json || mv $< package.json
+.PHONY: update-version
+
+package.json.tmp: package.json ../VERSION
+	sed "s/\(\"version\" *: *\"\)[0-9]*\.[0-9]*\.[0-9]*\(\"\)/\1`cat ../VERSION`\2/" $< > $@
+.INTERMEDIATE: package.json.tmp

@@ -90,3 +90,7 @@ LICENSE.txt: ../LICENSE
 
 update-gherkin-languages: lib/Gherkin/Generated/Languages.pm
 .PHONY: update-gherkin-languages
+
+update-version: ../VERSION VERSION
+	diff -q $< VERSION || cp $< VERSION
+.PHONY: update-version
