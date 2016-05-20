@@ -76,8 +76,13 @@ CHANGES:
 lib/Gherkin/Generated:
 	mkdir -p $@
 
-lib/Gherkin/Generated/Languages.pm: ../gherkin-languages.json
-	perl helper-scripts/build_languages.pl < $< > $@
+lib/Gherkin/Generated/Languages.pm: gherkin-languages.json
+	perl helper-scripts/build_languages.pl > $@
+
+lib/Gherkin/Generated/Languages.pm.tmp: ../gherkin-languages.json gherkin-languages.json
+	diff -q $< gherkin-languages.json || cp $< gherkin-languages.json
+	perl helper-scripts/build_languages.pl > $@
+.INTERMEDIATE: lib/Gherkin/Generated/Languages.pm.tmp
 
 lib/Gherkin/Generated/Parser.pm: ../gherkin.berp gherkin-perl.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-perl.razor -o $@
@@ -88,5 +93,9 @@ lib/Gherkin/Generated/Parser.pm: ../gherkin.berp gherkin-perl.razor ../bin/berp.
 LICENSE.txt: ../LICENSE
 	cp $< $@
 
-update-gherkin-languages: lib/Gherkin/Generated/Languages.pm
+gherkin-languages.json: ../gherkin-languages.json
+	cp $< gherkin-languages.json
+
+update-gherkin-languages: lib/Gherkin/Generated/Languages.pm.tmp lib/Gherkin/Generated/Languages.pm ../gherkin-languages.json
+	diff -q $< lib/Gherkin/Generated/Languages.pm || mv $< lib/Gherkin/Generated/Languages.pm
 .PHONY: update-gherkin-languages

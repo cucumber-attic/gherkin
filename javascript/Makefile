@@ -81,5 +81,6 @@ clean:
 	rm -rf .compared .built acceptance lib/gherkin/parser.js lib/gherkin/gherkin-languages.json dist
 .PHONY: clean
 
-update-gherkin-languages: lib/gherkin/gherkin-languages.json
+update-gherkin-languages: ../gherkin-languages.json lib/gherkin/gherkin-languages.json
+	diff -q $< lib/gherkin/gherkin-languages.json || cp $< lib/gherkin/gherkin-languages.json
 .PHONY: update-gherkin-languages

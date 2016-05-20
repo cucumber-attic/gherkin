@@ -65,5 +65,6 @@ Gemfile.lock: Gemfile
 LICENSE: ../LICENSE
 	cp $< $@
 
-update-gherkin-languages: lib/gherkin/gherkin-languages.json
+update-gherkin-languages: ../gherkin-languages.json lib/gherkin/gherkin-languages.json
+	diff -q $< lib/gherkin/gherkin-languages.json || cp $< lib/gherkin/gherkin-languages.json
 .PHONY: update-gherkin-languages
