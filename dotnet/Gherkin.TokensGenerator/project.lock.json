@@ -17,6 +17,12 @@
         "framework": ".NETFramework,Version=v4.5",
         "dependencies": {
           "Newtonsoft.Json": "8.0.3"
+        },
+        "compile": {
+          "net45/Gherkin.dll": {}
+        },
+        "runtime": {
+          "net45/Gherkin.dll": {}
         }
       }
     },
@@ -1995,6 +2001,12 @@
           "System.Runtime": "4.1.0-rc2-24027",
           "System.Runtime.Serialization.Json": "4.0.2-rc2-24027",
           "System.Runtime.Serialization.Primitives": "4.1.1-rc2-24027"
+        },
+        "compile": {
+          "netstandard1.5/Gherkin.dll": {}
+        },
+        "runtime": {
+          "netstandard1.5/Gherkin.dll": {}
         }
       }
     }
@@ -6701,7 +6713,8 @@
     },
     "Gherkin/4.0.0": {
       "type": "project",
-      "path": "../Gherkin/project.json"
+      "path": "../Gherkin/project.json",
+      "msbuildProject": "../Gherkin/Gherkin.xproj"
     }
   },
   "projectFileDependencyGroups": {

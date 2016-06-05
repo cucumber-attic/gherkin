@@ -23,9 +23,9 @@
     "summary": "Cross-platform parser for the Gherkin language",
     "requireLicenseAcceptance": false
   },
-  "dependencies": {
-    "Newtonsoft.Json": "8.0.3"
-  },
+    "dependencies": {
+        "Newtonsoft.Json": "8.0.3"
+    },
   "buildOptions": {
     "embed": {
       "include": [
@@ -49,5 +49,8 @@
       }
     },
     "net45": {}
+  },
+  "scripts": {
+    "precompile": "%project:Directory%\\..\\generate_parser.cmd"
   }
 }

@@ -38,6 +38,12 @@
         "framework": ".NETFramework,Version=v4.5",
         "dependencies": {
           "Newtonsoft.Json": "8.0.3"
+        },
+        "compile": {
+          "net45/Gherkin.dll": {}
+        },
+        "runtime": {
+          "net45/Gherkin.dll": {}
         }
       },
       "Gherkin.AstGenerator/4.0.0": {
@@ -46,6 +52,12 @@
         "dependencies": {
           "Gherkin": "(, )",
           "Newtonsoft.Json": "8.0.3"
+        },
+        "compile": {
+          "net45/Gherkin.AstGenerator.dll": {}
+        },
+        "runtime": {
+          "net45/Gherkin.AstGenerator.dll": {}
         }
       },
       "Gherkin.TokensGenerator/4.0.0": {
@@ -53,6 +65,12 @@
         "framework": ".NETFramework,Version=v4.5",
         "dependencies": {
           "Gherkin": "(, )"
+        },
+        "compile": {
+          "net45/Gherkin.TokensGenerator.dll": {}
+        },
+        "runtime": {
+          "net45/Gherkin.TokensGenerator.dll": {}
         }
       }
     },
@@ -2052,6 +2070,12 @@
           "System.Runtime": "4.1.0-rc2-24027",
           "System.Runtime.Serialization.Json": "4.0.2-rc2-24027",
           "System.Runtime.Serialization.Primitives": "4.1.1-rc2-24027"
+        },
+        "compile": {
+          "netstandard1.5/Gherkin.dll": {}
+        },
+        "runtime": {
+          "netstandard1.5/Gherkin.dll": {}
         }
       },
       "Gherkin.AstGenerator/4.0.0": {
@@ -2065,6 +2089,12 @@
           "System.Runtime": "4.1.0-rc2-24027",
           "System.Runtime.Serialization.Json": "4.0.2-rc2-24027",
           "System.Runtime.Serialization.Primitives": "4.1.1-rc2-24027"
+        },
+        "compile": {
+          "netstandard1.5/Gherkin.AstGenerator.dll": {}
+        },
+        "runtime": {
+          "netstandard1.5/Gherkin.AstGenerator.dll": {}
         }
       },
       "Gherkin.TokensGenerator/4.0.0": {
@@ -2077,6 +2107,12 @@
           "System.Runtime": "4.1.0-rc2-24027",
           "System.Runtime.Serialization.Json": "4.0.2-rc2-24027",
           "System.Runtime.Serialization.Primitives": "4.1.1-rc2-24027"
+        },
+        "compile": {
+          "netstandard1.5/Gherkin.TokensGenerator.dll": {}
+        },
+        "runtime": {
+          "netstandard1.5/Gherkin.TokensGenerator.dll": {}
         }
       }
     }
@@ -6831,15 +6867,18 @@
     },
     "Gherkin/4.0.0": {
       "type": "project",
-      "path": "../Gherkin/project.json"
+      "path": "../Gherkin/project.json",
+      "msbuildProject": "../Gherkin/Gherkin.xproj"
     },
     "Gherkin.AstGenerator/4.0.0": {
       "type": "project",
-      "path": "../Gherkin.AstGenerator/project.json"
+      "path": "../Gherkin.AstGenerator/project.json",
+      "msbuildProject": "../Gherkin.AstGenerator/Gherkin.AstGenerator.xproj"
     },
     "Gherkin.TokensGenerator/4.0.0": {
       "type": "project",
-      "path": "../Gherkin.TokensGenerator/project.json"
+      "path": "../Gherkin.TokensGenerator/project.json",
+      "msbuildProject": "../Gherkin.TokensGenerator/Gherkin.TokensGenerator.xproj"
     }
   },
   "projectFileDependencyGroups": {
