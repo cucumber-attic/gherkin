@@ -2,7 +2,7 @@
   "locked": false,
   "version": 2,
   "targets": {
-    ".NETFramework,Version=v4.5.2": {
+    ".NETFramework,Version=v4.5": {
       "Newtonsoft.Json/8.0.3": {
         "type": "package",
         "compile": {
@@ -6684,7 +6684,7 @@
     "": [
       "Newtonsoft.Json >= 8.0.3"
     ],
-    ".NETFramework,Version=v4.5.2": [],
+    ".NETFramework,Version=v4.5": [],
     ".NETStandard,Version=v1.5": [
       "Microsoft.NETCore.App >= 1.0.0-rc2-3002702",
       "System.IO >= 4.1.0-rc2-24027",

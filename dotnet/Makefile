@@ -15,14 +15,14 @@ all: .compared
 
 	
 .run_tests:  
-	dotnet run -f net452 -p Gherkin.Specs/
+	dotnet run -f net45 -p Gherkin.Specs/
 	dotnet run -f netstandard1.5 -p Gherkin.Specs/
 	touch $@	
 	
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens 
 	mkdir -p `dirname $@`
 	
-	bin/gherkin-generate-tokens net452 $< | tail -n +3 > $@
+	bin/gherkin-generate-tokens net45 $< | tail -n +3 > $@
 	diff --unified $<.tokens $@
 	rm -f $@
 	
@@ -30,10 +30,10 @@ acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.featur
 	diff --unified $<.tokens $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
-acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json .built_Net452 .built_NetStandard15
+acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json
 	mkdir -p `dirname $@`
 	
-	bin/gherkin-generate-ast net452 $< | tail -n +3 | jq --sort-keys "." > $@
+	bin/gherkin-generate-ast net45 $< | tail -n +3 | jq --sort-keys "." > $@
 	diff --unified $<.ast.json $@
 	rm -f $@
 	
@@ -42,10 +42,10 @@ acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feat
 	
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
 
-acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors .built_Net452 .built_NetStandard15
+acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors
 	mkdir -p `dirname $@`
 	
-	bin/gherkin-generate-ast net452 $< | tail -n +3 > $@
+	bin/gherkin-generate-ast net45 $< | tail -n +3 > $@
 	diff --unified $<.errors $@
 	rm -f $@
 	
@@ -75,19 +75,6 @@ Gherkin/Parser.cs: ../gherkin.berp gherkin-csharp.razor ../bin/berp.exe
 	dotnet build Gherkin.Specs
 	
 	touch $@
-
-#Gherkin/bin/Debug/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES) Gherkin/gherkin-languages.json
-#	rm -f $@
-#	xbuild /p:Configuration=Debug
-#	touch $@
-
-#Gherkin/bin/Release/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES) Gherkin/gherkin-languages.json
-#	rm -f $@
-#	xbuild /p:Configuration=Release
-#	touch $@
-
-#$(NUNIT):
-#	mono .nuget/NuGet.exe install NUnit.Runners -Version 2.6.3 -o packages
 
 Gherkin/gherkin-languages.json: ../gherkin-languages.json
 	cp $< $@

@@ -2,7 +2,7 @@
   "locked": false,
   "version": 2,
   "targets": {
-    ".NETFramework,Version=v4.5.2": {
+    ".NETFramework,Version=v4.5": {
       "Newtonsoft.Json/8.0.3": {
         "type": "package",
         "compile": {
@@ -33,26 +33,26 @@
           "lib/net45/nunitlite.dll": {}
         }
       },
-      "Gherkin/1.0.0": {
+      "Gherkin/4.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.2",
+        "framework": ".NETFramework,Version=v4.5",
         "dependencies": {
           "Newtonsoft.Json": "8.0.3"
         }
       },
       "Gherkin.AstGenerator/4.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.2",
+        "framework": ".NETFramework,Version=v4.5",
         "dependencies": {
-          "Gherkin": "1.0.0",
+          "Gherkin": "(, )",
           "Newtonsoft.Json": "8.0.3"
         }
       },
       "Gherkin.TokensGenerator/4.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.2",
+        "framework": ".NETFramework,Version=v4.5",
         "dependencies": {
-          "Gherkin": "1.0.0"
+          "Gherkin": "(, )"
         }
       }
     },
@@ -2041,7 +2041,7 @@
           "lib/netstandard1.3/_._": {}
         }
       },
-      "Gherkin/1.0.0": {
+      "Gherkin/4.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.5",
         "dependencies": {
@@ -2058,7 +2058,7 @@
         "type": "project",
         "framework": ".NETStandard,Version=v1.5",
         "dependencies": {
-          "Gherkin": "1.0.0",
+          "Gherkin": "(, )",
           "Microsoft.NETCore.App": "1.0.0-rc2-3002702",
           "Newtonsoft.Json": "8.0.3",
           "System.IO": "4.1.0-rc2-24027",
@@ -2071,7 +2071,7 @@
         "type": "project",
         "framework": ".NETStandard,Version=v1.5",
         "dependencies": {
-          "Gherkin": "1.0.0",
+          "Gherkin": "(, )",
           "Microsoft.NETCore.App": "1.0.0-rc2-3002702",
           "System.IO": "4.1.0-rc2-24027",
           "System.Runtime": "4.1.0-rc2-24027",
@@ -6829,7 +6829,7 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Gherkin/1.0.0": {
+    "Gherkin/4.0.0": {
       "type": "project",
       "path": "../Gherkin/project.json"
     },
@@ -6851,7 +6851,7 @@
       "NUnitLite >= 3.2.1",
       "Newtonsoft.Json >= 8.0.3"
     ],
-    ".NETFramework,Version=v4.5.2": [],
+    ".NETFramework,Version=v4.5": [],
     ".NETStandard,Version=v1.5": [
       "Microsoft.NETCore.App >= 1.0.0-rc2-3002702",
       "System.IO >= 4.1.0-rc2-24027",

@@ -56,19 +56,14 @@ namespace Gherkin
         {
             const string languageFileName = "gherkin-languages.json";
             
-            #if NET452
-            
+            #if NET45            
             var assembly = typeof(GherkinDialectProvider).Assembly;
-            var resourceStream = assembly.GetManifestResourceStream(typeof(GherkinDialectProvider), languageFileName);
-                        
+            var resourceStream = assembly.GetManifestResourceStream(typeof(GherkinDialectProvider), languageFileName);                        
             #endif
             
             #if NETSTANDARD1_5
-            
-            
             var assembly = typeof(GherkinDialectProvider).GetTypeInfo().Assembly;            
-            var resourceStream = assembly.GetManifestResourceStream("Gherkin." + languageFileName);
-            
+            var resourceStream = assembly.GetManifestResourceStream("Gherkin." + languageFileName);            
             #endif
                                     
             if (resourceStream == null)
