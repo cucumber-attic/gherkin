@@ -22,22 +22,22 @@ all: .compared
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens 
 	mkdir -p `dirname $@`
 	
-	bin/gherkin-generate-tokens net45 $< | tail -n +3 > $@
+	bin/gherkin-generate-tokens net45 $< | tail -n +19 > $@
 	diff --unified $<.tokens $@
 	rm -f $@
 	
-	bin/gherkin-generate-tokens netstandard1.5 $< | tail -n +3 > $@
+	bin/gherkin-generate-tokens netstandard1.5 $< | tail -n +19 > $@
 	diff --unified $<.tokens $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
 acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json
 	mkdir -p `dirname $@`
 	
-	bin/gherkin-generate-ast net45 $< | tail -n +3 | jq --sort-keys "." > $@
+	bin/gherkin-generate-ast net45 $< | tail -n +19 | jq --sort-keys "." > $@
 	diff --unified $<.ast.json $@
 	rm -f $@
 	
-	bin/gherkin-generate-ast netstandard1.5 $< | tail -n +3 | jq --sort-keys "." > $@
+	bin/gherkin-generate-ast netstandard1.5 $< | tail -n +19 | jq --sort-keys "." > $@
 	diff --unified $<.ast.json $@
 	
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
@@ -45,11 +45,11 @@ acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feat
 acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors
 	mkdir -p `dirname $@`
 	
-	bin/gherkin-generate-ast net45 $< | tail -n +3 > $@
+	bin/gherkin-generate-ast net45 $< | tail -n +19 > $@
 	diff --unified $<.errors $@
 	rm -f $@
 	
-	bin/gherkin-generate-ast netstandard1.5 $< | tail -n +3 > $@
+	bin/gherkin-generate-ast netstandard1.5 $< | tail -n +19 > $@
 	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
