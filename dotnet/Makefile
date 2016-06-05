@@ -6,33 +6,50 @@ ASTS     = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.ast.js
 ERRORS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.errors,$(BAD_FEATURE_FILES))
 
 CS_FILES = $(shell find . -type f \( -iname "*.cs" ! -iname "*.NETFramework*" \))
-NUNIT = packages/NUnit.Runners.2.6.3/tools/nunit-console.exe
 
 all: .compared
 .PHONY: all
 
-.compared: .built $(TOKENS) $(ASTS) $(ERRORS)
+.compared: LICENSE .sln_built_debug .run_tests $(TOKENS) $(ASTS) $(ERRORS) 
 	touch $@
 
-.built: .sln_built_debug $(NUNIT) LICENSE
-	mono $(NUNIT) -noxml -nologo -stoponerror Gherkin.Specs/bin/Debug/Gherkin.Specs.dll
-	touch $@
-
-acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .built
+	
+.run_tests:  
+	dotnet run -f net452 -p Gherkin.Specs/
+	dotnet run -f netstandard1.5 -p Gherkin.Specs/
+	touch $@	
+	
+acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens 
 	mkdir -p `dirname $@`
-	bin/gherkin-generate-tokens $< > $@
+	
+	bin/gherkin-generate-tokens net452 $< | tail -n +3 > $@
+	diff --unified $<.tokens $@
+	rm -f $@
+	
+	bin/gherkin-generate-tokens netstandard1.5 $< | tail -n +3 > $@
 	diff --unified $<.tokens $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
-acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json .built
+acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json .built_Net452 .built_NetStandard15
 	mkdir -p `dirname $@`
-	bin/gherkin-generate-ast $< | jq --sort-keys "." > $@
+	
+	bin/gherkin-generate-ast net452 $< | tail -n +3 | jq --sort-keys "." > $@
 	diff --unified $<.ast.json $@
+	rm -f $@
+	
+	bin/gherkin-generate-ast netstandard1.5 $< | tail -n +3 | jq --sort-keys "." > $@
+	diff --unified $<.ast.json $@
+	
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
 
-acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors .built
+acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors .built_Net452 .built_NetStandard15
 	mkdir -p `dirname $@`
-	! bin/gherkin-generate-ast $< > $@
+	
+	bin/gherkin-generate-ast net452 $< | tail -n +3 > $@
+	diff --unified $<.errors $@
+	rm -f $@
+	
+	bin/gherkin-generate-ast netstandard1.5 $< | tail -n +3 > $@
 	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 
@@ -48,23 +65,29 @@ Gherkin/Parser.cs: ../gherkin.berp gherkin-csharp.razor ../bin/berp.exe
 
 .sln_built_debug: Gherkin/Parser.cs $(CS_FILES) Gherkin/gherkin-languages.json
 	rm -f $@
-	mono --version
-	mono .nuget/NuGet.exe restore Gherkin.CSharp.sln
-	xbuild /p:Configuration=Debug
+
+	dotnet --version
+	dotnet restore
+
+	dotnet build Gherkin
+	dotnet build Gherkin.AstGenerator
+	dotnet build Gherkin.TokensGenerator
+	dotnet build Gherkin.Specs
+	
 	touch $@
 
-Gherkin/bin/Debug/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES) Gherkin/gherkin-languages.json
-	rm -f $@
-	xbuild /p:Configuration=Debug
-	touch $@
+#Gherkin/bin/Debug/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES) Gherkin/gherkin-languages.json
+#	rm -f $@
+#	xbuild /p:Configuration=Debug
+#	touch $@
 
-Gherkin/bin/Release/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES) Gherkin/gherkin-languages.json
-	rm -f $@
-	xbuild /p:Configuration=Release
-	touch $@
+#Gherkin/bin/Release/Gherkin.dll: Gherkin/Parser.cs $(CS_FILES) Gherkin/gherkin-languages.json
+#	rm -f $@
+#	xbuild /p:Configuration=Release
+#	touch $@
 
-$(NUNIT):
-	mono .nuget/NuGet.exe install NUnit.Runners -Version 2.6.3 -o packages
+#$(NUNIT):
+#	mono .nuget/NuGet.exe install NUnit.Runners -Version 2.6.3 -o packages
 
 Gherkin/gherkin-languages.json: ../gherkin-languages.json
 	cp $< $@

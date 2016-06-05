@@ -12,7 +12,24 @@ namespace Gherkin.Specs
 
         public static string InputFolder
         {
-            get { return Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath); }
+            get 
+            { 
+                var inputFolder = Path.GetDirectoryName(new Uri(typeof(TestFolders).GetTypeInfo().Assembly.CodeBase).LocalPath);
+                
+                #if NET452
+                
+                inputFolder = Path.Combine(inputFolder, "..", "..");
+                
+                #endif
+                
+                #if NETSTANDARD1_5
+                
+                inputFolder = Path.Combine(inputFolder, "..");                
+                
+                #endif
+                
+                return inputFolder; 
+            }
         }
 
         public static string OutputFolder

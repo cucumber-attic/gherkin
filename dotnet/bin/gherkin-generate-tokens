@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+DIR=$( cd "$( dirname "$2" )" && pwd )
 
-mono --runtime=v4.0 $DIR/../Gherkin.TokensGenerator/bin/Debug/Gherkin.TokensGenerator.exe $*
+dotnet run -f $1 -p Gherkin.TokensGenerator $2
+#mono --runtime=v4.0 $DIR/../Gherkin.TokensGenerator/bin/Debug/Gherkin.TokensGenerator.exe $*
+exit 0

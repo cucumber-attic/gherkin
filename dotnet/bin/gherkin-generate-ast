@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+DIR=$( cd "$( dirname "$2" )" && pwd )
 
-mono --runtime=v4.0 $DIR/../Gherkin.AstGenerator/bin/Debug/Gherkin.AstGenerator.exe $*
+dotnet run -f $1 -p Gherkin.AstGenerator $2
+#mono --runtime=v4.0 $DIR/../Gherkin.AstGenerator/bin/Debug/Gherkin.AstGenerator.exe $*
+exit 0

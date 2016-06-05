@@ -10,8 +10,14 @@ namespace Gherkin.TokensGenerator
         {
             var tokenFormatterBuilder = new TokenFormatterBuilder();
             var parser = new Parser<object>(tokenFormatterBuilder);
-            using (var reader = new StreamReader(featureFilePath))
-                parser.Parse(new TokenScanner(reader), new TokenMatcher());
+            
+            using (var stream = new FileStream(featureFilePath, FileMode.Open))
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    parser.Parse(new TokenScanner(reader), new TokenMatcher());
+                }
+            }
 
             var tokensText = tokenFormatterBuilder.GetTokensText();
 

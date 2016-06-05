@@ -11,25 +11,27 @@ namespace Gherkin.Specs
     [TestFixture]
     public class GherkinDialectTests
     {
-        [Test, ExpectedException(typeof(NoSuchLanguageException))]
+        [Test]
         public void ShouldThrowNoSuchLanguageExceptionForInvalidLanguage()
         {
             var x = new GherkinDialectProvider();
-            x.GetDialect("nosuchlang", new Location(1, 2));
+            
+            Assert.Throws<NoSuchLanguageException>(() => x.GetDialect("nosuchlang", new Location(1, 2)));            
         }
 
-        [Test, ExpectedException(typeof(NoSuchLanguageException))]
+        [Test]
         public void ShouldThrowNoSuchLanguageExceptionForInvalidDefaultLanguage()
         {
             var x = new GherkinDialectProvider("nosuchlang");
-            var defaultDialect = x.DefaultDialect;
+            
+            Assert.Throws<NoSuchLanguageException>(() => { var dialect =  x.DefaultDialect;});
         }
 
-        [Test, ExpectedException(typeof(NoSuchLanguageException))]
+        [Test]
         public void ShouldThrowNoSuchLanguageExceptionForInvalidLanguageWithoutLocation()
         {
             var x = new GherkinDialectProvider();
-            x.GetDialect("nosuchlang", null);
+            Assert.Throws<NoSuchLanguageException>(() => x.GetDialect("nosuchlang", null));            
         }
     }
 }

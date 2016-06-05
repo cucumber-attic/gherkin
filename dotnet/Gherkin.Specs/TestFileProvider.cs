@@ -9,12 +9,12 @@ namespace Gherkin.Specs
 {
     public class TestFileProvider
     {
-        public IEnumerable<string> GetValidTestFiles()
+        public static IEnumerable<string> GetValidTestFiles()
         {
             return GetTestFiles("good");
         }
 
-        public IEnumerable<string> GetInvalidTestFiles()
+        public static IEnumerable<string> GetInvalidTestFiles()
         {
             return GetTestFiles("bad");
         }

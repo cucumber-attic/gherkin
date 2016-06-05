@@ -3,7 +3,6 @@ using System.Linq;
 
 namespace Gherkin.Ast
 {
-    [Serializable]
     public class Location
     {
         public int Line { get; private set; }
