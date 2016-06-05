@@ -27,6 +27,7 @@
         "Newtonsoft.Json": "8.0.3"
     },
   "buildOptions": {
+    "keyFile": "../gherkin.snk",
     "embed": {
       "include": [
         "gherkin-languages.json"
