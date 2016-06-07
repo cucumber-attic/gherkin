@@ -89,7 +89,7 @@ matrix:
       sudo: required
       env:
         - DOTNET_SDK_URL=https://go.microsoft.com/fwlink/?LinkID=798405 # v1.0.0-preview1
-	- export TARGET_LANG=dotnet
+        - export TARGET_LANG=dotnet
       addons:
         apt:
           packages:
