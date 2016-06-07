@@ -12,4 +12,4 @@ build_script:
   - ps: dotnet run -f netstandard1.5 -p dotnet/Gherkin.Specs/  
   - ps: Pop-Location
 
-test: off 
+test: off
