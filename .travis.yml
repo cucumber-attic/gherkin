@@ -87,6 +87,7 @@ matrix:
         - brew install jq
 
     - env: TARGET_LANG=dotnet
+      language: csharp
       dist: trusty
       sudo: required
       env:
@@ -109,7 +110,8 @@ matrix:
         # dotnet info
         - dotnet --info
         - pwd
-        - ls
+        - ls -la
+        - ls -la dotnet
  
 before_install:
   - export EnableNuGetPackageRestore=true
