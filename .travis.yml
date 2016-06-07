@@ -112,6 +112,7 @@ matrix:
         - pwd
         - ls -la
         - ls -la dotnet
+        - echo $TARGET_LANG
  
 before_install:
   - export EnableNuGetPackageRestore=true
