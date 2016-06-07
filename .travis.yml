@@ -86,6 +86,10 @@ matrix:
       before_script:
         - brew install jq
 
+    - env: TARGET_LANG=dotnet
+      dist: trusty
+      #sudo: required
+
 before_install:
   - export EnableNuGetPackageRestore=true
 
