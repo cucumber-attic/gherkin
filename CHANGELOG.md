@@ -12,6 +12,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (I18n) az: Add Azerbaijani translation
+  ([#165](https://github.com/cucumber/gherkin/pull/218)
+   by [nalekberov])
 
 ### Changed
 
@@ -247,6 +250,7 @@ to Gherkin 2.
 [maxmeyer]:         https://github.com/maxmeyer
 [merrua]:           https://github.com/merrua
 [moreau-nicolas]:   https://github.com/moreau-nicolas
+[nalekberov]:       https://github.com/nalekberov
 [nixel2007]:        https://github.com/nixel2007
 [paigehf]:          https://github.com/paigehf
 [pjlsergeant]:      https://github.com/pjlsergeant
