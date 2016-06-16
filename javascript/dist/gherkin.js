@@ -539,6 +539,50 @@ module.exports={
       "عندما "
     ]
   },
+  "az": {
+    "and": [
+      "* ",
+      "Və ",
+      "Həm "
+    ],
+    "background": [
+      "Keçmiş",
+      "Kontekst"
+    ],
+    "but": [
+      "* ",
+      "Amma ",
+      "Ancaq "
+    ],
+    "examples": [
+      "Nümunələr"
+    ],
+    "feature": [
+      "Özəllik"
+    ],
+    "given": [
+      "* ",
+      "Tutaq ki ",
+      "Verilir "
+    ],
+    "name": "Azerbaijani",
+    "native": "Azərbaycanca",
+    "scenario": [
+      "Ssenari"
+    ],
+    "scenarioOutline": [
+      "Ssenarinin strukturu"
+    ],
+    "then": [
+      "* ",
+      "O halda "
+    ],
+    "when": [
+      "* ",
+      "Əgər ",
+      "Nə vaxt ki "
+    ]
+  },
   "bg": {
     "and": [
       "* ",
