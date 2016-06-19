@@ -7,7 +7,7 @@ matrix:
   include:
     - env: TARGET_LANG=perl
       language: perl
-      perl: "5.8"
+      perl: "5.14"
       install:
         - ( cd $TARGET_LANG; dzil authordeps --missing | cpanm --no-skip-satisfied )
         - ( cd $TARGET_LANG; dzil listdeps --author --missing | cpanm --no-skip-satisfied )
