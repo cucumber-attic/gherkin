@@ -129,6 +129,49 @@ static const Dialect ar_dialect = {
         &ar_then_keywords,
         &ar_when_keywords };
 
+static const wchar_t* const az_and_KEYWORDS[] = { L"* ", L"Və ", L"Həm " };
+static const Keywords az_and_keywords = { 3, az_and_KEYWORDS };
+
+static const wchar_t* const az_background_KEYWORDS[] = { L"Keçmiş", L"Kontekst" };
+static const Keywords az_background_keywords = { 2, az_background_KEYWORDS };
+
+static const wchar_t* const az_but_KEYWORDS[] = { L"* ", L"Amma ", L"Ancaq " };
+static const Keywords az_but_keywords = { 3, az_but_KEYWORDS };
+
+static const wchar_t* const az_examples_KEYWORDS[] = { L"Nümunələr" };
+static const Keywords az_examples_keywords = { 1, az_examples_KEYWORDS };
+
+static const wchar_t* const az_feature_KEYWORDS[] = { L"Özəllik" };
+static const Keywords az_feature_keywords = { 1, az_feature_KEYWORDS };
+
+static const wchar_t* const az_given_KEYWORDS[] = { L"* ", L"Tutaq ki ", L"Verilir " };
+static const Keywords az_given_keywords = { 3, az_given_KEYWORDS };
+
+static const wchar_t* const az_scenario_KEYWORDS[] = { L"Ssenari" };
+static const Keywords az_scenario_keywords = { 1, az_scenario_KEYWORDS };
+
+static const wchar_t* const az_scenarioOutline_KEYWORDS[] = { L"Ssenarinin strukturu" };
+static const Keywords az_scenarioOutline_keywords = { 1, az_scenarioOutline_KEYWORDS };
+
+static const wchar_t* const az_then_KEYWORDS[] = { L"* ", L"O halda " };
+static const Keywords az_then_keywords = { 2, az_then_KEYWORDS };
+
+static const wchar_t* const az_when_KEYWORDS[] = { L"* ", L"Əgər ", L"Nə vaxt ki " };
+static const Keywords az_when_keywords = { 3, az_when_KEYWORDS };
+
+static const Dialect az_dialect = {
+        L"az",
+        &az_and_keywords,
+        &az_background_keywords,
+        &az_but_keywords,
+        &az_examples_keywords,
+        &az_feature_keywords,
+        &az_given_keywords,
+        &az_scenario_keywords,
+        &az_scenarioOutline_keywords,
+        &az_then_keywords,
+        &az_when_keywords };
+
 static const wchar_t* const bg_and_KEYWORDS[] = { L"* ", L"И " };
 static const Keywords bg_and_keywords = { 2, bg_and_KEYWORDS };
 
@@ -2931,6 +2974,8 @@ const Dialect* Dialect_for(const wchar_t* language) {
         return &am_dialect;
     if (wcscmp(ar_dialect.language_name, language) == 0)
         return &ar_dialect;
+    if (wcscmp(az_dialect.language_name, language) == 0)
+        return &az_dialect;
     if (wcscmp(bg_dialect.language_name, language) == 0)
         return &bg_dialect;
     if (wcscmp(bm_dialect.language_name, language) == 0)
