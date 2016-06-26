@@ -8,6 +8,7 @@ extern "C" {
 #endif
 
 typedef enum GherkinAstType {
+    Gherkin_GherkinDocument,
     Gherkin_Feature,
     Gherkin_Background,
     Gherkin_Scenario,

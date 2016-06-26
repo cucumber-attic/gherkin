@@ -17,10 +17,11 @@ typedef struct Background {
     Location location;
     wchar_t* keyword;
     wchar_t* name;
+    const wchar_t* description;
     const Steps* steps;
 } Background;
 
-const Background* Background_new(Location location, const wchar_t* keyword, const wchar_t* name, const Steps* steps);
+const Background* Background_new(Location location, const wchar_t* keyword, const wchar_t* name, const wchar_t* description, const Steps* steps);
 
 void Background_delete(const Background* background);
 

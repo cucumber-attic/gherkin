@@ -3,7 +3,7 @@
 #include "scenario_outline.h"
 #include <stdlib.h>
 
-const Feature* Feature_new(Location location, const wchar_t* language, const wchar_t* keyword, const wchar_t* name, const wchar_t* description, const Tags* tags, const ScenarioDefinitions* scenario_definitions, const Comments* comments) {
+const Feature* Feature_new(Location location, const wchar_t* language, const wchar_t* keyword, const wchar_t* name, const wchar_t* description, const Tags* tags, const ScenarioDefinitions* scenario_definitions) {
     Feature* feature = (Feature*)malloc(sizeof(Feature));
     feature->feature_delete = (item_delete_function)Feature_delete;
     feature->type = Gherkin_Feature;
@@ -31,7 +31,6 @@ const Feature* Feature_new(Location location, const wchar_t* language, const wch
     feature->description = description;
     feature->tags = tags;
     feature->scenario_definitions = scenario_definitions;
-    feature->comments = comments;
     return feature;
 }
 
@@ -70,9 +69,6 @@ void Feature_delete(const Feature* feature) {
             }
         }
         free((void*)feature->scenario_definitions);
-    }
-    if (feature->comments) {
-        Comments_delete(feature->comments);
     }
     free((void*)feature);
 }

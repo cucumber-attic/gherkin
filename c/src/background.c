@@ -1,7 +1,7 @@
 #include "background.h"
 #include <stdlib.h>
 
-const Background* Background_new(Location location, const wchar_t* keyword, const wchar_t* name, const Steps* steps) {
+const Background* Background_new(Location location, const wchar_t* keyword, const wchar_t* name, const wchar_t* description, const Steps* steps) {
     Background* background = (Background*)malloc(sizeof(Background));
     background->background_delete = (item_delete_function)Background_delete;
     background->type = Gherkin_Background;
@@ -21,6 +21,7 @@ const Background* Background_new(Location location, const wchar_t* keyword, cons
         wmemcpy(background->name, name, length);
         background->name[length] = L'\0';
     }
+    background->description = description;
     background->steps = steps;
     return background;
 }

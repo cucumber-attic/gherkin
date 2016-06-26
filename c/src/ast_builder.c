@@ -24,6 +24,11 @@ typedef struct ExampleTableOnly {
     const TableRows* table_body;
 } ExampleTableOnly;
 
+typedef struct Description {
+    item_delete_function description_delete;
+    const wchar_t* text;
+} Description;
+
 static const ExampleTableOnly* ExampleTableOnly_new(const TableRow* table_header, const TableRows* table_body);
 
 static void ExampleTableOnly_delete(const ExampleTableOnly* table);
@@ -130,8 +135,8 @@ void AstBuilder_end_rule(Builder* builder, RuleType rule) {
     AstNode_add(((AstNode*)ItemQueue_peek(((AstBuilder*)builder)->stack)), rule, object);
 }
 
-const Feature* AstBuilder_get_result(Builder* builder) {
-    return (const Feature*)AstNode_get_single(current_node((AstBuilder*)builder), Rule_Feature);
+const GherkinDocument* AstBuilder_get_result(Builder* builder) {
+    return (const GherkinDocument*)AstNode_get_single(current_node((AstBuilder*)builder), Rule_GherkinDocument);
 }
 
 static AstNode* current_node(AstBuilder* ast_builder) {
@@ -165,7 +170,7 @@ static void* transform_node(AstNode* ast_node, AstBuilder* ast_builder) {
     }
     case Rule_Background: {
         token = AstNode_get_token(ast_node, Rule_BackgroundLine);
-        const Background* background = Background_new(token->location, token->matched_keyword, token->matched_text, get_steps(ast_node));
+        const Background* background = Background_new(token->location, token->matched_keyword, token->matched_text, get_description(ast_node), get_steps(ast_node));
         Token_delete(token);
         AstNode_delete(ast_node);
         return (void*)background;
@@ -216,8 +221,11 @@ static void* transform_node(AstNode* ast_node, AstBuilder* ast_builder) {
     }
     case Rule_Description: {
         const wchar_t* text = get_description_text(ast_node);
+        Description* description = (Description*)malloc(sizeof(Description));
+        description->description_delete = (item_delete_function)free;
+        description->text = text;
         AstNode_delete(ast_node);
-        return (void*)text;
+        return (void*)description;
     }
     case Rule_Feature: {
         node = AstNode_get_single(ast_node, Rule_Feature_Header);
@@ -228,11 +236,17 @@ static void* transform_node(AstNode* ast_node, AstBuilder* ast_builder) {
         if (!token) {
             return (void*)0;
         }
-        const Feature* feature = Feature_new(token->location, token->matched_language, token->matched_keyword, token->matched_text, get_description(node), get_tags(node), get_scenario_definitions(ast_node), get_comments(ast_builder));
+        const Feature* feature = Feature_new(token->location, token->matched_language, token->matched_keyword, token->matched_text, get_description(node), get_tags(node), get_scenario_definitions(ast_node));
         Token_delete(token);
         AstNode_delete(node);
         AstNode_delete(ast_node);
         return (void*)feature;
+    }
+    case Rule_GherkinDocument: {
+        const Feature* feature = AstNode_get_single(ast_node, Rule_Feature);
+        const GherkinDocument* gherkin_document = GherkinDocument_new(feature, get_comments(ast_builder));
+        AstNode_delete(ast_node);
+        return (void*)gherkin_document;
     }
     default:
         return (void*)ast_node;
@@ -445,7 +459,13 @@ static const wchar_t* get_doc_string_text(AstNode* ast_node) {
 }
 
 static const wchar_t* get_description(AstNode* ast_node) {
-    return (wchar_t*)AstNode_get_single(ast_node, Rule_Description);
+    Description* description = AstNode_get_single(ast_node, Rule_Description);
+    if (!description) {
+        return (wchar_t*)0;
+    }
+    const wchar_t* text = description->text;
+    free((void*)description);
+    return text;
 }
 
 static const Comments* get_comments(AstBuilder* ast_builder) {

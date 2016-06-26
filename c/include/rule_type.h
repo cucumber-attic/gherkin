@@ -18,6 +18,7 @@ typedef enum RuleType {
     Rule_TableRow, /* #TableRow */
     Rule_Language, /* #Language */
     Rule_Other, /* #Other */
+    Rule_GherkinDocument, /* GherkinDocument! := Feature? */
     Rule_Feature, /* Feature! := Feature_Header Background? Scenario_Definition* */
     Rule_Feature_Header, /* Feature_Header! := #Language? Tags? #FeatureLine Feature_Description */
     Rule_Background, /* Background! := #BackgroundLine Background_Description Scenario_Step* */

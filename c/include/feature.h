@@ -8,7 +8,6 @@
 #include "tag.h"
 #include "background.h"
 #include "scenario_definition.h"
-#include "comment.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,10 +23,9 @@ typedef struct Feature {
     const wchar_t* description;
     const Tags* tags;
     const ScenarioDefinitions* scenario_definitions;
-    const Comments* comments;
 } Feature;
 
-const Feature* Feature_new(Location location, const wchar_t* language, const wchar_t* keyword, const wchar_t* name, const wchar_t* description, const Tags* tags, const ScenarioDefinitions* scenario_definitions, const Comments* comments);
+const Feature* Feature_new(Location location, const wchar_t* language, const wchar_t* keyword, const wchar_t* name, const wchar_t* description, const Tags* tags, const ScenarioDefinitions* scenario_definitions);
 
 void Feature_delete(const Feature* feature);
 

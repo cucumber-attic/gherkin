@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
     Builder* builder = AstBuilder_new();
     Parser* parser = Parser_new(builder);
     Compiler* compiler = Compiler_new();
-    const Feature* feature;
+    const GherkinDocument* gherkin_document;
     const Pickles* pickles;
     int result_code = 0;
     int i;
@@ -25,17 +25,17 @@ int main(int argc, char** argv) {
         TokenScanner* token_scanner = TokenScanner_new(argv[i]);
         result_code = Parser_parse(parser, token_matcher, token_scanner);
         if (result_code == 0) {
-            feature = AstBuilder_get_result(builder);
+            gherkin_document = AstBuilder_get_result(builder);
             int length = strlen(argv[i]) + 1;
             wchar_t* path = malloc(length * sizeof(wchar_t));
             swprintf(path, length, L"%hs", argv[i]);
-            result_code = Compiler_compile(compiler, feature, path);
+            result_code = Compiler_compile(compiler, gherkin_document, path);
             if (result_code == 0) {
                 pickles = Compiler_get_result(compiler);
                 PicklePrinter_print_pickles(stdout, pickles);
                 Pickles_delete(pickles);
             }
-            Feature_delete(feature);
+            GherkinDocument_delete(gherkin_document);
         }
         else {
             fprintf(stderr, "Compiler errors:\n");

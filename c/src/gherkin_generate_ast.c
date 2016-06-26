@@ -13,14 +13,14 @@ int main(int argc, char** argv) {
     TokenMatcher* token_matcher = TokenMatcher_new(L"en");
     Builder* builder = AstBuilder_new();
     Parser* parser = Parser_new(builder);
-    const Feature* feature;
+    const GherkinDocument* gherkin_document;
     for (i = 1; i < argc; ++i) {
         TokenScanner* token_scanner = TokenScanner_new(argv[i]);
         result_code = Parser_parse(parser, token_matcher, token_scanner);
         if (result_code == 0) {
-            feature = AstBuilder_get_result(builder);
-            AstPrinter_print_feature(stdout, feature);
-            Feature_delete(feature);
+            gherkin_document = AstBuilder_get_result(builder);
+            AstPrinter_print_gherkin_document(stdout, gherkin_document);
+            GherkinDocument_delete(gherkin_document);
         }
         else {
             fprintf(stderr, "Parser errors:\n");

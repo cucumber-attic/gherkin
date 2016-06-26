@@ -1,7 +1,7 @@
 #include "compiler.h"
 #include "pickle.h"
 #include "item_queue.h"
-#include "feature.h"
+#include "gherkin_document.h"
 #include "scenario.h"
 #include "scenario_outline.h"
 #include "data_table.h"
@@ -49,7 +49,8 @@ void Compiler_delete(Compiler* compiler) {
     free((void*)compiler);
 }
 
-int Compiler_compile(Compiler* compiler, const Feature* feature, const wchar_t* path) {
+int Compiler_compile(Compiler* compiler, const GherkinDocument* gherkin_document, const wchar_t* path) {
+    const Feature* feature = gherkin_document->feature;
     if (!feature) {
         return 0;
     }

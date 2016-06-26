@@ -10,7 +10,7 @@ extern "C" {
 
 typedef struct Compiler Compiler;
 
-typedef struct Feature Feature;
+typedef struct GherkinDocument GherkinDocument;
 
 typedef struct Pickles Pickles;
 
@@ -18,7 +18,7 @@ Compiler* Compiler_new();
 
 void Compiler_delete(Compiler* compiler);
 
-int Compiler_compile(Compiler* compiler, const Feature* feature, const wchar_t* path);
+int Compiler_compile(Compiler* compiler, const GherkinDocument* gherkin_document, const wchar_t* path);
 
 const Pickles* Compiler_get_result(Compiler* compiler);
 

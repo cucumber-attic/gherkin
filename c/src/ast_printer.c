@@ -13,6 +13,8 @@
 
 static const wchar_t* ast_item_type_to_string(GherkinAstType type) {
     switch (type) {
+    case Gherkin_GherkinDocument:
+        return L"GherkinDocument";
     case Gherkin_Feature:
         return L"Feature";
     case Gherkin_Background:
@@ -139,11 +141,20 @@ static void print_name(FILE* file, const wchar_t* name) {
     fprintf(file, "\",");
 }
 
+static void print_description(FILE* file, const wchar_t* description) {
+    if (description) {
+        fprintf(file, "\"description\":\"");
+        print_json_string(file, description);
+        fprintf(file, "\",");
+    }
+}
+
 static void print_background(FILE* file, const Background* background) {
     fprintf(file, "{\"type\":\"%ls\",", ast_item_type_to_string(background->type));
     print_location(file, &background->location);
     fprintf(file, "\"keyword\":\"%ls\",", background->keyword);
     print_name(file, background->name);
+    print_description(file, background->description);
     fprintf(file, "\"steps\":[");
     int i;
     for (i = 0; i < background->steps->step_count; ++i) {
@@ -159,14 +170,6 @@ static void print_tag(FILE* file, const Tag* tag) {
     fprintf(file, "{\"type\":\"%ls\",", ast_item_type_to_string(tag->type));
     print_location(file, &tag->location);
     fprintf(file, "\"name\":\"%ls\"}", tag->name);
-}
-
-static void print_description(FILE* file, const wchar_t* description) {
-    if (description) {
-        fprintf(file, "\"description\":\"");
-        print_json_string(file, description);
-        fprintf(file, "\",");
-    }
 }
 
 static void print_scenario(FILE* file, const Scenario* scenario) {
@@ -267,7 +270,7 @@ static void print_comment(FILE* file, const Comment* comment) {
     fprintf(file, "\"text\":\"%ls\"}", comment->text);
 }
 
-void AstPrinter_print_feature(FILE* file, const Feature* feature) {
+void print_feature(FILE* file, const Feature* feature) {
     fprintf(file, "{");
     fprintf(file, "\"type\":\"%ls\",", ast_item_type_to_string(feature->type));
     fprintf(file, "\"tags\":[");
@@ -298,15 +301,27 @@ void AstPrinter_print_feature(FILE* file, const Feature* feature) {
             print_scenario_outline(file, (ScenarioOutline*)feature->scenario_definitions->scenario_definitions[i]);
         }
     }
-    fprintf(file, "],");
-    fprintf(file, "\"comments\":[");
-    if (feature->comments) {
-    for (i = 0; i < feature->comments->comment_count; ++i) {
-        if (i > 0) {
-            fprintf(file, ",");
-        }
-        print_comment(file, &feature->comments->comments[i]);
+    fprintf(file, "]");
+    fprintf(file, "}\n");
+}
+
+void AstPrinter_print_gherkin_document(FILE* file, const GherkinDocument* gherkin_document) {
+    fprintf(file, "{");
+    fprintf(file, "\"type\":\"%ls\",", ast_item_type_to_string(gherkin_document->type));
+    if (gherkin_document->feature) {
+        fprintf(file, "\"feature\":");
+        print_feature(file, gherkin_document->feature);
+        fprintf(file, ",");
     }
+    fprintf(file, "\"comments\":[");
+    if (gherkin_document->comments) {
+        int i;
+        for (i = 0; i < gherkin_document->comments->comment_count; ++i) {
+            if (i > 0) {
+                fprintf(file, ",");
+            }
+            print_comment(file, &gherkin_document->comments->comments[i]);
+        }
     }
     fprintf(file, "]");
     fprintf(file, "}\n");

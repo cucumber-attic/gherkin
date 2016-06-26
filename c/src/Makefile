@@ -1,5 +1,5 @@
 CC=gcc
-CC_FLAGS=-c -Wall -Werror
+CC_FLAGS=-c -Wall -Werror -g
 GENERATE_DEPS_FLAGS=-MMD -MP -MF $(basename $@).d
 AR=ar
 AR_FLAGS=cr
@@ -36,6 +36,7 @@ PARSER_OBJS= \
 AST_OBJS= \
 	../objs/ast_builder.o \
 	../objs/ast_node.o \
+	../objs/gherkin_document.o \
 	../objs/feature.o \
 	../objs/scenario.o \
 	../objs/scenario_outline.o \
