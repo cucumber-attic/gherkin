@@ -12,8 +12,11 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (I18n) ast: Add Asturian translation
+  ([#209](https://github.com/cucumber/gherkin/pull/209)
+   by [ajspadial])
 * (I18n) az: Add Azerbaijani translation
-  ([#165](https://github.com/cucumber/gherkin/pull/218)
+  ([#218](https://github.com/cucumber/gherkin/pull/218)
    by [nalekberov])
 
 ### Changed
@@ -238,6 +241,7 @@ to Gherkin 2.
 
 <!-- Contributors -->
 [Ahmed-Ali]:        https://github.com/Ahmed-Ali
+[ajspadial]:        https://github.com/ajspadial
 [aslakhellesoy]:    https://github.com/aslakhellesoy
 [brasmusson]:       https://github.com/brasmusson
 [charlierudolph]:   https://github.com/charlierudolph

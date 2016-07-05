@@ -125,6 +125,49 @@ our $data = {
                                 "\x{639}\x{646}\x{62f}\x{645}\x{627} "
                               ]
                   },
+          'ast' => {
+                     'and' => [
+                                '* ',
+                                'Y ',
+                                'Ya '
+                              ],
+                     'background' => [
+                                       'Antecedentes'
+                                     ],
+                     'but' => [
+                                '* ',
+                                'Peru '
+                              ],
+                     'examples' => [
+                                     'Exemplos'
+                                   ],
+                     'feature' => [
+                                    "Carauter\x{ed}stica"
+                                  ],
+                     'given' => [
+                                  '* ',
+                                  "D\x{e1}u ",
+                                  'Dada ',
+                                  'Daos ',
+                                  'Daes '
+                                ],
+                     'name' => 'Asturian',
+                     'native' => 'asturianu',
+                     'scenario' => [
+                                     'Casu'
+                                   ],
+                     'scenarioOutline' => [
+                                            'Esbozu del casu'
+                                          ],
+                     'then' => [
+                                 '* ',
+                                 "Ent\x{f3}s "
+                               ],
+                     'when' => [
+                                 '* ',
+                                 'Cuando '
+                               ]
+                   },
           'az' => {
                     'and' => [
                                '* ',

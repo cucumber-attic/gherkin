@@ -539,6 +539,49 @@ module.exports={
       "عندما "
     ]
   },
+  "ast": {
+    "and": [
+      "* ",
+      "Y ",
+      "Ya "
+    ],
+    "background": [
+      "Antecedentes"
+    ],
+    "but": [
+      "* ",
+      "Peru "
+    ],
+    "examples": [
+      "Exemplos"
+    ],
+    "feature": [
+      "Carauterística"
+    ],
+    "given": [
+      "* ",
+      "Dáu ",
+      "Dada ",
+      "Daos ",
+      "Daes "
+    ],
+    "name": "Asturian",
+    "native": "asturianu",
+    "scenario": [
+      "Casu"
+    ],
+    "scenarioOutline": [
+      "Esbozu del casu"
+    ],
+    "then": [
+      "* ",
+      "Entós "
+    ],
+    "when": [
+      "* ",
+      "Cuando "
+    ]
+  },
   "az": {
     "and": [
       "* ",
