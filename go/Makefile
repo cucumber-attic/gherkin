@@ -55,7 +55,7 @@ parser.go: ../gherkin.berp parser.go.razor ../bin/berp.exe
 	mv $@.nobom $@
 
 dialects_builtin.go: ../gherkin-languages.json dialects_builtin.go.jq
-	cat $< | jq -f dialects_builtin.go.jq -r -c > $@
+	cat $< | jq --sort-keys --from-file dialects_builtin.go.jq --raw-output --compact-output > $@
 
 LICENSE: ../LICENSE
 	cp $< $@
