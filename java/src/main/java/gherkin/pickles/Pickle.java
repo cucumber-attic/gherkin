@@ -28,4 +28,8 @@ public class Pickle {
     public List<PickleLocation> getLocations() {
         return locations;
     }
+
+    public List<PickleTag> getTags() {
+        return tags;
+    }
 }
