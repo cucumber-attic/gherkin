@@ -661,7 +661,9 @@
     ],
     "scenarioOutline": [
       "Scenario Outline",
-      "Scenario Template"
+      "Scenario Template",
+      "Story Outline",
+      "User Story Outline"
     ],
     "then": [
       "* ",
