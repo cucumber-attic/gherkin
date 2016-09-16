@@ -67,3 +67,11 @@ LICENSE: ../LICENSE
 
 update-gherkin-languages: lib/gherkin/gherkin-languages.json
 .PHONY: update-gherkin-languages
+
+update-version: gherkin.gemspec.tmp gherkin.gemspec
+	diff -q $< gherkin.gemspec || mv $< gherkin.gemspec
+.PHONY: update-version
+
+gherkin.gemspec.tmp: gherkin.gemspec ../VERSION
+	sed "s/\(s\.version *= *'\)[0-9]*\.[0-9]*\.[0-9]*\('\)/\1`cat ../VERSION`\2/" $< > $@
+.INTERMEDIATE: gherkin.gemspec.tmp

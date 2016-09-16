@@ -75,3 +75,11 @@ clean:
 
 update-gherkin-languages: src/main/resources/gherkin/gherkin-languages.json
 .PHONY: update-gherkin-languages
+
+update-version: pom.xml.tmp pom.xml
+	diff -q $< pom.xml || mv $< pom.xml
+.PHONY: update-version
+
+pom.xml.tmp: pom.xml ../VERSION
+	sed "s#\(<version>\).*\(</version> *<!-- version marker\)#\1`cat ../VERSION`\2#" $< > $@
+.INTERMEDIATE: pom.xml.tmp

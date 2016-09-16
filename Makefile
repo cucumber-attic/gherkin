@@ -40,3 +40,9 @@ update-gherkin-languages: format-gherkin-languages $(patsubst %/Makefile,update-
 .PHONY: update-gherkin-languages
 update-gherkin-languages-%: %
 	cd $< && make update-gherkin-languages
+
+update-version: $(patsubst %/Makefile,update-version-%,$(MAKEFILES))
+.PHONY: update-version
+
+update-version-%: %
+	cd $< && make update-version

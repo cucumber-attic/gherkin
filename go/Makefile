@@ -66,3 +66,5 @@ clean:
 
 update-gherkin-languages: dialects_builtin.go
 .PHONY: update-gherkin-languages
+
+update-version:

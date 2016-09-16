@@ -65,3 +65,11 @@ LICENSE.txt: ../LICENSE
 
 update-gherkin-languages: gherkin/gherkin-languages.json
 .PHONY: update-gherkin-languages
+
+update-version: setup.py.tmp setup.py
+	diff -q $< setup.py || mv $< setup.py
+.PHONY: update-version
+
+setup.py.tmp: setup.py ../VERSION
+	sed "s/\(version='\)[0-9]*\.[0-9]*\.[0-9]*\('\)/\1`cat ../VERSION`\2/" $< > $@
+.INTERMEDIATE: setup.py.tmp
