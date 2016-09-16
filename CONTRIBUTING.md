@@ -173,6 +173,12 @@ or find us on [Gitter](https://gitter.im/cucumber/gherkin).
 
 ## Make a release
 
+Start by modifying the version in all sub projects:
+
+    echo "X.Y.Z" > VERSION 
+    make update-version
+    git commit -m "Update VERSION to X.Y.Z"
+
 Releases are made from the various subtrees. Before you release, update the subtrees:
 
     make push-subtrees
