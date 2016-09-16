@@ -12,6 +12,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (Java) Make the jar a bundle to support execution in OSGi containers
+  ([#221](https://github.com/cucumber/gherkin/pull/221)
+   by [brasmusson])
 * (Java) Using full path when loading gherkin-languages.json
   ([#225](https://github.com/cucumber/gherkin/pull/225)
    by [mauriciotogneri])
