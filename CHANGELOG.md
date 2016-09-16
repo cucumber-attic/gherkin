@@ -12,6 +12,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (Build) Automate the version update for the sub-projects
+  ([#211](https://github.com/cucumber/gherkin/pull/211)
+   by [brasmusson])
 * (Java) Make the jar a bundle to support execution in OSGi containers
   ([#221](https://github.com/cucumber/gherkin/pull/221)
    by [brasmusson])
