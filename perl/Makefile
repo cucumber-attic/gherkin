@@ -70,13 +70,16 @@ clean:
 	rm -rf CHANGES Gherkin-* .compared .cpanfile_dependencies .built acceptance lib/Gherkin/Generated/Languages.pm lib/Gherkin/Generated/Parser.pm gherkin-languages.json
 .PHONY: clean
 
-CHANGES:
-	cp ../CHANGELOG.md $@
+gherkin-languages.json: ../gherkin-languages.json
+	cp $< $@
+
+CHANGES: ../CHANGELOG.md
+	cp $< $@
 
 lib/Gherkin/Generated:
 	mkdir -p $@
 
-lib/Gherkin/Generated/Languages.pm: ../gherkin-languages.json
+lib/Gherkin/Generated/Languages.pm: gherkin-languages.json
 	perl helper-scripts/build_languages.pl < $< > $@
 
 lib/Gherkin/Generated/Parser.pm: ../gherkin.berp gherkin-perl.razor ../bin/berp.exe

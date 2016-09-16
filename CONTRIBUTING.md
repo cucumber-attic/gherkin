@@ -77,11 +77,13 @@ to import Mozilla certificates & solve the problem
 
 ## Adding or updating an i18n language
 
-1) Edit the file gherkin-langauges.json.
+1) Edit `gherkin-langauges.json`.
 
 2) Distribute the changes to the different parser implementations, this requires `make`, `jq`, `diff`, but no compiler/interpreters:
 
-    make update-gherkin-languages
+```
+make update-gherkin-languages
+```
 
 3) Make a pull request with the changed files.
 
@@ -115,7 +117,7 @@ TL;DR anyone who only knows one of the supported programming languages should be
 able to fix a bug or add a feature in all the other implementations. -Simply by
 finding their way around a consistently organised codebase.
 
-As of Sept 2015 Gherkin is implemented in 6 languages. This number is likely to
+As of May 2016 Gherkin is implemented in 8 languages. This number is likely to
 increase to a dozen within a year or two. Very few programmers are intimate with
 all those languages. Therefore, in order to make it as easy as possible to refactor,
 fix bugs, add features and release packages it is essential that all implementations

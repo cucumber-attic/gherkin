@@ -125,6 +125,93 @@ our $data = {
                                 "\x{639}\x{646}\x{62f}\x{645}\x{627} "
                               ]
                   },
+          'ast' => {
+                     'and' => [
+                                '* ',
+                                'Y ',
+                                'Ya '
+                              ],
+                     'background' => [
+                                       'Antecedentes'
+                                     ],
+                     'but' => [
+                                '* ',
+                                'Peru '
+                              ],
+                     'examples' => [
+                                     'Exemplos'
+                                   ],
+                     'feature' => [
+                                    "Carauter\x{ed}stica"
+                                  ],
+                     'given' => [
+                                  '* ',
+                                  "D\x{e1}u ",
+                                  'Dada ',
+                                  'Daos ',
+                                  'Daes '
+                                ],
+                     'name' => 'Asturian',
+                     'native' => 'asturianu',
+                     'scenario' => [
+                                     'Casu'
+                                   ],
+                     'scenarioOutline' => [
+                                            'Esbozu del casu'
+                                          ],
+                     'then' => [
+                                 '* ',
+                                 "Ent\x{f3}s "
+                               ],
+                     'when' => [
+                                 '* ',
+                                 'Cuando '
+                               ]
+                   },
+          'az' => {
+                    'and' => [
+                               '* ',
+                               "V\x{259} ",
+                               "H\x{259}m "
+                             ],
+                    'background' => [
+                                      "Ke\x{e7}mi\x{15f}",
+                                      'Kontekst'
+                                    ],
+                    'but' => [
+                               '* ',
+                               'Amma ',
+                               'Ancaq '
+                             ],
+                    'examples' => [
+                                    "N\x{fc}mun\x{259}l\x{259}r"
+                                  ],
+                    'feature' => [
+                                   "\x{d6}z\x{259}llik"
+                                 ],
+                    'given' => [
+                                 '* ',
+                                 'Tutaq ki ',
+                                 'Verilir '
+                               ],
+                    'name' => 'Azerbaijani',
+                    'native' => "Az\x{259}rbaycanca",
+                    'scenario' => [
+                                    'Ssenari'
+                                  ],
+                    'scenarioOutline' => [
+                                           'Ssenarinin strukturu'
+                                         ],
+                    'then' => [
+                                '* ',
+                                'O halda '
+                              ],
+                    'when' => [
+                                '* ',
+                                "\x{18f}g\x{259}r ",
+                                "N\x{259} vaxt ki "
+                              ]
+                  },
           'bg' => {
                     'and' => [
                                '* ',

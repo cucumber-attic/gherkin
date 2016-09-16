@@ -12,10 +12,24 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (Java) Make the jar a bundle to support execution in OSGi containers
+  ([#221](https://github.com/cucumber/gherkin/pull/221)
+   by [brasmusson])
+* (Java) Using full path when loading gherkin-languages.json
+  ([#225](https://github.com/cucumber/gherkin/pull/225)
+   by [mauriciotogneri])
+* (I18n) ast: Add Asturian translation
+  ([#209](https://github.com/cucumber/gherkin/pull/209)
+   by [ajspadial])
+* (I18n) az: Add Azerbaijani translation
+  ([#218](https://github.com/cucumber/gherkin/pull/218)
+   by [nalekberov])
 
 ### Changed
 
 ### Fixed
+* (Java) Add a getter for the tags of a pickle
+   by [brasmusson])
 * (Javascript) Check for module before window
   ([#204](https://github.com/cucumber/gherkin/pull/204)
    by [charlierudolph])
@@ -235,6 +249,7 @@ to Gherkin 2.
 
 <!-- Contributors -->
 [Ahmed-Ali]:        https://github.com/Ahmed-Ali
+[ajspadial]:        https://github.com/ajspadial
 [aslakhellesoy]:    https://github.com/aslakhellesoy
 [brasmusson]:       https://github.com/brasmusson
 [charlierudolph]:   https://github.com/charlierudolph
@@ -243,10 +258,12 @@ to Gherkin 2.
 [jargalan]:         https://github.com/jargalan
 [koterpillar]:      https://github.com/koterpillar
 [LiohAu]:           https://github.com/LiohAu
+[mauriciotogneri]:  https://github.com/mauriciotogneri
 [maximeg]:          https://github.com/maximeg
 [maxmeyer]:         https://github.com/maxmeyer
 [merrua]:           https://github.com/merrua
 [moreau-nicolas]:   https://github.com/moreau-nicolas
+[nalekberov]:       https://github.com/nalekberov
 [nixel2007]:        https://github.com/nixel2007
 [paigehf]:          https://github.com/paigehf
 [pjlsergeant]:      https://github.com/pjlsergeant
