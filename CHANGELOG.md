@@ -12,6 +12,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (Java) Using full path when loading gherkin-languages.json
+  ([#225](https://github.com/cucumber/gherkin/pull/225)
+   by [mauriciotogneri])
 * (I18n) ast: Add Asturian translation
   ([#209](https://github.com/cucumber/gherkin/pull/209)
    by [ajspadial])
@@ -252,6 +255,7 @@ to Gherkin 2.
 [jargalan]:         https://github.com/jargalan
 [koterpillar]:      https://github.com/koterpillar
 [LiohAu]:           https://github.com/LiohAu
+[mauriciotogneri]:  https://github.com/mauriciotogneri
 [maximeg]:          https://github.com/maximeg
 [maxmeyer]:         https://github.com/maxmeyer
 [merrua]:           https://github.com/merrua
