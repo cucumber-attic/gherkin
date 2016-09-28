@@ -100,7 +100,7 @@ matrix:
           - libssl-dev
           - libunwind8
           - zlib1g
-      #install:
+      install:
         # Download .NET Core SDK and add to PATH
         #- export DOTNET_INSTALL_DIR="$PWD/.dotnetsdk"
         #- mkdir -p "$DOTNET_INSTALL_DIR"
