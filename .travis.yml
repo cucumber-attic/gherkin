@@ -85,6 +85,7 @@ matrix:
 
     - env: TARGET_LANG=dotnet
       language: csharp
+      dotnet: 1.0.0-preview2-003121
       dist: trusty
       sudo: required
       env:
@@ -99,18 +100,18 @@ matrix:
           - libssl-dev
           - libunwind8
           - zlib1g
-      install:
+      #install:
         # Download .NET Core SDK and add to PATH
-        - export DOTNET_INSTALL_DIR="$PWD/.dotnetsdk"
-        - mkdir -p "$DOTNET_INSTALL_DIR"
-        - curl -L "$DOTNET_SDK_URL" | tar -xzv -C "$DOTNET_INSTALL_DIR"
-        - export PATH="$DOTNET_INSTALL_DIR:$PATH"
+        #- export DOTNET_INSTALL_DIR="$PWD/.dotnetsdk"
+        #- mkdir -p "$DOTNET_INSTALL_DIR"
+        #- curl -L "$DOTNET_SDK_URL" | tar -xzv -C "$DOTNET_INSTALL_DIR"
+        #- export PATH="$DOTNET_INSTALL_DIR:$PATH"
         # dotnet info
         - dotnet --info
-        - pwd
-        - ls -la
-        - ls -la dotnet
-        - echo $TARGET_LANG
+        #- pwd
+        #- ls -la
+        #- ls -la dotnet
+        #- echo $TARGET_LANG
  
 before_install:
   - export EnableNuGetPackageRestore=true
