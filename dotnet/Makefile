@@ -15,9 +15,7 @@ all: .compared
 
 	
 .run_tests:  
-	cd Gherkin.Specs
-	dotnet test 
-	cd ..
+	dotnet test Gherkin.Specs 
 	touch $@	
 	
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens 
