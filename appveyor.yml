@@ -8,8 +8,7 @@ build_script:
   - ps: dotnet --verbose build dotnet/Gherkin.AstGenerator
   - ps: dotnet --verbose build dotnet/Gherkin.TokensGenerator
   - ps: dotnet --verbose build dotnet/Gherkin.Specs
-  - ps: dotnet run -f net45 -p dotnet/Gherkin.Specs/
-  - ps: dotnet run -f netstandard1.5 -p dotnet/Gherkin.Specs/  
+  - ps: dotnet test dotnet/Gherkin.Specs/
   - ps: Pop-Location
 
 test: off
