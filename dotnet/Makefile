@@ -15,8 +15,9 @@ all: .compared
 
 	
 .run_tests:  
-	dotnet run -f net45 -p Gherkin.Specs/
-	dotnet run -f netstandard1.5 -p Gherkin.Specs/
+	cd Gherkin.Specs
+	dotnet test 
+	cd ..
 	touch $@	
 	
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens 
@@ -26,7 +27,7 @@ acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.featur
 	diff --unified $<.tokens $@
 	rm -f $@
 	
-	bin/gherkin-generate-tokens netstandard1.5 $< | tail -n +19 > $@
+	bin/gherkin-generate-tokens netcoreapp1.0 $< | tail -n +19 > $@
 	diff --unified $<.tokens $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
@@ -37,7 +38,7 @@ acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feat
 	diff --unified $<.ast.json $@
 	rm -f $@
 	
-	bin/gherkin-generate-ast netstandard1.5 $< | tail -n +19 | jq --sort-keys "." > $@
+	bin/gherkin-generate-ast netcoreapp1.0 $< | tail -n +19 | jq --sort-keys "." > $@
 	diff --unified $<.ast.json $@
 	
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
@@ -49,7 +50,7 @@ acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.featur
 	diff --unified $<.errors $@
 	rm -f $@
 	
-	bin/gherkin-generate-ast netstandard1.5 $< | tail -n +19 > $@
+	bin/gherkin-generate-ast netcoreapp1.0 $< | tail -n +19 > $@
 	diff --unified $<.errors $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
 

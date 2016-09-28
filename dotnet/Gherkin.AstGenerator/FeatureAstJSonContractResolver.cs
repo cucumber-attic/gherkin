@@ -13,7 +13,7 @@ namespace Gherkin.AstGenerator
             var contract = base.ResolveContract(type);
 
             //TODO: introfuce Node base type and filter for that here
-            if (typeof(IHasLocation).IsAssignableFrom(type))
+            if (typeof(IHasLocation).GetTypeInfo().IsAssignableFrom(type))
             {
                 var objContract = (JsonObjectContract) contract;
                 if (!objContract.Properties.Contains("type"))
@@ -25,7 +25,7 @@ namespace Gherkin.AstGenerator
                         Readable = true
                     });
             }
-            if (typeof(GherkinDocument).IsAssignableFrom(type))
+            if (typeof(GherkinDocument).GetTypeInfo().IsAssignableFrom(type))
             {
                 var objContract = (JsonObjectContract) contract;
                 if (!objContract.Properties.Contains("type"))

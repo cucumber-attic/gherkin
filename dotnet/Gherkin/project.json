@@ -24,7 +24,7 @@
     "requireLicenseAcceptance": false
   },
     "dependencies": {
-        "Newtonsoft.Json": "8.0.3"
+        "Newtonsoft.Json": "9.0.1"
     },
   "buildOptions": {
     "keyFile": "../gherkin.snk",
@@ -35,18 +35,15 @@
     }
   },
   "frameworks": {
-    "netstandard1.5": {
-      "imports": "dnxcore50",
+    "netstandard1.3": {
+      "imports": "dotnet",
       "dependencies": {
-        "Microsoft.NETCore.App": {
-          "type": "platform",
-          "version": "1.0.0-rc2-3002702"
-        },
-        "System.Runtime": "4.1.0-rc2-24027",
-        "System.IO": "4.1.0-rc2-24027",
-        "System.Runtime.Serialization.Json": "4.0.2-rc2-24027",
-        "System.Runtime.Serialization.Primitives": "4.1.1-rc2-24027",
-        "System.Reflection": "4.1.0-rc2-24027"
+        "System.Runtime": "4.1.0",
+        "System.IO": "4.1.0",
+        "System.IO.FileSystem": "4.0.1",
+        "System.Runtime.Serialization.Json": "4.0.2",
+        "System.Runtime.Serialization.Primitives": "4.1.1",
+        "System.Reflection": "4.1.0"
       }
     },
     "net45": {}
