@@ -125,7 +125,7 @@ have a similar structure.
 
 For example, I (Aslak) don't currently know go at all, and very little Python.
 Still, I have been able to fix bugs and refactor the go and python code simply
-because I know where to find stuff since they follow the same structure.
+because I know where to find stuff since all implementations follow the same structure.
 
 If one implementation looks completely different, this becomes a huge burden that
 will slow everything down.
@@ -177,7 +177,7 @@ or find us on [Gitter](https://gitter.im/cucumber/gherkin).
 
 Start by modifying the version in all sub projects:
 
-    echo "X.Y.Z" > VERSION 
+    echo "X.Y.Z" > VERSION
     make update-version
     git commit -m "Update VERSION to X.Y.Z"
 
