@@ -16,4 +16,12 @@
 (16:7)TableRow://9:boz,16:boo
 (17:1)Comment:/      # this is a comment/
 (18:7)TableRow://9:boz2,16:boo2
+(19:5)StepLine:And /a data table with newlines inside cells/
+(20:7)TableRow://9:foo
+zoo
+baz,25:bar
+baz
+boo
+(21:7)TableRow://9:bar
+foo,25:baz
 EOF

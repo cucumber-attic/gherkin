@@ -256,6 +256,62 @@
           }
         ],
         "text": "a data table with comments and newlines inside"
+      },
+      {
+        "arguments": [
+          {
+            "rows": [
+              {
+                "cells": [
+                  {
+                    "location": {
+                      "column": 9,
+                      "line": 20,
+                      "path": "../testdata/good/datatables.feature"
+                    },
+                    "value": "foo\nzoo\nbaz"
+                  },
+                  {
+                    "location": {
+                      "column": 25,
+                      "line": 20,
+                      "path": "../testdata/good/datatables.feature"
+                    },
+                    "value": "bar\nbaz\nboo"
+                  }
+                ]
+              },
+              {
+                "cells": [
+                  {
+                    "location": {
+                      "column": 9,
+                      "line": 21,
+                      "path": "../testdata/good/datatables.feature"
+                    },
+                    "value": "bar\nfoo"
+                  },
+                  {
+                    "location": {
+                      "column": 25,
+                      "line": 21,
+                      "path": "../testdata/good/datatables.feature"
+                    },
+                    "value": "baz"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "locations": [
+          {
+            "column": 9,
+            "line": 19,
+            "path": "../testdata/good/datatables.feature"
+          }
+        ],
+        "text": "a data table with newlines inside cells"
       }
     ],
     "tags": []

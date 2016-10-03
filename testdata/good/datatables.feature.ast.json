@@ -316,6 +316,74 @@
             },
             "text": "a data table with comments and newlines inside",
             "type": "Step"
+          },
+          {
+            "argument": {
+              "location": {
+                "column": 7,
+                "line": 20
+              },
+              "rows": [
+                {
+                  "cells": [
+                    {
+                      "location": {
+                        "column": 9,
+                        "line": 20
+                      },
+                      "type": "TableCell",
+                      "value": "foo\nzoo\nbaz"
+                    },
+                    {
+                      "location": {
+                        "column": 25,
+                        "line": 20
+                      },
+                      "type": "TableCell",
+                      "value": "bar\nbaz\nboo"
+                    }
+                  ],
+                  "location": {
+                    "column": 7,
+                    "line": 20
+                  },
+                  "type": "TableRow"
+                },
+                {
+                  "cells": [
+                    {
+                      "location": {
+                        "column": 9,
+                        "line": 21
+                      },
+                      "type": "TableCell",
+                      "value": "bar\nfoo"
+                    },
+                    {
+                      "location": {
+                        "column": 25,
+                        "line": 21
+                      },
+                      "type": "TableCell",
+                      "value": "baz"
+                    }
+                  ],
+                  "location": {
+                    "column": 7,
+                    "line": 21
+                  },
+                  "type": "TableRow"
+                }
+              ],
+              "type": "DataTable"
+            },
+            "keyword": "And ",
+            "location": {
+              "column": 5,
+              "line": 19
+            },
+            "text": "a data table with newlines inside cells",
+            "type": "Step"
           }
         ],
         "tags": [],
