@@ -1,88 +1,88 @@
-[
-  {
-    "locations": [
-      {
-        "column": 7,
-        "line": 9,
-        "path": "../testdata/good/several_examples.feature"
-      },
-      {
-        "column": 3,
-        "line": 3,
-        "path": "../testdata/good/several_examples.feature"
-      }
-    ],
-    "name": "minimalistic",
-    "steps": [
-      {
-        "arguments": [],
-        "locations": [
-          {
-            "column": 7,
-            "line": 9,
-            "path": "../testdata/good/several_examples.feature"
-          },
-          {
-            "column": 11,
-            "line": 4,
-            "path": "../testdata/good/several_examples.feature"
-          }
-        ],
-        "text": "the foo"
-      }
-    ],
-    "tags": [
-      {
-        "location": {
-          "column": 5,
-          "line": 6,
+{
+  "locations": [
+    {
+      "column": 7,
+      "line": 9,
+      "path": "../testdata/good/several_examples.feature"
+    },
+    {
+      "column": 3,
+      "line": 3,
+      "path": "../testdata/good/several_examples.feature"
+    }
+  ],
+  "name": "minimalistic",
+  "steps": [
+    {
+      "arguments": [],
+      "locations": [
+        {
+          "column": 7,
+          "line": 9,
           "path": "../testdata/good/several_examples.feature"
         },
-        "name": "@foo"
-      }
-    ]
-  },
-  {
-    "locations": [
-      {
-        "column": 7,
-        "line": 14,
+        {
+          "column": 11,
+          "line": 4,
+          "path": "../testdata/good/several_examples.feature"
+        }
+      ],
+      "text": "the foo"
+    }
+  ],
+  "tags": [
+    {
+      "location": {
+        "column": 5,
+        "line": 6,
         "path": "../testdata/good/several_examples.feature"
       },
-      {
-        "column": 3,
-        "line": 3,
-        "path": "../testdata/good/several_examples.feature"
-      }
-    ],
-    "name": "minimalistic",
-    "steps": [
-      {
-        "arguments": [],
-        "locations": [
-          {
-            "column": 7,
-            "line": 14,
-            "path": "../testdata/good/several_examples.feature"
-          },
-          {
-            "column": 11,
-            "line": 4,
-            "path": "../testdata/good/several_examples.feature"
-          }
-        ],
-        "text": "the bar"
-      }
-    ],
-    "tags": [
-      {
-        "location": {
-          "column": 5,
-          "line": 11,
+      "name": "@foo"
+    }
+  ],
+  "type": "pickle"
+}
+{
+  "locations": [
+    {
+      "column": 7,
+      "line": 14,
+      "path": "../testdata/good/several_examples.feature"
+    },
+    {
+      "column": 3,
+      "line": 3,
+      "path": "../testdata/good/several_examples.feature"
+    }
+  ],
+  "name": "minimalistic",
+  "steps": [
+    {
+      "arguments": [],
+      "locations": [
+        {
+          "column": 7,
+          "line": 14,
           "path": "../testdata/good/several_examples.feature"
         },
-        "name": "@bar"
-      }
-    ]
-  }
-]
+        {
+          "column": 11,
+          "line": 4,
+          "path": "../testdata/good/several_examples.feature"
+        }
+      ],
+      "text": "the bar"
+    }
+  ],
+  "tags": [
+    {
+      "location": {
+        "column": 5,
+        "line": 11,
+        "path": "../testdata/good/several_examples.feature"
+      },
+      "name": "@bar"
+    }
+  ],
+  "type": "pickle"
+}

@@ -5,6 +5,7 @@ import java.util.List;
 import static java.util.Collections.unmodifiableList;
 
 public class Pickle {
+    private final String type = "pickle";
     private final String name;
     private final List<PickleStep> steps;
     private final List<PickleTag> tags;

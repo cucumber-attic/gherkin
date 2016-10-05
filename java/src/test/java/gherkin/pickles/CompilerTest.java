@@ -28,6 +28,7 @@ public class CompilerTest {
         assertEquals("" +
                         "[\n" +
                         "  {\n" +
+                        "    \"type\": \"pickle\",\n" +
                         "    \"name\": \"s\",\n" +
                         "    \"steps\": [\n" +
                         "      {\n" +

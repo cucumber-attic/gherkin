@@ -1,26 +1,25 @@
-[
-  {
-    "locations": [
-      {
-        "column": 3,
-        "line": 5,
-        "path": "../testdata/good/language.feature"
-      }
-    ],
-    "name": "minimalistic",
-    "steps": [
-      {
-        "arguments": [],
-        "locations": [
-          {
-            "column": 11,
-            "line": 6,
-            "path": "../testdata/good/language.feature"
-          }
-        ],
-        "text": "the minimalism"
-      }
-    ],
-    "tags": []
-  }
-]
+{
+  "locations": [
+    {
+      "column": 3,
+      "line": 5,
+      "path": "../testdata/good/language.feature"
+    }
+  ],
+  "name": "minimalistic",
+  "steps": [
+    {
+      "arguments": [],
+      "locations": [
+        {
+          "column": 11,
+          "line": 6,
+          "path": "../testdata/good/language.feature"
+        }
+      ],
+      "text": "the minimalism"
+    }
+  ],
+  "tags": [],
+  "type": "pickle"
+}

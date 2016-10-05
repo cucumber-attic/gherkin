@@ -1,127 +1,126 @@
-[
-  {
-    "locations": [
-      {
-        "column": 3,
-        "line": 5,
-        "path": "../testdata/good/escaped_pipes.feature"
-      }
-    ],
-    "name": "They are the future",
-    "steps": [
-      {
-        "arguments": [
-          {
-            "rows": [
-              {
-                "cells": [
-                  {
-                    "location": {
-                      "column": 9,
-                      "line": 7,
-                      "path": "../testdata/good/escaped_pipes.feature"
-                    },
-                    "value": "æ"
+{
+  "locations": [
+    {
+      "column": 3,
+      "line": 5,
+      "path": "../testdata/good/escaped_pipes.feature"
+    }
+  ],
+  "name": "They are the future",
+  "steps": [
+    {
+      "arguments": [
+        {
+          "rows": [
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 9,
+                    "line": 7,
+                    "path": "../testdata/good/escaped_pipes.feature"
                   },
-                  {
-                    "location": {
-                      "column": 13,
-                      "line": 7,
-                      "path": "../testdata/good/escaped_pipes.feature"
-                    },
-                    "value": "o"
-                  }
-                ]
-              },
-              {
-                "cells": [
-                  {
-                    "location": {
-                      "column": 9,
-                      "line": 8,
-                      "path": "../testdata/good/escaped_pipes.feature"
-                    },
-                    "value": "a"
+                  "value": "æ"
+                },
+                {
+                  "location": {
+                    "column": 13,
+                    "line": 7,
+                    "path": "../testdata/good/escaped_pipes.feature"
                   },
-                  {
-                    "location": {
-                      "column": 13,
-                      "line": 8,
-                      "path": "../testdata/good/escaped_pipes.feature"
-                    },
-                    "value": "ø"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "locations": [
-          {
-            "column": 11,
-            "line": 6,
-            "path": "../testdata/good/escaped_pipes.feature"
-          }
-        ],
-        "text": "they have arrived"
-      },
-      {
-        "arguments": [
-          {
-            "rows": [
-              {
-                "cells": [
-                  {
-                    "location": {
-                      "column": 9,
-                      "line": 10,
-                      "path": "../testdata/good/escaped_pipes.feature"
-                    },
-                    "value": "|æ\\n"
+                  "value": "o"
+                }
+              ]
+            },
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 9,
+                    "line": 8,
+                    "path": "../testdata/good/escaped_pipes.feature"
                   },
-                  {
-                    "location": {
-                      "column": 22,
-                      "line": 10,
-                      "path": "../testdata/good/escaped_pipes.feature"
-                    },
-                    "value": "\\o\no\\"
-                  }
-                ]
-              },
-              {
-                "cells": [
-                  {
-                    "location": {
-                      "column": 9,
-                      "line": 11,
-                      "path": "../testdata/good/escaped_pipes.feature"
-                    },
-                    "value": "\\|a\\\\n"
+                  "value": "a"
+                },
+                {
+                  "location": {
+                    "column": 13,
+                    "line": 8,
+                    "path": "../testdata/good/escaped_pipes.feature"
                   },
-                  {
-                    "location": {
-                      "column": 22,
-                      "line": 11,
-                      "path": "../testdata/good/escaped_pipes.feature"
-                    },
-                    "value": "ø\\\nø\\"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "locations": [
-          {
-            "column": 11,
-            "line": 9,
-            "path": "../testdata/good/escaped_pipes.feature"
-          }
-        ],
-        "text": "they have arrived"
-      }
-    ],
-    "tags": []
-  }
-]
+                  "value": "ø"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "locations": [
+        {
+          "column": 11,
+          "line": 6,
+          "path": "../testdata/good/escaped_pipes.feature"
+        }
+      ],
+      "text": "they have arrived"
+    },
+    {
+      "arguments": [
+        {
+          "rows": [
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 9,
+                    "line": 10,
+                    "path": "../testdata/good/escaped_pipes.feature"
+                  },
+                  "value": "|æ\\n"
+                },
+                {
+                  "location": {
+                    "column": 22,
+                    "line": 10,
+                    "path": "../testdata/good/escaped_pipes.feature"
+                  },
+                  "value": "\\o\no\\"
+                }
+              ]
+            },
+            {
+              "cells": [
+                {
+                  "location": {
+                    "column": 9,
+                    "line": 11,
+                    "path": "../testdata/good/escaped_pipes.feature"
+                  },
+                  "value": "\\|a\\\\n"
+                },
+                {
+                  "location": {
+                    "column": 22,
+                    "line": 11,
+                    "path": "../testdata/good/escaped_pipes.feature"
+                  },
+                  "value": "ø\\\nø\\"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "locations": [
+        {
+          "column": 11,
+          "line": 9,
+          "path": "../testdata/good/escaped_pipes.feature"
+        }
+      ],
+      "text": "they have arrived"
+    }
+  ],
+  "tags": [],
+  "type": "pickle"
+}

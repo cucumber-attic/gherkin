@@ -1,36 +1,35 @@
-[
-  {
-    "locations": [
-      {
-        "column": 3,
-        "line": 8,
-        "path": "../testdata/good/scenario_outline_no_newline.feature"
-      },
-      {
-        "column": 1,
-        "line": 3,
-        "path": "../testdata/good/scenario_outline_no_newline.feature"
-      }
-    ],
-    "name": "minimalistic",
-    "steps": [
-      {
-        "arguments": [],
-        "locations": [
-          {
-            "column": 3,
-            "line": 8,
-            "path": "../testdata/good/scenario_outline_no_newline.feature"
-          },
-          {
-            "column": 11,
-            "line": 4,
-            "path": "../testdata/good/scenario_outline_no_newline.feature"
-          }
-        ],
-        "text": "the minimalism"
-      }
-    ],
-    "tags": []
-  }
-]
+{
+  "locations": [
+    {
+      "column": 3,
+      "line": 8,
+      "path": "../testdata/good/scenario_outline_no_newline.feature"
+    },
+    {
+      "column": 1,
+      "line": 3,
+      "path": "../testdata/good/scenario_outline_no_newline.feature"
+    }
+  ],
+  "name": "minimalistic",
+  "steps": [
+    {
+      "arguments": [],
+      "locations": [
+        {
+          "column": 3,
+          "line": 8,
+          "path": "../testdata/good/scenario_outline_no_newline.feature"
+        },
+        {
+          "column": 11,
+          "line": 4,
+          "path": "../testdata/good/scenario_outline_no_newline.feature"
+        }
+      ],
+      "text": "the minimalism"
+    }
+  ],
+  "tags": [],
+  "type": "pickle"
+}
