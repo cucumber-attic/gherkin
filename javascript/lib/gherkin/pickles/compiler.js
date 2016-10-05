@@ -34,6 +34,7 @@ function Compiler() {
     });
 
     var pickle = {
+      type: 'pickle',
       tags: pickleTags(tags, path),
       name: scenario.name,
       locations: [pickleLocation(scenario.location, path)],
@@ -67,6 +68,7 @@ function Compiler() {
         });
 
         var pickle = {
+          type: 'pickle',
           name: interpolate(scenarioOutline.name, variableCells, valueCells),
           steps: steps,
           tags: pickleTags(tags, path),

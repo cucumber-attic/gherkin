@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+
+var io = require('../lib/gherkin/io');
+
+var args = process.argv.slice(2);
+var options = {
+  printSource: true,
+  printAst: false,
+  printPickles: true
+}
+
+while (args.length > 0) {
+  var arg = args.shift()
+  switch (arg) {
+    case '--no-source':
+      options.printSource = false;
+      break;
+
+    case '--ast':
+      options.printAst = true;
+      break;
+
+    case '--no-pickles':
+      options.printPickles = false;
+      break;
+
+    default:
+      throw new Error("Unknown option: " + arg);
+  }
+}
+
+io(process.stdin, process.stdout, options);
