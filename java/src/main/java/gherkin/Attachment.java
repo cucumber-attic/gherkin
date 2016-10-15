@@ -35,6 +35,6 @@ public class Attachment {
         private final String encoding = "utf-8";
         // Probably the only attachment media type we'll ever use
         // from within this library.
-        private final String type = "text/vnd.cucumber.stacktrace.java+plain";
+        private final String type = "text/vnd.cucumber.stacktrace+plain";
     }
 }

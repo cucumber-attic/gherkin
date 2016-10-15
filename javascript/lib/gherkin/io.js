@@ -44,7 +44,7 @@ module.exports = function io(input, output, options) {
                 data: errors[n].message,
                 media: {
                   encoding: "utf-8",
-                  type: "text/vnd.cucumber.stacktrace.java+plain"
+                  type: "text/vnd.cucumber.stacktrace+plain"
                 }
               })
             }
