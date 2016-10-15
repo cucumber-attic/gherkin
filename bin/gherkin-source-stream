@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Generates Cucumber source events according to the Cucumber Event Protocol,
-# http://localhost:4000/event-protocol/
+# https://docs.cucumber.io/event-protocol/
 #
 # This script is primarily a debugging/testing tool to make it easy to generate
 # events from source files without having to use a full-blown Cucumber implementation.

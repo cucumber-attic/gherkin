@@ -42,18 +42,23 @@ public class IO {
         while ((line = lineReader.readLine()) != null) {
             Map event = gson.fromJson(line, Map.class);
             if ("source".equals(event.get("type"))) {
-                if (printSource) {
-                    printEvent(lineWriter, line);
-                }
                 String uri = (String) event.get("uri");
                 String source = (String) event.get("data");
                 try {
                     GherkinDocument gherkinDocument = parser.parse(source, matcher);
+
+                    if (printSource) {
+                        printEvent(lineWriter, line);
+                    }
                     if (printAst) {
                         printEvent(lineWriter, gson.toJson(gherkinDocument));
                     }
                     if (printPickles) {
                         printPickles(lineWriter, uri, gherkinDocument);
+                    }
+                } catch (ParserException.CompositeParserException e) {
+                    for (ParserException error : e.errors) {
+                        printError(lineWriter, error, uri);
                     }
                 } catch (ParserException e) {
                     printError(lineWriter, e, uri);
@@ -73,7 +78,6 @@ public class IO {
 
     private void printError(BufferedWriter lineWriter, ParserException e, String uri) throws IOException {
         String event = gson.toJson(new Attachment(
-                System.currentTimeMillis(),
                 new Attachment.Source(
                         uri,
                         new Attachment.Location(
@@ -97,29 +101,24 @@ public class IO {
         List<String> args = new ArrayList<>(asList(argv));
 
         boolean printSource = true;
-        boolean printAst = false;
+        boolean printAst = true;
         boolean printPickles = true;
 
         while (!args.isEmpty()) {
             String arg = args.remove(0).trim();
 
-            if (arg.equals("--no-source")) {
-                printSource = false;
-            }
-            if (arg.equals("--source")) {
-                printSource = true;
-            }
-            if (arg.equals("--no-ast")) {
-                printAst = false;
-            }
-            if (arg.equals("--ast")) {
-                printAst = true;
-            }
-            if (arg.equals("--no-pickles")) {
-                printPickles = false;
-            }
-            if (arg.equals("--pickles")) {
-                printPickles = true;
+            switch (arg) {
+                case "--no-source":
+                    printSource = false;
+                    break;
+                case "--no-ast":
+                    printAst = false;
+                    break;
+                case "--no-pickles":
+                    printPickles = false;
+                    break;
+                default:
+                    throw new RuntimeException("Unknown option: " + arg);
             }
         }
 

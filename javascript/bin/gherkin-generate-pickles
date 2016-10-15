@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-../bin/gherkin-source-stream $* | ${DIR}/gherkin --no-source
+../bin/gherkin-source-stream $* | ${DIR}/gherkin --no-source --no-ast

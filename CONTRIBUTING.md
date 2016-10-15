@@ -140,10 +140,6 @@ be maintained by someone who doesn't know the language.
 
 First off, fork the repository and create a branch for the new language.
 
-We recommend starting with a new `Makefile`, tweak it, run it and gradually
-add the missing pieces. Please follow the implementation as closely as possible
-to the other implementations. This will make it easier to maintain in the future.
-
 Create a new directory for the new language and copy the `Makefile` from one
 of the existing implementations. Now, modify the parts of the `Makefile` that
 generates the `Parser.x` file, referring to the `gherkin-x.razor` file you're

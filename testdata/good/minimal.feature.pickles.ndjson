@@ -1,0 +1,1 @@
+{"locations":[{"column":3,"line":3,"path":"../testdata/good/minimal.feature"}],"name":"minimalistic","steps":[{"arguments":[],"locations":[{"column":11,"line":4,"path":"../testdata/good/minimal.feature"}],"text":"the minimalism"}],"tags":[],"type":"pickle"}

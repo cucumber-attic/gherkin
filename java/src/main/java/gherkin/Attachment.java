@@ -2,13 +2,11 @@ package gherkin;
 
 public class Attachment {
     private final String type = "attachment";
-    private final Long timestamp;
     private final Source source;
     private final String data;
     private final Media media = new Media();
 
-    public Attachment(Long timestamp, Source source, String data) {
-        this.timestamp = timestamp;
+    public Attachment(Source source, String data) {
         this.source = source;
         this.data = data;
     }

@@ -5,7 +5,7 @@ var io = require('../lib/gherkin/io');
 var args = process.argv.slice(2);
 var options = {
   printSource: true,
-  printAst: false,
+  printAst: true,
   printPickles: true
 }
 
@@ -16,8 +16,8 @@ while (args.length > 0) {
       options.printSource = false;
       break;
 
-    case '--ast':
-      options.printAst = true;
+    case '--no-ast':
+      options.printAst = false;
       break;
 
     case '--no-pickles':
