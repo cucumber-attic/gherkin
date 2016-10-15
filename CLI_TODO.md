@@ -1,3 +1,5 @@
+* [ ] Add event protocol support to Python
+* [ ] Add event protocol support to Perl
 * [ ] Remove timestamp and series (for now at least)
 * [ ] Remove the now-obsolete PERF stuff
 * [ ] Tests for non-JSON input
