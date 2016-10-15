@@ -38,7 +38,8 @@ module Gherkin
           tags: pickle_tags(tags, path),
           name: scenario[:name],
           locations: [pickle_location(scenario[:location], path)],
-          steps: steps
+          steps: steps,
+          type: 'pickle'
         }
         pickles.push(pickle)
       end
@@ -74,7 +75,8 @@ module Gherkin
               locations: [
                 pickle_location(values[:location], path),
                 pickle_location(scenario_outline[:location], path)
-              ]
+              ],
+              type: 'pickle'
             }
             pickles.push(pickle);
 
