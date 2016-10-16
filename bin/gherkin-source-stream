@@ -11,20 +11,15 @@
 #
 
 path=${1:-.}
-uuid=$(uuidgen)
 
 find ${path} -name "*.feature" |
 while read path
 do
     jq --compact-output --monochrome-output --raw-output --null-input \
-    --argjson timestamp $(date +%s) \
-    --arg series ${uuid} \
     --arg uri ${path} \
     --arg data "$(cat ${path})" \
     '{
         "type": "source",
-        "timestamp": $timestamp,
-        "series": $series,
         "uri": $uri,
         "data": $data,
         "media": {
