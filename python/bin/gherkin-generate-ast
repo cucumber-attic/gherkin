@@ -1,32 +1,4 @@
-#!/usr/bin/env python
-from __future__ import print_function
-import time
-import os
-import sys
-import json
-if sys.version_info < (3, 0):
-    import codecs
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-from gherkin.token_scanner import TokenScanner
-from gherkin.ast_builder import AstBuilder
-from gherkin.parser import Parser
-from gherkin.errors import ParserError
+#!/usr/bin/env bash
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-files = sys.argv[1:]
-if sys.version_info < (3, 0) and os.name != 'nt':  # for Python2 unless on Windows native
-    UTF8Writer = codecs.getwriter('utf8')
-    sys.stdout = UTF8Writer(sys.stdout)
-parser = Parser()
-start_time = time.clock()
-for file in files:
-    try:
-        if sys.version_info > (3, 0):
-            print(json.dumps(parser.parse(file), sort_keys=True, indent=2, separators=(',', ': '), ensure_ascii=False))
-        else:
-            print(json.dumps(parser.parse(file), sort_keys=True, indent=2, separators=(',', ': '), ensure_ascii=False, encoding='utf8'))
-    except ParserError as e:
-        print(e.args[0], file=sys.stderr)
-        sys.exit(1)
-end_time = time.clock()
-if os.getenv('GHERKIN_PERF'):
-    print((end_time - start_time) * 1000, file=sys.stderr)
+../bin/gherkin-source-stream $* | ${DIR}/gherkin --no-source --no-pickles

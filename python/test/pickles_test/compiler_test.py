@@ -46,7 +46,8 @@ def test_compiles_a_scenario():
                 "column": 3,
                 "path": "features/hello.feature"
               }
-            ]
+            ],
+            "type": "pickle"
           }
         ]
         """
@@ -105,7 +106,8 @@ def test_compiles_a_scenario_outline_with_i18n_characters():
                 "column": 3,
                 "path": "features/hello.feature"
               }
-            ]
+            ],
+            "type": "pickle"
           }
         ]
         """

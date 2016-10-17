@@ -18,19 +18,21 @@ class TokenScanner(object):
     """
 
     def __init__(self, path_or_str):
-        if isinstance(path_or_str, str):
-            if os.path.exists(path_or_str):
-                self.io = io.open(path_or_str, 'rU', encoding='utf8')
-            else:
-                if sys.version_info < (3, 0):
+        if os.path.exists(path_or_str):
+            self.io = io.open(path_or_str, 'rU', encoding='utf8')
+        else:
+            if sys.version_info < (3, 0):
+                if isinstance(path_or_str, str):
                     self.io = io.StringIO(unicode(path_or_str, encoding='utf8'))
                 else:
                     self.io = io.StringIO(path_or_str)
+            else:
+                self.io = io.StringIO(path_or_str)
         self.line_number = 0
 
     def read(self):
         self.line_number += 1
-        location = {'line': self.line_number}
+        location = {'line': self.line_number, 'column': 0}
         line = self.io.readline()
         return Token((GherkinLine(line, self.line_number) if line else line), location)
 

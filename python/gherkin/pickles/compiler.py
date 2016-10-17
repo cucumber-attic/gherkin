@@ -37,7 +37,8 @@ def _compile_scenario(feature_tags, background_steps, scenario,
         'tags': _pickle_tags(tags, path),
         'name': scenario['name'],
         'locations': [_pickle_location(scenario['location'], path)],
-        'steps': steps
+        'steps': steps,
+        'type': 'pickle'
     }
     pickles.append(pickle)
 
@@ -87,7 +88,8 @@ def _compile_scenario_outline(feature_tags, background_steps, scenario_outline,
                 'locations': [
                     _pickle_location(values['location'], path),
                     _pickle_location(scenario_outline['location'], path)
-                ]
+                ],
+                'type': 'pickle'
             }
             pickles.append(pickle)
 
