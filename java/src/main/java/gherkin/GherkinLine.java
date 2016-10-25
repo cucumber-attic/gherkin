@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static gherkin.SymbolCounter.countSymbols;
 import static gherkin.StringUtils.ltrim;
+import static gherkin.SymbolCounter.countSymbols;
 
 public class GherkinLine implements IGherkinLine {
     private final String lineText;

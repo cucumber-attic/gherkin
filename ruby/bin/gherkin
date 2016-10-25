@@ -2,7 +2,9 @@
 $VERBOSE=nil # Shut up JRuby warnings on Travis
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__),"../lib"))
 require 'optparse'
-require 'gherkin/io'
+require 'json'
+require 'gherkin/stream/source_events'
+require 'gherkin/stream/gherkin_events'
 
 options = {
   print_source: true,
@@ -22,8 +24,11 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-Gherkin::IO.new(
-  options[:print_source],
-  options[:print_ast],
-  options[:print_pickles]
-).process(STDIN, STDOUT)
+source_events = Gherkin::Stream::SourceEvents.new(ARGV)
+gherkin_events = Gherkin::Stream::GherkinEvents.new(options)
+
+source_events.enum.each do |source_event|
+  gherkin_events.enum(source_event).each do |event|
+    puts JSON.generate(event)
+  end
+end

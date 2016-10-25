@@ -1,10 +1,12 @@
 package gherkin.pickles;
 
+import gherkin.events.Event;
+
 import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
 
-public class Pickle {
+public class Pickle implements Event {
     private final String type = "pickle";
     private final String name;
     private final List<PickleStep> steps;

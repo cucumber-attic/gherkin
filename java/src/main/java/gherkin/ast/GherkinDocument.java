@@ -1,9 +1,11 @@
 package gherkin.ast;
 
+import gherkin.events.Event;
+
 import java.util.Collections;
 import java.util.List;
 
-public class GherkinDocument extends Node {
+public class GherkinDocument extends Node implements Event {
     private final Feature feature;
     private final List<Comment> comments;
 

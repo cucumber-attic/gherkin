@@ -1,21 +1,21 @@
-package gherkin;
+package gherkin.events;
 
-public class Attachment {
+public class AttachmentEvent implements Event {
     private final String type = "attachment";
-    private final Source source;
+    private final SourceRef source;
     private final String data;
     private final Media media = new Media();
 
-    public Attachment(Source source, String data) {
+    public AttachmentEvent(SourceRef source, String data) {
         this.source = source;
         this.data = data;
     }
 
-    public static class Source {
+    public static class SourceRef {
         private final String uri;
         private final Location start;
 
-        public Source(String uri, Location start) {
+        public SourceRef(String uri, Location start) {
             this.uri = uri;
             this.start = start;
         }
@@ -33,8 +33,6 @@ public class Attachment {
 
     public static class Media {
         private final String encoding = "utf-8";
-        // Probably the only attachment media type we'll ever use
-        // from within this library.
         private final String type = "text/vnd.cucumber.stacktrace+plain";
     }
 }

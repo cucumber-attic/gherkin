@@ -1,5 +1,7 @@
 package gherkin;
 
+import gherkin.stream.Stdio;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;

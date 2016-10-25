@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-var io = require('../lib/gherkin/io');
+var createGherkinStream = require('../lib/gherkin/stream/gherkin_stream')
+var createSourceEventStream = require('../lib/gherkin/stream/source_event_stream')
+var createNdjsonStream = require('../lib/gherkin/stream/ndjson_stream')
 
 var args = process.argv.slice(2);
 var options = {
@@ -9,6 +11,7 @@ var options = {
   printPickles: true
 }
 
+var paths = []
 while (args.length > 0) {
   var arg = args.shift()
   switch (arg) {
@@ -25,8 +28,11 @@ while (args.length > 0) {
       break;
 
     default:
-      throw new Error("Unknown option: " + arg);
+      paths.push(arg);
   }
 }
 
-io(process.stdin, process.stdout, options);
+createSourceEventStream(paths)
+  .pipe(createGherkinStream(options))
+  .pipe(createNdjsonStream())
+  .pipe(process.stdout)
