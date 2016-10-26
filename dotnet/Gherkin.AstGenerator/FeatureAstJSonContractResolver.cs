@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using Gherkin.Ast;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -12,7 +11,7 @@ namespace Gherkin.AstGenerator
         {
             var contract = base.ResolveContract(type);
 
-            //TODO: introfuce Node base type and filter for that here
+            //TODO: introduce Node base type and filter for that here
             if (typeof(IHasLocation).IsAssignableFrom(type))
             {
                 var objContract = (JsonObjectContract) contract;

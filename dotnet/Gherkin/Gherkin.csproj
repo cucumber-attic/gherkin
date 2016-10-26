@@ -82,6 +82,11 @@
     <Compile Include="TokenMatcher.cs" />
     <Compile Include="TokenScanner.cs" />
     <Compile Include="StringUtils.cs" />
+    <Compile Include="Events\AttachmentEvent.cs" />
+    <Compile Include="Events\IEvent.cs" />
+    <Compile Include="Events\SourceEvent.cs" />
+    <Compile Include="Stream\SourceEvents.cs" />
+    <Compile Include="Stream\GherkinEvents.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parser.Extensions.cs" />

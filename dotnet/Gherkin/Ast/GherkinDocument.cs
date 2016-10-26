@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace Gherkin.Ast
 {
-    public class GherkinDocument
+    public class GherkinDocument : IEvent
     {
         public Feature Feature { get; private set; }
         public IEnumerable<Comment> Comments { get; private set; }

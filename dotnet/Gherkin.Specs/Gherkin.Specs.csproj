@@ -65,9 +65,7 @@
   <ItemGroup>
     <Compile Include="GherkinDialectTests.cs" />
     <Compile Include="ParserErrorSerializationTests.cs" />
-    <Compile Include="ParserErrorsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AstBuildingTests.cs" />
     <Compile Include="SuccessfulParsingTests.cs" />
     <Compile Include="TestFileProvider.cs" />
     <Compile Include="TestFolders.cs" />

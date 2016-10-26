@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Gherkin
+﻿namespace Gherkin
 {
     public struct GherkinLineSpan
     {
