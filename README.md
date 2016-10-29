@@ -125,7 +125,7 @@ The *scanner* reads a gherkin doc (typically read from a `.feature` file) and cr
 a *token* for each line. The tokens are passed to the *parser*, which outputs an *AST*
 (Abstract Syntax Tree).
 
-If the scanner sees a `# language` header, it will reconfigure itself dynamically
+If the scanner sees a `#language` header, it will reconfigure itself dynamically
 to look for Gherkin keywords for the associated language. The keywords are defined in
 `gherkin-languages.json`.
 
@@ -187,13 +187,13 @@ we can easily use the same test suite for all implementations to verify that
 compilation is behaving consistently between implementations.
 
 Each `Scenario` will be compiled into a `Pickle`. A `Pickle` has a list of
-`PickleStep`, derived from steps in a `Scenario`.
+`PickleStep`, derived from the steps in a `Scenario`.
 
 Each `Examples` row under `Scenario Outline` will also be compiled into a `Pickle`.
 
-Any `Background` steps will also be compiled into each `Pickle`.
+Any `Background` steps will also be compiled into a `Pickle`.
 
-Tags are compiled into the `Pickle` as well (inheriting tags from parent elements
+Every tag, like  `@a`, will be compiled into a `Pickle` as well (inheriting tags from parent elements
 in the Gherkin AST).
 
 Example:
@@ -355,8 +355,8 @@ This will be compiled into several `Pickle` objects (here represented as JSON):
 Each `Pickle` keeps a pointer back to the original source. This is useful for
 generating reports and stack traces when a Scenario fails.
 
-Cucumber will further transform this list of `Pickle` structs to a list of `TestCase`
-objects. `TestCase` objects link user code such as Hooks and Step Definitions.
+Cucumber will further transform this list of `Pickle` objects to a list of `TestCase`
+objects. `TestCase` objects link to user code such as Hooks and Step Definitions.
 
 ## Building Gherkin
 
