@@ -2,6 +2,24 @@ from gherkin.parser import Parser
 from gherkin.pickles.compiler import compile
 from gherkin.errors import ParserError, CompositeParserException
 
+def add_errors(events, errors, uri):
+    for error in errors:
+        events.append({
+            'type': 'attachment',
+            'source': {
+                'uri': uri,
+                'start': {
+                    'line': error.location['line'],
+                    'column': error.location['column']
+                }
+            },
+            'data': error.message,
+            'media': {
+                'encoding': 'utf-8',
+                'type': 'text/vnd.cucumber.stacktrace+plain'
+            }
+        })
+
 class GherkinEvents:
     def __init__(self, options):
         self.options = options
@@ -35,8 +53,8 @@ class GherkinEvents:
                         'pickle': pickle
                     })
         except CompositeParserException as e:
-            yield_errors(y, e.errors, uri)
+            add_errors(events, e.errors, uri)
         except ParserError as e:
-            yield_errors(output, [e], uri)
+            add_errors(events, [e], uri)
 
         return events

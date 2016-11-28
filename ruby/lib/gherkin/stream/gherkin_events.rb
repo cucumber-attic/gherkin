@@ -40,7 +40,7 @@ module Gherkin
           rescue Gherkin::CompositeParserException => e
             yield_errors(y, e.errors, uri)
           rescue Gherkin::ParserError => e
-            yield_errors(output, [e], uri)
+            yield_errors(y, [e], uri)
           end
         end
       end
