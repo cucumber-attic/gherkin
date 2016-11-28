@@ -20,7 +20,7 @@ def test_compiles_a_scenario():
             Given passing
         """)
     output = Parser().parse(feature_text)
-    pickle = compiler.compile(output, 'features/hello.feature')
+    pickle = compiler.compile(output)
     expected_pickle = textwrap.dedent(
         """\
         [
@@ -33,8 +33,7 @@ def test_compiles_a_scenario():
                 "locations": [
                   {
                     "line": 3,
-                    "column": 11,
-                    "path": "features/hello.feature"
+                    "column": 11
                   }
                 ]
               }
@@ -43,11 +42,9 @@ def test_compiles_a_scenario():
             "locations": [
               {
                 "line": 2,
-                "column": 3,
-                "path": "features/hello.feature"
+                "column": 3
               }
-            ],
-            "type": "pickle"
+            ]
           }
         ]
         """
@@ -70,7 +67,7 @@ def test_compiles_a_scenario_outline_with_i18n_characters():
             | passing |
         """)
     output = Parser().parse(feature_text)
-    pickle = compiler.compile(output, 'features/hello.feature')
+    pickle = compiler.compile(output)
     expected_pickle = textwrap.dedent(
         """\
         [
@@ -83,13 +80,11 @@ def test_compiles_a_scenario_outline_with_i18n_characters():
                 "locations": [
                   {
                     "line": 6,
-                    "column": 5,
-                    "path": "features/hello.feature"
+                    "column": 5
                   },
                   {
                     "line": 3,
-                    "column": 11,
-                    "path": "features/hello.feature"
+                    "column": 11
                   }
                 ]
               }
@@ -98,16 +93,13 @@ def test_compiles_a_scenario_outline_with_i18n_characters():
             "locations": [
               {
                 "line": 6,
-                "column": 5,
-                "path": "features/hello.feature"
+                "column": 5
               },
               {
                 "line": 2,
-                "column": 3,
-                "path": "features/hello.feature"
+                "column": 3
               }
-            ],
-            "type": "pickle"
+            ]
           }
         ]
         """

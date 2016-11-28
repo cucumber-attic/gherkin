@@ -3,7 +3,7 @@ import re
 from ..count_symbols import count_symbols
 
 
-def compile(gherkin_document, path):
+def compile(gherkin_document):
     pickles = []
     if 'feature' not in gherkin_document:
         return pickles
@@ -12,9 +12,9 @@ def compile(gherkin_document, path):
     feature_tags = feature['tags']
     background_steps = []
     for scenario_definition in feature['children']:
-        args = (feature_tags, background_steps, scenario_definition, path, pickles)
+        args = (feature_tags, background_steps, scenario_definition, pickles)
         if scenario_definition['type'] is 'Background':
-            background_steps = _pickle_steps(scenario_definition, path)
+            background_steps = _pickle_steps(scenario_definition)
         elif scenario_definition['type'] is 'Scenario':
             _compile_scenario(*args)
         else:
@@ -22,8 +22,7 @@ def compile(gherkin_document, path):
     return pickles
 
 
-def _compile_scenario(feature_tags, background_steps, scenario,
-                      path, pickles):
+def _compile_scenario(feature_tags, background_steps, scenario, pickles):
     if len(scenario['steps']) == 0:
       return
 
@@ -31,20 +30,18 @@ def _compile_scenario(feature_tags, background_steps, scenario,
     tags = list(feature_tags) + list(scenario['tags'])
 
     for step in scenario['steps']:
-        steps.append(_pickle_step(step, path))
+        steps.append(_pickle_step(step))
 
     pickle = {
-        'tags': _pickle_tags(tags, path),
+        'tags': _pickle_tags(tags),
         'name': scenario['name'],
-        'locations': [_pickle_location(scenario['location'], path)],
-        'steps': steps,
-        'type': 'pickle'
+        'locations': [_pickle_location(scenario['location'])],
+        'steps': steps
     }
     pickles.append(pickle)
 
 
-def _compile_scenario_outline(feature_tags, background_steps, scenario_outline,
-                              path, pickles):
+def _compile_scenario_outline(feature_tags, background_steps, scenario_outline, pickles):
     if len(scenario_outline['steps']) == 0:
       return
 
@@ -66,14 +63,13 @@ def _compile_scenario_outline(feature_tags, background_steps, scenario_outline,
                 arguments = _create_pickle_arguments(
                     scenario_outline_step.get('argument'),
                     variable_cells,
-                    value_cells,
-                    path)
+                    value_cells)
                 _pickle_step = {
                     'text': step_text,
                     'arguments': arguments,
                     'locations': [
-                        _pickle_location(values['location'], path),
-                        _pickle_step_location(scenario_outline_step, path)
+                        _pickle_location(values['location']),
+                        _pickle_step_location(scenario_outline_step)
                     ]
                 }
                 steps.append(_pickle_step)
@@ -84,17 +80,16 @@ def _compile_scenario_outline(feature_tags, background_steps, scenario_outline,
                     variable_cells,
                     value_cells),
                 'steps': steps,
-                'tags': _pickle_tags(tags, path),
+                'tags': _pickle_tags(tags),
                 'locations': [
-                    _pickle_location(values['location'], path),
-                    _pickle_location(scenario_outline['location'], path)
-                ],
-                'type': 'pickle'
+                    _pickle_location(values['location']),
+                    _pickle_location(scenario_outline['location'])
+                ]
             }
             pickles.append(pickle)
 
 
-def _create_pickle_arguments(argument, variables, values, path):
+def _create_pickle_arguments(argument, variables, values):
     result = []
 
     if not argument:
@@ -105,7 +100,7 @@ def _create_pickle_arguments(argument, variables, values, path):
         for row in argument['rows']:
             cells = [
                 {
-                    'location': _pickle_location(cell['location'], path),
+                    'location': _pickle_location(cell['location']),
                     'value': _interpolate(cell['value'], variables, values)
                 } for cell in row['cells']
             ]
@@ -114,7 +109,7 @@ def _create_pickle_arguments(argument, variables, values, path):
 
     elif argument['type'] is 'DocString':
         docstring = {
-            'location': _pickle_location(argument['location'], path),
+            'location': _pickle_location(argument['location']),
             'content': _interpolate(argument['content'], variables, values)
         }
         result.append(docstring)
@@ -136,45 +131,42 @@ def _interpolate(name, variable_cells, value_cells):
     return name
 
 
-def _pickle_steps(scenario_definition, path):
-    return [_pickle_step(step, path)
+def _pickle_steps(scenario_definition):
+    return [_pickle_step(step)
         for step in scenario_definition['steps']]
 
 
-def _pickle_step(step, path):
+def _pickle_step(step):
     return {
         'text': step['text'],
         'arguments': _create_pickle_arguments(
             step.get('argument'),
             [],
-            [],
-            path),
-        'locations': [_pickle_step_location(step, path)]
+            []),
+        'locations': [_pickle_step_location(step)]
     }
 
 
-def _pickle_step_location(step, path):
+def _pickle_step_location(step):
     return {
-        'path': path,
         'line': step['location']['line'],
         'column': step['location']['column'] + count_symbols(step.get('keyword', 0))
     }
 
 
-def _pickle_location(location, path):
+def _pickle_location(location):
     return {
-        'path': path,
         'line': location['line'],
         'column': location['column']
     }
 
 
-def _pickle_tags(tags, path):
-    return [_pickle_tag(tag, path) for tag in tags]
+def _pickle_tags(tags):
+    return [_pickle_tag(tag) for tag in tags]
 
 
-def _pickle_tag(tag, path):
+def _pickle_tag(tag):
     return {
         'name': tag['name'],
-        'location': _pickle_location(tag['location'], path)
+        'location': _pickle_location(tag['location'])
     }

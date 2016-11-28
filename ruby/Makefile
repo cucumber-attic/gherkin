@@ -15,7 +15,7 @@ all: .compared
 .compared: .built $(TOKENS) $(ASTS) $(PICKLES) $(ERRORS)
 	touch $@
 
-.built: lib/gherkin/parser.rb lib/gherkin/gherkin-languages.json $(RUBY_FILES) Gemfile.lock LICENSE
+.built: lib/gherkin/parser.rb lib/gherkin/gherkin-languages.json $(RUBY_FILES) bin/gherkin Gemfile.lock LICENSE
 	bundle exec rspec --color
 	touch $@
 
