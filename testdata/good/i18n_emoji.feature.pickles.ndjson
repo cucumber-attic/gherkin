@@ -1,1 +1,1 @@
-{"locations":[{"column":3,"line":4,"path":"../testdata/good/i18n_emoji.feature"}],"name":"💃","steps":[{"arguments":[],"locations":[{"column":6,"line":5,"path":"../testdata/good/i18n_emoji.feature"}],"text":"🎸"}],"tags":[],"type":"pickle"}
+{"pickle":{"locations":[{"column":3,"line":4}],"name":"💃","steps":[{"arguments":[],"locations":[{"column":6,"line":5}],"text":"🎸"}],"tags":[]},"type":"pickle","uri":"../testdata/good/i18n_emoji.feature"}

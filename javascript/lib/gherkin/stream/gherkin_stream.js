@@ -1,8 +1,9 @@
 var Stream = require('stream')
-var Gherkin = require('../../..')
+var Parser = require('../parser')
+var Compiler = require('../pickles/compiler')
 
-var compiler = new Gherkin.Compiler();
-var parser = new Gherkin.Parser(new Gherkin.AstBuilder());
+var compiler = new Compiler();
+var parser = new Parser();
 parser.stopAtFirstError = false;
 
 function gherkinStream(options) {
@@ -14,28 +15,38 @@ function gherkinStream(options) {
           var gherkinDocument = parser.parse(event.data);
 
           if (options.printSource)
-            this.push(event)
+            this.push(event);
 
           if (options.printAst)
-            this.push(gherkinDocument);
+            this.push({
+              type: 'gherkin-document',
+              uri: event.uri,
+              document: gherkinDocument
+            });
 
           if (options.printPickles) {
-            var pickles = compiler.compile(gherkinDocument, event.uri);
-            pickles.map(this.push.bind(this));
+            var pickles = compiler.compile(gherkinDocument  );
+            for (var p in pickles) {
+              this.push({
+                type: 'pickle',
+                uri: event.uri,
+                pickle: pickles[p]
+              })
+            }
           }
         } catch (err) {
           var errors = err.errors || [err]
-          for (var n in errors) {
+          for (var e in errors) {
             this.push({
               type: "attachment",
               source: {
                 uri: event.uri,
                 start: {
-                  line: errors[n].location.line,
-                  column: errors[n].location.column
+                  line: errors[e].location.line,
+                  column: errors[e].location.column
                 }
               },
-              data: errors[n].message,
+              data: errors[e].message,
               media: {
                 encoding: "utf-8",
                 type: "text/vnd.cucumber.stacktrace+plain"

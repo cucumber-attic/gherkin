@@ -21,12 +21,20 @@ module Gherkin
               y.yield source_event
             end
             if (@options[:print_ast])
-              y.yield gherkin_document
+              y.yield({
+                type: 'gherkin-document',
+                uri: uri,
+                document: gherkin_document
+              })
             end
             if (@options[:print_pickles])
-              pickles = @compiler.compile(gherkin_document, uri)
+              pickles = @compiler.compile(gherkin_document)
               pickles.each do |pickle|
-                y.yield pickle
+                y.yield({
+                  type: 'pickle',
+                  uri: uri,
+                  pickle: pickle
+                })
               end
             end
           rescue Gherkin::CompositeParserException => e

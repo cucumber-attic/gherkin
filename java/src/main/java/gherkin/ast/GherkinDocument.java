@@ -5,7 +5,7 @@ import gherkin.events.Event;
 import java.util.Collections;
 import java.util.List;
 
-public class GherkinDocument extends Node implements Event {
+public class GherkinDocument extends Node {
     private final Feature feature;
     private final List<Comment> comments;
 

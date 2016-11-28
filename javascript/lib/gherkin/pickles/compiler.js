@@ -1,7 +1,7 @@
-var countSymbols = require('../count_symbols')
+var countSymbols = require('../count_symbols');
 
 function Compiler() {
-  this.compile = function (gherkin_document, path) {
+  this.compile = function (gherkin_document) {
     var pickles = [];
 
     if (gherkin_document.feature == null) return pickles;
@@ -12,17 +12,17 @@ function Compiler() {
 
     feature.children.forEach(function (scenarioDefinition) {
       if(scenarioDefinition.type === 'Background') {
-        backgroundSteps = pickleSteps(scenarioDefinition, path);
+        backgroundSteps = pickleSteps(scenarioDefinition);
       } else if(scenarioDefinition.type === 'Scenario') {
-        compileScenario(featureTags, backgroundSteps, scenarioDefinition, path, pickles);
+        compileScenario(featureTags, backgroundSteps, scenarioDefinition, pickles);
       } else {
-        compileScenarioOutline(featureTags, backgroundSteps, scenarioDefinition, path, pickles);
+        compileScenarioOutline(featureTags, backgroundSteps, scenarioDefinition, pickles);
       }
     });
     return pickles;
   };
 
-  function compileScenario(featureTags, backgroundSteps, scenario, path, pickles) {
+  function compileScenario(featureTags, backgroundSteps, scenario, pickles) {
     if (scenario.steps.length == 0) return;
 
     var steps = [].concat(backgroundSteps);
@@ -30,20 +30,19 @@ function Compiler() {
     var tags = [].concat(featureTags).concat(scenario.tags);
 
     scenario.steps.forEach(function (step) {
-      steps.push(pickleStep(step, path));
+      steps.push(pickleStep(step));
     });
 
     var pickle = {
-      type: 'pickle',
-      tags: pickleTags(tags, path),
+      tags: pickleTags(tags),
       name: scenario.name,
-      locations: [pickleLocation(scenario.location, path)],
+      locations: [pickleLocation(scenario.location)],
       steps: steps
     };
     pickles.push(pickle);
   }
 
-  function compileScenarioOutline(featureTags, backgroundSteps, scenarioOutline, path, pickles) {
+  function compileScenarioOutline(featureTags, backgroundSteps, scenarioOutline, pickles) {
     if (scenarioOutline.steps.length == 0) return;
 
     scenarioOutline.examples.filter(function(e) { return e.tableHeader != undefined; }).forEach(function (examples) {
@@ -55,26 +54,25 @@ function Compiler() {
 
         scenarioOutline.steps.forEach(function (scenarioOutlineStep) {
           var stepText = interpolate(scenarioOutlineStep.text, variableCells, valueCells);
-          var args = createPickleArguments(scenarioOutlineStep.argument, variableCells, valueCells, path);
+          var args = createPickleArguments(scenarioOutlineStep.argument, variableCells, valueCells);
           var pickleStep = {
             text: stepText,
             arguments: args,
             locations: [
-              pickleLocation(values.location, path),
-              pickleStepLocation(scenarioOutlineStep, path)
+              pickleLocation(values.location),
+              pickleStepLocation(scenarioOutlineStep)
             ]
           };
           steps.push(pickleStep);
         });
 
         var pickle = {
-          type: 'pickle',
           name: interpolate(scenarioOutline.name, variableCells, valueCells),
           steps: steps,
-          tags: pickleTags(tags, path),
+          tags: pickleTags(tags),
           locations: [
-            pickleLocation(values.location, path),
-            pickleLocation(scenarioOutline.location, path)
+            pickleLocation(values.location),
+            pickleLocation(scenarioOutline.location)
           ]
         };
         pickles.push(pickle);
@@ -83,7 +81,7 @@ function Compiler() {
     });
   }
 
-  function createPickleArguments(argument, variableCells, valueCells, path) {
+  function createPickleArguments(argument, variableCells, valueCells) {
     var result = [];
     if (!argument) return result;
     if (argument.type === 'DataTable') {
@@ -92,7 +90,7 @@ function Compiler() {
           return {
             cells: row.cells.map(function (cell) {
               return {
-                location: pickleLocation(cell.location, path),
+                location: pickleLocation(cell.location),
                 value: interpolate(cell.value, variableCells, valueCells)
               };
             })
@@ -102,9 +100,9 @@ function Compiler() {
       result.push(table);
     } else if (argument.type === 'DocString') {
       var docString = {
-        location: pickleLocation(argument.location, path),
+        location: pickleLocation(argument.location),
         content: interpolate(argument.content, variableCells, valueCells)
-      }
+      };
       result.push(docString);
     } else {
       throw Error('Internal error');
@@ -115,52 +113,50 @@ function Compiler() {
   function interpolate(name, variableCells, valueCells) {
     variableCells.forEach(function (variableCell, n) {
       var valueCell = valueCells[n];
-      var search = new RegExp('<' + variableCell.value + '>', 'g')
+      var search = new RegExp('<' + variableCell.value + '>', 'g');
       name = name.replace(search, valueCell.value);
     });
     return name;
   }
 
-  function pickleSteps(scenarioDefinition, path) {
+  function pickleSteps(scenarioDefinition) {
     return scenarioDefinition.steps.map(function (step) {
-      return pickleStep(step, path);
+      return pickleStep(step);
     });
   }
 
-  function pickleStep(step, path) {
+  function pickleStep(step) {
     return {
       text: step.text,
-      arguments: createPickleArguments(step.argument, [], [], path),
-      locations: [pickleStepLocation(step, path)]
+      arguments: createPickleArguments(step.argument, [], []),
+      locations: [pickleStepLocation(step)]
     }
   }
 
-  function pickleStepLocation(step, path) {
+  function pickleStepLocation(step) {
     return {
-      path: path,
       line: step.location.line,
       column: step.location.column + (step.keyword ? countSymbols(step.keyword) : 0)
     };
   }
 
-  function pickleLocation(location, path) {
+  function pickleLocation(location) {
     return {
-      path: path,
       line: location.line,
       column: location.column
     }
   }
 
-  function pickleTags(tags, path) {
+  function pickleTags(tags) {
     return tags.map(function (tag) {
-      return pickleTag(tag, path);
+      return pickleTag(tag);
     });
   }
 
-  function pickleTag(tag, path) {
+  function pickleTag(tag) {
     return {
       name: tag.name,
-      location: pickleLocation(tag.location, path)
+      location: pickleLocation(tag.location)
     };
   }
 }

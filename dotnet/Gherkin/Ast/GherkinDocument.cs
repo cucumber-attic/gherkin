@@ -2,7 +2,7 @@
 
 namespace Gherkin.Ast
 {
-    public class GherkinDocument : IEvent
+    public class GherkinDocument
     {
         public Feature Feature { get; private set; }
         public IEnumerable<Comment> Comments { get; private set; }

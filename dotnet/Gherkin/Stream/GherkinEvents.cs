@@ -31,7 +31,7 @@ namespace Gherkin
                     events.Add (sourceEvent);
                 }
                 if (printAst) {
-                    events.Add (gherkinDocument);
+                    events.Add (new GherkinDocumentEvent(sourceEvent.uri, gherkinDocument));
                 }
                 if (printPickles) {
                     throw new NotSupportedException ("Gherkin.NET doesn't have a pickle compiler yet");

@@ -87,6 +87,7 @@
     <Compile Include="Events\SourceEvent.cs" />
     <Compile Include="Stream\SourceEvents.cs" />
     <Compile Include="Stream\GherkinEvents.cs" />
+    <Compile Include="Events\GherkinDocumentEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parser.Extensions.cs" />

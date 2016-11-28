@@ -7,6 +7,8 @@ import gherkin.TokenMatcher;
 import gherkin.ast.GherkinDocument;
 import gherkin.events.AttachmentEvent;
 import gherkin.events.Event;
+import gherkin.events.GherkinDocumentEvent;
+import gherkin.events.PickleEvent;
 import gherkin.events.SourceEvent;
 import gherkin.pickles.Compiler;
 import gherkin.pickles.Pickle;
@@ -39,12 +41,12 @@ public class GherkinEvents {
                 events.add(sourceEvent);
             }
             if (printAst) {
-                events.add(gherkinDocument);
+                events.add(new GherkinDocumentEvent(sourceEvent.uri, gherkinDocument));
             }
             if (printPickles) {
-                List<Pickle> pickles = compiler.compile(gherkinDocument, sourceEvent.uri);
+                List<Pickle> pickles = compiler.compile(gherkinDocument);
                 for (Pickle pickle : pickles) {
-                    events.add(pickle);
+                    events.add(new PickleEvent(sourceEvent.uri, pickle));
                 }
             }
         } catch (ParserException.CompositeParserException e) {
