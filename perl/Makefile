@@ -1,9 +1,10 @@
+SHELL := /usr/bin/env bash
 GOOD_FEATURE_FILES = $(shell find ../testdata/good -name "*.feature")
 BAD_FEATURE_FILES  = $(shell find ../testdata/bad -name "*.feature")
 
 TOKENS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.tokens,$(GOOD_FEATURE_FILES))
-ASTS     = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.ast.json,$(GOOD_FEATURE_FILES))
-PICKLES  = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.pickles.json,$(GOOD_FEATURE_FILES))
+ASTS     = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.ast.ndjson,$(GOOD_FEATURE_FILES))
+PICKLES  = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.pickles.ndjson,$(GOOD_FEATURE_FILES))
 ERRORS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.errors,$(BAD_FEATURE_FILES))
 
 PERL_FILES = $(shell find . -name "*.pm")
@@ -33,17 +34,17 @@ acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.featur
 	diff --unified $<.tokens $@
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
-acceptance/testdata/%.feature.ast.json: ../testdata/%.feature ../testdata/%.feature.ast.json .built
+acceptance/testdata/%.feature.ast.ndjson: ../testdata/%.feature ../testdata/%.feature.ast.ndjson .built
 	mkdir -p `dirname $@`
 	bin/gherkin-generate-ast $< > $@
-	diff --unified $<.ast.json $@
-.DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.json
+	diff --unified <(jq "." $<.ast.ndjson) <(jq "." $@)
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.ndjson
 
-acceptance/testdata/%.feature.pickles.json: ../testdata/%.feature ../testdata/%.feature.pickles.json .built
+acceptance/testdata/%.feature.pickles.ndjson: ../testdata/%.feature ../testdata/%.feature.pickles.ndjson .built
 	mkdir -p `dirname $@`
 	bin/gherkin-generate-pickles $< > $@
-	diff --unified $<.pickles.json $@
-.DELETE_ON_ERROR: acceptance/testdata/%.feature.pickles.json
+	diff --unified <(jq "." $<.pickles.ndjson) <(jq "." $@)
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.pickles.ndjson
 
 acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors .built
 	mkdir -p `dirname $@`

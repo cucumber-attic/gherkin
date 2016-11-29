@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 sub compile {
-    my ( $class, $gherkin_document, $path ) = @_;
+    my ( $class, $gherkin_document ) = @_;
     my @pickles;
 
     my $feature = $gherkin_document->{'feature'};
@@ -13,11 +13,10 @@ sub compile {
 
     for my $scenario_definition ( @{ $feature->{'children'} } ) {
         my @args = (
-            $feature_tags, $background_steps, $scenario_definition,
-            $path, \@pickles
+            $feature_tags, $background_steps, $scenario_definition, \@pickles
         );
         if ( $scenario_definition->{'type'} eq 'Background' ) {
-            $background_steps = $class->_pickle_steps($scenario_definition, $path)
+            $background_steps = $class->_pickle_steps($scenario_definition)
         } elsif ( $scenario_definition->{'type'} eq 'Scenario' ) {
             $class->_compile_scenario(@args);
         } else {
@@ -29,15 +28,14 @@ sub compile {
 }
 
 sub _pickle_steps {
-    my ( $class, $scenario_definition, $path ) = @_;
-    my @steps = map { $class->_pickle_step( $_, $path ) }
+    my ( $class, $scenario_definition ) = @_;
+    my @steps = map { $class->_pickle_step( $_ ) }
       @{ $scenario_definition->{'steps'} };
     return \@steps;
 }
 
 sub _compile_scenario {
-    my ( $class, $feature_tags, $background_steps, $scenario,
-        $path, $pickles )
+    my ( $class, $feature_tags, $background_steps, $scenario, $pickles )
       = @_;
 
     my $array_reference = $scenario->{'steps'};
@@ -49,25 +47,24 @@ sub _compile_scenario {
 
     my @steps = (
         @$background_steps,
-        map { $class->_pickle_step( $_, $path ) }
+        map { $class->_pickle_step( $_ ) }
           @{ $scenario->{'steps'} || [] }
     );
 
     push(
         @$pickles,
         {
-            tags => $class->_pickle_tags( \@tags, $path ),
+            tags => $class->_pickle_tags( \@tags ),
             name => $scenario->{'name'},
             locations =>
-              [ $class->_pickle_location( $scenario->{'location'}, $path ) ],
+              [ $class->_pickle_location( $scenario->{'location'} ) ],
             steps => \@steps,
         }
     );
 }
 
 sub _compile_scenario_outline {
-    my ( $class, $feature_tags, $background_steps, $scenario_outline,
-        $path, $pickles )
+    my ( $class, $feature_tags, $background_steps, $scenario_outline, $pickles )
       = @_;
 
     my $array_reference = $scenario_outline->{'steps'};
@@ -95,7 +92,7 @@ sub _compile_scenario_outline {
                 my $arguments =
                   $class->_create_pickle_arguments(
                     $scenario_outline_step->{'argument'},
-                    $variable_cells, $value_cells, $path, );
+                    $variable_cells, $value_cells, );
                 push(
                     @steps,
                     {
@@ -103,10 +100,10 @@ sub _compile_scenario_outline {
                         arguments => $arguments,
                         locations => [
                             $class->_pickle_location(
-                                $values->{'location'}, $path
+                                $values->{'location'}
                             ),
                             $class->_pickle_step_location(
-                                $scenario_outline_step, $path
+                                $scenario_outline_step
                             ),
                         ]
                     }
@@ -122,13 +119,13 @@ sub _compile_scenario_outline {
                             $value_cells,
                         ),
                     steps     => \@steps,
-                    tags      => $class->_pickle_tags( \@tags, $path ),
+                    tags      => $class->_pickle_tags( \@tags ),
                     locations => [
                         $class->_pickle_location(
-                            $values->{'location'}, $path
+                            $values->{'location'}
                         ),
                         $class->_pickle_location(
-                            $scenario_outline->{'location'}, $path
+                            $scenario_outline->{'location'}
                         ),
                     ],
                 }
@@ -138,7 +135,7 @@ sub _compile_scenario_outline {
 }
 
 sub _create_pickle_arguments {
-    my ( $class, $argument, $variables, $values, $path ) = @_;
+    my ( $class, $argument, $variables, $values ) = @_;
     my $result = [];
 
     return $result unless $argument;
@@ -149,7 +146,7 @@ sub _create_pickle_arguments {
             my @cells = map {
                 {
                     location =>
-                      $class->_pickle_location( $_->{'location'}, $path ),
+                      $class->_pickle_location( $_->{'location'} ),
                     value => $class->_interpolate(
                         $_->{'value'}, $variables, $values
                     )
@@ -163,7 +160,7 @@ sub _create_pickle_arguments {
             @$result,
             {
                 location =>
-                  $class->_pickle_location( $argument->{'location'}, $path ),
+                  $class->_pickle_location( $argument->{'location'} ),
                 content => $class->_interpolate(
                     $argument->{'content'},
                     $variables, $values
@@ -189,21 +186,20 @@ sub _interpolate {
 }
 
 sub _pickle_step {
-    my ( $class, $step, $path ) = @_;
+    my ( $class, $step ) = @_;
 
     return {
         text => $step->{'text'},
         arguments =>
-          $class->_create_pickle_arguments( $step->{'argument'}, [], [], $path,
+          $class->_create_pickle_arguments( $step->{'argument'}, [], [],
           ),
-        locations => [ $class->_pickle_step_location( $step, $path ) ],
+        locations => [ $class->_pickle_step_location( $step ) ],
     };
 }
 
 sub _pickle_step_location {
-    my ( $class, $step, $path ) = @_;
+    my ( $class, $step ) = @_;
     return {
-        path   => $path,
         line   => $step->{'location'}->{'line'},
         column => $step->{'location'}->{'column'} +
           length( $step->{'keyword'} ),
@@ -211,24 +207,23 @@ sub _pickle_step_location {
 }
 
 sub _pickle_location {
-    my ( $class, $location, $path ) = @_;
+    my ( $class, $location ) = @_;
     return {
-        path   => $path,
         line   => $location->{'line'},
         column => $location->{'column'},
     };
 }
 
 sub _pickle_tags {
-    my ( $class, $tags, $path ) = @_;
-    return [ map { $class->_pickle_tag( $_, $path ) } @$tags ];
+    my ( $class, $tags ) = @_;
+    return [ map { $class->_pickle_tag( $_ ) } @$tags ];
 }
 
 sub _pickle_tag {
-    my ( $class, $tag, $path ) = @_;
+    my ( $class, $tag ) = @_;
     return {
         name     => $tag->{'name'},
-        location => $class->_pickle_location( $tag->{'location'}, $path )
+        location => $class->_pickle_location( $tag->{'location'} )
     };
 }
 
