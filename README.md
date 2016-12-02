@@ -6,12 +6,6 @@
 
 Gherkin is a parser and compiler for the Gherkin language.
 
-It is intended to replace [Gherkin 2](https://github.com/cucumber/gherkin2) and be used by
-all [Cucumber](https://cucumber.io/) implementations to parse `.feature` files.
-
-If you want a reference implementation of Cucumber, take a
-look at [microcuke](https://github.com/cucumber/microcuke).
-
 Gherkin is currently implemented for the following platforms (in order of birthday):
 
 * [.NET](https://github.com/cucumber/gherkin-dotnet)
@@ -169,10 +163,12 @@ You can see some examples in the
 [testdata/good](https://github.com/cucumber/gherkin/tree/master/testdata/good)
 directory.
 
-### Compiler
+### Pickles
 
-The compiler compiles the AST produced by the parser
-into a simpler form - *Pickles*.
+The AST isn't suitable for execution by Cucumber. It needs further processing
+into a simpler form called *Pickles*.
+
+The compiler compiles the AST produced by the parser into pickles.
 
     ╔═══╗   ┌────────┐   ╔═══════╗
     ║AST║──>│Compiler│──>║Pickles║
