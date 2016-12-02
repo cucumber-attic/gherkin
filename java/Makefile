@@ -5,6 +5,7 @@ BAD_FEATURE_FILES  = $(shell find ../testdata/bad -name "*.feature")
 TOKENS     = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.tokens,$(GOOD_FEATURE_FILES))
 ASTS       = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.ast.ndjson,$(GOOD_FEATURE_FILES))
 PICKLES    = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.pickles.ndjson,$(GOOD_FEATURE_FILES))
+SOURCES    = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.source.ndjson,$(GOOD_FEATURE_FILES))
 ERRORS     = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.errors.ndjson,$(BAD_FEATURE_FILES))
 
 JAVA_FILES = $(shell find . -name "*.java")
@@ -12,7 +13,7 @@ JAVA_FILES = $(shell find . -name "*.java")
 all: .compared
 .PHONY: all
 
-.compared: $(TOKENS) $(ASTS) $(PICKLES) $(ERRORS)
+.compared: $(TOKENS) $(ASTS) $(PICKLES) $(ERRORS) $(SOURCES)
 	touch $@
 
 .built: src/main/java/gherkin/Parser.java src/main/resources/gherkin/gherkin-languages.json $(JAVA_FILES) LICENSE
@@ -48,6 +49,18 @@ acceptance/testdata/%.feature.pickles.ndjson: ../testdata/%.feature ../testdata/
 	bin/gherkin --no-source --no-ast $< | jq --sort-keys --compact-output "." > $@
 	diff --unified <(jq "." $<.pickles.ndjson) <(jq "." $@)
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.pickles.ndjson
+
+# Generate
+# acceptance/testdata/%.feature.source.ndjson: ../testdata/%.feature .built
+# 	mkdir -p `dirname $@`
+# 	bin/gherkin --no-ast --no-pickles $< | jq --sort-keys --compact-output "." > $<.source.ndjson
+# .DELETE_ON_ERROR: acceptance/testdata/%.feature.source.ndjson
+
+acceptance/testdata/%.feature.source.ndjson: ../testdata/%.feature ../testdata/%.feature.source.ndjson .built
+	mkdir -p `dirname $@`
+	bin/gherkin --no-ast --no-pickles $< | jq --sort-keys --compact-output "." > $@
+	diff --unified <(jq "." $<.source.ndjson) <(jq "." $@)
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.source.ndjson
 
 # Generate
 # acceptance/testdata/%.feature.errors.ndjson: ../testdata/%.feature .built
