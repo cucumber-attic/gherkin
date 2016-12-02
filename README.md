@@ -25,7 +25,50 @@ Our wish-list is (in no particular order):
 * Rust
 * Elixir
 
-## Example
+## Usage
+
+Gherkin can be used either through its command line interface (CLI) or as a library.
+
+It is designed to be used in conjunction with other tools such as Cucumber or
+Gherkin-Lint, which consume the output from the CLI or library.
+
+Other tools should use the library if there is a Gherkin library in the same language
+as the tool itself. If not, use the CLI in one of the implementations.
+
+The Gherkin CLI makes it possible to implement Cucumber for a new language, say
+Rust or Elixir, without having to implement a Gherkin parser too.
+
+### CLI
+
+The Gherkin CLI `gherkin` reads Gherkin source files (`.feature` files) and outputs
+[ASTs](#ast) and [Pickles](#pickles).
+
+The `gherkin` program takes any number of files as arguments and prints the results
+to `STDOUT` as [Newline Delimted JSON](http://ndjson.org/).
+
+Each line is a JSON document that conforms to the [Cucumber Event Protocol](https://docs.cucumber.io/event-protocol/).
+
+To try it out, just install Gherkin for your favourite language, and run it over the
+files in this repository:
+
+    gherkin testdata/**/*.feature
+
+Ndjson is easy to read for programs, but hard for people. To pretty print each JSON
+document you can pipe it to the [jq](https://stedolan.github.io/jq/) program:
+
+    gherkin testdata/**/*.feature | jq
+
+### Library
+
+Using the library is the preferred way to use Gherkin since it produces easily
+consumable AST and Pickle objects in-process without having to fork a CLI process
+or parse JSON.
+
+The library itself provides a *stream* API, which is what the CLI is based on.
+This is the recommended way to use the library as it provides a high level API
+that is easy to use. See the CLI implementations to get an idea of how to use it.
+
+Alternatively, you can use the lower level parser and compiler. Some usage examples are below:
 
 ```java
 // Java
@@ -59,6 +102,7 @@ var pickles = new Gherkin.Compiler().compile(gherkinDocument);
 
 ```go
 // Go
+// Download the package via: `go get github.com/cucumber/gherkin-go`
 import (
   "strings"
   "github.com/cucumber/gherkin-go"
@@ -66,7 +110,6 @@ import (
 reader := strings.NewReader(`Feature: ...`)
 gherkinDocument, err := gherkin.ParseGherkinDocument(reader)
 ```
-*Download the package via: `go get github.com/cucumber/gherkin-go`*
 
 ```python
 # Python
@@ -168,7 +211,7 @@ directory.
 The AST isn't suitable for execution by Cucumber. It needs further processing
 into a simpler form called *Pickles*.
 
-The compiler compiles the AST produced by the parser into pickles.
+The compiler compiles the AST produced by the parser into pickles:
 
     ╔═══╗   ┌────────┐   ╔═══════╗
     ║AST║──>│Compiler│──>║Pickles║
@@ -215,140 +258,134 @@ Feature:
       | n |
 ```
 
-This will be compiled into several `Pickle` objects (here represented as JSON):
+Using the [CLI](#cli) we can compile this into several pickle objects:
 
+    gherkin testdata/good/readme_example.feature --no-source --no-ast | jq
+
+Output:
 ```json
-[
-  {
-    "locations": [
-      {
-        "column": 7,
-        "line": 9,
-        "path": "../testdata/good/scenario_outlines_with_tags.feature"
-      },
-      {
-        "column": 3,
-        "line": 4,
-        "path": "../testdata/good/scenario_outlines_with_tags.feature"
-      }
-    ],
-    "name": "Scenario: ",
+{
+  "type": "pickle",
+  "uri": "testdata/good/readme_example.feature",
+  "pickle": {
+    "name": "",
     "steps": [
       {
+        "text": "y",
         "arguments": [],
         "locations": [
           {
-            "column": 7,
             "line": 9,
-            "path": "../testdata/good/scenario_outlines_with_tags.feature"
+            "column": 7
           },
           {
-            "column": 11,
             "line": 5,
-            "path": "../testdata/good/scenario_outlines_with_tags.feature"
+            "column": 11
           }
-        ],
-        "text": "y"
+        ]
       }
     ],
     "tags": [
       {
+        "name": "@a",
         "location": {
-          "column": 1,
           "line": 1,
-          "path": "../testdata/good/scenario_outlines_with_tags.feature"
-        },
-        "name": "@a"
+          "column": 1
+        }
       },
       {
+        "name": "@b",
         "location": {
-          "column": 3,
           "line": 3,
-          "path": "../testdata/good/scenario_outlines_with_tags.feature"
-        },
-        "name": "@b"
+          "column": 3
+        }
       },
       {
+        "name": "@c",
         "location": {
-          "column": 6,
           "line": 3,
-          "path": "../testdata/good/scenario_outlines_with_tags.feature"
-        },
-        "name": "@c"
+          "column": 6
+        }
       }
-    ]
-  },
-  {
+    ],
     "locations": [
       {
-        "column": 7,
-        "line": 18,
-        "path": "../testdata/good/scenario_outlines_with_tags.feature"
+        "line": 9,
+        "column": 7
       },
       {
-        "column": 3,
-        "line": 12,
-        "path": "../testdata/good/scenario_outlines_with_tags.feature"
-      }
-    ],
-    "name": "Scenario: ",
-    "steps": [
-      {
-        "arguments": [],
-        "locations": [
-          {
-            "column": 7,
-            "line": 18,
-            "path": "../testdata/good/scenario_outlines_with_tags.feature"
-          },
-          {
-            "column": 11,
-            "line": 13,
-            "path": "../testdata/good/scenario_outlines_with_tags.feature"
-          }
-        ],
-        "text": "n"
-      }
-    ],
-    "tags": [
-      {
-        "location": {
-          "column": 1,
-          "line": 1,
-          "path": "../testdata/good/scenario_outlines_with_tags.feature"
-        },
-        "name": "@a"
-      },
-      {
-        "location": {
-          "column": 3,
-          "line": 11,
-          "path": "../testdata/good/scenario_outlines_with_tags.feature"
-        },
-        "name": "@d"
-      },
-      {
-        "location": {
-          "column": 6,
-          "line": 11,
-          "path": "../testdata/good/scenario_outlines_with_tags.feature"
-        },
-        "name": "@e"
-      },
-      {
-        "location": {
-          "column": 5,
-          "line": 15,
-          "path": "../testdata/good/scenario_outlines_with_tags.feature"
-        },
-        "name": "@f"
+        "line": 4,
+        "column": 3
       }
     ]
   }
-]
+}
+{
+  "type": "pickle",
+  "uri": "testdata/good/readme_example.feature",
+  "pickle": {
+    "name": "",
+    "steps": [
+      {
+        "text": "n",
+        "arguments": [],
+        "locations": [
+          {
+            "line": 18,
+            "column": 7
+          },
+          {
+            "line": 13,
+            "column": 11
+          }
+        ]
+      }
+    ],
+    "tags": [
+      {
+        "name": "@a",
+        "location": {
+          "line": 1,
+          "column": 1
+        }
+      },
+      {
+        "name": "@d",
+        "location": {
+          "line": 11,
+          "column": 3
+        }
+      },
+      {
+        "name": "@e",
+        "location": {
+          "line": 11,
+          "column": 6
+        }
+      },
+      {
+        "name": "@f",
+        "location": {
+          "line": 15,
+          "column": 5
+        }
+      }
+    ],
+    "locations": [
+      {
+        "line": 18,
+        "column": 7
+      },
+      {
+        "line": 12,
+        "column": 3
+      }
+    ]
+  }
+}
 ```
 
-Each `Pickle` keeps a pointer back to the original source. This is useful for
+Each `Pickle` event also contains the path to the original source. This is useful for
 generating reports and stack traces when a Scenario fails.
 
 Cucumber will further transform this list of `Pickle` structs to a list of `TestCase`
@@ -361,5 +398,5 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md)
 ## Projects using Gherkin
 
 - [cucumber-ruby](https://github.com/cucumber/cucumber-ruby)
-- [microcuke](https://github.com/cucumber/microcuke)
+- [cucumber-js](https://github.com/cucumber/cucumber-js)
 - [godog](https://github.com/DATA-DOG/godog) - Cucumber like BDD framework for **go**

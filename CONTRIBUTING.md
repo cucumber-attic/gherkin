@@ -231,28 +231,29 @@ With the parser:
 2) Generate the tokens:
 
     # For example
-    [LANGUAGE]/bin/gherkin-generate-tokens \
-    testdata/good/newfile.feature > \
-    testdata/good/newfile.feature.tokens
+    cd [LANGUAGE]
+    bin/gherkin-generate-tokens \
+    ../testdata/good/new_file.feature > \
+    ../testdata/good/new_file.feature.tokens
 
 3) Inspect the generated `.feature.tokens` file manually to see if it's good.
 
 4) Generate the ast:
+    cd [LANGUAGE]
+    bin/gherkin --no-source --no-pickles \
+    ../testdata/good/new_file.feature | \
+    jq --sort-keys --compact-output "." > \
+    ../testdata/good/new_file.feature.ast.ndjson
 
-    [LANGUAGE]/bin/gherkin-generate-ast \
-    testdata/good/newfile.feature | \
-    jq --sort-keys "." > \
-    testdata/good/newfile.feature.ast.json
-
-5) Inspect the generated `.feature.ast.json` file manually to see if it's good.
+5) Inspect the generated `.feature.ast.ndjson` file manually to see if it's good.
 
 6) Generate the pickles:
 
     cd [LANGUAGE]
-    ./bin/gherkin-generate-pickles \
-    ../testdata/good/newfile.feature | \
-    jq --sort-keys "." > \
-    ../testdata/good/newfile.feature.pickles.json
+    bin/gherkin --no-source --no-ast \
+    ../testdata/good/new_file.feature | \
+    jq --sort-keys --compact-output "." > \
+    ../testdata/good/new_file.feature.pickles.ndjson
 
 7) Inspect the generated `.feature.pickles.json` file manually to see if it's good.
 
