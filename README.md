@@ -31,7 +31,7 @@ Our wish-list is (in no particular order):
 // Java
 Parser<GherkinDocument> parser = new Parser<>(new AstBuilder());
 GherkinDocument gherkinDocument = parser.parse("Feature: ...");
-List<Pickle> pickles = new Compiler().compile(gherkinDocument, "path/to/the.feature")
+List<Pickle> pickles = new Compiler().compile(gherkinDocument)
 ```
 
 ```csharp
@@ -46,7 +46,7 @@ require 'gherkin/parser'
 require 'gherkin/pickles/compiler'
 parser = Gherkin::Parser.new
 gherkin_document = parser.parse("Feature: ...")
-pickles = Gherkin::Pickles::Compiler.new.compile(gherkin_document, "path/to/the.feature")
+pickles = Gherkin::Pickles::Compiler.new.compile(gherkin_document)
 ```
 
 ```javascript
@@ -54,7 +54,7 @@ pickles = Gherkin::Pickles::Compiler.new.compile(gherkin_document, "path/to/the.
 var Gherkin = require('gherkin');
 var parser = new Gherkin.Parser();
 var gherkinDocument = parser.parse("Feature: ...");
-var pickles = new Gherkin.Compiler().compile(gherkinDocument, "path/to/the.feature");
+var pickles = new Gherkin.Compiler().compile(gherkinDocument);
 ```
 
 ```go
@@ -75,7 +75,7 @@ from gherkin.pickles.compiler import compile
 
 parser = Parser()
 gherkin_document = parser.parse("Feature: ...")
-pickles = compile(gherkin_document, "path/to/the.feature")
+pickles = compile(gherkin_document)
 ```
 
 ```Objective-C
@@ -98,7 +98,7 @@ use Gherkin::Pickles::Compiler;
 
 my $parser = Gherkin::Parser->new();
 my $gherkin_document = $parser->parse("Feature: ...");
-my $pickles = Gherkin::Pickles::Compiler->compile($gherkin_document, "path/to/the.feature");
+my $pickles = Gherkin::Pickles::Compiler->compile($gherkin_document);
 ```
 
 ## Table cell escaping
