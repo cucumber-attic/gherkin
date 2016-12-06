@@ -71,6 +71,7 @@
     <Compile Include="TestFolders.cs" />
     <Compile Include="TokenizationTests.cs" />
     <Compile Include="StringUtilsTests.cs" />
+    <Compile Include="LineEndingHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -46,11 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FeatureAstJSonContractResolver.cs" />
-    <Compile Include="LineEndingHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Attachment.cs" />
-    <Compile Include="AstGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Gherkin\Gherkin.csproj">
