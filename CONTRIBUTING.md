@@ -206,11 +206,6 @@ Then finally create a tag in this master repo and push.
 The last step might cause some conflicts. If that happens, force push the failing
 subtree (see Troubleshooting section) and run `make push-subtrees` again.
 
-## Benchmarking
-
-Just run `./perf` to get a rough idea of performance. This script will print
-how many milliseconds it takes to parse all the files under `testdata/good`
-
 ## Verify all of Cucumber's i18n examples
 
 If you have [cucumber-ruby](https://github.com/cucumber/cucumber-ruby) cloned
