@@ -1,4 +1,4 @@
-﻿namespace Gherkin.AstGenerator
+﻿namespace Gherkin.CLI
 {
     public static class LineEndingHelper
     {

@@ -3,7 +3,7 @@ using Gherkin.Ast;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Gherkin.AstGenerator
+namespace Gherkin.CLI
 {
     class FeatureAstJSonContractResolver : CamelCasePropertyNamesContractResolver
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Gherkin.AstGenerator
+namespace Gherkin.CLI
 {
     class Program
     {

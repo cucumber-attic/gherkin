@@ -7,13 +7,13 @@
     <ProjectGuid>{D8EAD6E5-CE46-49F8-A750-0523B9FB531E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gherkin.AstGenerator</RootNamespace>
-    <AssemblyName>Gherkin.AstGenerator</AssemblyName>
+    <RootNamespace>Gherkin.CLI</RootNamespace>
+    <AssemblyName>gherkin</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>anycpu</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>

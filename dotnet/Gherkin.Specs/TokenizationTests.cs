@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using Gherkin.AstGenerator;
+using Gherkin.CLI;
 using NUnit.Framework;
 
 namespace Gherkin.Specs

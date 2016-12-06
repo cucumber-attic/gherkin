@@ -2,7 +2,7 @@
 using Gherkin.Ast;
 using NUnit.Framework;
 using Newtonsoft.Json;
-using Gherkin.AstGenerator;
+using Gherkin.CLI;
 
 namespace Gherkin.Specs
 {
