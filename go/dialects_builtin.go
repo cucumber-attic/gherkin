@@ -2291,6 +2291,7 @@ var buildinDialects = gherkinDialectMap{
 			then: []string{
 				"* ",
 				"То ",
+				"Затем ",
 				"Тогда ",
 			},
 			and: []string{
