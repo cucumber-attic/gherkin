@@ -21,6 +21,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 * (Java) Using full path when loading gherkin-languages.json
   ([#225](https://github.com/cucumber/gherkin/pull/225)
    by [mauriciotogneri])
+* (I18n) ru: Added word "Затем" as a synonym for when steps
+  ([#218](https://github.com/cucumber/gherkin/pull/239)
+   by [Pr-Mex])
 * (I18n) nl: Added "Wanneer" as a synonym for when steps
   ([#218](https://github.com/cucumber/gherkin/pull/241)
    by [jmezach])
@@ -274,5 +277,6 @@ to Gherkin 2.
 [nixel2007]:        https://github.com/nixel2007
 [paigehf]:          https://github.com/paigehf
 [pjlsergeant]:      https://github.com/pjlsergeant
+[Pr-Mex]:           https://github.com/Pr-Mex
 [zbmott]:           https://github.com/zbmott
 [Zearin]:           https://github.com/Zearin
