@@ -2001,7 +2001,8 @@ our $data = {
                               ],
                     'when' => [
                                 '* ',
-                                'Als '
+                                'Als ',
+                                'Wanneer '
                               ]
                   },
           'no' => {

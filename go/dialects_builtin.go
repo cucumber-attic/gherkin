@@ -2006,6 +2006,7 @@ var buildinDialects = gherkinDialectMap{
 			when: []string{
 				"* ",
 				"Als ",
+				"Wanneer ",
 			},
 			then: []string{
 				"* ",

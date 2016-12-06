@@ -21,6 +21,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 * (Java) Using full path when loading gherkin-languages.json
   ([#225](https://github.com/cucumber/gherkin/pull/225)
    by [mauriciotogneri])
+* (I18n) nl: Added "Wanneer" as a synonym for when steps
+  ([#218](https://github.com/cucumber/gherkin/pull/241)
+   by [jmezach])
 * (I18n) ast: Add Asturian translation
   ([#209](https://github.com/cucumber/gherkin/pull/209)
    by [ajspadial])
@@ -259,6 +262,7 @@ to Gherkin 2.
 [enkessler]:        https://github.com/enkessler
 [gabanz]:           https://github.com/gabanz
 [jargalan]:         https://github.com/jargalan
+[jmezach]:          https://github.com/jmezach
 [koterpillar]:      https://github.com/koterpillar
 [LiohAu]:           https://github.com/LiohAu
 [mauriciotogneri]:  https://github.com/mauriciotogneri
