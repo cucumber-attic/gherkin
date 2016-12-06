@@ -77,10 +77,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gherkin.AstGenerator\Gherkin.AstGenerator.csproj">
-      <Project>{d8ead6e5-ce46-49f8-a750-0523b9fb531e}</Project>
-      <Name>Gherkin.AstGenerator</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Gherkin.TokensGenerator\Gherkin.TokensGenerator.csproj">
       <Project>{b7311b05-d061-4a82-b8df-1c1ee65eea70}</Project>
       <Name>Gherkin.TokensGenerator</Name>
