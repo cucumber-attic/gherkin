@@ -4,7 +4,7 @@ BAD_FEATURE_FILES  = $(shell find ../testdata/bad -name "*.feature")
 
 TOKENS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.tokens,$(GOOD_FEATURE_FILES))
 ASTS     = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.ast.ndjson,$(GOOD_FEATURE_FILES))
-ERRORS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.errors,$(BAD_FEATURE_FILES))
+ERRORS   = $(patsubst ../testdata/%.feature,acceptance/testdata/%.feature.errors.ndjson,$(BAD_FEATURE_FILES))
 
 GO_SOURCE_FILES = $(shell find . -name "*.go") parser.go dialects_builtin.go
 
@@ -12,10 +12,8 @@ export GOPATH = $(realpath ./)
 
 all: .compared
 
-test: $(TOKENS) $(ASTS) $(ERRORS)
-.PHONY: test
-
-.compared: .built $(TOKENS) $(ASTS) $(ERRORS)
+.compared: .built $(TOKENS)
+#.compared: .built $(TOKENS) $(ASTS) $(ERRORS)
 	touch $@
 
 .built: show-version-info $(GO_SOURCE_FILES) bin/gherkin-generate-tokens bin/gherkin-generate-ast LICENSE
@@ -43,11 +41,11 @@ acceptance/testdata/%.feature.ast.ndjson: ../testdata/%.feature ../testdata/%.fe
 	diff --unified <(jq "." $<.ast.ndjson) <(jq "." $@)
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.ndjson
 
-acceptance/testdata/%.feature.errors: ../testdata/%.feature ../testdata/%.feature.errors bin/gherkin-generate-ast
+acceptance/testdata/%.feature.errors.ndjson: ../testdata/%.feature ../testdata/%.feature.errors.ndjson bin/gherkin
 	mkdir -p `dirname $@`
-	! bin/gherkin-generate-ast $< 2> $@
-	diff --unified $<.errors $@
-.DELETE_ON_ERROR: acceptance/testdata/%.feature.errors
+	bin/gherkin $< | jq --sort-keys --compact-output "." > $@
+	diff --unified <(jq "." $<.errors.ndjson) <(jq "." $@)
+.DELETE_ON_ERROR: acceptance/testdata/%.feature.errors.ndjson
 
 parser.go: ../gherkin.berp parser.go.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t parser.go.razor -o $@
