@@ -22,6 +22,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
   ([#225](https://github.com/cucumber/gherkin/pull/225)
    by [mauriciotogneri])
 * (I18n) ru: Added word "Затем" as a synonym for when steps
+  ([#246](https://github.com/cucumber/gherkin/pull/246)
+   by [dobiedad])
+* (I18n) Georgian language
   ([#218](https://github.com/cucumber/gherkin/pull/239)
    by [Pr-Mex])
 * (I18n) nl: Added "Wanneer" as a synonym for when steps
@@ -262,6 +265,7 @@ to Gherkin 2.
 [aslakhellesoy]:    https://github.com/aslakhellesoy
 [brasmusson]:       https://github.com/brasmusson
 [charlierudolph]:   https://github.com/charlierudolph
+[dobiedad]:         https://github.com/dobiedad
 [enkessler]:        https://github.com/enkessler
 [gabanz]:           https://github.com/gabanz
 [jargalan]:         https://github.com/jargalan
