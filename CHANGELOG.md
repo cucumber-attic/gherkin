@@ -12,6 +12,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (I18n) mk-Cyrl: Added Macedonian language
+  ([#249](https://github.com/cucumber/gherkin/pull/249)
+   by [nikolovski])
 * (Build) Automate the version update for the sub-projects
   ([#211](https://github.com/cucumber/gherkin/pull/211)
    by [brasmusson])
@@ -279,6 +282,7 @@ to Gherkin 2.
 [moreau-nicolas]:   https://github.com/moreau-nicolas
 [nalekberov]:       https://github.com/nalekberov
 [nixel2007]:        https://github.com/nixel2007
+[nikolovski]:       https://github.com/nikolovski
 [paigehf]:          https://github.com/paigehf
 [pjlsergeant]:      https://github.com/pjlsergeant
 [Pr-Mex]:           https://github.com/Pr-Mex
