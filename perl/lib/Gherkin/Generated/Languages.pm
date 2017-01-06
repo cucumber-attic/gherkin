@@ -1959,6 +1959,100 @@ our $data = {
                                 'Ja '
                               ]
                   },
+          'mk-Cyrl' => {
+                         'and' => [
+                                    '* ',
+                                    "\x{418} "
+                                  ],
+                         'background' => [
+                                           "\x{41a}\x{43e}\x{43d}\x{442}\x{435}\x{43a}\x{441}\x{442}",
+                                           "\x{421}\x{43e}\x{434}\x{440}\x{436}\x{438}\x{43d}\x{430}"
+                                         ],
+                         'but' => [
+                                    '* ',
+                                    "\x{41d}\x{43e} "
+                                  ],
+                         'examples' => [
+                                         "\x{41f}\x{440}\x{438}\x{43c}\x{435}\x{440}\x{438}",
+                                         "\x{421}\x{446}\x{435}\x{43d}\x{430}\x{440}\x{438}\x{458}\x{430}"
+                                       ],
+                         'feature' => [
+                                        "\x{424}\x{443}\x{43d}\x{43a}\x{446}\x{438}\x{43e}\x{43d}\x{430}\x{43b}\x{43d}\x{43e}\x{441}\x{442}",
+                                        "\x{411}\x{438}\x{437}\x{43d}\x{438}\x{441} \x{43f}\x{43e}\x{442}\x{440}\x{435}\x{431}\x{430}",
+                                        "\x{41c}\x{43e}\x{436}\x{43d}\x{43e}\x{441}\x{442}"
+                                      ],
+                         'given' => [
+                                      '* ',
+                                      "\x{414}\x{430}\x{434}\x{435}\x{43d}\x{43e} ",
+                                      "\x{414}\x{430}\x{434}\x{435}\x{43d}\x{430} "
+                                    ],
+                         'name' => 'Macedonian',
+                         'native' => "\x{41c}\x{430}\x{43a}\x{435}\x{434}\x{43e}\x{43d}\x{441}\x{43a}\x{438}",
+                         'scenario' => [
+                                         "\x{421}\x{446}\x{435}\x{43d}\x{430}\x{440}\x{438}\x{43e}",
+                                         "\x{41d}\x{430} \x{43f}\x{440}\x{438}\x{43c}\x{435}\x{440}"
+                                       ],
+                         'scenarioOutline' => [
+                                                "\x{41f}\x{440}\x{435}\x{433}\x{43b}\x{435}\x{434} \x{43d}\x{430} \x{441}\x{446}\x{435}\x{43d}\x{430}\x{440}\x{438}\x{458}\x{430}",
+                                                "\x{421}\x{43a}\x{438}\x{446}\x{430}",
+                                                "\x{41a}\x{43e}\x{43d}\x{446}\x{435}\x{43f}\x{442}"
+                                              ],
+                         'then' => [
+                                     '* ',
+                                     "\x{422}\x{43e}\x{433}\x{430}\x{448} "
+                                   ],
+                         'when' => [
+                                     '* ',
+                                     "\x{41a}\x{43e}\x{433}\x{430} "
+                                   ]
+                       },
+          'mk-Latn' => {
+                         'and' => [
+                                    '* ',
+                                    'I '
+                                  ],
+                         'background' => [
+                                           'Kontekst',
+                                           'Sodrzhina'
+                                         ],
+                         'but' => [
+                                    '* ',
+                                    'No '
+                                  ],
+                         'examples' => [
+                                         'Primeri',
+                                         'Scenaria'
+                                       ],
+                         'feature' => [
+                                        'Funkcionalnost',
+                                        'Biznis potreba',
+                                        'Mozhnost'
+                                      ],
+                         'given' => [
+                                      '* ',
+                                      'Dadeno ',
+                                      'Dadena '
+                                    ],
+                         'name' => 'Macedonian (Latin)',
+                         'native' => 'Makedonski (Latinica)',
+                         'scenario' => [
+                                         'Scenario',
+                                         'Na primer'
+                                       ],
+                         'scenarioOutline' => [
+                                                'Pregled na scenarija',
+                                                'Skica',
+                                                'Koncept'
+                                              ],
+                         'then' => [
+                                     '* ',
+                                     'Togash '
+                                   ],
+                         'when' => [
+                                     '* ',
+                                     'Koga '
+                                   ]
+                       },
           'mn' => {
                     'and' => [
                                '* ',
