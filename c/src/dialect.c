@@ -129,6 +129,49 @@ static const Dialect ar_dialect = {
         &ar_then_keywords,
         &ar_when_keywords };
 
+static const wchar_t* const ast_and_KEYWORDS[] = { L"* ", L"Y ", L"Ya " };
+static const Keywords ast_and_keywords = { 3, ast_and_KEYWORDS };
+
+static const wchar_t* const ast_background_KEYWORDS[] = { L"Antecedentes" };
+static const Keywords ast_background_keywords = { 1, ast_background_KEYWORDS };
+
+static const wchar_t* const ast_but_KEYWORDS[] = { L"* ", L"Peru " };
+static const Keywords ast_but_keywords = { 2, ast_but_KEYWORDS };
+
+static const wchar_t* const ast_examples_KEYWORDS[] = { L"Exemplos" };
+static const Keywords ast_examples_keywords = { 1, ast_examples_KEYWORDS };
+
+static const wchar_t* const ast_feature_KEYWORDS[] = { L"Carauterística" };
+static const Keywords ast_feature_keywords = { 1, ast_feature_KEYWORDS };
+
+static const wchar_t* const ast_given_KEYWORDS[] = { L"* ", L"Dáu ", L"Dada ", L"Daos ", L"Daes " };
+static const Keywords ast_given_keywords = { 5, ast_given_KEYWORDS };
+
+static const wchar_t* const ast_scenario_KEYWORDS[] = { L"Casu" };
+static const Keywords ast_scenario_keywords = { 1, ast_scenario_KEYWORDS };
+
+static const wchar_t* const ast_scenarioOutline_KEYWORDS[] = { L"Esbozu del casu" };
+static const Keywords ast_scenarioOutline_keywords = { 1, ast_scenarioOutline_KEYWORDS };
+
+static const wchar_t* const ast_then_KEYWORDS[] = { L"* ", L"Entós " };
+static const Keywords ast_then_keywords = { 2, ast_then_KEYWORDS };
+
+static const wchar_t* const ast_when_KEYWORDS[] = { L"* ", L"Cuando " };
+static const Keywords ast_when_keywords = { 2, ast_when_KEYWORDS };
+
+static const Dialect ast_dialect = {
+        L"ast",
+        &ast_and_keywords,
+        &ast_background_keywords,
+        &ast_but_keywords,
+        &ast_examples_keywords,
+        &ast_feature_keywords,
+        &ast_given_keywords,
+        &ast_scenario_keywords,
+        &ast_scenarioOutline_keywords,
+        &ast_then_keywords,
+        &ast_when_keywords };
+
 static const wchar_t* const az_and_KEYWORDS[] = { L"* ", L"Və ", L"Həm " };
 static const Keywords az_and_keywords = { 3, az_and_KEYWORDS };
 
@@ -1677,6 +1720,49 @@ static const Dialect jv_dialect = {
         &jv_then_keywords,
         &jv_when_keywords };
 
+static const wchar_t* const ka_and_KEYWORDS[] = { L"* ", L"და" };
+static const Keywords ka_and_keywords = { 2, ka_and_KEYWORDS };
+
+static const wchar_t* const ka_background_KEYWORDS[] = { L"კონტექსტი" };
+static const Keywords ka_background_keywords = { 1, ka_background_KEYWORDS };
+
+static const wchar_t* const ka_but_KEYWORDS[] = { L"* ", L"მაგ­რამ" };
+static const Keywords ka_but_keywords = { 2, ka_but_KEYWORDS };
+
+static const wchar_t* const ka_examples_KEYWORDS[] = { L"მაგალითები" };
+static const Keywords ka_examples_keywords = { 1, ka_examples_KEYWORDS };
+
+static const wchar_t* const ka_feature_KEYWORDS[] = { L"თვისება" };
+static const Keywords ka_feature_keywords = { 1, ka_feature_KEYWORDS };
+
+static const wchar_t* const ka_given_KEYWORDS[] = { L"* ", L"მოცემული" };
+static const Keywords ka_given_keywords = { 2, ka_given_KEYWORDS };
+
+static const wchar_t* const ka_scenario_KEYWORDS[] = { L"სცენარის" };
+static const Keywords ka_scenario_keywords = { 1, ka_scenario_KEYWORDS };
+
+static const wchar_t* const ka_scenarioOutline_KEYWORDS[] = { L"სცენარის ნიმუში" };
+static const Keywords ka_scenarioOutline_keywords = { 1, ka_scenarioOutline_KEYWORDS };
+
+static const wchar_t* const ka_then_KEYWORDS[] = { L"* ", L"მაშინ" };
+static const Keywords ka_then_keywords = { 2, ka_then_KEYWORDS };
+
+static const wchar_t* const ka_when_KEYWORDS[] = { L"* ", L"როდესაც" };
+static const Keywords ka_when_keywords = { 2, ka_when_KEYWORDS };
+
+static const Dialect ka_dialect = {
+        L"ka",
+        &ka_and_keywords,
+        &ka_background_keywords,
+        &ka_but_keywords,
+        &ka_examples_keywords,
+        &ka_feature_keywords,
+        &ka_given_keywords,
+        &ka_scenario_keywords,
+        &ka_scenarioOutline_keywords,
+        &ka_then_keywords,
+        &ka_when_keywords };
+
 static const wchar_t* const kn_and_KEYWORDS[] = { L"* ", L"ಮತ್ತು " };
 static const Keywords kn_and_keywords = { 2, kn_and_KEYWORDS };
 
@@ -1892,6 +1978,92 @@ static const Dialect lv_dialect = {
         &lv_then_keywords,
         &lv_when_keywords };
 
+static const wchar_t* const mk_Cyrl_and_KEYWORDS[] = { L"* ", L"И " };
+static const Keywords mk_Cyrl_and_keywords = { 2, mk_Cyrl_and_KEYWORDS };
+
+static const wchar_t* const mk_Cyrl_background_KEYWORDS[] = { L"Контекст", L"Содржина" };
+static const Keywords mk_Cyrl_background_keywords = { 2, mk_Cyrl_background_KEYWORDS };
+
+static const wchar_t* const mk_Cyrl_but_KEYWORDS[] = { L"* ", L"Но " };
+static const Keywords mk_Cyrl_but_keywords = { 2, mk_Cyrl_but_KEYWORDS };
+
+static const wchar_t* const mk_Cyrl_examples_KEYWORDS[] = { L"Примери", L"Сценарија" };
+static const Keywords mk_Cyrl_examples_keywords = { 2, mk_Cyrl_examples_KEYWORDS };
+
+static const wchar_t* const mk_Cyrl_feature_KEYWORDS[] = { L"Функционалност", L"Бизнис потреба", L"Можност" };
+static const Keywords mk_Cyrl_feature_keywords = { 3, mk_Cyrl_feature_KEYWORDS };
+
+static const wchar_t* const mk_Cyrl_given_KEYWORDS[] = { L"* ", L"Дадено ", L"Дадена " };
+static const Keywords mk_Cyrl_given_keywords = { 3, mk_Cyrl_given_KEYWORDS };
+
+static const wchar_t* const mk_Cyrl_scenario_KEYWORDS[] = { L"Сценарио", L"На пример" };
+static const Keywords mk_Cyrl_scenario_keywords = { 2, mk_Cyrl_scenario_KEYWORDS };
+
+static const wchar_t* const mk_Cyrl_scenarioOutline_KEYWORDS[] = { L"Преглед на сценарија", L"Скица", L"Концепт" };
+static const Keywords mk_Cyrl_scenarioOutline_keywords = { 3, mk_Cyrl_scenarioOutline_KEYWORDS };
+
+static const wchar_t* const mk_Cyrl_then_KEYWORDS[] = { L"* ", L"Тогаш " };
+static const Keywords mk_Cyrl_then_keywords = { 2, mk_Cyrl_then_KEYWORDS };
+
+static const wchar_t* const mk_Cyrl_when_KEYWORDS[] = { L"* ", L"Кога " };
+static const Keywords mk_Cyrl_when_keywords = { 2, mk_Cyrl_when_KEYWORDS };
+
+static const Dialect mk_Cyrl_dialect = {
+        L"mk-Cyrl",
+        &mk_Cyrl_and_keywords,
+        &mk_Cyrl_background_keywords,
+        &mk_Cyrl_but_keywords,
+        &mk_Cyrl_examples_keywords,
+        &mk_Cyrl_feature_keywords,
+        &mk_Cyrl_given_keywords,
+        &mk_Cyrl_scenario_keywords,
+        &mk_Cyrl_scenarioOutline_keywords,
+        &mk_Cyrl_then_keywords,
+        &mk_Cyrl_when_keywords };
+
+static const wchar_t* const mk_Latn_and_KEYWORDS[] = { L"* ", L"I " };
+static const Keywords mk_Latn_and_keywords = { 2, mk_Latn_and_KEYWORDS };
+
+static const wchar_t* const mk_Latn_background_KEYWORDS[] = { L"Kontekst", L"Sodrzhina" };
+static const Keywords mk_Latn_background_keywords = { 2, mk_Latn_background_KEYWORDS };
+
+static const wchar_t* const mk_Latn_but_KEYWORDS[] = { L"* ", L"No " };
+static const Keywords mk_Latn_but_keywords = { 2, mk_Latn_but_KEYWORDS };
+
+static const wchar_t* const mk_Latn_examples_KEYWORDS[] = { L"Primeri", L"Scenaria" };
+static const Keywords mk_Latn_examples_keywords = { 2, mk_Latn_examples_KEYWORDS };
+
+static const wchar_t* const mk_Latn_feature_KEYWORDS[] = { L"Funkcionalnost", L"Biznis potreba", L"Mozhnost" };
+static const Keywords mk_Latn_feature_keywords = { 3, mk_Latn_feature_KEYWORDS };
+
+static const wchar_t* const mk_Latn_given_KEYWORDS[] = { L"* ", L"Dadeno ", L"Dadena " };
+static const Keywords mk_Latn_given_keywords = { 3, mk_Latn_given_KEYWORDS };
+
+static const wchar_t* const mk_Latn_scenario_KEYWORDS[] = { L"Scenario", L"Na primer" };
+static const Keywords mk_Latn_scenario_keywords = { 2, mk_Latn_scenario_KEYWORDS };
+
+static const wchar_t* const mk_Latn_scenarioOutline_KEYWORDS[] = { L"Pregled na scenarija", L"Skica", L"Koncept" };
+static const Keywords mk_Latn_scenarioOutline_keywords = { 3, mk_Latn_scenarioOutline_KEYWORDS };
+
+static const wchar_t* const mk_Latn_then_KEYWORDS[] = { L"* ", L"Togash " };
+static const Keywords mk_Latn_then_keywords = { 2, mk_Latn_then_KEYWORDS };
+
+static const wchar_t* const mk_Latn_when_KEYWORDS[] = { L"* ", L"Koga " };
+static const Keywords mk_Latn_when_keywords = { 2, mk_Latn_when_KEYWORDS };
+
+static const Dialect mk_Latn_dialect = {
+        L"mk-Latn",
+        &mk_Latn_and_keywords,
+        &mk_Latn_background_keywords,
+        &mk_Latn_but_keywords,
+        &mk_Latn_examples_keywords,
+        &mk_Latn_feature_keywords,
+        &mk_Latn_given_keywords,
+        &mk_Latn_scenario_keywords,
+        &mk_Latn_scenarioOutline_keywords,
+        &mk_Latn_then_keywords,
+        &mk_Latn_when_keywords };
+
 static const wchar_t* const mn_and_KEYWORDS[] = { L"* ", L"Мөн ", L"Тэгээд " };
 static const Keywords mn_and_keywords = { 3, mn_and_KEYWORDS };
 
@@ -1962,8 +2134,8 @@ static const Keywords nl_scenarioOutline_keywords = { 1, nl_scenarioOutline_KEYW
 static const wchar_t* const nl_then_KEYWORDS[] = { L"* ", L"Dan " };
 static const Keywords nl_then_keywords = { 2, nl_then_KEYWORDS };
 
-static const wchar_t* const nl_when_KEYWORDS[] = { L"* ", L"Als " };
-static const Keywords nl_when_keywords = { 2, nl_when_KEYWORDS };
+static const wchar_t* const nl_when_KEYWORDS[] = { L"* ", L"Als ", L"Wanneer " };
+static const Keywords nl_when_keywords = { 3, nl_when_KEYWORDS };
 
 static const Dialect nl_dialect = {
         L"nl",
@@ -2217,8 +2389,8 @@ static const Keywords ru_scenario_keywords = { 1, ru_scenario_KEYWORDS };
 static const wchar_t* const ru_scenarioOutline_KEYWORDS[] = { L"Структура сценария" };
 static const Keywords ru_scenarioOutline_keywords = { 1, ru_scenarioOutline_KEYWORDS };
 
-static const wchar_t* const ru_then_KEYWORDS[] = { L"* ", L"То ", L"Тогда " };
-static const Keywords ru_then_keywords = { 3, ru_then_KEYWORDS };
+static const wchar_t* const ru_then_KEYWORDS[] = { L"* ", L"То ", L"Затем ", L"Тогда " };
+static const Keywords ru_then_keywords = { 4, ru_then_KEYWORDS };
 
 static const wchar_t* const ru_when_KEYWORDS[] = { L"* ", L"Если ", L"Когда " };
 static const Keywords ru_when_keywords = { 3, ru_when_KEYWORDS };
@@ -2974,6 +3146,8 @@ const Dialect* Dialect_for(const wchar_t* language) {
         return &am_dialect;
     if (wcscmp(ar_dialect.language_name, language) == 0)
         return &ar_dialect;
+    if (wcscmp(ast_dialect.language_name, language) == 0)
+        return &ast_dialect;
     if (wcscmp(az_dialect.language_name, language) == 0)
         return &az_dialect;
     if (wcscmp(bg_dialect.language_name, language) == 0)
@@ -3046,6 +3220,8 @@ const Dialect* Dialect_for(const wchar_t* language) {
         return &ja_dialect;
     if (wcscmp(jv_dialect.language_name, language) == 0)
         return &jv_dialect;
+    if (wcscmp(ka_dialect.language_name, language) == 0)
+        return &ka_dialect;
     if (wcscmp(kn_dialect.language_name, language) == 0)
         return &kn_dialect;
     if (wcscmp(ko_dialect.language_name, language) == 0)
@@ -3056,6 +3232,10 @@ const Dialect* Dialect_for(const wchar_t* language) {
         return &lu_dialect;
     if (wcscmp(lv_dialect.language_name, language) == 0)
         return &lv_dialect;
+    if (wcscmp(mk_Cyrl_dialect.language_name, language) == 0)
+        return &mk_Cyrl_dialect;
+    if (wcscmp(mk_Latn_dialect.language_name, language) == 0)
+        return &mk_Latn_dialect;
     if (wcscmp(mn_dialect.language_name, language) == 0)
         return &mn_dialect;
     if (wcscmp(nl_dialect.language_name, language) == 0)
