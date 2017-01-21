@@ -44,7 +44,7 @@ static Options parse_options(int argc, char** argv) {
 }
 
 int main(int argc, char** argv) {
-    setlocale(LC_ALL, "");
+    setlocale(LC_ALL, "en_US.UTF-8");
     TokenMatcher* token_matcher = TokenMatcher_new(L"en");
     Builder* builder = AstBuilder_new();
     Parser* parser = Parser_new(builder);

@@ -8,7 +8,7 @@
 #include "token_formatter_builder.h"
 
 int main(int argc, char** argv) {
-    setlocale(LC_ALL, "");
+    setlocale(LC_ALL, "en_US.UTF-8");
     int i;
     for (i = 1; i < argc; ++i) {
         FileReader* file_reader = FileReader_new(argv[i]);
