@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-void PicklePrinter_print_pickles(FILE* file, const Pickles* pickles);
+void PicklePrinter_print_pickle(FILE* file, const Pickle* pickle);
 
 #ifdef __cplusplus
 }

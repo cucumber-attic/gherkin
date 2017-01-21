@@ -12,15 +12,17 @@ typedef struct Compiler Compiler;
 
 typedef struct GherkinDocument GherkinDocument;
 
-typedef struct Pickles Pickles;
+typedef struct Pickle Pickle;
 
 Compiler* Compiler_new();
 
 void Compiler_delete(Compiler* compiler);
 
-int Compiler_compile(Compiler* compiler, const GherkinDocument* gherkin_document, const wchar_t* path);
+int Compiler_compile(Compiler* compiler, const GherkinDocument* gherkin_document);
 
-const Pickles* Compiler_get_result(Compiler* compiler);
+bool Compiler_has_more_pickles(Compiler* compiler);
+
+const Pickle* Compiler_next_pickle(Compiler* compiler);
 
 bool Compiler_has_more_errors(Compiler* compiler);
 

@@ -22,15 +22,15 @@ typedef struct ReplacementItem {
     const wchar_t* new_text;
 } ReplacementItem;
 
-static const PickleArgument* create_pickle_argument(const StepArgument* step_argument, const TableRow* example_header, const TableRow* body_row, const wchar_t* path);
+static const PickleArgument* create_pickle_argument(const StepArgument* step_argument, const TableRow* example_header, const TableRow* body_row);
 
-static const PickleTable* create_pickle_table(DataTable* data_table, const TableRow* example_header, const TableRow* body_row, const wchar_t* path);
+static const PickleTable* create_pickle_table(DataTable* data_table, const TableRow* example_header, const TableRow* body_row);
 
-static const PickleTags* create_pickle_tags(const Tags* source_1, const Tags* source_2, const Tags* source_3, const wchar_t* path);
+static const PickleTags* create_pickle_tags(const Tags* source_1, const Tags* source_2, const Tags* source_3);
 
-static void copy_tags(PickleTag* destination_array, const Tags* source, const wchar_t* path);
+static void copy_tags(PickleTag* destination_array, const Tags* source);
 
-static void copy_steps(PickleStep* destination_array, const Steps* source, const wchar_t* path);
+static void copy_steps(PickleStep* destination_array, const Steps* source);
 
 static const PickleStep* expand_outline_step(const Step* outline_step, const TableRow* example_header, const TableRow* body_row, const PickleLocations* locations);
 
@@ -49,7 +49,7 @@ void Compiler_delete(Compiler* compiler) {
     free((void*)compiler);
 }
 
-int Compiler_compile(Compiler* compiler, const GherkinDocument* gherkin_document, const wchar_t* path) {
+int Compiler_compile(Compiler* compiler, const GherkinDocument* gherkin_document) {
     const Feature* feature = gherkin_document->feature;
     if (!feature) {
         return 0;
@@ -68,15 +68,15 @@ int Compiler_compile(Compiler* compiler, const GherkinDocument* gherkin_document
             if (scenario->steps->step_count == 0) {
                 continue;
             }
-            const PickleLocations* locations = PickleLocations_new_single(scenario->location.line, scenario->location.column, path);
-            const PickleTags* tags = create_pickle_tags(feature->tags, scenario->tags, 0, path);
+            const PickleLocations* locations = PickleLocations_new_single(scenario->location.line, scenario->location.column);
+            const PickleTags* tags = create_pickle_tags(feature->tags, scenario->tags, 0);
             PickleSteps* steps = (PickleSteps*)malloc(sizeof(PickleSteps));
             steps->step_count = scenario->steps->step_count + background_step_count;
             steps->steps = (PickleStep*)malloc(steps->step_count * sizeof(PickleStep));
             if (background_steps) {
-                copy_steps(steps->steps, background_steps, path);
+                copy_steps(steps->steps, background_steps);
             }
-            copy_steps(steps->steps + background_step_count, scenario->steps, path);
+            copy_steps(steps->steps + background_step_count, scenario->steps);
             ItemQueue_add(compiler->pickle_list, (Item*)Pickle_new(locations, tags, scenario->name, steps));
         }
         else if (feature->scenario_definitions->scenario_definitions[i]->type == Gherkin_ScenarioOutline) {
@@ -90,21 +90,21 @@ int Compiler_compile(Compiler* compiler, const GherkinDocument* gherkin_document
                 if (!example_table->table_header) {
                     continue;
                 }
-                const PickleTags* tags = create_pickle_tags(feature->tags, scenario_outline->tags, example_table->tags, path);
+                const PickleTags* tags = create_pickle_tags(feature->tags, scenario_outline->tags, example_table->tags);
                 int l;
                 for (l = 0; l < example_table->table_body->row_count; ++l) {
                     const TableRow* table_row = &example_table->table_body->table_rows[l];
-                    const PickleLocations* locations = PickleLocations_new_double(table_row->location.line, table_row->location.column, scenario_outline->location.line, scenario_outline->location.column, path);
+                    const PickleLocations* locations = PickleLocations_new_double(table_row->location.line, table_row->location.column, scenario_outline->location.line, scenario_outline->location.column);
                     PickleSteps* steps = (PickleSteps*)malloc(sizeof(PickleSteps));
                     steps->step_count = scenario_outline->steps->step_count +  + background_step_count;
                     steps->steps = (PickleStep*)malloc(steps->step_count * sizeof(PickleStep));
                     if (background_steps) {
-                        copy_steps(steps->steps, background_steps, path);
+                        copy_steps(steps->steps, background_steps);
                     }
                     int j;
                     for (j = 0; j < scenario_outline->steps->step_count; ++j) {
                         int column_offset = scenario_outline->steps->steps[j].keyword ? wcslen(scenario_outline->steps->steps[j].keyword) : 0;
-                        const PickleLocations* step_locations = PickleLocations_new_double(table_row->location.line, table_row->location.column, scenario_outline->steps->steps[j].location.line, scenario_outline->steps->steps[j].location.column + column_offset, path);
+                        const PickleLocations* step_locations = PickleLocations_new_double(table_row->location.line, table_row->location.column, scenario_outline->steps->steps[j].location.line, scenario_outline->steps->steps[j].location.column + column_offset);
                         const PickleStep* step = expand_outline_step(&scenario_outline->steps->steps[j], example_table->table_header, table_row, step_locations);
                         PickleStep_transfer(&steps->steps[background_step_count + j], (PickleStep*)step);
                     }
@@ -118,34 +118,28 @@ int Compiler_compile(Compiler* compiler, const GherkinDocument* gherkin_document
     return 0;
 }
 
-const Pickles* Compiler_get_result(Compiler* compiler) {
-    if (ItemQueue_is_empty(compiler->pickle_list)) {
-        return 0;
-    }
-    Pickles* pickles = (Pickles*)malloc(sizeof(Pickles));
-    pickles->pickle_count = ItemQueue_size(compiler->pickle_list);
-    pickles->pickles = (Pickle*)malloc(pickles->pickle_count * sizeof(Pickle));
-    int i;
-    for (i = 0; i < pickles->pickle_count; ++i) {
-        Pickle_transfer(&pickles->pickles[i], (Pickle*)ItemQueue_remove(compiler->pickle_list));
-    }
-    return pickles;
+bool Compiler_has_more_pickles(Compiler* compiler) {
+    return !ItemQueue_is_empty(compiler->pickle_list);
 }
 
-static const PickleArgument* create_pickle_argument(const StepArgument* step_argument, const TableRow* example_header, const TableRow* body_row, const wchar_t* path) {
+const Pickle* Compiler_next_pickle(Compiler* compiler) {
+    return (Pickle*)ItemQueue_remove(compiler->pickle_list);
+}
+
+static const PickleArgument* create_pickle_argument(const StepArgument* step_argument, const TableRow* example_header, const TableRow* body_row) {
     const PickleArgument* argument = 0;
     if (step_argument) {
         if (step_argument->type == Gherkin_DataTable) {
-            argument = (const PickleArgument*)create_pickle_table((DataTable*)step_argument, example_header, body_row, path);
+            argument = (const PickleArgument*)create_pickle_table((DataTable*)step_argument, example_header, body_row);
         }
         else if (step_argument->type == Gherkin_DocString) {
             const DocString* doc_string = (DocString*)step_argument;
             if (!example_header) {
-                argument = (const PickleArgument*)PickleString_new(doc_string->content, doc_string->location.line, doc_string->location.column, path);
+                argument = (const PickleArgument*)PickleString_new(doc_string->content, doc_string->location.line, doc_string->location.column);
             }
             else {
                 const wchar_t* expanded_text = create_expanded_text(doc_string->content, example_header, body_row);
-                argument = (const PickleArgument*)PickleString_new(expanded_text, doc_string->location.line, doc_string->location.column, path);
+                argument = (const PickleArgument*)PickleString_new(expanded_text, doc_string->location.line, doc_string->location.column);
                 free((void*)expanded_text);
             }
         }
@@ -153,7 +147,7 @@ static const PickleArgument* create_pickle_argument(const StepArgument* step_arg
     return argument;
 }
 
-static const PickleTable* create_pickle_table(DataTable* data_table, const TableRow* example_header, const TableRow* body_row, const wchar_t* path) {
+static const PickleTable* create_pickle_table(DataTable* data_table, const TableRow* example_header, const TableRow* body_row) {
     PickleRows* rows = (PickleRows*)malloc(sizeof(PickleRows));
     rows->row_count = data_table->rows->row_count;
     rows->pickle_rows = (PickleRow*)malloc(rows->row_count * sizeof(PickleRow));
@@ -165,7 +159,7 @@ static const PickleTable* create_pickle_table(DataTable* data_table, const Table
         cells->pickle_cells = (PickleCell*)malloc(cells->cell_count * sizeof(PickleCell));
         int j;
         for (j = 0; j < cells->cell_count; ++j) {
-            const PickleLocation* location = PickleLocation_new(table_row->table_cells->table_cells[j].location.line, table_row->table_cells->table_cells[j].location.column, path);
+            const PickleLocation* location = PickleLocation_new(table_row->table_cells->table_cells[j].location.line, table_row->table_cells->table_cells[j].location.column);
             if (!example_header) {
                 PickleCell_transfer(&cells->pickle_cells[j], (PickleCell*)PickleCell_new(location, table_row->table_cells->table_cells[j].value));
             }
@@ -180,7 +174,7 @@ static const PickleTable* create_pickle_table(DataTable* data_table, const Table
     return PickleTable_new(rows);
 }
 
-static const PickleTags* create_pickle_tags(const Tags* source_1, const Tags* source_2, const Tags* source_3, const wchar_t* path) {
+static const PickleTags* create_pickle_tags(const Tags* source_1, const Tags* source_2, const Tags* source_3) {
     PickleTags* tags = 0;
     int source_1_tag_count = 0;
     int source_2_tag_count = 0;
@@ -200,31 +194,31 @@ static const PickleTags* create_pickle_tags(const Tags* source_1, const Tags* so
         tags->tag_count = tag_count;
         tags->tags = (PickleTag*)malloc(tags->tag_count * sizeof(PickleTag));
         if (source_1) {
-            copy_tags(tags->tags, source_1, path);
+            copy_tags(tags->tags, source_1);
         }
         if (source_2) {
-            copy_tags(tags->tags + source_1_tag_count, source_2, path);
+            copy_tags(tags->tags + source_1_tag_count, source_2);
         }
         if (source_3) {
-            copy_tags(tags->tags + source_1_tag_count + source_2_tag_count, source_3, path);
+            copy_tags(tags->tags + source_1_tag_count + source_2_tag_count, source_3);
         }
     }
     return tags;
 }
 
-static void copy_tags(PickleTag* destination_array, const Tags* source, const wchar_t* path) {
+static void copy_tags(PickleTag* destination_array, const Tags* source) {
     int i;
     for (i = 0; i < source->tag_count; ++i) {
-        PickleTag_transfer(destination_array + i, source->tags[i].name, source->tags[i].location.line, source->tags[i].location.column, path);
+        PickleTag_transfer(destination_array + i, source->tags[i].name, source->tags[i].location.line, source->tags[i].location.column);
     }
 }
 
-static void copy_steps(PickleStep* destination_array, const Steps* source, const wchar_t* path) {
+static void copy_steps(PickleStep* destination_array, const Steps* source) {
     int i;
     for (i = 0; i < source->step_count; ++i) {
         int column_offset = source->steps[i].keyword ? wcslen(source->steps[i].keyword) : 0;
-        const PickleLocations* step_locations = PickleLocations_new_single(source->steps[i].location.line, source->steps[i].location.column + column_offset, path);
-        const PickleArgument* argument = create_pickle_argument(source->steps[i].argument, 0, 0, path);
+        const PickleLocations* step_locations = PickleLocations_new_single(source->steps[i].location.line, source->steps[i].location.column + column_offset);
+        const PickleArgument* argument = create_pickle_argument(source->steps[i].argument, 0, 0);
         const PickleStep* step = PickleStep_new(step_locations, source->steps[i].text, argument);
         PickleStep_transfer(destination_array + i, (PickleStep*)step);
     }
@@ -232,7 +226,7 @@ static void copy_steps(PickleStep* destination_array, const Steps* source, const
 
 static const PickleStep* expand_outline_step(const Step* outline_step, const TableRow* example_header, const TableRow* body_row, const PickleLocations* locations) {
     const wchar_t* expanded_step_text = create_expanded_text(outline_step->text, example_header, body_row);
-    const PickleStep* expanded_step = PickleStep_new(locations, expanded_step_text, create_pickle_argument(outline_step->argument, example_header, body_row, locations->locations[0].path));
+    const PickleStep* expanded_step = PickleStep_new(locations, expanded_step_text, create_pickle_argument(outline_step->argument, example_header, body_row));
     free((void*)expanded_step_text);
     return expanded_step;
 }

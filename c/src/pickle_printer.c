@@ -1,13 +1,13 @@
 #include "pickle_printer.h"
 #include "pickle_string.h"
 #include "pickle_table.h"
+#include "print_utilities.h"
 #include <wchar.h>
 #include <stdlib.h>
 
 static void print_location(FILE* file, const PickleLocation* location) {
     fprintf(file, "{\"line\":%d,", location->line);
-    fprintf(file, "\"column\":%d,", location->column);
-    fprintf(file, "\"path\":\"%ls\"}", location->path);
+    fprintf(file, "\"column\":%d}", location->column);
 }
 
 static void print_locations(FILE* file, const PickleLocations* locations) {
@@ -24,28 +24,11 @@ static void print_locations(FILE* file, const PickleLocations* locations) {
     fprintf(file, "],");
 }
 
-static void print_json_string(FILE* file, const wchar_t* text) {
-    int i;
-    for (i = 0; i < wcslen(text); ++i) {
-        if (text[i] == L'\\' || text[i] == L'"') {
-            fprintf(file, "%lc", (wint_t)L'\\');
-            fprintf(file, "%lc", (wint_t)text[i]);
-        }
-        else if (text[i] == L'\n') {
-            fprintf(file, "%lc", (wint_t)L'\\');
-            fprintf(file, "%lc", (wint_t)L'n');
-        }
-        else {
-            fprintf(file, "%lc", (wint_t)text[i]);
-        }
-    }
-}
-
 static void print_table_cell(FILE* file, const PickleCell* pickle_cell) {
     fprintf(file, "{\"location\": ");
     print_location(file, pickle_cell->location);
     fprintf(file, ",\"value\": \"");
-    print_json_string(file, pickle_cell->value);
+    PrintUtilities_print_json_string(file, pickle_cell->value);
     fprintf(file, "\"");
     fprintf(file, "}");
 }
@@ -79,7 +62,7 @@ static void print_pickle_string(FILE* file, const PickleString* pickle_string) {
     print_location(file, &pickle_string->location);
     fprintf(file, ",\"content\":\"");
     if (pickle_string->content) {
-        print_json_string(file, pickle_string->content);
+        PrintUtilities_print_json_string(file, pickle_string->content);
     }
     fprintf(file, "\"}");
 }
@@ -107,10 +90,10 @@ static void print_pickle_step(FILE* file, const PickleStep* step) {
     fprintf(file, "}");
 }
 
-static void print_pickle(FILE* file, const Pickle* pickle) {
+void PicklePrinter_print_pickle(FILE* file, const Pickle* pickle) {
     fprintf(file, "{");
     fprintf(file, "\"name\" : \"");
-    print_json_string(file, pickle->name);
+    PrintUtilities_print_json_string(file, pickle->name);
     fprintf(file, "\",");
     print_locations(file, pickle->locations);
     fprintf(file, "\"tags\":[");
@@ -136,18 +119,4 @@ static void print_pickle(FILE* file, const Pickle* pickle) {
     }
     fprintf(file, "]");
     fprintf(file, "}");
-}
-
-void PicklePrinter_print_pickles(FILE* file, const Pickles* pickles) {
-    fprintf(file, "[");
-    if (pickles) {
-        int i;
-        for (i = 0; i < pickles->pickle_count; ++i) {
-            if (i > 0) {
-                fprintf(file, ",");
-            }
-            print_pickle(file, &pickles->pickles[i]);
-        }
-    }
-    fprintf(file, "]\n");
 }

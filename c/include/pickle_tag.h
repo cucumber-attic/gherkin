@@ -21,7 +21,7 @@ typedef struct PickleTags {
 
 void PickleTag_delete(const PickleTag* tag);
 
-void PickleTag_transfer(PickleTag* to_tag, const wchar_t* name, int line, int column, const wchar_t* path);
+void PickleTag_transfer(PickleTag* to_tag, const wchar_t* name, int line, int column);
 
 void PickleTags_delete(const PickleTags* tags);
 

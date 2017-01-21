@@ -7,7 +7,6 @@ const PickleTag* PickleTag_new(const wchar_t* name, int line, int column) {
     PickleTag* tag = (PickleTag*)malloc(sizeof(PickleTag));
     tag->location.line = line;
     tag->location.column = column;
-    tag->location.path = 0;
     tag->name = 0;
     if (name) {
         int length = wcslen(name);
@@ -26,16 +25,9 @@ void PickleTag_delete(const PickleTag* tag) {
     free((void*)tag);
 }
 
-void PickleTag_transfer(PickleTag* to_tag, const wchar_t* name, int line, int column, const wchar_t* path) {
+void PickleTag_transfer(PickleTag* to_tag, const wchar_t* name, int line, int column) {
     to_tag->location.line = line;
     to_tag->location.column = column;
-    to_tag->location.path = 0;
-    if (path) {
-        int length = wcslen(path);
-        to_tag->location.path = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(to_tag->location.path, path, length);
-        to_tag->location.path[length] = L'\0';
-    }
     to_tag->name = 0;
     if (name) {
         int length = wcslen(name);

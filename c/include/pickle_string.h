@@ -16,7 +16,7 @@ typedef struct PickleString {
     wchar_t* content;
 } PickleString;
 
-const PickleString* PickleString_new(const wchar_t* content, int line, int column, const wchar_t* path);
+const PickleString* PickleString_new(const wchar_t* content, int line, int column);
 
 void PickleString_delete(const PickleString* pickle_string);
 

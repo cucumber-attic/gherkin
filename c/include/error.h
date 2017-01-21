@@ -2,6 +2,7 @@
 #define GHERKIN_ERROR_H_
 
 #include "item.h"
+#include "location.h"
 #include <wchar.h>
 
 #ifdef __cplusplus
@@ -10,12 +11,13 @@ extern "C" {
 
 typedef struct Error {
     item_delete_function error_delete;
+    Location location;
     const wchar_t* error_text;
 } Error;
 
-Error* Error_new(const wchar_t* error_text);
+const Error* Error_new(const wchar_t* error_text, const Location location);
 
-void Error_delete(Error* error);
+void Error_delete(const Error* error);
 
 #ifdef __cplusplus
 }

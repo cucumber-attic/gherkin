@@ -9,6 +9,7 @@
 #include "token_matcher.h"
 #include "parser.h"
 #include "ast_builder.h"
+#include "print_utilities.h"
 #include <stdlib.h>
 
 static const wchar_t* ast_item_type_to_string(GherkinAstType type) {
@@ -50,29 +51,12 @@ static void print_location(FILE* file, const Location* location) {
     fprintf(file, "},");
 }
 
-static void print_json_string(FILE* file, const wchar_t* text) {
-    int i;
-    for (i = 0; i < wcslen(text); ++i) {
-        if (text[i] == L'\\' || text[i] == L'"') {
-            fprintf(file, "%lc", (wint_t)L'\\');
-            fprintf(file, "%lc", (wint_t)text[i]);
-        }
-        else if (text[i] == L'\n') {
-            fprintf(file, "%lc", (wint_t)L'\\');
-            fprintf(file, "%lc", (wint_t)L'n');
-        }
-        else {
-            fprintf(file, "%lc", (wint_t)text[i]);
-        }
-    }
-}
-
 static void print_table_cell(FILE* file, const TableCell* table_cell) {
     fprintf(file, "{\"type\":\"%ls\",", ast_item_type_to_string(table_cell->type));
     print_location(file, &table_cell->location);
     fprintf(file, "\"value\":\"");
     if (table_cell->value) {
-        print_json_string(file, table_cell->value);
+        PrintUtilities_print_json_string(file, table_cell->value);
     }
     fprintf(file, "\"}");
 }
@@ -113,7 +97,7 @@ static void print_doc_string(FILE* file, const DocString* doc_string) {
     }
     fprintf(file, "\"content\":\"");
     if (doc_string->content) {
-        print_json_string(file, doc_string->content);
+        PrintUtilities_print_json_string(file, doc_string->content);
     }
     fprintf(file, "\"}");
 }
@@ -137,14 +121,14 @@ static void print_step(FILE* file, const Step* step) {
 
 static void print_name(FILE* file, const wchar_t* name) {
     fprintf(file, "\"name\":\"");
-    print_json_string(file, name);
+    PrintUtilities_print_json_string(file, name);
     fprintf(file, "\",");
 }
 
 static void print_description(FILE* file, const wchar_t* description) {
     if (description) {
         fprintf(file, "\"description\":\"");
-        print_json_string(file, description);
+        PrintUtilities_print_json_string(file, description);
         fprintf(file, "\",");
     }
 }
@@ -324,5 +308,5 @@ void AstPrinter_print_gherkin_document(FILE* file, const GherkinDocument* gherki
         }
     }
     fprintf(file, "]");
-    fprintf(file, "}\n");
+    fprintf(file, "}");
 }

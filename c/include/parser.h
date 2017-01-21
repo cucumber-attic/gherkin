@@ -1,6 +1,7 @@
 #ifndef GHERKIN_PARSER_H_
 #define GHERKIN_PARSER_H_
 
+#include "error.h"
 #include <stdbool.h>
 #include <wchar.h>
 
@@ -26,7 +27,7 @@ int Parser_parse(Parser* parser, TokenMatcher* token_matcher, TokenScanner* toke
 
 bool Parser_has_more_errors(Parser* parser);
 
-const wchar_t* Parser_next_error(Parser* parser);
+Error* Parser_next_error(Parser* parser);
 
 #ifdef __cplusplus
 }

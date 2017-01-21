@@ -51,8 +51,12 @@ bool ErrorList_is_empty(ErrorList* error_list) {
     return ItemQueue_is_empty(error_list->errors);
 }
 
-void ErrorList_add(ErrorList* error_list, const wchar_t* error_text) {
-    ItemQueue_add(error_list->errors, (Item*)Error_new(error_text));
+Error* ErrorList_remove(ErrorList* error_list) {
+    return (Error*)ItemQueue_remove(error_list->errors);
+}
+
+void ErrorList_add(ErrorList* error_list, const wchar_t* error_text, const Location location) {
+    ItemQueue_add(error_list->errors, (Item*)Error_new(error_text, location));
     if (ItemQueue_size(error_list->errors) > 10) {
         ErrorList_jump_to_global_rescue_env(error_list);
     }
@@ -68,7 +72,7 @@ void ErrorList_add_unexpected_eof_error(ErrorList* error_list, Token* received_t
         text = (wchar_t*)realloc(text, (actual_location_width + message_length + 1) * sizeof(wchar_t*));
     }
     swprintf(text + actual_location_width, message_length + 1, message, expected_tokens);
-    ErrorList_add(error_list, text);
+    ErrorList_add(error_list, text, received_token->location);
 }
 
 void ErrorList_add_unexpected_token_error(ErrorList* error_list, Token* received_token, const wchar_t* expected_tokens) {
@@ -85,7 +89,8 @@ void ErrorList_add_unexpected_token_error(ErrorList* error_list, Token* received
         text = (wchar_t*)realloc(text, (actual_location_width + message_length + 1) * sizeof(wchar_t*));
     }
     swprintf(text + actual_location_width, message_length + 1, message, expected_tokens, received_token->line->trimmed_line);
-    ErrorList_add(error_list, text);
+    Location location = {received_token->location.line, column};
+    ErrorList_add(error_list, text, location);
 }
 
 void ErrorList_add_no_such_language_error(ErrorList* error_list, Location* location, const wchar_t* language) {
@@ -98,7 +103,7 @@ void ErrorList_add_no_such_language_error(ErrorList* error_list, Location* locat
         text = (wchar_t*)realloc(text, (actual_location_width + message_length + 1) * sizeof(wchar_t*));
     }
     swprintf(text + actual_location_width, message_length + 1, message, language);
-    ErrorList_add(error_list, text);
+    ErrorList_add(error_list, text, *location);
     ErrorList_jump_to_local_rescue_env(error_list);
 }
 
@@ -112,7 +117,7 @@ void ErrorList_add_inconsisten_cell_count_error(ErrorList* error_list, Location 
         text = (wchar_t*)realloc(text, (actual_location_width + message_length + 1) * sizeof(wchar_t*));
     }
     wcscpy(text + actual_location_width, message);
-    ErrorList_add(error_list, text);
+    ErrorList_add(error_list, text, location);
     ErrorList_jump_to_local_rescue_env(error_list);
 }
 
@@ -121,7 +126,8 @@ void ErrorList_internal_grammar_error(ErrorList* error_list) {
     const int message_length = wcslen(message);
     wchar_t* text = (wchar_t*)malloc((message_length + 1) * sizeof(wchar_t*));
     wcscpy(text, message);
-    ErrorList_add(error_list, text);
+    Location location = {-1, -1};
+    ErrorList_add(error_list, text, location);
     ErrorList_jump_to_local_rescue_env(error_list);
 }
 
@@ -130,22 +136,17 @@ void ErrorList_add_invalid_operation_error(ErrorList* error_list, int state) {
     const int message_length = wcslen(message) + 10; // some extra space for the state number
     wchar_t* text = (wchar_t*)malloc((message_length + 1) * sizeof(wchar_t*));
     swprintf(text, message_length + 1, message, state);
-    ErrorList_add(error_list, text);
+    Location location = {-1, -1};
+    ErrorList_add(error_list, text, location);
 }
 
 bool ErrorList_has_more_errors(ErrorList* error_list) {
-    return !ErrorList_is_empty(error_list) && error_list->current_error != error_list->errors->last;
+    return !ErrorList_is_empty(error_list);
 }
 
-const wchar_t* ErrorList_next_error(ErrorList* error_list) {
+Error* ErrorList_next_error(ErrorList* error_list) {
     if (!ErrorList_has_more_errors(error_list)) {
-        return (wchar_t*)0;
+        return (Error*)0;
     }
-    if (!error_list->current_error) {
-        error_list->current_error = error_list->errors->first;
-    }
-    else {
-        error_list->current_error = error_list->current_error->next;
-    }
-    return ((Error*)error_list->current_error->item)->error_text;
+    return ErrorList_remove(error_list);
 }

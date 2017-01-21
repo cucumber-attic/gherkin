@@ -1,18 +1,11 @@
 #include "pickle_string.h"
 #include <stdlib.h>
 
-const PickleString* PickleString_new(const wchar_t* content, int line, int column, const wchar_t* path) {
+const PickleString* PickleString_new(const wchar_t* content, int line, int column) {
     PickleString* pickle_string = (PickleString*)malloc(sizeof(PickleString));
     pickle_string->type = Argument_String;
     pickle_string->location.line = line;
     pickle_string->location.column = column;
-    pickle_string->location.path = 0;
-    if (path) {
-        int length = wcslen(path);
-        pickle_string->location.path = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(pickle_string->location.path, path, length);
-        pickle_string->location.path[length] = L'\0';
-    }
     pickle_string->content = 0;
     if (content) {
         int length = wcslen(content);

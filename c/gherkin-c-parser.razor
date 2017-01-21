@@ -127,7 +127,7 @@ bool Parser_has_more_errors(Parser* parser) {
     return ErrorList_has_more_errors(parser->errors);
 }
 
-const wchar_t* Parser_next_error(Parser* parser) {
+Error* Parser_next_error(Parser* parser) {
     return ErrorList_next_error(parser->errors);
 }
 

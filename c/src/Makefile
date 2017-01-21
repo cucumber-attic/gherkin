@@ -11,8 +11,7 @@ MKDIR_CMD=mkdir -p
 
 all: \
 	../bin/gherkin_generate_tokens \
-	../bin/gherkin_generate_ast \
-	../bin/gherkin_generate_pickles
+	../bin/gherkin
 
 libs: ../libs/libgherkin.a
 
@@ -23,6 +22,10 @@ clean:
 PARSER_OBJS= \
 	../objs/parser.o \
 	../objs/token_scanner.o \
+	../objs/file_token_scanner.o \
+	../objs/string_token_scanner.o \
+	../objs/file_utilities.o \
+	../objs/file_reader.o \
 	../objs/token_matcher.o \
 	../objs/token.o \
 	../objs/token_queue.o \
@@ -66,37 +69,38 @@ PICKLES_OBJS= \
 	../objs/pickle_tag.o
 -include $(PICKLES_OBJS:.o=.d)
 
+EVENT_OBJS= \
+	../objs/event.o \
+	../objs/attachment_event.o \
+	../objs/gherkin_document_event.o \
+	../objs/pickle_event.o \
+	../objs/source_event.o \
+	../objs/print_utilities.o \
+	../objs/ast_printer.o \
+	../objs/pickle_printer.o
+-include $(EVENT_OBJS:.o=.d)
+
 GENERATE_TOKEN_OBJS= \
 	../objs/token_formatter_builder.o \
 	../objs/gherkin_generate_tokens.o
 -include $(GENERATE_TOKEN_OBJS:.o=.d)
 
-GENERATE_AST_OBJS= \
-	../objs/ast_printer.o \
-	../objs/gherkin_generate_ast.o
--include $(GENERATE_AST_OBJS:.o=.d)
-
-GENERATE_PICKLES_OBJS= \
-	../objs/pickle_printer.o \
-	../objs/gherkin_generate_pickles.o
--include $(GENERATE_PICKLES_OBJS:.o=.d)
+GHERKIN_CLI_OBJS= \
+	../objs/gherkin_cli.o
+-include $(GHERKIN_CLI_OBJS:.o=.d)
 
 ../objs/%.o: %.c Makefile
 	$(MKDIR_CMD) $(dir $@)
 	$(CC) $(CC_FLAGS) $(GENERATE_DEPS_FLAGS) -I ../include -I . $< -o $@
 
-../libs/libgherkin.a: $(PARSER_OBJS) $(AST_OBJS) $(COMPILER_OBJS) $(PICKLES_OBJS)
+../libs/libgherkin.a: $(PARSER_OBJS) $(AST_OBJS) $(COMPILER_OBJS) $(PICKLES_OBJS) $(EVENT_OBJS)
 	$(MKDIR_CMD) $(dir $@)
-	$(AR) $(AR_FLAGS) $@ $(PARSER_OBJS) $(AST_OBJS) $(COMPILER_OBJS) $(PICKLES_OBJS)
+	$(AR) $(AR_FLAGS) $@ $(PARSER_OBJS) $(AST_OBJS) $(COMPILER_OBJS) $(PICKLES_OBJS) $(EVENT_OBJS)
 
 ../bin/gherkin_generate_tokens: ../libs/libgherkin.a $(GENERATE_TOKEN_OBJS) Makefile
 	$(MKDIR_CMD) $(dir $@)
 	$(LD) $(LD_FLAGS) $(GENERATE_TOKEN_OBJS) -L../libs/ -lgherkin $(LD_LIBS) -o $@
 
-../bin/gherkin_generate_ast: ../libs/libgherkin.a $(GENERATE_AST_OBJS) Makefile
+../bin/gherkin: ../libs/libgherkin.a $(GHERKIN_CLI_OBJS) Makefile
 	$(MKDIR_CMD) $(dir $@)
-	$(LD) $(LD_FLAGS) $(GENERATE_AST_OBJS) -L../libs/ -lgherkin $(LD_LIBS) -o $@
-
-../bin/gherkin_generate_pickles: ../libs/libgherkin.a $(GENERATE_PICKLES_OBJS) Makefile
-	$(MKDIR_CMD) $(dir $@)
-	$(LD) $(LD_FLAGS) $(GENERATE_PICKLES_OBJS) -L../libs/ -lgherkin $(LD_LIBS) -o $@
+	$(LD) $(LD_FLAGS) $(GHERKIN_CLI_OBJS) -L../libs/ -lgherkin $(LD_LIBS) -o $@

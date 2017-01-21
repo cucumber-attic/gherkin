@@ -1,6 +1,8 @@
 #ifndef GHERKIN_TOKEN_SCANNER_H_
 #define GHERKIN_TOKEN_SCANNER_H_
 
+#include <wchar.h>
+
 #include "token.h"
 
 #ifdef __cplusplus
@@ -11,11 +13,12 @@ typedef struct TokenScanner TokenScanner;
 
 typedef Token* (*read_function) (TokenScanner*);
 
+typedef void (*delete_function) (TokenScanner*);
+
 typedef struct TokenScanner {
     read_function read;
+    delete_function delete;
 } TokenScanner;
-
-TokenScanner* TokenScanner_new(const char* const file_name);
 
 void TokenScanner_delete(TokenScanner* token_scanner);
 

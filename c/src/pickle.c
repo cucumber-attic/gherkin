@@ -27,29 +27,6 @@ void Pickle_delete(const Pickle* pickle) {
     free((void*)pickle);
 }
 
-void Pickle_transfer(Pickle* to_pickle, Pickle* from_pickle) {
-    to_pickle->locations = from_pickle->locations;
-    from_pickle->locations = 0;
-    to_pickle->tags = from_pickle->tags;
-    from_pickle->tags = 0;
-    to_pickle->name = from_pickle->name;
-    from_pickle->name = 0;
-    to_pickle->steps = from_pickle->steps;
-    from_pickle->steps = 0;
-    Pickle_delete(from_pickle);
-}
-
-void Pickles_delete(const Pickles* pickles) {
-    if (!pickles) {
-        return;
-    }
-    int i;
-    for (i = 0; i < pickles->pickle_count; ++i) {
-        delete_pickle_content(pickles->pickles + i);
-    }
-    free((void*)pickles);
-}
-
 static void delete_pickle_content(const Pickle* pickle) {
     if (pickle->locations) {
         PickleLocations_delete(pickle->locations);

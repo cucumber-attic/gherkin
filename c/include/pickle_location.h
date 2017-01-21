@@ -1,12 +1,9 @@
 #ifndef GHERKIN_PICKLE_LOCATION_H_
 #define GHERKIN_PICKLE_LOCATION_H_
 
-#include <wchar.h>
-
 typedef struct PickleLocation {
     int line;
     int column;
-    wchar_t* path;
 } PickleLocation;
 
 typedef struct PickleLocations {
@@ -14,11 +11,11 @@ typedef struct PickleLocations {
     const PickleLocation* locations;
 } PickleLocations;
 
-const PickleLocation* PickleLocation_new(int line, int column, const wchar_t* path);
+const PickleLocation* PickleLocation_new(int line, int column);
 
-const PickleLocations* PickleLocations_new_single(int line, int column, const wchar_t* path);
+const PickleLocations* PickleLocations_new_single(int line, int column);
 
-const PickleLocations* PickleLocations_new_double(int line_1, int column_1, int line_2, int column_2, const wchar_t* path);
+const PickleLocations* PickleLocations_new_double(int line_1, int column_1, int line_2, int column_2);
 
 void PickleLocations_delete(const PickleLocations* locations);
 

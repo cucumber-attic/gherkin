@@ -20,18 +20,9 @@ typedef struct Pickle {
     const PickleSteps* steps;
 } Pickle;
 
-typedef struct Pickles {
-    int pickle_count;
-    Pickle* pickles;
-} Pickles;
-
 const Pickle* Pickle_new(const PickleLocations* locations, const PickleTags* tags, const wchar_t* name, const PickleSteps* steps);
 
 void Pickle_delete(const Pickle* pickle);
-
-void Pickle_transfer(Pickle* to_pickle, Pickle* from_pickle);
-
-void Pickles_delete(const Pickles* pickles);
 
 #ifdef __cplusplus
 }
