@@ -65,6 +65,9 @@ addons:
     packages:
     - jq
 
+before_script:
+  - locale
+
 # Simulate non-UTF-8 standard encoding on OS. Should still work
 script: "cd $TARGET_LANG; LANG=fr_FR.iso-8859-15 make"
 
