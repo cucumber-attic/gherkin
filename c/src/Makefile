@@ -1,9 +1,18 @@
-CC=gcc
-CC_FLAGS=-c -Wall -Werror -g
+GCC_FLAGS=-c -Wall -Werror -g
+CLANG_FLAGS=-c -Wall -Wno-typedef-redefinition -Werror -g
+
+ifeq ($(CC),clang)
+  CC=clang
+  LD=clang
+  CC_FLAGS=$(CLANG_FLAGS)
+else
+  CC=gcc
+  LD=gcc
+  CC_FLAGS=$(GCC_FLAGS)
+endif
 GENERATE_DEPS_FLAGS=-MMD -MP -MF $(basename $@).d
 AR=ar
 AR_FLAGS=cr
-LD=gcc
 LD_FLAGS=
 LD_LIBS=
 RM_CMD=rm -rf

@@ -169,7 +169,7 @@ static void* transform_node(AstNode* ast_node, AstBuilder* ast_builder) {
         return (void*)doc_string;
     }
     case Rule_Background: {
-        token = AstNode_get_token(ast_node, Rule_BackgroundLine);
+        token = (Token*)AstNode_get_single(ast_node, Rule_BackgroundLine);
         const Background* background = Background_new(token->location, token->matched_keyword, token->matched_text, get_description(ast_node), get_steps(ast_node));
         Token_delete(token);
         AstNode_delete(ast_node);

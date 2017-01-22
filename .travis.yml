@@ -56,6 +56,9 @@ matrix:
     - env: TARGET_LANG=c
       language: c
       compiler: gcc
+    - env: TARGET_LANG=c
+      language: c
+      compiler: clang
 
 before_install:
   - export EnableNuGetPackageRestore=true
