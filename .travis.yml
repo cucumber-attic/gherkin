@@ -66,6 +66,33 @@ matrix:
       compiler: gcc
       before_script:
         - brew install jq
+    - env: TARGET_LANG=c
+      language: c
+      os: osx
+      osx_image: xcode8.2
+      compiler: gcc
+      before_script:
+        - brew install jq
+    - env: TARGET_LANG=c
+      language: c
+      os: osx
+      osx_image: xcode8.1
+      compiler: gcc
+      before_script:
+        - brew install jq
+    - env: TARGET_LANG=c
+      language: c
+      os: osx
+      osx_image: xcode8
+      compiler: gcc
+      before_script:
+        - brew install jq
+    - env: TARGET_LANG=c
+      language: c
+      os: osx
+      compiler: gcc
+      before_script:
+        - brew install jq
 
 before_install:
   - export EnableNuGetPackageRestore=true
