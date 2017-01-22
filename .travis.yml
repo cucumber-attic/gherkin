@@ -62,10 +62,10 @@ matrix:
     - env: TARGET_LANG=c
       language: c
       os: osx
+      osx_image: xcode8.2
       compiler: gcc
       before_script:
         - brew install jq
-        - brew install gcc
 
 before_install:
   - export EnableNuGetPackageRestore=true
