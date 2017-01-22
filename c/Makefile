@@ -13,7 +13,7 @@ SRC_FILES= $(shell find src -name "*.[ch]*")
 all: .compared
 .PHONY: all
 
-.compared: .built $(TOKENS) $(ASTS) $(PICKLES) $(ERRORS) $(SOURCES)
+.compared: .built $(SOURCES) $(TOKENS) $(ASTS) $(PICKLES) $(ERRORS)
 	touch $@
 
 .built: ./include/rule_type.h src/parser.c src/dialect.c $(SRC_FILES) src/Makefile LICENSE
