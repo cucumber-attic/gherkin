@@ -59,6 +59,13 @@ matrix:
     - env: TARGET_LANG=c
       language: c
       compiler: clang
+    - env: TARGET_LANG=c
+      language: c
+      os: osx
+      compiler: gcc
+      before_script:
+        - brew install jq
+        - brew install gcc
 
 before_install:
   - export EnableNuGetPackageRestore=true
