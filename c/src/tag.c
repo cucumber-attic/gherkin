@@ -42,9 +42,12 @@ void Tags_delete(const Tags* tags) {
     if (!tags) {
         return;
     }
-    int i;
-    for(i = 0; i < tags->tag_count; ++i) {
-        delete_tag_content(tags->tags + i);
+    if (tags->tags) {
+        int i;
+        for(i = 0; i < tags->tag_count; ++i) {
+            delete_tag_content(tags->tags + i);
+        }
+        free((void*)tags->tags);
     }
     free((void*)tags);
 }

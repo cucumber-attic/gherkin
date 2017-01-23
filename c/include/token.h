@@ -12,6 +12,7 @@ extern "C" {
 #endif
 
 typedef enum TokenType {
+    Token_NoToken = Rule_None,
     Token_Empty = Rule_Empty,
     Token_FeatureLine = Rule_FeatureLine,
     Token_ScenarioLine = Rule_ScenarioLine,
@@ -42,6 +43,8 @@ typedef struct Token {
 Token* Token_new(const GherkinLine* gherkin_line, int line);
 
 void Token_delete(Token* token);
+
+void Token_delete_matched_items(const Items* items);
 
 bool Token_is_eof(Token* token);
 

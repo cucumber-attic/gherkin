@@ -36,6 +36,9 @@ void Background_delete(const Background* background) {
     if (background->name) {
         free((void*)background->name);
     }
+    if (background->description) {
+        free((void*)background->description);
+    }
     if (background->steps) {
         Steps_delete(background->steps);
     }

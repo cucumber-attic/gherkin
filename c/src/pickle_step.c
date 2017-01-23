@@ -41,9 +41,12 @@ void PickleSteps_delete(const PickleSteps* pickle_steps) {
     if (!pickle_steps) {
         return;
     }
-    int i;
-    for (i = 0; i < pickle_steps->step_count; ++i) {
-        delete_pickle_step_content(pickle_steps->steps + i);
+    if (pickle_steps->steps) {
+        int i;
+        for (i = 0; i < pickle_steps->step_count; ++i) {
+            delete_pickle_step_content(pickle_steps->steps + i);
+        }
+        free((void*)pickle_steps->steps);
     }
     free((void*)pickle_steps);
 }
@@ -59,7 +62,7 @@ static void delete_pickle_step_content(const PickleStep* pickle_step) {
         if (pickle_step->argument->type == Argument_String) {
             PickleString_delete((const PickleString*)pickle_step->argument);
         }
-        if (pickle_step->argument->type == Argument_Table) {
+        else if (pickle_step->argument->type == Argument_Table) {
             PickleTable_delete((const PickleTable*)pickle_step->argument);
         }
     }

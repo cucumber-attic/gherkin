@@ -271,12 +271,18 @@ static bool match_step_keywords(Token* token, const Keywords* step_keywords) {
 
 static void set_token_matched(Token* token, TokenType matched_type, const wchar_t* text, const wchar_t* keyword, int indent, const Items* cells) {
     token->matched_type = matched_type;
+    if (token->matched_text) {
+        free((void*)token->matched_text);
+    }
     token->matched_text = text;
     token->matched_keyword = keyword;
     if (indent != -1)
         token->location.column = indent + 1;
     else if (token && token->line)
         token->location.column = token->line->indent + 1;
+    if (token->matched_items) {
+        Token_delete_matched_items(token->matched_items);
+    }
     token->matched_items = cells;
 }
 

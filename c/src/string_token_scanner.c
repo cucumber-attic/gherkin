@@ -48,6 +48,9 @@ static Token* StringTokenScanner_read(TokenScanner* token_scanner) {
     if (c == L'\r' && string_token_scanner->source[string_token_scanner->pos] == L'\n') {
         string_token_scanner->pos++;
     }
+    if (c == L'\0') {
+        string_token_scanner->pos--;
+    }
     return Token_new(line, string_token_scanner->line);
 }
 

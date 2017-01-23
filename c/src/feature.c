@@ -55,18 +55,21 @@ void Feature_delete(const Feature* feature) {
     }
     if (feature->scenario_definitions) {
         ScenarioDefinition* scenario_definition;
-        int i;
-        for(i = 0; i < feature->scenario_definitions->scenario_definition_count; ++i) {
-            scenario_definition = feature->scenario_definitions->scenario_definitions[i];
-            if (scenario_definition->type == Gherkin_Background) {
-                Background_delete((Background*)scenario_definition);
+        if (feature->scenario_definitions->scenario_definition_count > 0) {
+            int i;
+            for(i = 0; i < feature->scenario_definitions->scenario_definition_count; ++i) {
+                scenario_definition = feature->scenario_definitions->scenario_definitions[i];
+                if (scenario_definition->type == Gherkin_Background) {
+                    Background_delete((Background*)scenario_definition);
+                }
+                else if (scenario_definition->type == Gherkin_Scenario) {
+                    Scenario_delete((Scenario*)scenario_definition);
+                }
+                else if (scenario_definition->type == Gherkin_ScenarioOutline) {
+                    ScenarioOutline_delete((ScenarioOutline*)scenario_definition);
+                }
             }
-            else if (scenario_definition->type == Gherkin_Scenario) {
-                Scenario_delete((Scenario*)scenario_definition);
-            }
-            else if (scenario_definition->type == Gherkin_ScenarioOutline) {
-                ScenarioOutline_delete((ScenarioOutline*)scenario_definition);
-            }
+            free((void*)feature->scenario_definitions->scenario_definitions);
         }
         free((void*)feature->scenario_definitions);
     }

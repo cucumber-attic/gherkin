@@ -22,7 +22,7 @@ typedef struct Comments {
     Comment* comments;
 } Comments;
 
-const Comment* Comment_new(Location location, const wchar_t* text);
+Comment* Comment_new(Location location, const wchar_t* text);
 
 void Comment_delete(const Comment* comment);
 

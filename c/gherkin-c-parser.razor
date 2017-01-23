@@ -194,7 +194,7 @@ static bool match_@(rule.Name.Replace("#", ""))(ParserContext* context, Token* t
 @foreach(var lookAheadHint in Model.RuleSet.LookAheadHints)
 {
 <text>
-static bool lookahead_@(lookAheadHint.Id)(ParserContext* context, Token* currentToken) {
+static bool lookahead_@(lookAheadHint.Id)(ParserContext* context) {
     Token* token = 0;
     TokenQueue* queue = TokenQueue_new();
     bool match = false;
@@ -228,7 +228,7 @@ static int match_token_at_@(state.Id)(Token* token, ParserContext* context) {
     @:if (@MatchToken(transition.TokenType)) {
       if (transition.LookAheadHint != null)
       {
-      @:if (lookahead_@(transition.LookAheadHint.Id)(context, token)) {
+      @:if (lookahead_@(transition.LookAheadHint.Id)(context)) {
       }
       foreach(var production in transition.Productions)
       {

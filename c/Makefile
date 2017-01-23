@@ -13,7 +13,7 @@ SRC_FILES= $(shell find src -name "*.[ch]*")
 all: .compared
 .PHONY: all
 
-.compared: .built $(TOKENS) $(ASTS) $(PICKLES) $(ERRORS) $(SOURCES)
+.compared: .built $(TOKENS) $(ASTS) $(PICKLES) $(ERRORS) $(SOURCES) .run
 	touch $@
 
 .built: ./include/rule_type.h src/parser.c src/dialect.c $(SRC_FILES) src/Makefile LICENSE
@@ -21,13 +21,17 @@ all: .compared
 	touch $@
 
 clean:
-	rm -rf .compared .built acceptance ./include/rule_type.h src/parser.c src/dialect.c
+	rm -rf .compared .built .run acceptance ./include/rule_type.h src/parser.c src/dialect.c
 	cd src; $(MAKE) $@
 .PHONY: clean
 
 libs: ./include/rule_type.h src/parser.c src/dialect.c
 	cd src; $(MAKE) $@
 .PHONY: libs
+
+.run: bin/gherkin $(GOOD_FEATURE_FILES)
+	bin/gherkin --no-source --no-ast --no-pickles $(GOOD_FEATURE_FILES)
+	touch .run
 
 ./include/rule_type.h: ../gherkin.berp gherkin-c-rule-type.razor ../bin/berp.exe
 	mono ../bin/berp.exe -g ../gherkin.berp -t gherkin-c-rule-type.razor -o $@

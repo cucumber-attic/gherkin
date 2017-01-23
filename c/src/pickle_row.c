@@ -27,9 +27,12 @@ void PickleRows_delete(const PickleRows* pickle_rows) {
     if (!pickle_rows) {
         return;
     }
-    int i;
-    for(i = 0; i < pickle_rows->row_count; ++i) {
-        delete_pickle_row_content(pickle_rows->pickle_rows + i);
+    if (pickle_rows->pickle_rows) {
+        int i;
+        for(i = 0; i < pickle_rows->row_count; ++i) {
+            delete_pickle_row_content(pickle_rows->pickle_rows + i);
+        }
+        free((void*)pickle_rows->pickle_rows);
     }
     free((void*)pickle_rows);
 }

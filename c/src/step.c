@@ -52,9 +52,12 @@ void Steps_delete(const Steps* steps) {
     if (!steps) {
         return;
     }
-    int i;
-    for (i = 0; i < steps->step_count; ++i) {
-        delete_step_content(steps->steps + i);
+    if (steps->step_count > 0) {
+        int i;
+        for (i = 0; i < steps->step_count; ++i) {
+            delete_step_content(steps->steps + i);
+        }
+        free((void*)steps->steps);
     }
     free((void*)steps);
 }
@@ -70,7 +73,7 @@ static void delete_step_content(const Step* step) {
         if (step->argument->type == Gherkin_DataTable) {
             DataTable_delete((DataTable*)step->argument);
         }
-        if (step->argument->type == Gherkin_DocString) {
+        else if (step->argument->type == Gherkin_DocString) {
             DocString_delete((DocString*)step->argument);
         }
     }

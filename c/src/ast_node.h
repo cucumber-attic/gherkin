@@ -18,7 +18,7 @@ typedef struct AstNode {
 
 AstNode* AstNode_new(RuleType rule_type);
 
-void AstNode_delete(AstNode* builder);
+void AstNode_delete(AstNode* ast_node);
 
 void AstNode_add(AstNode* ast_node, RuleType rule_type, void* object);
 

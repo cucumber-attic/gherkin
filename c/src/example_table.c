@@ -61,9 +61,12 @@ void Examples_delete(const Examples* examples) {
     if (!examples) {
         return;
     }
-    int i;
-    for(i = 0; i < examples->example_count; ++i) {
-        delete_example_table_content(examples->example_table + i);
+    if (examples->example_table) {
+        int i;
+        for(i = 0; i < examples->example_count; ++i) {
+            delete_example_table_content(examples->example_table + i);
+        }
+        free((void*)examples->example_table);
     }
     free((void*)examples);
 }

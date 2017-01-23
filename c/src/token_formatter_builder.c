@@ -82,6 +82,8 @@ void TokenFormatterBuilder_end_rule(Builder* builder, RuleType rule) {
 
 const char* token_type_to_string(TokenType token_type) {
     switch (token_type) {
+    case Token_NoToken:
+        return "NoToken";
     case Token_Empty:
         return "Empty";
     case Token_FeatureLine:

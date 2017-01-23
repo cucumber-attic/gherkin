@@ -150,26 +150,32 @@ static const PickleArgument* create_pickle_argument(const StepArgument* step_arg
 static const PickleTable* create_pickle_table(DataTable* data_table, const TableRow* example_header, const TableRow* body_row) {
     PickleRows* rows = (PickleRows*)malloc(sizeof(PickleRows));
     rows->row_count = data_table->rows->row_count;
-    rows->pickle_rows = (PickleRow*)malloc(rows->row_count * sizeof(PickleRow));
-    int i;
-    for (i = 0; i < rows->row_count; ++i) {
-        TableRow* table_row = &data_table->rows->table_rows[i];
-        PickleCells* cells = (PickleCells*)malloc(sizeof(PickleCells));
-        cells->cell_count = table_row->table_cells->cell_count;
-        cells->pickle_cells = (PickleCell*)malloc(cells->cell_count * sizeof(PickleCell));
-        int j;
-        for (j = 0; j < cells->cell_count; ++j) {
-            const PickleLocation* location = PickleLocation_new(table_row->table_cells->table_cells[j].location.line, table_row->table_cells->table_cells[j].location.column);
-            if (!example_header) {
-                PickleCell_transfer(&cells->pickle_cells[j], (PickleCell*)PickleCell_new(location, table_row->table_cells->table_cells[j].value));
+    rows->pickle_rows = 0;
+    if (rows->row_count > 0) {
+        rows->pickle_rows = (PickleRow*)malloc(rows->row_count * sizeof(PickleRow));
+        int i;
+        for (i = 0; i < rows->row_count; ++i) {
+            TableRow* table_row = &data_table->rows->table_rows[i];
+            PickleCells* cells = (PickleCells*)malloc(sizeof(PickleCells));
+            cells->cell_count = table_row->table_cells->cell_count;
+            cells->pickle_cells = 0;
+            if (cells->cell_count > 0) {
+                cells->pickle_cells = (PickleCell*)malloc(cells->cell_count * sizeof(PickleCell));
+                int j;
+                for (j = 0; j < cells->cell_count; ++j) {
+                    const PickleLocation* location = PickleLocation_new(table_row->table_cells->table_cells[j].location.line, table_row->table_cells->table_cells[j].location.column);
+                    if (!example_header) {
+                        PickleCell_transfer(&cells->pickle_cells[j], (PickleCell*)PickleCell_new(location, table_row->table_cells->table_cells[j].value));
+                    }
+                    else {
+                        const wchar_t* expanded_text = create_expanded_text(table_row->table_cells->table_cells[j].value, example_header, body_row);
+                        PickleCell_transfer(&cells->pickle_cells[j], (PickleCell*)PickleCell_new(location, expanded_text));
+                        free((void*)expanded_text);
+                    }
+                }
             }
-            else {
-                const wchar_t* expanded_text = create_expanded_text(table_row->table_cells->table_cells[j].value, example_header, body_row);
-                PickleCell_transfer(&cells->pickle_cells[j], (PickleCell*)PickleCell_new(location, expanded_text));
-                free((void*)expanded_text);
-            }
+            PickleRow_transfer(&rows->pickle_rows[i], (PickleRow*)PickleRow_new(cells));
         }
-        PickleRow_transfer(&rows->pickle_rows[i], (PickleRow*)PickleRow_new(cells));
     }
     return PickleTable_new(rows);
 }
@@ -192,15 +198,18 @@ static const PickleTags* create_pickle_tags(const Tags* source_1, const Tags* so
     if (tag_count > 0) {
         tags = (PickleTags*)malloc(sizeof(PickleTags));
         tags->tag_count = tag_count;
-        tags->tags = (PickleTag*)malloc(tags->tag_count * sizeof(PickleTag));
-        if (source_1) {
-            copy_tags(tags->tags, source_1);
-        }
-        if (source_2) {
-            copy_tags(tags->tags + source_1_tag_count, source_2);
-        }
-        if (source_3) {
-            copy_tags(tags->tags + source_1_tag_count + source_2_tag_count, source_3);
+        tags->tags = 0;
+        if (tags->tag_count > 0) {
+            tags->tags = (PickleTag*)malloc(tags->tag_count * sizeof(PickleTag));
+            if (source_1) {
+                copy_tags(tags->tags, source_1);
+            }
+            if (source_2) {
+                copy_tags(tags->tags + source_1_tag_count, source_2);
+            }
+            if (source_3) {
+                copy_tags(tags->tags + source_1_tag_count + source_2_tag_count, source_3);
+            }
         }
     }
     return tags;

@@ -4,3 +4,4 @@ libs/
 acceptance/
 .built
 .compared
+.run

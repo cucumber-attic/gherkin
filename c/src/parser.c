@@ -248,7 +248,7 @@ static bool match_Other(ParserContext* context, Token* token) {
 }
 
 
-static bool lookahead_0(ParserContext* context, Token* currentToken) {
+static bool lookahead_0(ParserContext* context) {
     Token* token = 0;
     TokenQueue* queue = TokenQueue_new();
     bool match = false;
@@ -1223,7 +1223,7 @@ static int match_token_at_17(Token* token, ParserContext* context) {
         return 20;
     }
     if (match_TagLine(context, token)) {
-      if (lookahead_0(context, token)) {
+      if (lookahead_0(context)) {
         start_rule(context, Rule_Examples_Definition);
         start_rule(context, Rule_Tags);
         build(context, token);
@@ -1297,7 +1297,7 @@ static int match_token_at_18(Token* token, ParserContext* context) {
         return 20;
     }
     if (match_TagLine(context, token)) {
-      if (lookahead_0(context, token)) {
+      if (lookahead_0(context)) {
         end_rule(context, Rule_Description);
         start_rule(context, Rule_Examples_Definition);
         start_rule(context, Rule_Tags);
@@ -1372,7 +1372,7 @@ static int match_token_at_19(Token* token, ParserContext* context) {
         return 20;
     }
     if (match_TagLine(context, token)) {
-      if (lookahead_0(context, token)) {
+      if (lookahead_0(context)) {
         start_rule(context, Rule_Examples_Definition);
         start_rule(context, Rule_Tags);
         build(context, token);
@@ -1450,7 +1450,7 @@ static int match_token_at_20(Token* token, ParserContext* context) {
         return 20;
     }
     if (match_TagLine(context, token)) {
-      if (lookahead_0(context, token)) {
+      if (lookahead_0(context)) {
         end_rule(context, Rule_Step);
         start_rule(context, Rule_Examples_Definition);
         start_rule(context, Rule_Tags);
@@ -1533,7 +1533,7 @@ static int match_token_at_21(Token* token, ParserContext* context) {
         return 20;
     }
     if (match_TagLine(context, token)) {
-      if (lookahead_0(context, token)) {
+      if (lookahead_0(context)) {
         end_rule(context, Rule_DataTable);
         end_rule(context, Rule_Step);
         start_rule(context, Rule_Examples_Definition);
@@ -1653,7 +1653,7 @@ static int match_token_at_23(Token* token, ParserContext* context) {
         return 26;
     }
     if (match_TagLine(context, token)) {
-      if (lookahead_0(context, token)) {
+      if (lookahead_0(context)) {
         end_rule(context, Rule_Examples);
         end_rule(context, Rule_Examples_Definition);
         start_rule(context, Rule_Examples_Definition);
@@ -1739,7 +1739,7 @@ static int match_token_at_24(Token* token, ParserContext* context) {
         return 26;
     }
     if (match_TagLine(context, token)) {
-      if (lookahead_0(context, token)) {
+      if (lookahead_0(context)) {
         end_rule(context, Rule_Description);
         end_rule(context, Rule_Examples);
         end_rule(context, Rule_Examples_Definition);
@@ -1826,7 +1826,7 @@ static int match_token_at_25(Token* token, ParserContext* context) {
         return 26;
     }
     if (match_TagLine(context, token)) {
-      if (lookahead_0(context, token)) {
+      if (lookahead_0(context)) {
         end_rule(context, Rule_Examples);
         end_rule(context, Rule_Examples_Definition);
         start_rule(context, Rule_Examples_Definition);
@@ -1904,7 +1904,7 @@ static int match_token_at_26(Token* token, ParserContext* context) {
         return 26;
     }
     if (match_TagLine(context, token)) {
-      if (lookahead_0(context, token)) {
+      if (lookahead_0(context)) {
         end_rule(context, Rule_Examples_Table);
         end_rule(context, Rule_Examples);
         end_rule(context, Rule_Examples_Definition);
@@ -2013,7 +2013,7 @@ static int match_token_at_29(Token* token, ParserContext* context) {
         return 20;
     }
     if (match_TagLine(context, token)) {
-      if (lookahead_0(context, token)) {
+      if (lookahead_0(context)) {
         end_rule(context, Rule_DocString);
         end_rule(context, Rule_Step);
         start_rule(context, Rule_Examples_Definition);

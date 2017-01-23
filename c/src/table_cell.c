@@ -40,9 +40,12 @@ void TableCells_delete(const TableCells* table_cells) {
     if (!table_cells) {
         return;
     }
-    int i;
-    for(i = 0; i < table_cells->cell_count; ++i) {
-        delete_table_cell_content(table_cells->table_cells + i);
+    if (table_cells->table_cells) {
+        int i;
+        for(i = 0; i < table_cells->cell_count; ++i) {
+            delete_table_cell_content(table_cells->table_cells + i);
+        }
+        free((void*)table_cells->table_cells);
     }
     free((void*)table_cells);
 }

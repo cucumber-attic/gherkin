@@ -94,13 +94,15 @@ void AstBuilder_delete(Builder* builder) {
     if (ast_builder->stack) {
         ItemQueue_delete(ast_builder->stack);
     }
+    if (ast_builder->comments) {
+        ItemQueue_delete(ast_builder->comments);
+    }
     free((void*)builder);
 }
 
 void AstBuilder_build(Builder* builder, Token* token) {
     if ((RuleType)token->matched_type == Rule_Comment) {
-        ItemQueue_add(((AstBuilder*)builder)->comments, (Item*)Comment_new(token->location, token->matched_text));
-        Token_delete(token);
+        ItemQueue_add(((AstBuilder*)builder)->comments, (Item*)token);
     }
     else if (current_node((AstBuilder*)builder)) {
         AstNode_add(current_node((AstBuilder*)builder), (RuleType)token->matched_type, token);
@@ -259,13 +261,16 @@ static const ScenarioDefinitions* get_scenario_definitions(AstNode* ast_node) {
     int background_count = background ? 1 : 0;
     ScenarioDefinitions* scenario_definitions = (ScenarioDefinitions*)malloc(sizeof(ScenarioDefinitions));
     scenario_definitions->scenario_definition_count = background_count + ItemQueue_size(scenario_definitions_queue);
-    scenario_definitions->scenario_definitions = (ScenarioDefinition**)malloc(scenario_definitions->scenario_definition_count * sizeof(ScenarioDefinition*));
-    int i;
-    if (background) {
-        scenario_definitions->scenario_definitions[0] = (ScenarioDefinition*)background;
-    }
-    for (i = background_count; i < scenario_definitions->scenario_definition_count; ++i) {
-        scenario_definitions->scenario_definitions[i] = (ScenarioDefinition*)ItemQueue_remove(scenario_definitions_queue);
+    scenario_definitions->scenario_definitions = 0;
+    if (scenario_definitions->scenario_definition_count > 0) {
+        scenario_definitions->scenario_definitions = (ScenarioDefinition**)malloc(scenario_definitions->scenario_definition_count * sizeof(ScenarioDefinition*));
+        int i;
+        if (background) {
+            scenario_definitions->scenario_definitions[0] = (ScenarioDefinition*)background;
+        }
+        for (i = background_count; i < scenario_definitions->scenario_definition_count; ++i) {
+            scenario_definitions->scenario_definitions[i] = (ScenarioDefinition*)ItemQueue_remove(scenario_definitions_queue);
+        }
     }
     return scenario_definitions;
 }
@@ -281,10 +286,13 @@ static const Steps* get_steps(AstNode* ast_node) {
     ItemQueue* steps_queue = AstNode_get_items(ast_node, Rule_Step);
     Steps* steps = (Steps*)malloc(sizeof(Steps));
     steps->step_count = ItemQueue_size(steps_queue);
-    steps->steps = (Step*)malloc(steps->step_count * sizeof(Step));
-    int i;
-    for (i = 0; i < steps->step_count; ++i) {
-        Step_transfer(&steps->steps[i], (Step*)ItemQueue_remove(steps_queue));
+    steps->steps = 0;
+    if (steps->step_count > 0) {
+        steps->steps = (Step*)malloc(steps->step_count * sizeof(Step));
+        int i;
+        for (i = 0; i < steps->step_count; ++i) {
+            Step_transfer(&steps->steps[i], (Step*)ItemQueue_remove(steps_queue));
+        }
     }
     return steps;
 }
@@ -301,10 +309,13 @@ static const Examples* get_examples(AstNode* ast_node) {
     ItemQueue* examples_queue = AstNode_get_items(ast_node, Rule_Examples_Definition);
     Examples* examples = (Examples*)malloc(sizeof(Examples));
     examples->example_count = ItemQueue_size(examples_queue);
-    examples->example_table = (ExampleTable*)malloc(examples->example_count * sizeof(ExampleTable));
-    int i;
-    for (i = 0; i < examples->example_count; ++i) {
-        ExampleTable_transfer(&examples->example_table[i], (ExampleTable*)ItemQueue_remove(examples_queue));
+    examples->example_table = 0;
+    if (examples->example_count > 0) {
+        examples->example_table = (ExampleTable*)malloc(examples->example_count * sizeof(ExampleTable));
+        int i;
+        for (i = 0; i < examples->example_count; ++i) {
+            ExampleTable_transfer(&examples->example_table[i], (ExampleTable*)ItemQueue_remove(examples_queue));
+        }
     }
     return examples;
 }
@@ -324,13 +335,16 @@ static const TableRows* get_table_body(AstNode* ast_node) {
     ItemQueue* table_rows_queue = AstNode_get_items(ast_node, Rule_TableRow);
     TableRows* table_rows = (TableRows*)malloc(sizeof(TableRows));
     table_rows->row_count = ItemQueue_size(table_rows_queue);
-    table_rows->table_rows = (TableRow*)malloc(table_rows->row_count * sizeof(TableRow));
-    Token* token;
-    int i;
-    for (i = 0; i < table_rows->row_count; ++i) {
-        token = (Token*)ItemQueue_remove(table_rows_queue);
-        TableRow_transfer(&table_rows->table_rows[i], (TableRow*)TableRow_new(token->location, get_table_cells(token)));
-        Token_delete(token);
+    table_rows->table_rows = 0;
+    if (table_rows->row_count > 0) {
+        table_rows->table_rows = (TableRow*)malloc(table_rows->row_count * sizeof(TableRow));
+        Token* token;
+        int i;
+        for (i = 0; i < table_rows->row_count; ++i) {
+            token = (Token*)ItemQueue_remove(table_rows_queue);
+            TableRow_transfer(&table_rows->table_rows[i], (TableRow*)TableRow_new(token->location, get_table_cells(token)));
+            Token_delete(token);
+        }
     }
     return table_rows;
 }
@@ -351,13 +365,16 @@ static void ensure_cell_count(ErrorList* errors, const TableRows* rows, const Ta
 static const TableCells* get_table_cells(Token* token) {
     TableCells* table_cells = (TableCells*)malloc(sizeof(TableCells));
     table_cells->cell_count = token->matched_items->count;
-    table_cells->table_cells = (TableCell*)malloc(table_cells->cell_count * sizeof(TableCell));
-    Location location;
-    location.line = token->location.line;
-    int i;
-    for (i = 0; i < table_cells->cell_count; ++i) {
-        location.column = token->matched_items->items[i].column;
-        TableCell_transfer(&table_cells->table_cells[i], (TableCell*)TableCell_new(location, token->matched_items->items[i].text));
+    table_cells->table_cells = 0;
+    if (table_cells->cell_count > 0) {
+        table_cells->table_cells = (TableCell*)malloc(table_cells->cell_count * sizeof(TableCell));
+        Location location;
+        location.line = token->location.line;
+        int i;
+        for (i = 0; i < table_cells->cell_count; ++i) {
+            location.column = token->matched_items->items[i].column;
+            TableCell_transfer(&table_cells->table_cells[i], (TableCell*)TableCell_new(location, token->matched_items->items[i].text));
+        }
     }
     return table_cells;
 }
@@ -378,19 +395,22 @@ static const Tags* get_tags(AstNode* ast_node) {
         queue_item = queue_item->next;
     }
     tags->tag_count = tag_count;
-    tags->tags = (Tag*)malloc(tags->tag_count * sizeof(Tag));
-    int tag_index = 0;
-    Token* token;
-    Location location;
-    while (!ItemQueue_is_empty(tags_queue)) {
-        token = (Token*)ItemQueue_remove(tags_queue);
-        location.line = token->location.line;
-        int i;
-        for (i = 0; i < token->matched_items->count; ++i) {
-            location.column = token->matched_items->items[i].column;
-            Tag_transfer(&tags->tags[tag_index++], location, token->matched_items->items[i].text);
+    tags->tags = 0;
+    if (tags->tag_count > 0) {
+        tags->tags = (Tag*)malloc(tags->tag_count * sizeof(Tag));
+        int tag_index = 0;
+        Token* token;
+        Location location;
+        while (!ItemQueue_is_empty(tags_queue)) {
+            token = (Token*)ItemQueue_remove(tags_queue);
+            location.line = token->location.line;
+            int i;
+            for (i = 0; i < token->matched_items->count; ++i) {
+                location.column = token->matched_items->items[i].column;
+                Tag_transfer(&tags->tags[tag_index++], location, token->matched_items->items[i].text);
+            }
+            Token_delete(token);
         }
-        Token_delete(token);
     }
     AstNode_delete(tags_node);
     return tags;
@@ -471,10 +491,15 @@ static const wchar_t* get_description(AstNode* ast_node) {
 static const Comments* get_comments(AstBuilder* ast_builder) {
     Comments* comments = (Comments*)malloc(sizeof(Comments));
     comments->comment_count = ItemQueue_size(ast_builder->comments);
-    comments->comments = (Comment*)malloc(comments->comment_count * sizeof(Comment));
-    int i;
-    for (i = 0; i < comments->comment_count; ++i) {
-        Comment_transfer(&comments->comments[i], (Comment*)ItemQueue_remove(ast_builder->comments));
+    comments->comments = 0;
+    if (comments->comment_count > 0) {
+        comments->comments = (Comment*)malloc(comments->comment_count * sizeof(Comment));
+        int i;
+        for (i = 0; i < comments->comment_count; ++i) {
+            Token* token = (Token*)ItemQueue_remove(ast_builder->comments);
+            Comment_transfer(&comments->comments[i], Comment_new(token->location, token->matched_text));
+            Token_delete(token);
+        }
     }
     return comments;
 }

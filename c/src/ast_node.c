@@ -1,12 +1,21 @@
 #include "ast_node.h"
 #include <stdlib.h>
 
+static void delete(Item* item);
+
 AstNode* AstNode_new(RuleType rule_type) {
     AstNode* ast_node = (AstNode*)malloc(sizeof(AstNode));
-    ast_node->node_delete = (item_delete_function)AstNode_delete;
+    ast_node->node_delete = &delete;
     ast_node->rule_type = rule_type;
     ast_node->item_queues = ItemQueue_new_array(Rule_Count);
     return ast_node;
+}
+
+void delete(Item* item) {
+    if (!item) {
+        return;
+    }
+    AstNode_delete((AstNode*)item);
 }
 
 void AstNode_delete(AstNode* ast_node) {

@@ -3,7 +3,7 @@
 
 static void delete_comment_content(const Comment* comment);
 
-const Comment* Comment_new(Location location, const wchar_t* text) {
+Comment* Comment_new(Location location, const wchar_t* text) {
     Comment* comment  = (Comment*)malloc(sizeof(Comment));
     comment->comment_delete = (item_delete_function)Comment_delete;
     comment->type = Gherkin_Comment;
@@ -40,9 +40,12 @@ void Comments_delete(const Comments* comments) {
     if (!comments) {
         return;
     }
-    int i;
-    for(i = 0; i < comments->comment_count; ++i) {
-        delete_comment_content(comments->comments + i);
+    if (comments->comments) {
+        int i;
+        for(i = 0; i < comments->comment_count; ++i) {
+            delete_comment_content(comments->comments + i);
+        }
+        free((void*)comments->comments);
     }
     free((void*)comments);
 }

@@ -36,9 +36,12 @@ void PickleCells_delete(const PickleCells* pickle_cells) {
     if (!pickle_cells) {
         return;
     }
-    int i;
-    for(i = 0; i < pickle_cells->cell_count; ++i) {
-        delete_pickle_cell_content(pickle_cells->pickle_cells + i);
+    if (pickle_cells->pickle_cells) {
+        int i;
+        for(i = 0; i < pickle_cells->cell_count; ++i) {
+            delete_pickle_cell_content(pickle_cells->pickle_cells + i);
+        }
+        free((void*)pickle_cells->pickle_cells);
     }
     free((void*)pickle_cells);
 }

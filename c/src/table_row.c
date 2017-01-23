@@ -34,9 +34,12 @@ void TableRows_delete(const TableRows* table_rows) {
     if (!table_rows) {
         return;
     }
-    int i;
-    for(i = 0; i < table_rows->row_count; ++i) {
-        delete_table_row_content(table_rows->table_rows + i);
+    if (table_rows->table_rows) {
+        int i;
+        for(i = 0; i < table_rows->row_count; ++i) {
+            delete_table_row_content(table_rows->table_rows + i);
+        }
+        free((void*)table_rows->table_rows);
     }
     free((void*)table_rows);
 }
