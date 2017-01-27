@@ -81,11 +81,13 @@ int Parser_parse(Parser* parser, TokenMatcher* token_matcher, TokenScanner* toke
     if (val == 0) {
         start_rule(context, Rule_GherkinDocument);
         int state = 0;
+        bool token_is_eof;
         Token* token = 0;
         do {
             token = read_token(context);
+            token_is_eof = Token_is_eof(token);
             state = match_token(state, token, context);
-        } while (!Token_is_eof(token));
+        } while (!token_is_eof);
 
         end_rule(context, Rule_GherkinDocument);
     }
@@ -310,6 +312,7 @@ static int match_token_at_0(Token* token, ParserContext* context) {
     /* "State: 0 - Start" */
     const wchar_t* const expected_tokens = L"#EOF, #Language, #TagLine, #FeatureLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -339,6 +342,7 @@ static int match_token_at_1(Token* token, ParserContext* context) {
     /* "State: 1 - GherkinDocument:0>Feature:0>Feature_Header:0>#Language:0" */
     const wchar_t* const expected_tokens = L"#TagLine, #FeatureLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -368,6 +372,7 @@ static int match_token_at_2(Token* token, ParserContext* context) {
     /* "State: 2 - GherkinDocument:0>Feature:0>Feature_Header:1>Tags:0>#TagLine:0" */
     const wchar_t* const expected_tokens = L"#TagLine, #FeatureLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -426,6 +431,7 @@ static int match_token_at_3(Token* token, ParserContext* context) {
     /* "State: 3 - GherkinDocument:0>Feature:0>Feature_Header:2>#FeatureLine:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Empty, #Comment, #BackgroundLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Other";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -485,6 +491,7 @@ static int match_token_at_4(Token* token, ParserContext* context) {
     /* "State: 4 - GherkinDocument:0>Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:1>Description:0>#Other:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Comment, #BackgroundLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Other";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -538,6 +545,7 @@ static int match_token_at_5(Token* token, ParserContext* context) {
     /* "State: 5 - GherkinDocument:0>Feature:0>Feature_Header:3>Feature_Description:0>Description_Helper:2>#Comment:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Comment, #BackgroundLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -595,6 +603,7 @@ static int match_token_at_6(Token* token, ParserContext* context) {
     /* "State: 6 - GherkinDocument:0>Feature:1>Background:0>#BackgroundLine:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Empty, #Comment, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Other";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -653,6 +662,7 @@ static int match_token_at_7(Token* token, ParserContext* context) {
     /* "State: 7 - GherkinDocument:0>Feature:1>Background:1>Background_Description:0>Description_Helper:1>Description:0>#Other:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Comment, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Other";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -705,6 +715,7 @@ static int match_token_at_8(Token* token, ParserContext* context) {
     /* "State: 8 - GherkinDocument:0>Feature:1>Background:1>Background_Description:0>Description_Helper:2>#Comment:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Comment, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -772,6 +783,7 @@ static int match_token_at_9(Token* token, ParserContext* context) {
     /* "State: 9 - GherkinDocument:0>Feature:1>Background:2>Scenario_Step:0>Step:0>#StepLine:0" */
     const wchar_t* const expected_tokens = L"#EOF, #TableRow, #DocStringSeparator, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -838,6 +850,7 @@ static int match_token_at_10(Token* token, ParserContext* context) {
     /* "State: 10 - GherkinDocument:0>Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0" */
     const wchar_t* const expected_tokens = L"#EOF, #TableRow, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -874,6 +887,7 @@ static int match_token_at_11(Token* token, ParserContext* context) {
     /* "State: 11 - GherkinDocument:0>Feature:2>Scenario_Definition:0>Tags:0>#TagLine:0" */
     const wchar_t* const expected_tokens = L"#TagLine, #ScenarioLine, #ScenarioOutlineLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -935,6 +949,7 @@ static int match_token_at_12(Token* token, ParserContext* context) {
     /* "State: 12 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:0>#ScenarioLine:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Empty, #Comment, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Other";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -997,6 +1012,7 @@ static int match_token_at_13(Token* token, ParserContext* context) {
     /* "State: 13 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:1>Description:0>#Other:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Comment, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Other";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -1053,6 +1069,7 @@ static int match_token_at_14(Token* token, ParserContext* context) {
     /* "State: 14 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:1>Scenario_Description:0>Description_Helper:2>#Comment:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Comment, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -1124,6 +1141,7 @@ static int match_token_at_15(Token* token, ParserContext* context) {
     /* "State: 15 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:0>#StepLine:0" */
     const wchar_t* const expected_tokens = L"#EOF, #TableRow, #DocStringSeparator, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -1194,6 +1212,7 @@ static int match_token_at_16(Token* token, ParserContext* context) {
     /* "State: 16 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0" */
     const wchar_t* const expected_tokens = L"#EOF, #TableRow, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -1269,6 +1288,7 @@ static int match_token_at_17(Token* token, ParserContext* context) {
     /* "State: 17 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:0>#ScenarioOutlineLine:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Empty, #Comment, #StepLine, #TagLine, #ExamplesLine, #ScenarioLine, #ScenarioOutlineLine, #Other";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -1347,6 +1367,7 @@ static int match_token_at_18(Token* token, ParserContext* context) {
     /* "State: 18 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:1>Description:0>#Other:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Comment, #StepLine, #TagLine, #ExamplesLine, #ScenarioLine, #ScenarioOutlineLine, #Other";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -1417,6 +1438,7 @@ static int match_token_at_19(Token* token, ParserContext* context) {
     /* "State: 19 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:1>ScenarioOutline_Description:0>Description_Helper:2>#Comment:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Comment, #StepLine, #TagLine, #ExamplesLine, #ScenarioLine, #ScenarioOutlineLine, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -1504,6 +1526,7 @@ static int match_token_at_20(Token* token, ParserContext* context) {
     /* "State: 20 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:0>#StepLine:0" */
     const wchar_t* const expected_tokens = L"#EOF, #TableRow, #DocStringSeparator, #StepLine, #TagLine, #ExamplesLine, #ScenarioLine, #ScenarioOutlineLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -1592,6 +1615,7 @@ static int match_token_at_21(Token* token, ParserContext* context) {
     /* "State: 21 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:0>DataTable:0>#TableRow:0" */
     const wchar_t* const expected_tokens = L"#EOF, #TableRow, #StepLine, #TagLine, #ExamplesLine, #ScenarioLine, #ScenarioOutlineLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -1622,6 +1646,7 @@ static int match_token_at_22(Token* token, ParserContext* context) {
     /* "State: 22 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:0>Tags:0>#TagLine:0" */
     const wchar_t* const expected_tokens = L"#TagLine, #ExamplesLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -1709,6 +1734,7 @@ static int match_token_at_23(Token* token, ParserContext* context) {
     /* "State: 23 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:0>#ExamplesLine:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Empty, #Comment, #TableRow, #TagLine, #ExamplesLine, #ScenarioLine, #ScenarioOutlineLine, #Other";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -1799,6 +1825,7 @@ static int match_token_at_24(Token* token, ParserContext* context) {
     /* "State: 24 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:1>Description:0>#Other:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Comment, #TableRow, #TagLine, #ExamplesLine, #ScenarioLine, #ScenarioOutlineLine, #Other";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -1881,6 +1908,7 @@ static int match_token_at_25(Token* token, ParserContext* context) {
     /* "State: 25 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:1>Examples_Description:0>Description_Helper:2>#Comment:0" */
     const wchar_t* const expected_tokens = L"#EOF, #Comment, #TableRow, #TagLine, #ExamplesLine, #ScenarioLine, #ScenarioOutlineLine, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -1968,6 +1996,7 @@ static int match_token_at_26(Token* token, ParserContext* context) {
     /* "State: 26 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:3>Examples_Definition:1>Examples:2>Examples_Table:0>#TableRow:0" */
     const wchar_t* const expected_tokens = L"#EOF, #TableRow, #TagLine, #ExamplesLine, #ScenarioLine, #ScenarioOutlineLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -1988,6 +2017,7 @@ static int match_token_at_28(Token* token, ParserContext* context) {
     /* "State: 28 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0" */
     const wchar_t* const expected_tokens = L"#DocStringSeparator, #Other";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -2072,6 +2102,7 @@ static int match_token_at_29(Token* token, ParserContext* context) {
     /* "State: 29 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:1>ScenarioOutline:2>ScenarioOutline_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0" */
     const wchar_t* const expected_tokens = L"#EOF, #StepLine, #TagLine, #ExamplesLine, #ScenarioLine, #ScenarioOutlineLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -2092,6 +2123,7 @@ static int match_token_at_30(Token* token, ParserContext* context) {
     /* "State: 30 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0" */
     const wchar_t* const expected_tokens = L"#DocStringSeparator, #Other";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -2158,6 +2190,7 @@ static int match_token_at_31(Token* token, ParserContext* context) {
     /* "State: 31 - GherkinDocument:0>Feature:2>Scenario_Definition:1>__alt0:0>Scenario:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0" */
     const wchar_t* const expected_tokens = L"#EOF, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -2178,6 +2211,7 @@ static int match_token_at_32(Token* token, ParserContext* context) {
     /* "State: 32 - GherkinDocument:0>Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:0>#DocStringSeparator:0" */
     const wchar_t* const expected_tokens = L"#DocStringSeparator, #Other";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -2240,6 +2274,7 @@ static int match_token_at_33(Token* token, ParserContext* context) {
     /* "State: 33 - GherkinDocument:0>Feature:1>Background:2>Scenario_Step:0>Step:1>Step_Arg:0>__alt1:1>DocString:2>#DocStringSeparator:0" */
     const wchar_t* const expected_tokens = L"#EOF, #StepLine, #TagLine, #ScenarioLine, #ScenarioOutlineLine, #Comment, #Empty";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }

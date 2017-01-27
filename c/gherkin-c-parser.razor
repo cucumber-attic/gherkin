@@ -19,6 +19,7 @@
     /* "State: @state.Id - @Raw(state.Comment)" */
     const wchar_t* const expected_tokens = L"@Raw(string.Join(", ", expectedTokens))";
     Token_is_eof(token) ? ErrorList_add_unexpected_eof_error(context->errors, token, expected_tokens) : ErrorList_add_unexpected_token_error(context->errors, token, expected_tokens);
+    Token_delete(token);
     if (context->stop_at_first_error) {
         ErrorList_jump_to_global_rescue_env(context->errors);
     }
@@ -108,11 +109,13 @@ int @(Model.ParserClassName)_parse(@Model.ParserClassName* parser, TokenMatcher*
     if (val == 0) {
         start_rule(context, Rule_@Model.RuleSet.StartRule.Name);
         int state = 0;
+        bool token_is_eof;
         Token* token = 0;
         do {
             token = read_token(context);
+            token_is_eof = Token_is_eof(token);
             state = match_token(state, token, context);
-        } while (!Token_is_eof(token));
+        } while (!token_is_eof);
 
         end_rule(context, Rule_@Model.RuleSet.StartRule.Name);
     }
