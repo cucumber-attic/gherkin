@@ -99,7 +99,9 @@ before_script:
   - locale
 
 # Simulate non-UTF-8 standard encoding on OS. Should still work
-script: "cd $TARGET_LANG; LANG=fr_FR.iso-8859-15 make"
+script:
+  - jq --version 
+  - "cd $TARGET_LANG; make update-gherkin-languages; LANG=fr_FR.iso-8859-15 make"
 
 branches:
   only:
