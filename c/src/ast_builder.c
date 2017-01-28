@@ -63,7 +63,7 @@ static const wchar_t* get_description(AstNode* ast_node);
 
 static const Comments* get_comments();
 
-static void ensure_cell_count(ErrorList* errors, const TableRows* rows, const TableRow* header);
+static void ensure_cell_count(ErrorList* errors, const TableRows* rows, const TableRow* header, AstNode* ast_node);
 
 void AstBuilder_build(Builder* builder, Token* token);
 
@@ -158,7 +158,7 @@ static void* transform_node(AstNode* ast_node, AstBuilder* ast_builder) {
     }
     case Rule_DataTable: {
         const TableRows* rows = get_table_body(ast_node);
-        ensure_cell_count(ast_builder->errors, rows, 0);
+        ensure_cell_count(ast_builder->errors, rows, 0, ast_node);
         const DataTable* data_table = DataTable_new(rows->table_rows[0].location, rows);
         AstNode_delete(ast_node);
         return (void*)data_table;
@@ -216,7 +216,7 @@ static void* transform_node(AstNode* ast_node, AstBuilder* ast_builder) {
     case Rule_Examples_Table: {
         const TableRow* header = get_table_header(ast_node);
         const TableRows* body = get_table_body(ast_node);
-        ensure_cell_count(ast_builder->errors, body, header);
+        ensure_cell_count(ast_builder->errors, body, header, ast_node);
         const ExampleTableOnly* table = ExampleTableOnly_new(header, body);
         AstNode_delete(ast_node);
         return (void*) table;
@@ -349,7 +349,7 @@ static const TableRows* get_table_body(AstNode* ast_node) {
     return table_rows;
 }
 
-static void ensure_cell_count(ErrorList* errors, const TableRows* rows, const TableRow* header) {
+static void ensure_cell_count(ErrorList* errors, const TableRows* rows, const TableRow* header, AstNode* ast_node) {
     if (!rows || rows->row_count == 0) {
         return;
     }
@@ -357,7 +357,11 @@ static void ensure_cell_count(ErrorList* errors, const TableRows* rows, const Ta
     int i;
     for (i = 0; i < rows->row_count; ++i) {
         if (rows->table_rows[i].table_cells->cell_count != cell_count) {
-            ErrorList_add_inconsisten_cell_count_error(errors, rows->table_rows[i].location);
+            Location error_location = {rows->table_rows[i].location.line, rows->table_rows[i].location.column};
+            TableRow_delete(header);
+            TableRows_delete(rows);
+            AstNode_delete(ast_node);
+            ErrorList_add_inconsisten_cell_count_error(errors, error_location);
         }
     }
 }
