@@ -5,7 +5,7 @@ build_script:
   - ps: dotnet --info
   - ps: dotnet restore
   - ps: dotnet --verbose build dotnet/Gherkin
-  - ps: dotnet --verbose build dotnet/Gherkin.AstGenerator
+  - ps: dotnet --verbose build dotnet/Gherkin.CLI
   - ps: dotnet --verbose build dotnet/Gherkin.TokensGenerator
   - ps: dotnet --verbose build dotnet/Gherkin.Specs
   - ps: dotnet test dotnet/Gherkin.Specs/
