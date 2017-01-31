@@ -9,7 +9,17 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Gherkin.AstGenerator", "Ghe
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Gherkin.TokensGenerator", "Gherkin.TokensGenerator\Gherkin.TokensGenerator.xproj", "{37C54977-4960-4F93-9E97-491C927B718C}"
 EndProject
+<<<<<<< HEAD
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Gherkin.Specs", "Gherkin.Specs\Gherkin.Specs.xproj", "{D99CB5EF-A590-455A-AE62-0A235178E5C4}"
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.Specs", "Gherkin.Specs\Gherkin.Specs.csproj", "{214A8851-F162-460A-8CF4-9E1B3FC2BFC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.TokensGenerator", "Gherkin.TokensGenerator\Gherkin.TokensGenerator.csproj", "{B7311B05-D061-4A82-B8DF-1C1EE65EEA70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.NuGetPackages", "Gherkin.NuGetPackages\Gherkin.NuGetPackages.csproj", "{894388D5-B928-4F41-BE03-9BC107CF0581}"
+>>>>>>> master
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gherkin.CLI", "Gherkin.CLI\Gherkin.CLI.csproj", "{D8EAD6E5-CE46-49F8-A750-0523B9FB531E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +27,7 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+<<<<<<< HEAD
 		{5968C77D-0C93-45A1-A271-1259FD5E4C1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5968C77D-0C93-45A1-A271-1259FD5E4C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5968C77D-0C93-45A1-A271-1259FD5E4C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +44,28 @@ Global
 		{D99CB5EF-A590-455A-AE62-0A235178E5C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D99CB5EF-A590-455A-AE62-0A235178E5C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D99CB5EF-A590-455A-AE62-0A235178E5C4}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{370982B4-9938-4533-8EA1-6F9044B84130}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{370982B4-9938-4533-8EA1-6F9044B84130}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{370982B4-9938-4533-8EA1-6F9044B84130}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{370982B4-9938-4533-8EA1-6F9044B84130}.Release|Any CPU.Build.0 = Release|Any CPU
+		{214A8851-F162-460A-8CF4-9E1B3FC2BFC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{214A8851-F162-460A-8CF4-9E1B3FC2BFC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{214A8851-F162-460A-8CF4-9E1B3FC2BFC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{214A8851-F162-460A-8CF4-9E1B3FC2BFC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7311B05-D061-4A82-B8DF-1C1EE65EEA70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7311B05-D061-4A82-B8DF-1C1EE65EEA70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7311B05-D061-4A82-B8DF-1C1EE65EEA70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7311B05-D061-4A82-B8DF-1C1EE65EEA70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{894388D5-B928-4F41-BE03-9BC107CF0581}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{894388D5-B928-4F41-BE03-9BC107CF0581}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{894388D5-B928-4F41-BE03-9BC107CF0581}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{894388D5-B928-4F41-BE03-9BC107CF0581}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8EAD6E5-CE46-49F8-A750-0523B9FB531E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8EAD6E5-CE46-49F8-A750-0523B9FB531E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8EAD6E5-CE46-49F8-A750-0523B9FB531E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8EAD6E5-CE46-49F8-A750-0523B9FB531E}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> master
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

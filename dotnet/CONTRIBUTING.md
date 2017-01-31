@@ -6,6 +6,11 @@ to contribute.
 
 ### OS X/Linux
 
+Install dependencies:
+
+    brew cask install mono-mdk
+    brew install xamarin-studio
+
 Just run `make` from this directory.
 
 ### Windows

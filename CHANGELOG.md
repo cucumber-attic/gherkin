@@ -12,6 +12,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (I18n) mk-Cyrl: Added Macedonian language
+  ([#249](https://github.com/cucumber/gherkin/pull/249)
+   by [nikolovski])
 * (Build) Automate the version update for the sub-projects
   ([#211](https://github.com/cucumber/gherkin/pull/211)
    by [brasmusson])
@@ -21,6 +24,15 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 * (Java) Using full path when loading gherkin-languages.json
   ([#225](https://github.com/cucumber/gherkin/pull/225)
    by [mauriciotogneri])
+* (I18n) ru: Added word "Затем" as a synonym for when steps
+  ([#246](https://github.com/cucumber/gherkin/pull/246)
+   by [dobiedad])
+* (I18n) Georgian language
+  ([#218](https://github.com/cucumber/gherkin/pull/239)
+   by [Pr-Mex])
+* (I18n) nl: Added "Wanneer" as a synonym for when steps
+  ([#218](https://github.com/cucumber/gherkin/pull/241)
+   by [jmezach])
 * (I18n) ast: Add Asturian translation
   ([#209](https://github.com/cucumber/gherkin/pull/209)
    by [ajspadial])
@@ -256,9 +268,11 @@ to Gherkin 2.
 [aslakhellesoy]:    https://github.com/aslakhellesoy
 [brasmusson]:       https://github.com/brasmusson
 [charlierudolph]:   https://github.com/charlierudolph
+[dobiedad]:         https://github.com/dobiedad
 [enkessler]:        https://github.com/enkessler
 [gabanz]:           https://github.com/gabanz
 [jargalan]:         https://github.com/jargalan
+[jmezach]:          https://github.com/jmezach
 [koterpillar]:      https://github.com/koterpillar
 [LiohAu]:           https://github.com/LiohAu
 [mauriciotogneri]:  https://github.com/mauriciotogneri
@@ -268,7 +282,9 @@ to Gherkin 2.
 [moreau-nicolas]:   https://github.com/moreau-nicolas
 [nalekberov]:       https://github.com/nalekberov
 [nixel2007]:        https://github.com/nixel2007
+[nikolovski]:       https://github.com/nikolovski
 [paigehf]:          https://github.com/paigehf
 [pjlsergeant]:      https://github.com/pjlsergeant
+[Pr-Mex]:           https://github.com/Pr-Mex
 [zbmott]:           https://github.com/zbmott
 [Zearin]:           https://github.com/Zearin

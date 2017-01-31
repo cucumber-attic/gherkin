@@ -2576,26 +2576,6 @@
           "netstandard1.3/Gherkin.dll": {}
         }
       },
-      "Gherkin.AstGenerator/4.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v1.0",
-        "dependencies": {
-          "Gherkin": "(, )",
-          "Microsoft.NETCore.App": "1.0.0",
-          "Newtonsoft.Json": "9.0.1",
-          "System.Console": "4.0.0",
-          "System.IO": "4.1.0",
-          "System.Runtime": "4.1.0",
-          "System.Runtime.Serialization.Json": "4.0.2",
-          "System.Runtime.Serialization.Primitives": "4.1.1"
-        },
-        "compile": {
-          "netcoreapp1.0/Gherkin.AstGenerator.dll": {}
-        },
-        "runtime": {
-          "netcoreapp1.0/Gherkin.AstGenerator.dll": {}
-        }
-      },
       "Gherkin.TokensGenerator/4.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v1.0",
@@ -2945,20 +2925,6 @@
         },
         "runtime": {
           "net45/Gherkin.dll": {}
-        }
-      },
-      "Gherkin.AstGenerator/4.0.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5",
-        "dependencies": {
-          "Gherkin": "(, )",
-          "Newtonsoft.Json": "9.0.1"
-        },
-        "compile": {
-          "net45/Gherkin.AstGenerator.dll": {}
-        },
-        "runtime": {
-          "net45/Gherkin.AstGenerator.dll": {}
         }
       },
       "Gherkin.TokensGenerator/4.0.0": {
@@ -7916,11 +7882,6 @@
       "path": "../Gherkin/project.json",
       "msbuildProject": "../Gherkin/Gherkin.xproj"
     },
-    "Gherkin.AstGenerator/4.0.0": {
-      "type": "project",
-      "path": "../Gherkin.AstGenerator/project.json",
-      "msbuildProject": "../Gherkin.AstGenerator/Gherkin.AstGenerator.xproj"
-    },
     "Gherkin.TokensGenerator/4.0.0": {
       "type": "project",
       "path": "../Gherkin.TokensGenerator/project.json",
@@ -7930,7 +7891,6 @@
   "projectFileDependencyGroups": {
     "": [
       "Gherkin",
-      "Gherkin.AstGenerator",
       "Gherkin.TokensGenerator",
       "NUnit >= 3.4.1",
       "Newtonsoft.Json >= 9.0.1",

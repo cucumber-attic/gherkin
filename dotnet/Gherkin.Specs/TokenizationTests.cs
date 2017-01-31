@@ -1,8 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using Gherkin.AstGenerator;
+using Gherkin.CLI;
 using NUnit.Framework;
 
 namespace Gherkin.Specs

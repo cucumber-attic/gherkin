@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 DIR=$( cd "$( dirname "$2" )" && pwd )
 
-dotnet run -f $1 -p Gherkin.AstGenerator $2
-#mono --runtime=v4.0 $DIR/../Gherkin.AstGenerator/bin/Debug/Gherkin.AstGenerator.exe $*
+dotnet run -f $1 -p Gherkin.CLI ${@:2}
+
 exit 0

@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-#GHERKIN_PERF=true find . -type file -name 'gherkin-generate-ast' -exec {} testdata/good/*.feature > /dev/null \;
-
-find . -type f -iname "gherkin-generate-ast" -print0 | while IFS= read -r -d $'\0' line; do
-    echo "$line"
-    GHERKIN_PERF=true $line testdata/good/*.feature > /dev/null
-done

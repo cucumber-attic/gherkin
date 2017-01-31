@@ -13,23 +13,24 @@ package App::GherkinGeneratePickles;
 
 sub run {
     my ( $class, $fh, @file_list ) = @_;
-    my $json = Cpanel::JSON::XS->new->utf8->space_before(0)->space_after(1)
-        ->indent->canonical;
+    my $json = Cpanel::JSON::XS->new->utf8->canonical;
 
     my $parser = Gherkin::Parser->new();
 
     for my $file (@file_list) {
-        my $base = $json->encode(
-            Gherkin::Pickles::Compiler->compile(
-                $parser->parse($file), $file
-            )
+        my $pickles = Gherkin::Pickles::Compiler->compile(
+            $parser->parse($file)
         );
-
-        # JSON::XS uses a triple indent(?!)
-        $base =~ s!^(\s+)!'  ' x ((length $1) / 3)!meg;
-        print $fh $base;
+        for my $pickle (@$pickles) {
+            my $event = {
+              type => 'pickle',
+              uri => $file,
+              pickle => $pickle
+            };
+            print $fh $json->encode($event);
+            print "\n"
+        }
     }
 }
 
 __PACKAGE__->run(\*STDOUT, @ARGV) unless caller;
-

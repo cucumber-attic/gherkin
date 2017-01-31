@@ -59,7 +59,7 @@ describe('Parser', function () {
     });
   });
 
-  it.only("parses feature after parse error", function () {
+  it("parses feature after parse error", function () {
     var parser = new Gherkin.Parser(new Gherkin.AstBuilder());
     var matcher = new Gherkin.TokenMatcher();
     assert.throws(function() { parser.parse(new Gherkin.TokenScanner("# a comment\n" +
@@ -77,7 +77,6 @@ describe('Parser', function () {
 						    "      closed docstring\n" +
 						    "      \"\"\""),
 			   matcher);
-console.log(JSON.stringify(ast, null, 2))
 
     assert.deepEqual(ast, {
       type: 'GherkinDocument',

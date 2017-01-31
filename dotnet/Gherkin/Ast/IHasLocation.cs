@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Gherkin.Ast
+﻿namespace Gherkin.Ast
 {
     public interface IHasLocation
     {

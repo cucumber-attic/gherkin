@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Gherkin.AstGenerator;
+﻿using System.IO;
 using Gherkin.Ast;
 using NUnit.Framework;
 using Newtonsoft.Json;
+using Gherkin.CLI;
 
 namespace Gherkin.Specs
 {

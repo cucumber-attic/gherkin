@@ -11,10 +11,6 @@
       "version": "*",
       "target": "project"
     },
-    "Gherkin.AstGenerator": {
-      "version": "*",
-      "target": "project"
-    },
     "Gherkin.TokensGenerator": {
       "version": "*",
       "target": "project"

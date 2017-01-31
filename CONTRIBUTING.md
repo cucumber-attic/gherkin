@@ -126,7 +126,7 @@ have a similar structure.
 
 For example, I (Aslak) don't currently know go at all, and very little Python.
 Still, I have been able to fix bugs and refactor the go and python code simply
-because I know where to find stuff since they follow the same structure.
+because I know where to find stuff since all implementations follow the same structure.
 
 If one implementation looks completely different, this becomes a huge burden that
 will slow everything down.
@@ -140,10 +140,6 @@ be maintained by someone who doesn't know the language.
 ## Implementing a parser for a new language
 
 First off, fork the repository and create a branch for the new language.
-
-We recommend starting with a new `Makefile`, tweak it, run it and gradually
-add the missing pieces. Please follow the implementation as closely as possible
-to the other implementations. This will make it easier to maintain in the future.
 
 Create a new directory for the new language and copy the `Makefile` from one
 of the existing implementations. Now, modify the parts of the `Makefile` that
@@ -178,7 +174,7 @@ or find us on [Gitter](https://gitter.im/cucumber/gherkin).
 
 Start by modifying the version in all sub projects:
 
-    echo "X.Y.Z" > VERSION 
+    echo "X.Y.Z" > VERSION
     make update-version
     git commit -m "Update VERSION to X.Y.Z"
 
@@ -211,11 +207,6 @@ Then finally create a tag in this master repo and push.
 The last step might cause some conflicts. If that happens, force push the failing
 subtree (see Troubleshooting section) and run `make push-subtrees` again.
 
-## Benchmarking
-
-Just run `./perf` to get a rough idea of performance. This script will print
-how many milliseconds it takes to parse all the files under `testdata/good`
-
 ## Verify all of Cucumber's i18n examples
 
 If you have [cucumber-ruby](https://github.com/cucumber/cucumber-ruby) cloned
@@ -236,28 +227,29 @@ With the parser:
 2) Generate the tokens:
 
     # For example
-    [LANGUAGE]/bin/gherkin-generate-tokens \
-    testdata/good/newfile.feature > \
-    testdata/good/newfile.feature.tokens
+    cd [LANGUAGE]
+    bin/gherkin-generate-tokens \
+    ../testdata/good/new_file.feature > \
+    ../testdata/good/new_file.feature.tokens
 
 3) Inspect the generated `.feature.tokens` file manually to see if it's good.
 
 4) Generate the ast:
+    cd [LANGUAGE]
+    bin/gherkin --no-source --no-pickles \
+    ../testdata/good/new_file.feature | \
+    jq --sort-keys --compact-output "." > \
+    ../testdata/good/new_file.feature.ast.ndjson
 
-    [LANGUAGE]/bin/gherkin-generate-ast \
-    testdata/good/newfile.feature | \
-    jq --sort-keys "." > \
-    testdata/good/newfile.feature.ast.json
-
-5) Inspect the generated `.feature.ast.json` file manually to see if it's good.
+5) Inspect the generated `.feature.ast.ndjson` file manually to see if it's good.
 
 6) Generate the pickles:
 
     cd [LANGUAGE]
-    ./bin/gherkin-generate-pickles \
-    ../testdata/good/newfile.feature | \
-    jq --sort-keys "." > \
-    ../testdata/good/newfile.feature.pickles.json
+    bin/gherkin --no-source --no-ast \
+    ../testdata/good/new_file.feature | \
+    jq --sort-keys --compact-output "." > \
+    ../testdata/good/new_file.feature.pickles.ndjson
 
 7) Inspect the generated `.feature.pickles.json` file manually to see if it's good.
 

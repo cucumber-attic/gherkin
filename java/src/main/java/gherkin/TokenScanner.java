@@ -9,11 +9,11 @@ import java.io.StringReader;
 
 /**
  * <p>
- * The scanner reads a gherkin doc (typically read from a .feature file) and creates a token 
+ * The scanner reads a gherkin doc (typically read from a .feature file) and creates a token
  * for each line. The tokens are passed to the parser, which outputs an AST (Abstract Syntax Tree).</p>
- *
  * <p>
- * If the scanner sees a # language header, it will reconfigure itself dynamically to look for 
+ * <p>
+ * If the scanner sees a # language header, it will reconfigure itself dynamically to look for
  * Gherkin keywords for the associated language. The keywords are defined in gherkin-languages.json.</p>
  */
 public class TokenScanner implements Parser.ITokenScanner {

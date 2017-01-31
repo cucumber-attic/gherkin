@@ -8,7 +8,7 @@
   } else {
     // Browser globals (root is window)
     root.Gherkin = factory();
-  } 
+  }
 }(this, function () {
   return {
     Parser: require('./lib/gherkin/parser'),
@@ -16,6 +16,11 @@
     TokenMatcher: require('./lib/gherkin/token_matcher'),
     AstBuilder: require('./lib/gherkin/ast_builder'),
     Compiler: require('./lib/gherkin/pickles/compiler'),
-    DIALECTS: require('./lib/gherkin/dialects')
+    DIALECTS: require('./lib/gherkin/dialects'),
+    Stream: {
+      createGherkinStream: require('./lib/gherkin/stream/gherkin_stream'),
+      createSourceEventStream: require('./lib/gherkin/stream/source_event_stream'),
+      createNdjsonStream: require('./lib/gherkin/stream/ndjson_stream')
+    }
   };
 }));
