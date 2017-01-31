@@ -26,7 +26,7 @@ If this is your first time, read through NuGet's guidelines for
     # Change version in `Gherkin\project.json`
     git clean -dfx
     dotnet pack -c Release Gherkin
-    mono .nuget/NuGet.exe push Gherkin.X.Y.Z.nupkg
+    mono .nuget/NuGet.exe push Gherkin/bin/Release/Gherkin.X.Y.Z.nupkg
     git commit -am "Release X.Y.Z"
     git tag -a -m "Version X.Y.Z" vX.Y.Z
     git push

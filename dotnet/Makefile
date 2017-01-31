@@ -84,10 +84,10 @@ LICENSE: ../LICENSE
 update-gherkin-languages: Gherkin/gherkin-languages.json
 .PHONY: update-gherkin-languages
 
-update-version: Gherkin.NuGetPackages/Gherkin.nuspec.tmp Gherkin.NuGetPackages/Gherkin.nuspec
-	diff -q $< Gherkin.NuGetPackages/Gherkin.nuspec || mv $< Gherkin.NuGetPackages/Gherkin.nuspec
+update-version: Gherkin/project.json.tmp Gherkin/project.json
+	diff -q $< Gherkin/project.json || mv $< Gherkin/project.json
 .PHONY: update-version
 
-Gherkin.NuGetPackages/Gherkin.nuspec.tmp: Gherkin.NuGetPackages/Gherkin.nuspec ../VERSION
-	sed "s#\(<version>\).*\(</version>\)#\1`cat ../VERSION`\2#" $< > $@
-.INTERMEDIATE: Gherkin.NuGetPackages/Gherkin.nuspec.tmp
+Gherkin/project.json.tmp: Gherkin/project.json ../VERSION
+	sed "s/\(\"version\" *: *\"\)[0-9]*\.[0-9]*\.[0-9]*\(\"\)/\1`cat ../VERSION`\2/" $< > $@
+.INTERMEDIATE: Gherkin/project.json.tmp
