@@ -103,5 +103,5 @@ update-version: Gherkin/project.json.tmp Gherkin/project.json
 .PHONY: update-version
 
 Gherkin/project.json.tmp: Gherkin/project.json ../VERSION
-	sed "s/\(\"version\" *: *\"\)[0-9]*\.[0-9]*\.[0-9]*\(\"\)/\1`cat ../VERSION`\2/" $< > $@
+	sed "s/\(\"version\" *: *\"\)[0-9]*\.[0-9]*\.[0-9]*-\*\(\"\)/\1`cat ../VERSION`\2/" $< > $@
 .INTERMEDIATE: Gherkin/project.json.tmp
