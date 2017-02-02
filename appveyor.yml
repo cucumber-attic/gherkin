@@ -1,14 +1,31 @@
 os: Visual Studio 2015
 
-build_script:
-  # dotnet info
-  - ps: dotnet --info
-  - ps: dotnet restore
-  - ps: dotnet --verbose build dotnet/Gherkin
-  - ps: dotnet --verbose build dotnet/Gherkin.CLI
-  - ps: dotnet --verbose build dotnet/Gherkin.TokensGenerator
-  - ps: dotnet --verbose build dotnet/Gherkin.Specs
-  - ps: dotnet test dotnet/Gherkin.Specs/
-  - ps: Pop-Location
+configuration:
+- Release
 
-test: off
+environment:
+  # Don't report back to the mothership
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+nuget:
+  project_feed: true
+  disable_publish_on_pr: true
+
+before_build:
+- appveyor-retry dotnet restore -v Minimal
+
+build_script:
+- dotnet build -c %CONFIGURATION% dotnet/Gherkin
+- dotnet build -c %CONFIGURATION% dotnet/Gherkin.CLI
+- dotnet build -c %CONFIGURATION% dotnet/Gherkin.TokensGenerator
+- dotnet build -c %CONFIGURATION% dotnet/Gherkin.Specs
+
+after_build:
+- dotnet pack -c %CONFIGURATION% dotnet/Gherkin -o artifacts
+
+test_script:
+- dotnet test dotnet/Gherkin.Specs/ -c %CONFIGURATION%
+  
+  
+artifacts:
+- path: artifacts\Gherkin.*.nupkg
