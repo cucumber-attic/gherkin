@@ -4,7 +4,7 @@
     "Cucumber Ltd",
     "Gaspar Nagy"
   ],
-  "version": "4.0.1",
+  "version": "4.0.1-*",
   "language": "en-US",
   "copyright": "Copyright © Cucumber Ltd, Gaspar Nagy",
   "description": "Cross-platform parser for the Gherkin language, used by Cucumber, SpecFlow and other Cucumber-based tools to parse feature files.",
