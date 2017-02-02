@@ -22,24 +22,40 @@ all: .compared
 acceptance/testdata/%.feature.tokens: ../testdata/%.feature ../testdata/%.feature.tokens .sln_built_debug
 	mkdir -p `dirname $@`
 	
-	bin/gherkin-generate-tokens net45 $< | tail -n +19 > $@
+	bin/gherkin-generate-tokens net45 $< > $@
 	diff --unified $<.tokens $@
-# 	rm -f $@
+
+	rm -f $@
 	
-#	bin/gherkin-generate-tokens netcoreapp1.0 $< | tail -n +19 > $@
-#	diff --unified $<.tokens $@
+	bin/gherkin-generate-tokens netcoreapp1.0 $< > $@
+	diff --unified $<.tokens $@
+	
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.tokens
 
 acceptance/testdata/%.feature.ast.ndjson: ../testdata/%.feature ../testdata/%.feature.ast.ndjson .sln_built_debug
 	mkdir -p `dirname $@`
-	bin/gherkin-generate-ast net45 --no-source --no-pickles $< | tail -n +19 | jq --sort-keys --compact-output "." > $@
+	
+	bin/gherkin-generate-ast net45 --no-source --no-pickles $< | jq --sort-keys --compact-output "." > $@
 	diff --unified <(jq "." $<.ast.ndjson) <(jq "." $@)
+
+	rm -f $@
+
+	bin/gherkin-generate-ast netcoreapp1.0 --no-source --no-pickles $< | jq --sort-keys --compact-output "." > $@
+	diff --unified <(jq "." $<.ast.ndjson) <(jq "." $@)
+
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.ast.ndjson
 
 acceptance/testdata/%.feature.errors.ndjson: ../testdata/%.feature ../testdata/%.feature.errors.ndjson .sln_built_debug
 	mkdir -p `dirname $@`
-	bin/gherkin-generate-ast net45 --no-pickles $< | tail -n +19 | jq --sort-keys --compact-output "." > $@
+	
+	bin/gherkin-generate-ast net45 --no-pickles $< | jq --sort-keys --compact-output "." > $@
 	diff --unified $<.errors.ndjson $@
+
+	rm -f $@
+
+	bin/gherkin-generate-ast netcoreapp1.0 --no-pickles $< | jq --sort-keys --compact-output "." > $@
+	diff --unified $<.errors.ndjson $@
+
 .DELETE_ON_ERROR: acceptance/testdata/%.feature.errors.ndjson
 
 
@@ -48,6 +64,7 @@ clean:
 	rm -rf */bin
 	rm -rf */obj
 	rm -rf */packages
+	rm -rf ./output
 .PHONY: clean
 
 Gherkin/Parser.cs: ../gherkin.berp gherkin-csharp.razor ../bin/berp.exe
@@ -63,7 +80,13 @@ Gherkin/Parser.cs: ../gherkin.berp gherkin-csharp.razor ../bin/berp.exe
 	dotnet build Gherkin.CLI
 	dotnet build Gherkin.TokensGenerator
 	dotnet build Gherkin.Specs
+
+	dotnet publish -o output/net45 -f net45 Gherkin.CLI/
+	dotnet publish -o output/netcoreapp1.0 -f netcoreapp1.0 Gherkin.CLI/
 	
+	dotnet publish -o output/net45 -f net45 Gherkin.TokensGenerator/
+	dotnet publish -o output/netcoreapp1.0 -f netcoreapp1.0 Gherkin.TokensGenerator/
+
 	touch $@
 
 Gherkin/gherkin-languages.json: ../gherkin-languages.json

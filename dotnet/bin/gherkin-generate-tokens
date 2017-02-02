@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 DIR=$( cd "$( dirname "$2" )" && pwd )
 
-dotnet run -f $1 -p Gherkin.TokensGenerator $2
-#mono --runtime=v4.0 $DIR/../Gherkin.TokensGenerator/bin/Debug/Gherkin.TokensGenerator.exe $*
+starter=""
+binary=""
+
+if [ $1 = "net45" ]; then
+    starter="mono"
+    binary="exe"
+else
+    if [ $1 = "netcoreapp1.0" ]; then
+        starter="dotnet"
+        binary="dll"    
+    fi
+fi
+
+$starter output/$1/Gherkin.TokensGenerator.$binary ${@:2}
+
 exit 0

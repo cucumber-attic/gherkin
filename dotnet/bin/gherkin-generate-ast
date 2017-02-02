@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
-DIR=$( cd "$( dirname "$2" )" && pwd )
+DIR=$( cd "$( dirname "$4" )" && pwd )
 
-dotnet run -f $1 -p Gherkin.CLI ${@:2}
+starter=""
+binary=""
+
+if [ $1 = "net45" ]; then
+    starter="mono"
+    binary="exe"
+else
+    if [ $1 = "netcoreapp1.0" ]; then
+        starter="dotnet"
+        binary="dll"    
+    fi
+fi
+
+$starter output/$1/Gherkin.CLI.$binary ${@:2}
 
 exit 0
