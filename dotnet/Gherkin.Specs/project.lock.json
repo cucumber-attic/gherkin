@@ -2557,7 +2557,7 @@
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
       },
-      "Gherkin/4.0.0": {
+      "Gherkin/4.0.1": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.3",
         "dependencies": {
@@ -2914,7 +2914,7 @@
           "lib/net45/_._": {}
         }
       },
-      "Gherkin/4.0.0": {
+      "Gherkin/4.0.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5",
         "dependencies": {
@@ -7877,7 +7877,7 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Gherkin/4.0.0": {
+    "Gherkin/4.0.1": {
       "type": "project",
       "path": "../Gherkin/project.json",
       "msbuildProject": "../Gherkin/Gherkin.xproj"
