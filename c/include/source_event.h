@@ -15,9 +15,7 @@ typedef struct SourceEvent {
     const wchar_t* source;
 } SourceEvent;
 
-SourceEvent* SourceEvent_new(const char* uri);
-
-void SourceEvent_transfer_source(SourceEvent* source_event, const wchar_t* source);
+SourceEvent* SourceEvent_new(const char* uri, const wchar_t* source);
 
 #ifdef __cplusplus
 }

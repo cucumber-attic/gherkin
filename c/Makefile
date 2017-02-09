@@ -25,7 +25,11 @@ clean:
 	cd src; $(MAKE) $@
 .PHONY: clean
 
-libs: ./include/rule_type.h src/parser.c src/dialect.c
+cli: ./include/rule_type.h src/parser.c src/dialect.c $(SRC_FILES) src/Makefile 
+	cd src; $(MAKE) $@
+.PHONY: libs
+
+libs: ./include/rule_type.h src/parser.c src/dialect.c $(SRC_FILES) src/Makefile 
 	cd src; $(MAKE) $@
 .PHONY: libs
 

@@ -59,6 +59,8 @@ static const wchar_t* get_description_text(AstNode* ast_node);
 
 static const wchar_t* get_doc_string_text(AstNode* ast_node);
 
+static wchar_t* create_multi_line_text_from_tokens(int text_length, int line_count, ItemQueue* line_queue);
+
 static const wchar_t* get_description(AstNode* ast_node);
 
 static const Comments* get_comments();
@@ -411,7 +413,7 @@ static const Tags* get_tags(AstNode* ast_node) {
             int i;
             for (i = 0; i < token->matched_items->count; ++i) {
                 location.column = token->matched_items->items[i].column;
-                Tag_transfer(&tags->tags[tag_index++], location, token->matched_items->items[i].text);
+                Tag_transfer(&tags->tags[tag_index++], location, &token->matched_items->items[i].text);
             }
             Token_delete(token);
         }
@@ -434,24 +436,8 @@ static const wchar_t* get_description_text(AstNode* ast_node) {
         }
         queue_item = queue_item->next;
     }
-    if (text_length == 0) {
-        return (wchar_t*)0;
-    }
     text_length += line_count;
-    wchar_t* text = (wchar_t*)malloc(text_length * sizeof(wchar_t));
-    int current_pos = 0;
-    Token* token;
-    int i;
-    for (i = 0; i < line_count; ++i) {
-        token = (Token*)ItemQueue_remove(line_queue);
-        int length = wcslen(token->matched_text);
-        wmemcpy(&text[current_pos], token->matched_text, length);
-        text[current_pos + length] = L'\n';
-        current_pos += length + 1;
-        Token_delete(token);
-    }
-    text[text_length - 1] = L'\0';
-    return text;
+    return create_multi_line_text_from_tokens(text_length, line_count, line_queue);
 }
 
 static const wchar_t* get_doc_string_text(AstNode* ast_node) {
@@ -462,12 +448,16 @@ static const wchar_t* get_doc_string_text(AstNode* ast_node) {
         text_length += wcslen(((Token*)queue_item->item)->matched_text) + 1;
         queue_item = queue_item->next;
     }
+    int line_count = ItemQueue_size(line_queue);
+    return create_multi_line_text_from_tokens(text_length, line_count, line_queue);
+}
+
+static wchar_t* create_multi_line_text_from_tokens(int text_length, int line_count, ItemQueue* line_queue) {
     if (text_length == 0) {
         return (wchar_t*)0;
     }
     wchar_t* text = (wchar_t*)malloc(text_length * sizeof(wchar_t));
     int current_pos = 0;
-    int line_count = ItemQueue_size(line_queue);
     Token* token;
     int i;
     for (i = 0; i < line_count; ++i) {

@@ -39,17 +39,28 @@ static Options parse_options(int argc, char** argv) {
             options.print_pickle_events = false;
             continue;
         }
+        if (argv[i][0] == '-') {
+            if (strcmp("-h", argv[i]) != 0 && strcmp("--help", argv[i]) != 0) {
+                fprintf(stdout, "Unknown option: %s\n\n", argv[i]);
+            }
+            fprintf(stdout, "Usage: gherkin [options] FILE*\n");
+            fprintf(stdout, "        -h, --help                             You're looking at it.\n");
+            fprintf(stdout, "        --no-ast                               Do not emit Ast events.\n");
+            fprintf(stdout, "        --no-pickles                           Do not emit Pickle events.\n");
+            fprintf(stdout, "        --no-source                            Do not emit Source events.\n");
+            exit(EXIT_SUCCESS);
+        }
     }
     return options;
 }
 
 int main(int argc, char** argv) {
     setlocale(LC_ALL, "en_US.UTF-8");
+    Options options = parse_options(argc, argv);
     TokenMatcher* token_matcher = TokenMatcher_new(L"en");
     Builder* builder = AstBuilder_new();
     Parser* parser = Parser_new(builder);
     Compiler* compiler = Compiler_new();
-    Options options = parse_options(argc, argv);
     int return_code = 0;
     int result_code = 0;
     int i;
@@ -58,8 +69,7 @@ int main(int argc, char** argv) {
             continue;
         }
         FileReader* file_reader = FileReader_new(argv[i]);
-        SourceEvent* source_event = SourceEvent_new(argv[i]);
-        SourceEvent_transfer_source(source_event, FileReader_read(file_reader));
+        SourceEvent* source_event = SourceEvent_new(argv[i], FileReader_read(file_reader));
         FileReader_delete(file_reader);
         if (options.print_source_events) {
             Event_print((const Event*)source_event, stdout);

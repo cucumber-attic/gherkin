@@ -1,6 +1,7 @@
 #include "feature.h"
 #include "scenario.h"
 #include "scenario_outline.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 const Feature* Feature_new(Location location, const wchar_t* language, const wchar_t* keyword, const wchar_t* name, const wchar_t* description, const Tags* tags, const ScenarioDefinitions* scenario_definitions) {
@@ -11,22 +12,13 @@ const Feature* Feature_new(Location location, const wchar_t* language, const wch
     feature->location.column = location.column;
     feature->language = 0;
     if (language) {
-        int length = wcslen(language);
-        feature->language = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(feature->language, language, length);
-        feature->language[length] = L'\0';
+        feature->language = StringUtilities_copy_string(language);
     }
     if (keyword) {
-        int length = wcslen(keyword);
-        feature->keyword = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(feature->keyword, keyword, length);
-        feature->keyword[length] = L'\0';
+        feature->keyword = StringUtilities_copy_string(keyword);
     }
     if (name) {
-        int length = wcslen(name);
-        feature->name = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(feature->name, name, length);
-        feature->name[length] = L'\0';
+        feature->name = StringUtilities_copy_string(name);
     }
     feature->description = description;
     feature->tags = tags;

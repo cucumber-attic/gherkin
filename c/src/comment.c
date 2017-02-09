@@ -1,4 +1,5 @@
 #include "comment.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 static void delete_comment_content(const Comment* comment);
@@ -11,10 +12,7 @@ Comment* Comment_new(Location location, const wchar_t* text) {
     comment->location.column = location.column;
     comment->text = 0;
     if (text) {
-        int length = wcslen(text);
-        comment->text = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(comment->text, text, length);
-        comment->text[length] = L'\0';
+        comment->text = StringUtilities_copy_string(text);
     }
     return comment;
 }

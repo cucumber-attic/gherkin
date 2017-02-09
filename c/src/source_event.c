@@ -7,7 +7,7 @@ static void SourceEvent_delete(const Event* event);
 
 static void SourceEvent_print(const Event* event, FILE* file);
 
-SourceEvent* SourceEvent_new(const char* uri) {
+SourceEvent* SourceEvent_new(const char* uri, const wchar_t* source) {
     SourceEvent* source_event = (SourceEvent*)malloc(sizeof(SourceEvent));
     source_event->event.event_delete = &SourceEvent_delete;
     source_event->event.event_print = &SourceEvent_print;
@@ -19,12 +19,8 @@ SourceEvent* SourceEvent_new(const char* uri) {
         swprintf(source_event->uri, uri_length + 1, L"%hs", uri);
         source_event->uri[uri_length] = L'\0';
     }
-    source_event->source = 0;
-    return source_event;
-}
-
-void SourceEvent_transfer_source(SourceEvent* source_event, const wchar_t* source) {
     source_event->source = source;
+    return source_event;
 }
 
 static void SourceEvent_delete(const Event* event) {

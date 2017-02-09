@@ -1,4 +1,5 @@
 #include "tag.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 static void delete_tag_content(const Tag* tag);
@@ -10,10 +11,7 @@ const Tag* Tag_new(Location location, const wchar_t* name) {
     tag->location.line = location.line;
     tag->location.column = location.column;
     if (name) {
-        int length = wcslen(name);
-        tag->name = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(tag->name, name, length);
-        tag->name[length] = L'\0';
+        tag->name = StringUtilities_copy_string(name);
     }
     return tag;
 }
@@ -26,16 +24,12 @@ void Tag_delete(const Tag* tag) {
     free((void*)tag);
 }
 
-void Tag_transfer(Tag* to_tag, Location location, const wchar_t* name) {
+void Tag_transfer(Tag* to_tag, Location location, wchar_t** name_ptr) {
     to_tag->type = Gherkin_Tag;
     to_tag->location.line = location.line;
     to_tag->location.column = location.column;
-    if (name) {
-        int length = wcslen(name);
-        to_tag->name = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(to_tag->name, name, length);
-        to_tag->name[length] = L'\0';
-    }
+    to_tag->name = *name_ptr;
+    *name_ptr = 0;
 }
 
 void Tags_delete(const Tags* tags) {

@@ -1,4 +1,5 @@
 #include "pickle_cell.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 static void delete_pickle_cell_content(const PickleCell* pickle_cell);
@@ -8,10 +9,7 @@ const PickleCell* PickleCell_new(const PickleLocation* location, const wchar_t* 
     pickle_cell->location = location;
     pickle_cell->value = 0;
     if (value) {
-        int length = wcslen(value);
-        pickle_cell->value = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(pickle_cell->value, value, length);
-        pickle_cell->value[length] = L'\0';
+        pickle_cell->value = StringUtilities_copy_string(value);
     }
     return pickle_cell;
 }

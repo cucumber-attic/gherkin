@@ -1,4 +1,5 @@
 #include "table_cell.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 static void delete_table_cell_content(const TableCell* table_cell);
@@ -11,10 +12,7 @@ const TableCell* TableCell_new(Location location, const wchar_t* value) {
     table_cell->location.column = location.column;
     table_cell->value = 0;
     if (value) {
-        int length = wcslen(value);
-        table_cell->value = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(table_cell->value, value, length);
-        table_cell->value[length] = L'\0';
+        table_cell->value = StringUtilities_copy_string(value);
     }
     return table_cell;
 }

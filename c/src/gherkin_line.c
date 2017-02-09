@@ -1,12 +1,11 @@
 #include "gherkin_line.h"
 #include "dialect.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 typedef const wchar_t* (*find_delimiter_function) (const wchar_t*);
 
 static wchar_t* copy_trimmed_text(const wchar_t* trimmed_text, int prefix_length);
-
-static wchar_t* copy_text(const wchar_t* text, int text_length);
 
 static const wchar_t* find_cell_delimiter(const wchar_t* current_pos);
 
@@ -68,9 +67,9 @@ wchar_t* GherkinLine_copy_rest_trimmed(const GherkinLine* line, int length) {
 
 wchar_t* GherkinLine_copy_line_text(const GherkinLine* line, int indent_to_remove) {
     if (indent_to_remove < 0 || indent_to_remove > line->indent)
-        return copy_text(line->trimmed_line, wcslen(line->trimmed_line));
+        return StringUtilities_copy_string(line->trimmed_line);
     const wchar_t* text_start = line->line_text + indent_to_remove;
-    return copy_text(text_start, wcslen(text_start));
+    return StringUtilities_copy_string(text_start);
 }
 
 const Items* GherkinLine_table_cells(const GherkinLine* line) {
@@ -144,7 +143,7 @@ const wchar_t* GherkinLine_get_language(const GherkinLine* line) {
     const wchar_t* end = start;
     while (*end != L'\0' && *end != L' ')
         ++end;
-    return copy_text(start, end - start);
+    return StringUtilities_copy_string_part(start, end - start);
 }
 
 static wchar_t* copy_trimmed_text(const wchar_t* text, int prefix_length) {
@@ -156,14 +155,7 @@ static wchar_t* copy_trimmed_text(const wchar_t* text, int prefix_length) {
     while (text_end > text_start && *(text_end - 1) == L' ') {
         --text_end;
     }
-    return copy_text(text_start, text_end - text_start);
-}
-
-static wchar_t* copy_text(const wchar_t* text, int text_length) {
-    wchar_t* text_copy = (wchar_t*)malloc((text_length + 1) * sizeof(wchar_t));
-    wmemcpy(text_copy, text, text_length);
-    text_copy[text_length] = L'\0';
-    return text_copy;
+    return StringUtilities_copy_string_part(text_start, text_end - text_start);
 }
 
 static const wchar_t* find_cell_delimiter(const wchar_t* start_pos) {
@@ -225,7 +217,7 @@ static const wchar_t* populate_cell_data(Span* item, const wchar_t* start_pos, i
         --end_text;
     item->column = start_indent + (current_pos - start_pos) + 1;
     int text_length = end_text - current_pos;
-    wchar_t* text = copy_text(current_pos, text_length);
+    wchar_t* text = StringUtilities_copy_string_part(current_pos, text_length);
     const wchar_t* from = text;
     wchar_t* to = text;
     while (*from != L'\0') {
@@ -262,7 +254,7 @@ static const wchar_t* populate_tag_data(Span* item, const wchar_t* start_pos, in
     item->column = start_indent + (current_pos - start_pos) + 1;
     int text_length = end_text - current_pos;
     if (text_length > 0) {
-        item->text = copy_text(current_pos, text_length);
+        item->text = StringUtilities_copy_string_part(current_pos, text_length);
     }
     return end_pos;
 }

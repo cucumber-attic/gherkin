@@ -1,6 +1,7 @@
 #include "file_token_scanner.h"
 #include "gherkin_line.h"
 #include "file_utilities.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 typedef struct FileTokenScanner {
@@ -56,13 +57,17 @@ static Token* FileTokenScanner_read(TokenScanner* token_scanner) {
                 file_token_scanner->buffer = (wchar_t*)realloc(file_token_scanner->buffer, file_token_scanner->buffer_size * sizeof(wchar_t));
             }
         }
-    } while (c != WEOF && c != L'\n');
+    } while (c != WEOF && c != L'\r' && c != L'\n');
+    if (c == L'\r') {
+        unsigned char next_char = fgetc(file_token_scanner->file);
+        if (next_char != L'\n') {
+            ungetc(next_char, file_token_scanner->file);
+        }
+    }
     file_token_scanner->buffer[pos] = L'\0';
     const GherkinLine* line;
     if (c != WEOF || pos != 0) {
-        wchar_t* text = (wchar_t*)malloc((pos + 1) * sizeof(wchar_t));
-        wmemcpy(text, file_token_scanner->buffer, pos);
-        text[pos] = L'\0';
+        wchar_t* text = StringUtilities_copy_string_part(file_token_scanner->buffer, pos);
         line = GherkinLine_new(text, file_token_scanner->line);
     }
     else

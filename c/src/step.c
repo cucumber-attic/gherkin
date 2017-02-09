@@ -1,6 +1,7 @@
 #include "step.h"
 #include "data_table.h"
 #include "doc_string.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 static void delete_step_content(const Step* step);
@@ -12,16 +13,10 @@ const Step* Step_new(Location location, const wchar_t* keyword, const wchar_t* t
     step->location.line = location.line;
     step->location.column = location.column;
     if (keyword) {
-        int length = wcslen(keyword);
-        step->keyword = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(step->keyword, keyword, length);
-        step->keyword[length] = L'\0';
+        step->keyword = StringUtilities_copy_string(keyword);
     }
     if (text) {
-        int length = wcslen(text);
-        step->text = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(step->text, text, length);
-        step->text[length] = L'\0';
+        step->text = StringUtilities_copy_string(text);
     }
     step->argument = argument;
     return step;

@@ -17,12 +17,12 @@ typedef struct GherkinLine {
 
 typedef struct Span {
     int column;
-    const wchar_t* text;
+    wchar_t* text;
 } Span;
 
 typedef struct Items {
     int count;
-    const Span* items;
+    Span* items;
 } Items;
 
 const GherkinLine* GherkinLine_new(const wchar_t* line_text, int line_number);

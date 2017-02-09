@@ -26,7 +26,7 @@ const Tag* Tag_new(Location location, const wchar_t* name);
 
 void Tag_delete(const Tag* tag);
 
-void Tag_transfer(Tag* to_tag, Location location, const wchar_t* name);
+void Tag_transfer(Tag* to_tag, Location location, wchar_t** name_ptr);
 
 void Tags_delete(const Tags* tags);
 

@@ -1,4 +1,5 @@
 #include "scenario_outline.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 const ScenarioOutline* ScenarioOutline_new(Location location, const wchar_t* keyword, const wchar_t* name, const wchar_t* description, const Tags* tags, const Steps* steps, const Examples* examples) {
@@ -9,17 +10,11 @@ const ScenarioOutline* ScenarioOutline_new(Location location, const wchar_t* key
     scenario_outline->location.column = location.column;
     scenario_outline->keyword = 0;
     if (keyword) {
-        int length = wcslen(keyword);
-        scenario_outline->keyword = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(scenario_outline->keyword, keyword, length);
-        scenario_outline->keyword[length] = L'\0';
+        scenario_outline->keyword = StringUtilities_copy_string(keyword);
     }
     scenario_outline->name = 0;
     if (name) {
-        int length = wcslen(name);
-        scenario_outline->name = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(scenario_outline->name, name, length);
-        scenario_outline->name[length] = L'\0';
+        scenario_outline->name = StringUtilities_copy_string(name);
     }
     scenario_outline->description = description;
     scenario_outline->tags = tags;

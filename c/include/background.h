@@ -25,8 +25,6 @@ const Background* Background_new(Location location, const wchar_t* keyword, cons
 
 void Background_delete(const Background* background);
 
-void Background_transfer(Background* to_background, Background* from_background);
-
 #ifdef __cplusplus
 }
 #endif

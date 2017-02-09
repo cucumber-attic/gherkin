@@ -1,4 +1,5 @@
 #include "example_table.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 static void delete_example_table_content(const ExampleTable* example_table);
@@ -11,17 +12,11 @@ const ExampleTable* ExampleTable_new(Location location, const wchar_t* keyword, 
     example_table->location.column = location.column;
     example_table->keyword = 0;
     if (keyword) {
-        int length = wcslen(keyword);
-        example_table->keyword = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(example_table->keyword, keyword, length);
-        example_table->keyword[length] = L'\0';
+        example_table->keyword = StringUtilities_copy_string(keyword);
     }
     example_table->name = 0;
     if (name) {
-        int length = wcslen(name);
-        example_table->name = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(example_table->name, name, length);
-        example_table->name[length] = L'\0';
+        example_table->name = StringUtilities_copy_string(name);
     }
     example_table->description = description;
     example_table->tags = tags;

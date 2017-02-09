@@ -66,26 +66,6 @@ matrix:
       compiler: gcc
       before_script:
         - brew install jq
-    - env: TARGET_LANG=c
-      language: c
-      os: osx
-      osx_image: xcode8.1
-      compiler: gcc
-      before_script:
-        - brew install jq
-    - env: TARGET_LANG=c
-      language: c
-      os: osx
-      osx_image: xcode8
-      compiler: gcc
-      before_script:
-        - brew install jq
-    - env: TARGET_LANG=c
-      language: c
-      os: osx
-      compiler: gcc
-      before_script:
-        - brew install jq
 
 before_install:
   - export EnableNuGetPackageRestore=true
@@ -95,13 +75,8 @@ addons:
     packages:
     - jq
 
-before_script:
-  - locale
-
 # Simulate non-UTF-8 standard encoding on OS. Should still work
-script:
-  - jq --version 
-  - "cd $TARGET_LANG; make update-gherkin-languages; LANG=fr_FR.iso-8859-15 make"
+script: "cd $TARGET_LANG; LANG=fr_FR.iso-8859-15 make"
 
 branches:
   only:

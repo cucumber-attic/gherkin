@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 typedef enum TokenType {
-    Token_NoToken = Rule_None,
+    Token_None = Rule_None,
     Token_Empty = Rule_Empty,
     Token_FeatureLine = Rule_FeatureLine,
     Token_ScenarioLine = Rule_ScenarioLine,

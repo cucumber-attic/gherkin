@@ -1,4 +1,5 @@
 #include "pickle_tag.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 static void delete_tag_content(const PickleTag* tag);
@@ -9,10 +10,7 @@ const PickleTag* PickleTag_new(const wchar_t* name, int line, int column) {
     tag->location.column = column;
     tag->name = 0;
     if (name) {
-        int length = wcslen(name);
-        tag->name = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(tag->name, name, length);
-        tag->name[length] = L'\0';
+        tag->name = StringUtilities_copy_string(name);
     }
     return tag;
 }
@@ -30,10 +28,7 @@ void PickleTag_transfer(PickleTag* to_tag, const wchar_t* name, int line, int co
     to_tag->location.column = column;
     to_tag->name = 0;
     if (name) {
-        int length = wcslen(name);
-        to_tag->name = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(to_tag->name, name, length);
-        to_tag->name[length] = L'\0';
+        to_tag->name = StringUtilities_copy_string(name);
     }
 }
 

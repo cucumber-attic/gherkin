@@ -1,4 +1,5 @@
 #include "pickle_string.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 const PickleString* PickleString_new(const wchar_t* content, int line, int column) {
@@ -8,10 +9,7 @@ const PickleString* PickleString_new(const wchar_t* content, int line, int colum
     pickle_string->location.column = column;
     pickle_string->content = 0;
     if (content) {
-        int length = wcslen(content);
-        pickle_string->content = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(pickle_string->content, content, length);
-        pickle_string->content[length] = L'\0';
+        pickle_string->content = StringUtilities_copy_string(content);
     }
     return pickle_string;
 }

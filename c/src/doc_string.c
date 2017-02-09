@@ -1,4 +1,5 @@
 #include "doc_string.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 const DocString* DocString_new(Location location, const wchar_t* content_type, const wchar_t* content) {
@@ -9,10 +10,7 @@ const DocString* DocString_new(Location location, const wchar_t* content_type, c
     doc_string->location.column = location.column;
     doc_string->content_type = 0;
     if (content_type && wcslen(content_type) > 0) {
-        int length = wcslen(content_type);
-        doc_string->content_type = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(doc_string->content_type, content_type, length);
-        doc_string->content_type[length] = L'\0';
+        doc_string->content_type = StringUtilities_copy_string(content_type);
     }
     doc_string->content = content;
     return doc_string;

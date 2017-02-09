@@ -1,4 +1,5 @@
 #include "scenario.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 const Scenario* Scenario_new(Location location, const wchar_t* keyword, const wchar_t* name, const wchar_t* description, const Tags* tags, const Steps* steps) {
@@ -9,17 +10,11 @@ const Scenario* Scenario_new(Location location, const wchar_t* keyword, const wc
     scenario->location.column = location.column;
     scenario->keyword = 0;
     if (keyword) {
-        int length = wcslen(keyword);
-        scenario->keyword = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(scenario->keyword, keyword, length);
-        scenario->keyword[length] = L'\0';
+        scenario->keyword = StringUtilities_copy_string(keyword);
     }
     scenario->name = 0;
     if (name) {
-        int length = wcslen(name);
-        scenario->name = (wchar_t*)malloc((length + 1) * sizeof(wchar_t));
-        wmemcpy(scenario->name, name, length);
-        scenario->name[length] = L'\0';
+        scenario->name = StringUtilities_copy_string(name);
     }
     scenario->description = description;
     scenario->tags = tags;

@@ -7,7 +7,7 @@ Token* Token_new(const GherkinLine* gherkin_line, int line) {
     token->line = gherkin_line;
     token->location.line = line;
     token->location.column = 0;
-    token->matched_type = Token_NoToken;
+    token->matched_type = Token_None;
     token->matched_text = 0;
     token->matched_keyword = 0;
     token->matched_items = 0;

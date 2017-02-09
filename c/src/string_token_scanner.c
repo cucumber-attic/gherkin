@@ -1,5 +1,6 @@
 #include "string_token_scanner.h"
 #include "gherkin_line.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 typedef struct StringTokenScanner {
@@ -37,9 +38,7 @@ static Token* StringTokenScanner_read(TokenScanner* token_scanner) {
     } while (c != L'\0' && c != L'\n' && c != L'\r');
     const GherkinLine* line;
     if (c != L'\0' || length > 1) {
-        wchar_t* text = (wchar_t*)malloc(length * sizeof(wchar_t));
-        wmemcpy(text, string_token_scanner->source + string_token_scanner->pos, length);
-        text[length - 1] = L'\0';
+        wchar_t* text = StringUtilities_copy_string_part(string_token_scanner->source + string_token_scanner->pos, length - 1);
         string_token_scanner->pos += length;
         line = GherkinLine_new(text, string_token_scanner->line);
     }

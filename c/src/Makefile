@@ -19,8 +19,10 @@ RM_CMD=rm -rf
 MKDIR_CMD=mkdir -p
 
 all: \
-	../bin/gherkin_generate_tokens \
-	../bin/gherkin
+    cli \
+	../bin/gherkin_generate_tokens
+
+cli: ../bin/gherkin
 
 libs: ../libs/libgherkin.a
 
@@ -28,13 +30,18 @@ clean:
 	$(RM_CMD) ../bin ../objs ../libs
 .PHONY: clean
 
+UTILITIES_OBJS= \
+	../objs/file_reader.o \
+	../objs/file_utilities.o \
+	../objs/print_utilities.o \
+	../objs/string_utilities.o
+-include $(UTILITIES_OBJS:.o=.d)
+
 PARSER_OBJS= \
 	../objs/parser.o \
 	../objs/token_scanner.o \
 	../objs/file_token_scanner.o \
 	../objs/string_token_scanner.o \
-	../objs/file_utilities.o \
-	../objs/file_reader.o \
 	../objs/token_matcher.o \
 	../objs/token.o \
 	../objs/token_queue.o \
@@ -84,7 +91,6 @@ EVENT_OBJS= \
 	../objs/gherkin_document_event.o \
 	../objs/pickle_event.o \
 	../objs/source_event.o \
-	../objs/print_utilities.o \
 	../objs/ast_printer.o \
 	../objs/pickle_printer.o
 -include $(EVENT_OBJS:.o=.d)
@@ -102,9 +108,9 @@ GHERKIN_CLI_OBJS= \
 	$(MKDIR_CMD) $(dir $@)
 	$(CC) $(CC_FLAGS) $(GENERATE_DEPS_FLAGS) -I ../include -I . $< -o $@
 
-../libs/libgherkin.a: $(PARSER_OBJS) $(AST_OBJS) $(COMPILER_OBJS) $(PICKLES_OBJS) $(EVENT_OBJS)
+../libs/libgherkin.a: $(UTILITIES_OBJS) $(PARSER_OBJS) $(AST_OBJS) $(COMPILER_OBJS) $(PICKLES_OBJS) $(EVENT_OBJS) Makefile
 	$(MKDIR_CMD) $(dir $@)
-	$(AR) $(AR_FLAGS) $@ $(PARSER_OBJS) $(AST_OBJS) $(COMPILER_OBJS) $(PICKLES_OBJS) $(EVENT_OBJS)
+	$(AR) $(AR_FLAGS) $@ $(UTILITIES_OBJS) $(PARSER_OBJS) $(AST_OBJS) $(COMPILER_OBJS) $(PICKLES_OBJS) $(EVENT_OBJS)
 
 ../bin/gherkin_generate_tokens: ../libs/libgherkin.a $(GENERATE_TOKEN_OBJS) Makefile
 	$(MKDIR_CMD) $(dir $@)

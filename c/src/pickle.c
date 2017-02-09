@@ -1,4 +1,5 @@
 #include "pickle.h"
+#include "string_utilities.h"
 #include <stdlib.h>
 
 static void delete_pickle_content(const Pickle* pickle);
@@ -10,10 +11,7 @@ const Pickle* Pickle_new(const PickleLocations* locations, const PickleTags* tag
     pickle->tags = tags;
     pickle->name = 0;
     if (name) {
-        int name_length = wcslen(name);
-        pickle->name = (wchar_t*)malloc((name_length + 1) * sizeof(wchar_t));
-        wmemcpy(pickle->name, name, name_length);
-        pickle->name[name_length] = L'\0';
+        pickle->name = StringUtilities_copy_string(name);
     }
     pickle->steps = steps;
     return pickle;
