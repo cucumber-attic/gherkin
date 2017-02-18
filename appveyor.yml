@@ -18,7 +18,7 @@ init:
 - ps: $Env:LABEL = "CI" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0")
 
 before_build:
-- appveyor-retry dotnet restore -v Minimal
+- appveyor-retry dotnet restore -v Minimal dotnet/Gherkin.CSharp.sln
 
 build_script:
 - dotnet build -c %CONFIGURATION% dotnet/Gherkin --version-suffix %LABEL%
