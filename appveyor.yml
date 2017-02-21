@@ -30,7 +30,7 @@ after_build:
 - dotnet pack -c %CONFIGURATION% dotnet/Gherkin -o artifacts --version-suffix %LABEL%
 
 test_script:
-- dotnet test dotnet/Gherkin.Specs/ -c %CONFIGURATION%
+- dotnet test dotnet/Gherkin.Specs/Gherkin.Specs.csproj -c %CONFIGURATION%
   
   
 artifacts:
