@@ -15,16 +15,9 @@ namespace Gherkin.Specs
             get 
             { 
                 var inputFolder = Path.GetDirectoryName(new Uri(typeof(TestFolders).GetTypeInfo().Assembly.CodeBase).LocalPath);
-                
-                #if NET451                
-                inputFolder = Path.Combine(inputFolder, "..", "..");                
-                #endif
-                
-                #if NET_CORE                
-                inputFolder = Path.Combine(inputFolder, "..");                                
-                #endif
 
-                
+                inputFolder = Path.Combine(inputFolder, "..");                
+
                 return inputFolder; 
             }
         }

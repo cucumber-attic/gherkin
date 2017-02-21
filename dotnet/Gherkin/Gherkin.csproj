@@ -1,7 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>    
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="gherkin-languages.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="gherkin-languages.json" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>

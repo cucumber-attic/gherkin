@@ -105,7 +105,7 @@ namespace Gherkin
 
 #if NETSTANDARD1_3
             var rowEnum = row.AsEnumerable().GetEnumerator();            
-            #endif
+#endif
                         
             string cell = "";
             int pos = 0;

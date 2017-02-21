@@ -25,6 +25,7 @@ namespace Gherkin.CLI
                         Readable = true
                     });
             }
+
             if (typeof(GherkinDocument).GetTypeInfo().IsAssignableFrom(type))
             {
                 var objContract = (JsonObjectContract) contract;
