@@ -76,16 +76,16 @@ Gherkin/Parser.cs: ../gherkin.berp gherkin-csharp.razor ../bin/berp.exe
 	dotnet --version
 	dotnet restore
 
-	dotnet build Gherkin
-	dotnet build Gherkin.CLI
-	dotnet build Gherkin.TokensGenerator
-	dotnet build Gherkin.Specs
+	dotnet build -f netstandard1.5
+	# dotnet build
 
-	dotnet publish -o output/net45 -f net45 Gherkin.CLI/
-	dotnet publish -o output/netcoreapp1.0 -f netcoreapp1.0 Gherkin.CLI/
+	dotnet publish --output output/netstandard1.5  --framework netstandard1.5 Gherkin.CLI/
+	# dotnet publish --output output/net45           --framework net45          Gherkin.CLI/
+	# dotnet publish --output output/netcoreapp1.0   --framework netcoreapp1.0  Gherkin.CLI/
 	
-	dotnet publish -o output/net45 -f net45 Gherkin.TokensGenerator/
-	dotnet publish -o output/netcoreapp1.0 -f netcoreapp1.0 Gherkin.TokensGenerator/
+	dotnet publish -o output/netstandard1.5  --framework netstandard1.5 Gherkin.TokensGenerator/
+	# dotnet publish --output output/net45           --framework net45          Gherkin.TokensGenerator/
+	# dotnet publish --output output/netcoreapp1.0   --framework netcoreapp1.0  Gherkin.TokensGenerator/
 
 	touch $@
 

@@ -103,7 +103,11 @@ namespace Gherkin
             var rowEnum = row.GetEnumerator();                        
 #endif
 
-#if NETSTANDARD1_3
+#if NETSTANDARD1_5
+            var rowEnum = row.AsEnumerable().GetEnumerator();            
+#endif
+
+#if NETCOREAPP1_0
             var rowEnum = row.AsEnumerable().GetEnumerator();            
 #endif
                         

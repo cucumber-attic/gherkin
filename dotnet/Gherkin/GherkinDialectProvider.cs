@@ -61,7 +61,12 @@ namespace Gherkin
             var resourceStream = assembly.GetManifestResourceStream(typeof(GherkinDialectProvider), languageFileName);                        
             #endif
             
-            #if NETSTANDARD1_3
+            #if NETSTANDARD1_5
+            var assembly = typeof(GherkinDialectProvider).GetTypeInfo().Assembly;            
+            var resourceStream = assembly.GetManifestResourceStream("Gherkin." + languageFileName);            
+            #endif
+
+            #if NETCOREAPP1_0
             var assembly = typeof(GherkinDialectProvider).GetTypeInfo().Assembly;            
             var resourceStream = assembly.GetManifestResourceStream("Gherkin." + languageFileName);            
             #endif
