@@ -81,7 +81,21 @@ matrix:
         #- ls -la
         #- ls -la dotnet
         #- echo $TARGET_LANG
- 
+
+    - env: TARGET_LANG=c
+      language: c
+      compiler: gcc
+    - env: TARGET_LANG=c
+      language: c
+      compiler: clang
+    - env: TARGET_LANG=c
+      language: c
+      os: osx
+      osx_image: xcode8.2
+      compiler: gcc
+      before_script:
+        - brew install jq
+
 before_install:
   - export EnableNuGetPackageRestore=true
 
@@ -89,7 +103,7 @@ addons:
   apt:
     packages:
     - jq
- 
+
 # Simulate non-UTF-8 standard encoding on OS. Should still work
 script: "cd $TARGET_LANG; LANG=fr_FR.iso-8859-15 make"
 

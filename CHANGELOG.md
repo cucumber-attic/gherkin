@@ -12,6 +12,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (C): New parser and compiler in C
+  ([#187](https://github.com/cucumber/gherkin/pull/187)
+   by [brasmusson])
 * (I18n) mk-Cyrl: Added Macedonian language
   ([#249](https://github.com/cucumber/gherkin/pull/249)
    by [nikolovski])
