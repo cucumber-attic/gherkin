@@ -14,4 +14,4 @@ else
     exit 1
 fi
 
-$starter "Gherkin.TokensGenerator/bin/Debug/$arch/Gherkin.TokensGenerator.$ext" "${@:2}"
+$starter "Gherkin.CLI/bin/Debug/$arch/Gherkin.CLI.$ext" "${@:2}"

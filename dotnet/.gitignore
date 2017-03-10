@@ -156,6 +156,7 @@ $RECYCLE.BIN/
 
 packages/
 acceptance/
+output/
 .built
 .compared
 .sln_built_debug
