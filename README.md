@@ -400,3 +400,4 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md)
 - [cucumber-ruby](https://github.com/cucumber/cucumber-ruby)
 - [cucumber-js](https://github.com/cucumber/cucumber-js)
 - [godog](https://github.com/DATA-DOG/godog) - Cucumber like BDD framework for **go**
+- [behat-gherkin] (https://github.com/Behat/Gherkin) - Gherkin parser, written in PHP 5.3+
