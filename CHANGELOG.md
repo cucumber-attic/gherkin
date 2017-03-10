@@ -47,6 +47,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 * (.NET) Migrated code to .NET Core
   ([#215](https://github.com/cucumber/gherkin/pull/215)
    by [SabotageAndi])
+* (I18n) Russian translation fix
+  ([#255](https://github.com/cucumber/gherkin/pull/255)
+   by [ehpc])
 
 ### Fixed
 * (Java) Add a getter for the tags of a pickle
@@ -275,6 +278,7 @@ to Gherkin 2.
 [brasmusson]:       https://github.com/brasmusson
 [charlierudolph]:   https://github.com/charlierudolph
 [dobiedad]:         https://github.com/dobiedad
+[ehpc]:             https://github.com/ehpc
 [enkessler]:        https://github.com/enkessler
 [gabanz]:           https://github.com/gabanz
 [jargalan]:         https://github.com/jargalan
