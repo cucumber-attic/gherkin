@@ -41,6 +41,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
    by [nalekberov])
 
 ### Changed
+* (.NET) Migrated code to .NET Core
+  ([#215](https://github.com/cucumber/gherkin/pull/215)
+   by [SabotageAndi])
 
 ### Fixed
 * (Java) Add a getter for the tags of a pickle
@@ -286,5 +289,6 @@ to Gherkin 2.
 [paigehf]:          https://github.com/paigehf
 [pjlsergeant]:      https://github.com/pjlsergeant
 [Pr-Mex]:           https://github.com/Pr-Mex
+[SabotageAndi]:     https://github.com/SabotageAndi
 [zbmott]:           https://github.com/zbmott
 [Zearin]:           https://github.com/Zearin
