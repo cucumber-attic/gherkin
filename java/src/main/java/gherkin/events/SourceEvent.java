@@ -1,6 +1,6 @@
 package gherkin.events;
 
-public class SourceEvent implements Event {
+public class SourceEvent implements CucumberEvent {
     private final String type = "source";
     public final String uri;
     public final String data;

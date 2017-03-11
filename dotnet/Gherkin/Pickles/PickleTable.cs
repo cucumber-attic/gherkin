@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Gherkin.Pickles
 {
@@ -14,7 +12,7 @@ namespace Gherkin.Pickles
         {
             Rows = rows;
         }
-
+        [JsonIgnoreAttribute]
         public override PickleLocation Location { get { return Rows.First().Cells.First().Location; } }
     }
 }

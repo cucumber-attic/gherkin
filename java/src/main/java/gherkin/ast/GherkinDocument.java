@@ -1,7 +1,5 @@
 package gherkin.ast;
 
-import gherkin.events.Event;
-
 import java.util.Collections;
 import java.util.List;
 

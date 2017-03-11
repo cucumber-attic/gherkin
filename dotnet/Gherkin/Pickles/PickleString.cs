@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Gherkin.Pickles
 {
     public class PickleString : Argument
     {
         private readonly PickleLocation location;
-
         public override PickleLocation Location
         {
             get { return location; }

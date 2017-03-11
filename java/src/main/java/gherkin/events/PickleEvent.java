@@ -2,7 +2,7 @@ package gherkin.events;
 
 import gherkin.pickles.Pickle;
 
-public class PickleEvent implements Event {
+public class PickleEvent implements CucumberEvent {
     private final String type = "pickle";
     public final String uri;
     public final Pickle pickle;
