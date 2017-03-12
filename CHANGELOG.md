@@ -12,6 +12,9 @@ This document is formatted according to the principles of [Keep A CHANGELOG](htt
 ### Removed
 
 ### Added
+* (Java): Add accessors for languages and dialect keywords.
+  ([#248](https://github.com/cucumber/gherkin/pull/248)
+   by [brasmusson])
 * (All): Add the language to the Pickles
   ([#251](https://github.com/cucumber/gherkin/pull/251)
    by [brasmusson])
