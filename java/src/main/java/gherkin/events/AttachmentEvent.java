@@ -1,6 +1,6 @@
 package gherkin.events;
 
-public class AttachmentEvent implements Event {
+public class AttachmentEvent implements CucumberEvent {
     private final String type = "attachment";
     private final SourceRef source;
     private final String data;

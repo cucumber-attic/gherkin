@@ -3,7 +3,7 @@ package gherkin.cli;
 import gherkin.stream.Stdio;
 import gherkin.deps.com.google.gson.Gson;
 import gherkin.deps.com.google.gson.GsonBuilder;
-import gherkin.events.Event;
+import gherkin.events.CucumberEvent;
 import gherkin.events.SourceEvent;
 import gherkin.stream.GherkinEvents;
 import gherkin.stream.SourceEvents;
@@ -46,8 +46,8 @@ public class Main {
         SourceEvents sourceEvents = new SourceEvents(paths);
         GherkinEvents gherkinEvents = new GherkinEvents(printSource, printAst, printPickles);
         for (SourceEvent sourceEventEvent : sourceEvents) {
-            for (Event event : gherkinEvents.iterable(sourceEventEvent)) {
-                Stdio.out.write(gson.toJson(event));
+            for (CucumberEvent cucumberEvent : gherkinEvents.iterable(sourceEventEvent)) {
+                Stdio.out.write(gson.toJson(cucumberEvent));
                 Stdio.out.write("\n");
                 Stdio.out.flush();
             }
