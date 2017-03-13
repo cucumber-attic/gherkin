@@ -533,7 +533,9 @@
       "Szenario"
     ],
     "scenarioOutline": [
-      "Szenariogrundriss"
+      "Szenariogrundriss",
+      "Szenariovorlage",
+      "Regel"
     ],
     "then": [
       "* ",
@@ -655,6 +657,7 @@
       "Scenario"
     ],
     "scenarioOutline": [
+      "Rule",
       "Scenario Outline",
       "Scenario Template"
     ],
@@ -776,6 +779,7 @@
       "MISHUN"
     ],
     "scenarioOutline": [
+      "RULEZ",
       "MISHUN SRSLY"
     ],
     "then": [
@@ -1127,6 +1131,7 @@
       "Scénario"
     ],
     "scenarioOutline": [
+      "Règle",
       "Plan du scénario",
       "Plan du Scénario"
     ],
@@ -2163,6 +2168,7 @@
       "Scenario"
     ],
     "scenarioOutline": [
+      "Regel",
       "Scenariomal",
       "Abstrakt Scenario"
     ],
