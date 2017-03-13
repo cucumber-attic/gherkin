@@ -1,10 +1,62 @@
-﻿[
+﻿// This file describes the grammar rules of the Gherkin language used in feature files. 
+// The language is described in a BNF-like language that can be processed by the Berp 
+// parser generator (https://github.com/gasparnagy/berp).
+
+// In the Gherkin parser, the tokens are always the lines of the file. The classification
+// of the tokens (determining the type of the token) can only be performed with the 
+// parsing context, i.e. without context it is not possible to decide the token type. The 
+// parser asks the scanner to try matching the next token based on a possible token types 
+// allowed at the current position. See more at https://github.com/cucumber/gherkin.
+
+// The tokens of a feature file are classified by hand-written scanners. For reference 
+// here are the scanning rules and regular expressions for matching the different tokens 
+// types:
+//
+// - #Empty -- a line contains whitespaces only or it is empty.
+//     ^\s*$
+// - #Comment -- a line starts with a '#' character and optionally whitespaces before.
+//     ^\s*#
+// - #TagLine -- a line starts with a '@' character and optionally whitespaces before; 
+//   the token might contain multiple tags (@<non-whitespacce-characters>) separated with
+//   whitespaces.
+//     ^\s*@
+// - #FeatureLine, #BackgroundLine, #ScenarioLine, #ScenarioOutlineLine, #ExamplesLine -- 
+//   a line starts with a Feature, Background, Scenario, Scenario Outline or Examples 
+//   keyword followed by a ':' character (optionally whitespaces before); the remaining 
+//   part of the line is the name (title) of the element, trimmed.
+//     ^\s*{keyword}:
+// - #StepLine -- a line starts with a Given, When, Then, And or But keyword (optionally 
+//   whitespaces before); the remaining part of the line is the text of the step, trimmed.
+//   Note: the step keywords usually contain a leading space!
+//     ^\s*{keyword}
+// - #DocStringSeparator -- a line contains either ''' or """ (optionally whitespaces 
+//   before). For opening separator of the Doc String, the line might contain further 
+//   non-whitespace characters after the separator, this is the content type descriptor; 
+//   the closing separator of the Doc String must be the same as the opening one; the 
+//   other separator within the Doc String must not be recognized as #DocStringSeparator;
+//   the whitespaces in front of the opening separator will be the default Doc String 
+//   indentation and it has to be trimmed from the Doc String lines (#Other tokens).
+//     ^\s*("""|''') -- for open
+//     ^\s*({open separator})\s*$ -- for close
+// - #TableRow -- a line starts with a '|' character and optionally whitespaces before; 
+//   the token might contain multiple cells (text separated by '|').
+//     ^\s*|
+// - #Language -- a line starts with a '#language:' text (whitespaces allowed before and 
+//   after the '#' and the ':' characters); the remaining part of the line is the 
+//   language specifier (e.g. en, de-AT), trimmed.
+//     ^\s*#\s*language\s*:\s*[a-zA-Z_\-]+\s*$
+// - #Other -- Any line
+// - #EOF -- end of file, the token does not refer to a real line in the file
+
+//Parser generator settings
+[
 	Tokens -> #Empty,#Comment,#TagLine,#FeatureLine,#BackgroundLine,#ScenarioLine,#ScenarioOutlineLine,#ExamplesLine,#StepLine,#DocStringSeparator,#TableRow,#Language
 	IgnoredTokens -> #Comment,#Empty
 	ClassName -> Parser
 	Namespace -> Gherkin
 ]
 
+// Starting rule
 GherkinDocument! := Feature?
 Feature! := Feature_Header Background? Scenario_Definition*
 Feature_Header! := #Language? Tags? #FeatureLine Feature_Description
