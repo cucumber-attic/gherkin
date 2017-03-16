@@ -638,12 +638,15 @@
     ],
     "examples": [
       "Examples",
-      "Scenarios"
+      "Scenarios",
+      "Stories",
+      "User Stories"
     ],
     "feature": [
       "Feature",
       "Business Need",
-      "Ability"
+      "Ability",
+      "Epic"
     ],
     "given": [
       "* ",
@@ -652,11 +655,15 @@
     "name": "English",
     "native": "English",
     "scenario": [
-      "Scenario"
+      "Scenario",
+      "Story",
+      "User Story"
     ],
     "scenarioOutline": [
       "Scenario Outline",
-      "Scenario Template"
+      "Scenario Template",
+      "Story Outline",
+      "User Story Outline"
     ],
     "then": [
       "* ",
