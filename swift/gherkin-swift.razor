@@ -1,0 +1,247 @@
+﻿@using Berp;
+@helper CallProduction(ProductionRule production)
+{
+  switch(production.Type)
+  {
+    case ProductionRuleType.Start:
+      @:  startRule(context, ruleType: .@production.RuleName);
+      break;
+    case ProductionRuleType.End:
+      @:  endRule(context, ruleType: .@production.RuleName);
+      break;
+    case ProductionRuleType.Process:
+      @:  build(context, token: token);
+      break;
+  }
+}
+@helper HandleParserError(IEnumerable<string> expectedTokens, State state)
+{<text>
+      let state_comment: String = "State: @state.Id - @Raw(state.Comment)"
+      token.detach()
+      let expected_tokens = ["@Raw(string.Join("\", \"", expectedTokens))"]
+      let error: InvalidOperationException
+      if token.eof() {
+          error = InvalidOperationException.UnexpectedEOFException(token: token, expected_tokens: expected_tokens, state_comment: state_comment)
+      } else {
+          error = InvalidOperationException.UnexpectedTokenException(token: token, expected_tokens: expected_tokens, state_comment: state_comment)
+      }
+      if stopAtFirstError {
+        throw InvalidOperationException.GenericErrorFIXME
+      }
+      do{
+        try addError(context, error: error)
+      }
+      return @state.Id</text>}
+@helper MatchToken(TokenType tokenType)
+{<text>match@(tokenType)(context, token: token)</text>}
+// This file is generated. Do not edit! Edit gherkin-swift.razor instead.
+
+enum RuleType {
+  case None
+  @foreach(var rule in Model.RuleSet.Where(r => !r.TempRule))
+  {<text>  case @rule.Name.Replace("#", "_") // @rule.ToString(true)
+</text>}
+}
+
+enum InvalidOperationException: ErrorType {
+
+    case CompositeParserException
+    case UnknownState
+    case UnexpectedEOFException(token: Token, expected_tokens: [String], state_comment: String)
+    case UnexpectedTokenException(token: Token, expected_tokens: [String], state_comment: String)
+    case GenericErrorFIXME
+}
+
+class ParserContext {
+    var tokenScanner: TokenScanner
+    var tokenMatcher: TokenMatcher
+    var tokenQueue: [Token]
+    var errors: [InvalidOperationException]
+
+    init(tokenScanner: TokenScanner, tokenMatcher: TokenMatcher, tokenQueue: [Token], errors: [InvalidOperationException]) {
+
+        self.tokenScanner = tokenScanner
+        self.tokenMatcher = tokenMatcher
+        self.tokenQueue = tokenQueue
+        self.errors = errors
+    }
+}
+
+class Parser {
+  var stopAtFirstError: Bool = true
+  var astBuilder: ASTBuilder
+
+  init(astBuilder: ASTBuilder) {
+
+      self.astBuilder = astBuilder
+  }
+
+  func parse(tokenScanner: TokenScanner, tokenMatcher: TokenMatcher) throws -> String {
+
+      self.astBuilder.reset()
+      tokenMatcher.reset()
+
+      let context = ParserContext(tokenScanner: tokenScanner, tokenMatcher: tokenMatcher, tokenQueue: [], errors: [])
+
+      startRule(context, ruleType: .@Model.RuleSet.StartRule.Name)
+      var state = 0
+      var token: Token?
+
+      while !token!.eof() {
+
+          token = readToken(context)
+          if let newToken = token {
+              do {
+                  state = try matchToken(state, token: newToken, context: context)
+              } catch {
+                  //FIXME: Need to have some kind of logger
+                  print ("failed")
+              }
+          }
+      }
+
+      endRule(context, ruleType: .@Model.RuleSet.StartRule.Name)
+
+      if context.errors.count > 0 {
+
+          throw InvalidOperationException.CompositeParserException
+      }
+
+      return getResult()
+  }
+
+  func build(context: ParserContext, token: Token) {
+
+      handleASTError(context) { () -> Bool in
+          self.astBuilder.build(token)
+      }
+  }
+
+  func addError(context: ParserContext, error: InvalidOperationException) throws {
+      context.errors.append(error)
+      if context.errors.count > 10 {
+          throw InvalidOperationException.CompositeParserException
+      }
+  }
+
+  func startRule(context: ParserContext, ruleType: RuleType) {
+
+      handleASTError(context, action: { () -> Bool in
+          self.astBuilder.startRule(ruleType)
+      })
+  }
+
+  func endRule(context: ParserContext, ruleType: RuleType) {
+
+      handleASTError(context, action: { () -> Bool in
+          self.astBuilder.endRule(ruleType)
+      })
+  }
+
+  func getResult() -> String {
+
+      return self.astBuilder.getResult()
+  }
+
+  func readToken(context: ParserContext) -> Token {
+
+  }
+
+@foreach(var rule in Model.RuleSet.TokenRules)
+{<text>
+  func match@(rule.Name.Replace("#", ""))(context: ParserContext, token: Token) -> Bool {
+    @if (rule.Name != "#EOF")
+    {<text>
+    if token.eof() {
+      return false
+    } else {
+      return handleExternalError(context, defaultValue: false, action: { () -> Bool in
+              context.tokenMatcher.match@(rule.Name.Replace("#", ""))(token)
+           })
+    }</text>
+    }
+  }</text>
+}
+
+  func matchToken(state: Int, token: Token, context: ParserContext) throws -> Int {
+    switch state {
+      @foreach( var state in Model.States.Values.Where(s => !s.IsEndState))
+      {
+      @:case @state.Id:
+          <text>return</text> @:matchTokenAt@(state.Id)(token, context: context)
+      }
+      default:
+          throw InvalidOperationException.UnknownState
+    }
+  }
+
+  @foreach(var state in Model.States.Values.Where(s => !s.IsEndState))
+  {<text>
+    // @Raw(state.Comment)
+    func matchTokenAt@(state.Id)(token: Token, context: ParserContext) throws -> Int {
+      @foreach(var transition in state.Transitions)
+      {
+      @:if @MatchToken(transition.TokenType) {
+        if (transition.LookAheadHint != null)
+        {
+        @:if lookAhead@(transition.LookAheadHint.Id)(context, currentToken: token) {
+            }
+            foreach(var production in transition.Productions)
+            {
+              @CallProduction(production)
+            }
+            @:return @transition.TargetState
+          @:}
+        if (transition.LookAheadHint != null)
+        {
+      @:}
+      }
+    }
+    @HandleParserError(state.Transitions.Select(t => "#" + t.TokenType.ToString()).Distinct(), state)
+    }</text>
+  }
+
+  @foreach(var lookAheadHint in Model.RuleSet.LookAheadHints)
+  {
+      <text>
+      func lookAhead@(lookAheadHint.Id)(context: ParserContext, currentToken: Token) -> Bool {
+        currentToken.detach()
+        var token: Token
+        var queue: [Token]
+        var match: Bool = false
+        repeat {
+          token = readToken(context)
+          token.detach()
+          queue.insert(token, atIndex: 0)
+
+          if (false @foreach(var tokenType in lookAheadHint.ExpectedTokens) {<text>|| @MatchToken(tokenType)</text>}) {
+            match = true
+            break
+          }
+
+          if (false || matchEmpty(context, token: token) || matchComment(context, token: token) || matchTagLine(context, token: token)) {
+
+            } else {
+
+                break
+            }
+        } while true
+
+        context.tokenQueue.appendContentsOf(queue)
+
+        return match
+      }
+      </text>
+  }
+
+
+
+    private func handleASTError(context: ParserContext, action: () -> Bool ) {
+
+        handleExternalError(context, defaultValue: true, action: action)
+    }
+
+    private func handleExternalError(context: ParserContext, defaultValue: Bool, action: () -> Bool ) {
+
+    }
+  }
